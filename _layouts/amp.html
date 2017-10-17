@@ -31,6 +31,7 @@
     {% endif %}
 
 <script async src="https://cdn.ampproject.org/v0.js"></script>
+<script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
 <script async custom-element="amp-sidebar" src="https://cdn.ampproject.org/v0/amp-sidebar-0.1.js"></script>
 {% if page.is_post_index %}
   <script async custom-element="amp-social-share" src="https://cdn.ampproject.org/v0/amp-social-share-0.1.js"></script>
@@ -73,4 +74,46 @@
       {{content}}
     </div>
   </body>
+  <amp-analytics>
+    <script type="application/json">
+      {
+        "requests": {
+          "proxyMetrics": "http://localhost:3002/amp-analytics",
+          "pageview": "${proxyMetrics}/?dwEndpoint=${dwEndpoint}&segmentKey=${segmentKey}&type=${type}&label=${label}&${extraUrlParams}"
+        },
+        "extraUrlParams": {
+          "userAgent": "${userAgent}",
+          "title":"${title}",
+          "userId": "${clientId(cid-scope-cookie-fallback-name)}",
+          "referrer": "${documentReferrer}",
+          "path": "${sourcePath}",
+          "url": "${sourceUrl}"
+        },
+        "vars": {
+          "dwEndpoint": "https://dwh-tracking.it.auth0.com/dwh-metrics",
+          "segmentKey": "aaB6w2BsRwUcGbRSUY7X22FPAa1NL3BL",
+          "label": "AMP-Blog",
+          "type": "page"
+        },
+        "triggers": {
+          "trackPageview": {
+            "on": "visible",
+            "request": "pageview"
+          },
+          "trackSignupClick": {
+            "on": "click",
+            "selector": "a[href='https://auth0.com/signup']",
+            "request": "pageview",
+            "extraUrlParams": {
+              "eventName": "amp-blog:signup",
+              "trackData":  "{sample: 'data for track'}"
+            },
+            "vars": {
+              "type": "track"
+            }
+          }
+        }
+      }
+    </script>
+  </amp-analytics>
 </html>
