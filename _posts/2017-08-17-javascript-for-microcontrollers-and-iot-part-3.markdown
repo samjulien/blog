@@ -531,7 +531,7 @@ The web page is really simple. Of course you could make something much more plea
 
 <head>
     <title>Local Sensors</title>
-    <script src="https://cdn.auth0.com/js/auth0/8.8.0/auth0.min.js"></script>
+    <script src="https://cdn.auth0.com/js/auth0/9.0.0-beta.5/auth0.min.js"></script>
 </head>
 
 <body>
