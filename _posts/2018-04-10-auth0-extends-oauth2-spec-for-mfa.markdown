@@ -27,6 +27,8 @@ tags:
 - multi-factor
 - authentication
 - authorization
+- otp
+- totp
 related:
 - 2018-02-07-oauth2-the-complete-guide
 - 2017-10-19-oauth-2-best-practices-for-native-apps
@@ -93,7 +95,7 @@ However, one of the bigger problems in the authentication and authorization spac
 
 For this reason, we decided to implement two extensions to OAuth 2.0 that can handle all modern MFA scenarios: [OAuth 2.0 Multi-Factor Authorization]() and [OAuth 2.0 Multi-Factor Authenticator Association](). Please note that these specifications are drafts.
 
-## Two Proposals for MFA in OAuth 2.0
+## Two Extensions for MFA in OAuth 2.0
 The two extensions to OAuth 2.0 proposed in this post attempt to fulfil the following needs:
 
 - To provide a way for OAuth 2.0 resource owners to require, remove, or change a strong authorization grant (that may imply multi-factor authorization) for certain resources.
@@ -111,7 +113,13 @@ The `token` endpoint in OAuth 2.0 is used to exchange `authorization grants` or 
 The new `challenge` endpoint is a bit more complicated. This endpoint can be used by clients to obtain a `strong authorization challenge`. This challenge is a special type of value that can be used to interact with the authentication factor to obtain the final `strong authorization grant`. The challenge endpoint gives clients, authorization servers, and resource owners the flexibility to support different types of authentication factors, and to negotiate an authentication factor that is supported by all. This endpoint may return additional data, in the form of additional parameters in the response body, that is required by the authentication factor to validate the request. This changes according to the authentication factor type. Additionally, this endpoint takes the `mfa_token` value returned by the `token` endpoint as input. This ensures all requests to these endpoints are linked in a single authorization session.
 
 #### Time-Based One-Time Password Grant
+The time-based one-time password grant is specifically designed for these type of systems. In contrast with other MFA solutions, TOTP systems do not need communication between the authentication factor and the authorization server. This simplifies things. For this reason, this grant is different from other types of MFA grants.
+
+Here's a sequence diagram of the events of a `TOTP strong authorization grant` triggered when a client attempts to use a `resource owner password credentials grant` and an authentication factor is enabled in the authorization server.
+
 ![OAuth 2.0 TOTP Authorization](https://cdn.auth0.com/blog/oauth2-mfa/3-oauth2-totp-authorization.png)
+
+As you can see, after the client attempts to use resource owner password credentials grant an error is returned. This error signals the need for a strong authorization grant. The client then performs a request to the `challenge` endpoint to find out what types of strong authorization grants are available that are also supported by itself. Once the client and the authorization server settle on the `otp` type of grant, the client requests the user (the resource owner) to input a valid OTP code. To do this, the user must interact with the authenticator. In this case, the user has configured a TOTP application in their smartphone. Once the user has the code, they pass it to the client, which then performs the strong authorization grant by doing a new request to the `token` endpoint with the OTP code.
 
 #### Out-of-Band Verification Code Grant
 ![OAuth 2.0 OOB Authorization]()
