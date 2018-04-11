@@ -37,49 +37,13 @@ related:
 
 At Auth0 we use and support [OAuth 2.0]() extensively. Not only is it part of our core product, it is a fundamental piece of the identity landscape for major players such as Google, Facebook and Microsoft. Authentication and authorization are critical parts of any modern infrastructure. As such, better practices for securing the process have been developed. Multi-factor authentication/authorization is one of those practices. In this article, we explore a proposed extension to the OAuth 2.0 specification that standardizes the way OAuth 2.0 implementations interact with multi-factor solutions. We also take a look at Auth0's current implementation, now publicly available for CLI and trusted native apps.
 
-This article is split in three sections. The [first section]() provides a short recap of what OAuth 2.0 is and how current proprietary MFA solutions work. The [second section]() explains the OAuth 2.0 extensions for MFA proposed by us. The [third section]() showcases our current partial implementation that is ready for public testing. Read on!
+This article is split in three sections. The [first section]() provides a short introduction to multi-factor authorization/authentication and the current implementations seen in the wild. The [second section]() explains the OAuth 2.0 extensions for MFA proposed by us, describes our current implementation, and provides two working examples: a CLI app and a trusted native app. The [third section, the appendix](), is a short introduction to OAuth 2.0 for those not familiar with some of the concepts required for this post. If you are not familiar with concepts such as `resource server`, `protected resource`, `grant`, you may want to read the appendix first.
 
 {% include tweet_quote.html quote_text="Learn more about the OAuth 2.0 proposed draft for multi-factor authentication!" %}
 
 ---
 
-## OAuth 2.0 and Current MFA Solutions
-OAuth 2.0 is a framework that aims to separate the role of a client (such as a third-party service, or mobile application) from that of a resource owner (such as yourself). In contrast to traditional authorization solutions, OAuth 2.0 defines a series of mechanisms by which a client can request a special set of credentials that permit access to a protected resource from a resource server (that hosts the resource owner's data) by going through an additional party known as the authorization server. In this way, resource owners need not share their private credentials with the client. This increases security in several ways:
-
-- Resource owner credentials are not shared, reducing the number of possible places for a security breach.
-- Resource owner credentials need not be stored to provide better user experience.
-- Access can be limited to the requested protected resource, rather than requiring the use of resource owner credentials that may have broader access characteristics.
-- Access can easily be revoked to clients without affecting other clients.
-
-To make things clearer, a simple, but very common example could be as follows. Let's say you, Joe, are a new user of a music streaming service: Sonar. The music streaming service requires users to complete a registration step with valid data, namely: the full name of the user, and a valid e-mail address. To improve user experience, the music streaming service allows users to login with Facebook. Facebook stores all the data that Sonar needs: a valid e-mail address and the full name of the user, so it makes sense for Sonar to allow users to simply use their Facebook accounts to login.
-
-In a legacy scenario involving these players, Joe, Sonar (music service) and Facebook, Sonar could request Joe to input his or her Facebook credentials (e-mail and password), so that Sonar can login to Facebook as Joe and read all the necessary data. As you can imagine, this is a big no-no. What if Sonar reads more than simply Joe's e-mail and full name? What if Sonar posts as Joe? What if Sonar stores Joe's password and uses that data to access Facebook in the future even though Joe decided to stop using the service? What if Sonar breaks-up with his significant other?! These are all very bad scenarios, and in the past, they were commonplace.
-
-![Legacy third-party information exchange](https://cdn.auth0.com/blog/oauth2-mfa/1-legacy-third-party-exchange.png)
-
-OAuth 2.0 was designed to prevent scenarios such as the above, but for that to be possible, there has to be a protocol that all parties, Joe, Sonar, and Facebook, can talk to exchange information. OAuth 2.0 is a framework on top of which such protocol can be implemented. Continuing with the example above, this is how things would look like with OAuth 2.0. First, let's define some terms:
-
-- **Resource owner**: Joe
-- **Resource server**: Facebook
-- **Protected resource**: Joe's e-mail and full name
-- **Client**: Sonar (mobile and/or web app)
-- **Authorization server**: Facebook (but it could be a different server entirely)
-
-![OAuth 2.0 authorization for protected resource](https://cdn.auth0.com/blog/oauth2-mfa/2-oauth2-protected-resource-access.png)
-
-So, when Joe, the rightful owner of his personal data on Facebook, decides to open Sonar's mobile client, Sonar's mobile app offers Joe the option to "Login with Facebook". Joe clicks on that and is taken through his web browser to a special Facebook page. The page reads something like:
-
-> "Sonar is requesting access to your personal data (e-mail address and full name), do you want to grant Sonar access to that information?"
-
-If Joe clicks "yes" he will be redirected to the Sonar mobile client. Without Joe seeing it, the Sonar mobile client will have received a special token (known as an access token), that allows Sonar to request Joe's personal information from Facebook directly. This token is very special:
-
-- It is not related in any way to Joe's Facebook credentials. Sonar never sees this information at any point in the process.
-- It can only access the information that Joe authorized Facebook to share with Sonar, namely his e-mail address and his full name. Nothing more.
-- It has an expiration time. Regardless of Sonar using the token or not, it will expire and a new request will have to be made by Sonar to get a new, valid, access token.
-
-Note that in this scenario we have not talked about authentication. Joe is already authenticated at Facebook (there is an existing session for him) so he only needs to grant Sonar access to the requested data. OAuth 2.0 defines a generic way to perform authorization operations. Although these operations can be used for authentication, OAuth 2.0 does not specifically define a means for that. It is for this reason that [OpenID Connect](), a related specification, was developed on top of OAuth 2.0: to define a simple identity layer on top of OAuth 2.0 that can be used for authentication. To learn more about OpenID Connect take a look at the [introduction in its specification](http://openid.net/specs/openid-connect-core-1_0.html#Introduction). 
-
-### Multi-Factor Authentication
+## Multi-Factor Authentication
 Common authentication solutions usually rely on a single piece of information to validate the identity of a user. In other words, if a malicious party gets access to this secret information, they can impersonate the user. We have seen this happen many times in the wild: stolen passwords, stolen credit cards, stolen social security numbers, stolen tokens, etc. Knowing this, the natural way of increasing the difficulty of impersonating a user is to simply add another authentication step.
 
 Although it would be possible to require users to input separate passwords, this would not make much sense. If a malicious user was able to get one password, it is very likely they will be able to get a second, or even a third password! A different solution is required. This is where it makes sense to start talking about "factors". We call "factors" to different "ways" (i.e. authentication mechanisms) to validate the identity of a user. Each new "way" to authenticate a user, in the same authentication process, needs to be of a different type. There are essentially three types of authentication mechanisms, or factors: knowledge, possession, and inherence.
@@ -94,6 +58,8 @@ The increasing security requirements for safeguarding sensitive information on t
 However, one of the bigger problems in the authentication and authorization space is that of interoperability. OAuth 2.0, and other standards such as [SAML](), take steps to improve this, but they don't say much about MFA. In fact, all players in the identity space have developed their own proprietary solutions to integrate MFA with their architectures.
 
 For this reason, we decided to implement two extensions to OAuth 2.0 that can handle all modern MFA scenarios: [OAuth 2.0 Multi-Factor Authorization]() and [OAuth 2.0 Multi-Factor Authenticator Association](). Please note that these specifications are drafts.
+
+The following sections of this post assume a good knowledge of OAuth 2.0 grants, in particular of the [resource owner password credentials grant](). If you are not familiar with these concepts, [at the end of this article](#appendix) you will find an appendix with a brief introduction to OAuth 2.0 and how it relates to MFA.
 
 ## Two Extensions for MFA in OAuth 2.0
 The two extensions to OAuth 2.0 proposed in this post attempt to fulfil the following needs:
@@ -183,3 +149,43 @@ The `associate` endpoint also opens up the possibility of resource owners managi
 The proposals for OAuth 2.0 MFA provide a convenient path for implementing multi-factor authorization and authentication in a way that remains flexible and interoperable with existing solutions. They also provide additional benefits like the possibility of using multiple authentication factors or allowing resource owners to manage them. Auth0's partial implementation provides a way for testing these ideas today. Check it out and let us know what you think in the comments or through our support system. Cheers!
 
 {% include tweet_quote.html quote_text="The OAuth 2.0 MFA proposal is flexible and interoperable with existing solutions, try it out!" %}
+
+<span id="appendix"></span>
+
+## Appendix: Basic OAuth 2.0 Concepts
+OAuth 2.0 is a framework that aims to separate the role of a client (such as a third-party service, or mobile application) from that of a resource owner (such as yourself). In contrast to traditional authorization solutions, OAuth 2.0 defines a series of mechanisms by which a client can request a special set of credentials that permit access to a protected resource from a resource server (that hosts the resource owner's data) by going through an additional party known as the authorization server. In this way, resource owners need not share their private credentials with the client. This increases security in several ways:
+
+- Resource owner credentials are not shared, reducing the number of possible places for a security breach.
+- Resource owner credentials need not be stored to provide better user experience.
+- Access can be limited to the requested protected resource, rather than requiring the use of resource owner credentials that may have broader access characteristics.
+- Access can easily be revoked to clients without affecting other clients.
+
+To make things clearer, a simple, but very common example could be as follows. Let's say you, Joe, are a new user of a music streaming service: Sonar. The music streaming service requires users to complete a registration step with valid data, namely: the full name of the user, and a valid e-mail address. To improve user experience, the music streaming service allows users to login with Facebook. Facebook stores all the data that Sonar needs: a valid e-mail address and the full name of the user, so it makes sense for Sonar to allow users to simply use their Facebook accounts to login.
+
+In a legacy scenario involving these players, Joe, Sonar (music service) and Facebook, Sonar could request Joe to input his or her Facebook credentials (e-mail and password), so that Sonar can login to Facebook as Joe and read all the necessary data. As you can imagine, this is a big no-no. What if Sonar reads more than simply Joe's e-mail and full name? What if Sonar posts as Joe? What if Sonar stores Joe's password and uses that data to access Facebook in the future even though Joe decided to stop using the service? What if Sonar breaks-up with his significant other?! These are all very bad scenarios, and in the past, they were commonplace.
+
+![Legacy third-party information exchange](https://cdn.auth0.com/blog/oauth2-mfa/1-legacy-third-party-exchange.png)
+
+OAuth 2.0 was designed to prevent scenarios such as the above, but for that to be possible, there has to be a protocol that all parties, Joe, Sonar, and Facebook, can talk to exchange information. OAuth 2.0 is a framework on top of which such protocol can be implemented. Continuing with the example above, this is how things would look like with OAuth 2.0. First, let's define some terms:
+
+- **Resource owner**: Joe
+- **Resource server**: Facebook
+- **Protected resource**: Joe's e-mail and full name
+- **Client**: Sonar (mobile and/or web app)
+- **Authorization server**: Facebook (but it could be a different server entirely)
+
+![OAuth 2.0 authorization for protected resource](https://cdn.auth0.com/blog/oauth2-mfa/2-oauth2-protected-resource-access.png)
+
+So, when Joe, the rightful owner of his personal data on Facebook, decides to open Sonar's mobile client, Sonar's mobile app offers Joe the option to "Login with Facebook". Joe clicks on that and is taken through his web browser to a special Facebook page. The page reads something like:
+
+> "Sonar is requesting access to your personal data (e-mail address and full name), do you want to grant Sonar access to that information?"
+
+If Joe clicks "yes" he will be redirected to the Sonar mobile client. Without Joe seeing it, the Sonar mobile client will have received a special token (known as an access token), that allows Sonar to request Joe's personal information from Facebook directly. This token is very special:
+
+- It is not related in any way to Joe's Facebook credentials. Sonar never sees this information at any point in the process.
+- It can only access the information that Joe authorized Facebook to share with Sonar, namely his e-mail address and his full name. Nothing more.
+- It has an expiration time. Regardless of Sonar using the token or not, it will expire and a new request will have to be made by Sonar to get a new, valid, access token.
+
+Note that in this scenario we have not talked about authentication. Joe is already authenticated at Facebook (there is an existing session for him) so he only needs to grant Sonar access to the requested data. OAuth 2.0 defines a generic way to perform authorization operations. Although these operations can be used for authentication, OAuth 2.0 does not specifically define a means for that. It is for this reason that [OpenID Connect](), a related specification, was developed on top of OAuth 2.0: to define a simple identity layer on top of OAuth 2.0 that can be used for authentication. To learn more about OpenID Connect take a look at the [introduction in its specification](http://openid.net/specs/openid-connect-core-1_0.html#Introduction). 
+
+The MFA extensions proposed in this article provide a way to add additional authorization requirements when a clients, such as Sonar, attempt to access protected resources. These types of additional requirements are already common in the wild through proprietary or custom solutions. The extensions described in this article are an attempt to standardize on the most common uses of MFA in combination with OAuth 2.0.
