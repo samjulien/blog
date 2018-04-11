@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Auth0 Proposes OAuth 2.0 Extension for Multi-Factor Authentication"
-description: "We have proposed an extension for the OAuth 2.0 specification that standardizes common MFA patterns and partially implemented it."
-longdescription: "Auth0 has proposed a series of extensions to the OAuth 2.0 specification that bring the necessary endpoints to use multi-factor authentication in a standard way with any OAuth 2.0 server that implements them. In this article we take a look at the extensions and the current implementation at Auth0."
+title: "Auth0 OAuth 2.0 Extension for MFA Now Available for CLI and Trusted Native Apps"
+description: "We have proposed an extension for the OAuth 2.0 specification that standardizes common MFA patterns and implemented it for CLI and trusted native apps."
+longdescription: "Auth0 has proposed a series of extensions to the OAuth 2.0 specification that bring the necessary endpoints to use multi-factor authentication in a standard way with any OAuth 2.0 server that implements them. In this article we take a look at how the extensions work and at Auth0's implementation, which is now publicly available for CLI and trusted native apps."
 date: 2018-04-10 12:30
 category: Announcements, Content
 author:
@@ -35,7 +35,7 @@ related:
 - ten-things-you-should-know-about-tokens-and-cookies
 ---
 
-At Auth0 we use and support [OAuth 2.0]() extensively. Not only is it part of our core product, it is a fundamental piece of the identity landscape for major players such as Google, Facebook and Microsoft. Authentication and authorization are critical parts of any modern infrastructure. As such, better practices for securing the process have been developed. Multi-factor authentication/authorization is one of those practices. In this article, we explore a proposed extension to the OAuth 2.0 specification that standardizes the way OAuth 2.0 implementations interact with multi-factor solutions.
+At Auth0 we use and support [OAuth 2.0]() extensively. Not only is it part of our core product, it is a fundamental piece of the identity landscape for major players such as Google, Facebook and Microsoft. Authentication and authorization are critical parts of any modern infrastructure. As such, better practices for securing the process have been developed. Multi-factor authentication/authorization is one of those practices. In this article, we explore a proposed extension to the OAuth 2.0 specification that standardizes the way OAuth 2.0 implementations interact with multi-factor solutions. We also take a look at Auth0's current implementation, now publicly available for CLI and trusted native apps.
 
 This article is split in three sections. The [first section]() provides a short recap of what OAuth 2.0 is and how current proprietary MFA solutions work. The [second section]() explains the OAuth 2.0 extensions for MFA proposed by us. The [third section]() showcases our current partial implementation that is ready for public testing. Read on!
 
@@ -122,7 +122,21 @@ Here's a sequence diagram of the events of a `TOTP strong authorization grant` t
 As you can see, after the client attempts to use resource owner password credentials grant an error is returned. This error signals the need for a strong authorization grant. The client then performs a request to the `challenge` endpoint to find out what types of strong authorization grants are available that are also supported by itself. Once the client and the authorization server settle on the `otp` type of grant, the client requests the user (the resource owner) to input a valid OTP code. To do this, the user must interact with the authenticator. In this case, the user has configured a TOTP application in their smartphone. Once the user has the code, they pass it to the client, which then performs the strong authorization grant by doing a new request to the `token` endpoint with the OTP code.
 
 #### Out-of-Band Verification Code Grant
-![OAuth 2.0 OOB Authorization]()
+In contrast with the time-based one-time password grant, out of band grants need a way for the authenticator system to communicate with the authorization server. This mechanism is specific to the authenticator, and the authorization server must implement whatever protocols are necessary for this communication channel.
+
+In the following sequence diagram, we take a look at how an `OOB strong authorization grant` may look like when the authenticator system has an authenticator app in a user's mobile phone.
+
+![OAuth 2.0 OOB Authorization](https://cdn.auth0.com/blog/oauth2-mfa/4-oauth2-oob-authorization.png)
+
+When a strong authorization grant is initiated by making a request to the `challenge` endpoint, the authorization server communicates with the authenticator server. The authenticator server sends a push notification to its mobile application on the user's mobile phone. While this ceremony is happening behind the scenes, the client application has no way of knowing when the authorization has been granted (or denied). For this reason, the client application must *poll* the authorization server at the `token` endpoint to confirm whether it has been granted access, the ceremony is still ongoing, or the user has effectively denied access. When the user authorizes access through the authenticator app, the application communicates this to the authenticator server. In turn, the authenticator server communicates this to the authorization server. At some point in the future, the client performs a new poll for access to the authorization server. This time, since the authorization server has received confirmation from the authenticator server, the poll succeeds and an access token is issued.
+
+OOB grants can also require the client to request the user (resource owner) to input a `binding code`. In this case, the user receives information through some OOB channel and then inputs that information directly in the client application.
+
+In the following sequence diagram, we take a look at how an `OOB strong authorization grant with prompt` may look like when the authentication factor is an SMS sent to the user's mobile phone.
+
+![OAuth 2.0 OOB Authorization With Prompt](https://cdn.auth0.com/blog/oauth2-mfa/5-oauth2-oob-authorization-no-prompt.png)
+
+In this case, the `challenge` endpoint tells the client it should prompt the resource owner for an input code. This is done through the `binding_method` parameter with a value of `prompt`. While this is happening, the authorization server communicates with the SMS service to send a code to the resource owner's phone. When the code is received, the resource owner inputs it in the client's prompt. The client sends this code as part of a new `token` request in the `binding_code` parameter. If the codes match, and all other parameters of the request are validated, an access token is issued to the client.
 
 ### OAuth 2.0 Multi-Factor Authenticator Association
 This proposal adds a new endpoint: the `associate` endpoint. This endpoint allows resource owners to manage authentication factors. It allows adding, removing or listing authentication factors. This endpoint is authenticated and requires an appropriate access token to use it.
@@ -133,20 +147,22 @@ A key aspect of this endpoint is that it allows for different types of authentic
 - `oob`: Out-of-band authenticator. An authenticator that can communicate in an unspecified way with the authorization server and the client (such as push notifications or SMS).
 - `recovery-code`: A recovery-code that is issued by the authorization server at the moment of association. These codes can be used in case the authentication factor is unavailable.
 
-In addition to these types of authenticators, the specification defines a series of common out-of-band authenticators. These can be specified in the `oob_channels` parameter: `sms`, `tel`, `email`, `auth0`, `duo`. Of course, authorization servers may support additional OOB channels other than the ones defined in the specification.
+In addition to these types of authenticators, the specification defines a series of common out-of-band authenticators. These can be specified in the `oob_channels` parameter: `sms`, `tel`, `email`, `auth0`, `duo`. Of course, authorization servers may support additional OOB channels other than the ones defined in the specification. Other optional parameters are `phone_number` and `email`, to be used with those OOB mechanisms.
 
-![OAuth 2.0 MFA Authenticator Association]()
+Adding authenticators is performed by sending a HTTP `POST` request to the `associate` endpoint with the parameters described above. The response to this request may include a barcode URL (`barcode_uri` parameter) that can be used with an authenticator that can scan barcodes to simplify association. This is particularly useful for `TOTP` authenticators. The response may also include the `recovery_codes` parameter, which carries an array of codes that can be used for authorization in place of the authentication factor (useful as a fallback mechanism).
+
+The `associate` endpoint can also be used to delete or list authenticators. To delete authenticators an HTTP `DELETE` request must be sent to the endpoint (with the `authenticator_id` as parameter), and to list authenticators an HTTP `GET` request must be sent to the endpoint.
 
 ## Auth0's Current Implementation
 At Auth0 we have partially implemented the proposals. Our current implementation is ready for public testing, so, if you are interested in trying it out, you can request *early access* through a customer support ticket.
 
 {% include tweet_quote.html quote_text="Auth0's implementation of the OAuth 2.0 MFA proposal is ready to test today!" %}
 
-For now, we are only supporting the `resource owner password credentials grant` with an added `strong authorization grant`. This means that when MFA is enabled and an authentication factor is associated, a `resource owner password credential grant` request through the `token` endpoint will return an `mfa_required` error code just like the draft specs say. To continue with the authorization process, a `strong authorization grant` will need to be provided by accessing the `challenge` endpoint to pick a factor supported by both the client and the authorization server. After the MFA process is complete, the `strong authorization grant` along with the `resource owner password credentials grant` can be sent to the `token` endpoint to exchange them for an access token.
+For now, we are only supporting the `resource owner password credentials grant` with an added `strong authorization grant`. This means that when MFA is enabled and an authentication factor is associated, a `resource owner password credential grant` request through the `token` endpoint will return an `mfa_required` error code just like the draft specs say. To continue with the authorization process, a `strong authorization grant` will need to be provided by accessing the `challenge` endpoint to pick a factor supported by both the client and the authorization server. After the MFA process is complete, the `strong authorization grant` including the `mfa_token` returned in the `resource owner password credentials grant` can be sent to the `token` endpoint to exchange it for an access token.
 
 > Remember that in Auth0 these paths are relative to your user's domain (example: `https://speyrott.auth0.com/oauth/token`)
 
-It is also important to note that one of the endpoints from the proposals has a different name in our implementation. The `associate` endpoint is called `authenticators` for now. Another implementation detail is that `challenge` and `authenticators` are located behind the `mfa` path on Auth0. In other words, the `challenge` endpoint, for example, is located at `/mfa/challenge`.
+It is also important to note that one of the endpoints from the proposals has a different name in our implementation. The `associate` endpoint is called `authenticators`. Another implementation detail is that `challenge` and `authenticators` are located behind the `mfa` path on Auth0. In other words, the `challenge` endpoint, for example, is located at `/mfa/challenge`.
 
 For now, we are not supporting the `strong authorization grant` in combination with grants other than the `resource owner password credentials grant`. This means that the `authorization code grant`, `implicit grant`, and the `client credentials grant` do not return the `mfa_required` error code even if there are associated authenticators. Note that this does not mean MFA is not supported for these grants, the usual proprietary MFA mechanism from Auth0 will work just as it always has.
 
@@ -159,9 +175,11 @@ An interesting aspect of the generic way in which MFA is implemented in these pr
 
 Multiple authenticators also make sense in the context of stricter security requirements. An enterprise may require certain assets to be protected with a stronger authentication factor, such as a hardware token that generates one time codes. For other assets, where convenience is more important than stricter security, it may make sense to have an e-mail address as a second factor, while keeping the hardware token as a fallback mechanism.
 
-![Multiple Authenticators]()
+![Multiple Authenticators](https://cdn.auth0.com/blog/oauth2-mfa/6-multiple-authenticators.png)
 
 The `associate` endpoint also opens up the possibility of resource owners managing authenticators themselves. An authorization server may provide an interface to easily list, add, update, or remove authentication factors and associated protected resources. So, for example, a user may require a stronger authenticator for risky operations, such as payments, while other operations may be served by a more convenient MFA method such as e-mail.
 
 ## Conclusion
-The proposals for OAuth 2.0 MFA provide a convenient path for implementing multi-factor authorization and authentication in a way that remains flexible and interoperable with existing solutions. They also provide additional benefits like the possibility of using multiple authentication factors or allowing resource owners to manage them from a client. Auth0's partial implementation provides a way for testing these ideas today. Check it out and let us know what you think in the comments or through our support system. Cheers!
+The proposals for OAuth 2.0 MFA provide a convenient path for implementing multi-factor authorization and authentication in a way that remains flexible and interoperable with existing solutions. They also provide additional benefits like the possibility of using multiple authentication factors or allowing resource owners to manage them. Auth0's partial implementation provides a way for testing these ideas today. Check it out and let us know what you think in the comments or through our support system. Cheers!
+
+{% include tweet_quote.html quote_text="The OAuth 2.0 MFA proposal is flexible and interoperable with existing solutions, try it out!" %}
