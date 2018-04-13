@@ -48,7 +48,7 @@ We are pleased to announce the availability of our [Multi-Factor Authorization A
 ---
 
 ## Why?
-Up to now, enabling MFA at Auth0 was simply a matter of flipping a switch and optionally selecting which client you wanted to enable MFA for. When MFA is enabled, hitting the `/authorize` endpoint or starting an authorization flow through one of our libraries was enough to trigger MFA. Simple, convenient.
+Up to now, enabling MFA at Auth0 was simply a matter of flipping a switch and optionally selecting which application you wanted to enable MFA for. When MFA is enabled, hitting the `/authorize` endpoint or starting an authorization flow through one of our libraries was enough to trigger MFA. Simple, convenient.
 
 ![MFA Switch]()
 
@@ -73,32 +73,110 @@ The API works in four simple steps:
 ### 1. Access Token Request to `/token`
 When a request is made to the `/token` endpoint to get an access token, normally you either get an error, or you get an access token. However, when the MFA API is enabled, the `/token` endpoint may return a new error code: `mfa_required`.
 
-The `mfa_required` error means that MFA is enabled for this specific request and an additional, stronger grant is required before getting the access token.
+```
+POST /oauth/token HTTP/1.1
+...
 
-When the `mfa_required` error is triggered, a new type of token, the `mfa_token` is returned along with it. This token serves as a temporal kind of token that is required to perform the remaining steps in the multi-factor authorization process. The next step in this process is called the `challenge`.
+{
+  "username": "...",
+  "password": "...",
+  "grant_type: "password"
+  ...
+}
+```
+
+Response:
+
+```
+HTTP/1.1 403 Forbidden
+...
+
+{
+  "error": "mfa_required",
+  "mfa_token: "..."
+}
+```
+
+The `mfa_token` in the response value must be used in the following requests.
 
 ### 2. Perform an MFA Challenge
-When MFA is enabled and required, which the client learns through the `mfa_required` error code, it must then start the MFA process by requesting a `challenge`.
+When the `mfa_required` error is returned, the client must then perform a `challenge`. This is done by sending a request to the `/mfa/challenge` endpoint.
 
-A challenge is a special type of request that serves three purposes:
+```
+POST /mfa/challenge HTTP/1.1
+...
 
-- To negotiate the use of an authorization factor that is supported by both the client and the authorization server.
-- To inform the client of the requirements of the MFA process. For instance, it may signal the client that a TOTP code must be entered. This way the client knows it must prompt the user for the code.
-- To trigger any additional actions that may be required as part of the MFA process. For example, if the MFA process works through push notifications, this triggers the notification in the user's authenticator.
+{
+  "mfa_token": "<from step 1>",
+  "challenge_type": "otp oob"
+}
+```
 
-The challenge request is performed by sending an HTTP request to the `/mfa/challenge` endpoint. This request includes the `mfa_token` along with information about the challenges supported by the client (TOTP, push, SMS, etc.). The authorization server replies by picking a MFA mechanism supported by both and provides the client with all the needed information to continue the process. For example, if an SMS code is required, it tells the client "ask the user for a code"; or if push notifications are used, it tells the client to "poll the authorization server to see if the request has been authorized".
+Response:
+
+```
+HTTP/1.1 200 OK
+...
+
+{
+  "challenge_type": "oob",
+  "binding_method": "prompt",
+  "oob_code": "..."
+}
+```
+
+The response tells the client which type of authenticator will be used (`challenge_type`) and also returns additional arguments relevant for that method. The `binding_method` parameter tells the client it should ask the user for a code.
+
+> `OOB` means "out-of-band". All methods that are not [TOTP]() are OOB.
 
 ### 3. Prompt For Input (If Necessary)
-For the MFA methods that require the user to input a code into the client application, like SMS or TOTP, this is the moment when this happens. Some methods, like push notifications, handle all communications between the authenticator and the authorization server behind the scenes. For those cases, the client is expected to skip this step and go right into the next one.
+If the `challenge_type` is `otp` or the `binding_method` parameter is set to `prompt`, the client should ask the user to input a code before continuing.
 
 ### 4. Get The Access Token
-Now that the client has all the necessary information to perform a stronger authorization request, it may perform a new request to the `/token` endpoint.
+Finally, a new request to the `/token` endpoint is performed.
 
-For the cases where the user must provide a code, the client must wait until this code is entered before performing this request.
+```
+POST /oauth/token HTTP/1.1
+...
 
-For all other cases, the client is expected to perform the request right away. If the user has not interacted with the authenticator yet, the authorization server will reply with a `authorization_pending` error code. The client is expected to repeat the request after waiting some time. The authorization server may also reply with an `slow_down` error code signalling the client to wait more between consecutive requests.
+{
+  "mfa_token": "<from step 1>",
+  "oob_code": "<from step 2, optional>",
+  "binding_code": "<from step 3, if 'binding_method' === 'prompt'>",
+  "otp": "<from step 3, if challenge_type === 'otp'>",
+  "grant_type": "<one of two strings, see below>"
+}
+```
 
-This request to the `/token` endpoint does not include the credentials passed in step 1. Instead, the `mfa_token` is used in their place. This request includes the code entered by the user (if any) and may require additional parameters according to the MFA method (these are returned by the `/challenge` endpoint in step 2).
+Grant type must be one of two values:
+- For OTP: `http://auth0.com/oauth/grant-type/mfa-otp`
+- For OOB: `http://auth0.com/oauth/grant-type/mfa-oob`
+
+Response:
+
+```
+HTTP/1.1 200 OK
+...
+
+{
+  "access_token": "...",
+  "expires_in": "...",
+  ...
+}
+```
+
+Note that certain methods do not require the user to input anything (push notifications, for example). For those cases, this request must be performed repeatedly until an access token is returned or the authorization is denied. If the client is expected to repeat the request again in the future (after a certain amount of time) the response will be:
+
+```
+HTTP/1.1 400 Bad Request
+...
+
+{
+  "error": "authorization_pending"
+}
+```
+
+This means the user has not performed any actions yet and the client should wait a bit before trying again. The `error` can also be `slow_down` if the client is not waiting enough between requests.
 
 That's it! If all went well, you now have an access token issued through MFA!
 
@@ -126,6 +204,9 @@ node src/index.js login
 ```
 
 The app supports some other commands. You can take a look at them by running it with no arguments.
+
+## Other Use Cases
+
 
 ## Conclusion
 The MFA API brings flexibility to the use of MFA in your apps. One thing you may have noticed is that we are using the [OAuth 2.0 `/token` endpoint](). In fact, we designed this to be compatible with OAuth 2.0 right from the start. We have prepared two specification drafts, [one for MFA](), [the other for authenticator association](), to be sent to the IETF OAuth 2.0 Working Group. Other implementations of OAuth 2.0 can follow these specifications to implement MFA in a flexible, yet powerful way, while remaining compatible. We will have more information about this in an upcoming post.
