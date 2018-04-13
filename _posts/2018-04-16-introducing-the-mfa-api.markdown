@@ -206,7 +206,15 @@ node src/index.js login
 The app supports some other commands. You can take a look at them by running it with no arguments.
 
 ## Other Use Cases
+The sky is the limit! Here are some scenarios where using the new MFA API could make sense:
 
+- Protect a VPN like OpenVPN (Pritnul) or Juniper with a second factor.
+- Integrate with a PAM module to do second factor with SSH.
+- Integrate with an LDAP service to provide a second factor.
+- Step up authentication when refreshing an `access_token` (`refresh_token` grant).
+- Trigger second factor from any backend process.
+
+You are now free to build powerful MFA flows wherever you want!
 
 ## Conclusion
 The MFA API brings flexibility to the use of MFA in your apps. One thing you may have noticed is that we are using the [OAuth 2.0 `/token` endpoint](). In fact, we designed this to be compatible with OAuth 2.0 right from the start. We have prepared two specification drafts, [one for MFA](), [the other for authenticator association](), to be sent to the IETF OAuth 2.0 Working Group. Other implementations of OAuth 2.0 can follow these specifications to implement MFA in a flexible, yet powerful way, while remaining compatible. We will have more information about this in an upcoming post.
