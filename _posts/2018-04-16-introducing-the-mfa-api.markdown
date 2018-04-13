@@ -190,7 +190,7 @@ Take a look at the [full code in GitHub](https://github.com/auth0-blog/oauth2-mf
 To use the app, make sure that:
 - You have created a new [Application]() in the Auth0 Dashboard. Select the `Machine-to-Machine type`.
 - The `token authentication method` is set to `none` in the Auth0 Application settings.
-- You have enabled the `Password` and `MFA` grants in `Application -> Advanced Settings -> Grant Types`. You may need to request early access through a support ticket to see the `MFA` grant option.
+- You have enabled the `Password` and `MFA` grants in `Application -> Advanced Settings -> Grant Types`.
 - You have MFA enabled. Go to [Multifactor Auth](https://manage.auth0.com/#/guardian) and enable SMS and push notifications for [Guardian]().
 - You have set the right client ID (get this from the [application]() settings area) in the MFA rule in the [Multifactor Auth](https://manage.auth0.com/#/guardian) section. Otherwise MFA will be enabled for all clients.
 
