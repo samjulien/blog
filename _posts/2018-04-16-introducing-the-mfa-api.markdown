@@ -12,7 +12,7 @@ author:
   avatar: https://en.gravatar.com/userimage/92476393/001c9ddc5ceb9829b6aaf24f5d28502a.png?size=200
 design:
   bg_color: "#222228"
-  image: https://cdn.auth0.com/blog/jwtalgos/logo.png
+  image: https://cdn.auth0.com/blog/guide-to-oauth2/logo.png
   image_size: "100%"
   image_bg_color: "#222228"
 tags:
