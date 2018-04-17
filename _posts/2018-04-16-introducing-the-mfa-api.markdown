@@ -183,7 +183,7 @@ That's it! If all went well, you now have an access token issued through MFA!
 ## Example: A CLI App with MFA
 To give you a better understanding of how the API works we have developed a [simple CLI app that uses MFA](https://github.com/auth0-blog/oauth2-mfa-cli-example).
 
-<video src="https://cdn.auth0.com/blog/oauth2-mfa-api/cli-demo-small.m4v" controls autoplay loop></video>
+<video src="https://cdn.auth0.com/blog/oauth2-mfa-api/cli-demo-2.m4v" controls autoplay loop></video>
 
 Take a look at the [full code in GitHub](https://github.com/auth0-blog/oauth2-mfa-cli-example). You will find the interesting bits in the `/token-endpoint.mjs` file, particularly in the `token` function.
 
