@@ -33,6 +33,19 @@ related:
 
 ## What You Will Build
 
+Throughout this series, you will use the stack described above (mainly Vue.js, Lambda, Express, and MongoDB) to create a micro-blog that contains a single public channel of micro-posts. That is, visitors (unauthenticated users) will be able to see all micro-posts and registered users will be able to express their minds publicly.
+
+Although simple, this application will enable you to learn how to create secure, modern, and production-ready applications with Vue.js and AWS Lambda.
+
+Now, regarding this specific part of the series, you will achieve the following objectives:
+
+1. You will bootstrap your Vue.js application with `vue-cli`.
+2. You will create your backend app with Express.
+3. You will initialise a MongoDB instance and use it in your Express app.
+4. You will enable identity management in both your Vue.js application and your Express backend with the help of Auth0.
+
+So, without further ado, it's time to start developing!
+
 ## Vue.js, Express, and Mongo: Hands-On!
 
 So, now that you know the stack that you will use and that you know what you will build, it's time to start creating your app. To keep things organised, you will create a directory to keep both you frontend and backend source code:
