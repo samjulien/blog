@@ -25,11 +25,14 @@ related:
 - 2017-04-18-vuejs2-authentication-tutorial
 ---
 
+**TL;DR:** In this series, you will use modern technologies like Vue.js, AWS Lambda, Express, MongoDB, and Auth0 to create a production-ready application that acts like a micro-blog engine. The first part of the series (this one) will focus on the setup of the Vue.js client that users will interact with and on the definition of the Express backend app. [You can find the final code developed in this part in this GitHub repository](https://github.com/auth0-blog/vue-js-lambda-part-1).
+
 ## Stack Overview
 ### Vue.js
 ### AWS Lambda
 ### Express
 ### MongoDB
+### Auth0
 
 ## What You Will Build
 
