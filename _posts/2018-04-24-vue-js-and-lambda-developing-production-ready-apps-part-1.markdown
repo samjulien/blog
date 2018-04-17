@@ -38,9 +38,26 @@ Before starting with the hands-on exercises, let's take a brief overview of each
 In this series, you will have the opportunity to see this great framework in action to create a SPA from the ground up.
 
 ### AWS Lambda
+
+[AWS Lambda](https://aws.amazon.com/lambda/) is a serverless computer platform, provided by Amazon, that allows developers to run their code without having to spend too much time thinking about the servers needed to run it. Although the main idea of using a serverless platform is to facilitate the deployment process and the scalability of applications, AWS Lambda is not easy for newcomers. In fact, AWS Lambda on its own is not enough to run Rest APIs like the one you will need for your micro-blog engine. Besides this AWS service, you will also need to use [AWS API Gateway](https://aws.amazon.com/api-gateway/) to define how external services (or, in this case, a Vue.js client) can communicate with your serverless backend app. This last piece is exactly what makes AWS Lambda not straightforward.
+
+So, to avoid wasting your time with the intricacies of AWS API Gateway and AWS Lambda, you will take advantage of an open-source tool called [Claudia](https://claudiajs.com/). The goal of this tool is to enable youto deploy your Node.js projects to AWS Lambda and API Gateway easily.
+
 ### Express
+
+Express is the most popular framework for developing web applications on the Node.js landscape. By using it, you will have access to tons of (and great) documenation, a huge community, and a lot of middleware that will help you achieve your goals. In this series for example, you will use at least four popular middleware to define your backend enpoints: `bodyParser`, `cors`, `helmet`, and `morgan`.
+
+If you haven't heard about them, you will find a brief explanation of what they are capable of doing and you will see that using them is pretty straightforward. You will also that defining endpoints and communicating with databases (in this case, MongoDB), cannot be easier.
+
 ### MongoDB
+
+MongoDB is a popular NoSQL database that treats data as documents. That is, instead of the classic approach of defining data as tables and rows that relate with each other, MongoDB allows developers to persist and query complex data structures. As you will see, using MongoDB to persist JSON data sent by clients and processed by Node.js (or Express in this case) is really simple.
+
 ### Auth0
+
+Handling identity on modern applications is not easy. For starter, if the developers choose to homegrown their own solution they will have to create everything from the sign up page, passing through the recovering password feature, till the handling of sessions and access tokens. Not to say that if they want to integrate with social networks like Facebook or Google, or if they want to allow users from companies that rely on Active Directory or SAML, they will face a scenario that is way more complex.
+
+To avoid all these challenges and to enable you to focus on what matters the most to your application (its special features) you will take advantage of Auth0. With Auth0, a global leader in Identity-as-a-Service (IDaaS), you only have to write a few lines of code to get [solid identity management solution](https://auth0.com/user-management), [single sign-on](https://auth0.com/docs/sso/single-sign-on), support for [social identity providers (like Facebook, GitHub, Twitter, etc.)](https://auth0.com/docs/identityproviders), and support for [enterprise identity providers (Active Directory, LDAP, SAML, custom, etc.)](https://auth0.com/enterprise).
 
 ## What You Will Build
 
