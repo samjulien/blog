@@ -28,7 +28,15 @@ related:
 **TL;DR:** In this series, you will use modern technologies like Vue.js, AWS Lambda, Express, MongoDB, and Auth0 to create a production-ready application that acts like a micro-blog engine. The first part of the series (this one) will focus on the setup of the Vue.js client that users will interact with and on the definition of the Express backend app. [You can find the final code developed in this part in this GitHub repository](https://github.com/auth0-blog/vue-js-lambda-part-1).
 
 ## Stack Overview
+
+Before starting with the hands-on exercises, let's take a brief overview of each piece that will compose your micro-blog engine.
+
 ### Vue.js
+
+[As stated by the official guide, Vue.js is a progressive framework for building user interfaces](https://vuejs.org/v2/guide/). One of its focuses is on enabling developers to incrementally adopt the framework. That is, instead of demanding that developers use it to structure the whole application, Vue.js allows them to use it on specific parts to enhance the user experience on legacy apps. With that said, the guide also states that Vue.js is "perfectly capable of powering sophisticated Single-Page Applications (SPAs) when used in combination with modern tooling (like Webpack) and supporting libraries".
+
+In this series, you will have the opportunity to see this great framework in action to create a SPA from the ground up.
+
 ### AWS Lambda
 ### Express
 ### MongoDB
