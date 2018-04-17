@@ -3,7 +3,7 @@ layout: post
 title: "Vue.js and AWS Lambda: Developing Production-Ready Apps (Part 1)"
 description: "In this series, you will learn how to develop production-ready applications with Vue.js and AWS Lambda."
 longdescription: "In this series, you will learn how to develop production-ready applications with Vue.js and AWS Lambda. Alongside with these technologies, you will use Express to define the endpoints that you will deploy on AWS Lambda and you will use MongoDB to persist data."
-date: 2018-04-03 08:30
+date: 2018-04-24 08:30
 category: Technical Guide, Vue.js
 author:
   name: "Bruno Krebs"
@@ -61,6 +61,54 @@ git config --global alias.cm '!git add -A && git commit -m'
 With this alias in place, you can just issue `git cm 'some message'` when you want to save your work.
 
 ### Bootstrapping Vue.js
+
+To create your Vue.js application based on best practices, you will take advantage of [the `vue-cli` tool](https://github.com/vuejs/vue-cli/tree/master). So, before using this command line interface, you will have to install it in your machine:
+
+```bash
+npm install -g vue-cli
+```
+
+Then, in the root directory of your project, you will run the following command:
+
+```bash
+vue init webpack client
+```
+
+This command will make `vue-cli` ask a bunch of questions. You can answer them as follows:
+
+- `Project name:` vuejs-micro-blog-engine
+- `Project description:` A Vue.js Micro-Blog Engine
+- `Author:` Your Name
+- `Vue build:` Runtime + Compiler: recommended for most users
+- `Install vue-router?` Yes
+- `Use ESLint to lint your code?` Yes
+- `Pick an ESLint preset:` Standard
+- `Set up unit tests:` No
+- `Setup e2e tests with Nightwatch?` No
+- `Run npm install?` Yes, use NPM
+
+> **Note:** If you are an advanced user, you can tweak the answers at will. For example, you can choose another [ESLint preset like Airbnb](https://www.npmjs.com/package/eslint-config-airbnb) or [choose to use Yarn](https://yarnpkg.com/en/) instead of NPM. However, keep in mind that if you change answers, the coding style shown here might not be the same as your project expects or that you will have to change a few of the commands shown.
+
+After answering the questions appropriately, you can issue the following commands to check if your frontend Vue.js client is really working:
+
+```bash
+# move dir into your new client
+cd client
+
+# run the development server
+npm run dev
+```
+
+The last command will run the development server on [`http://localhost:8080`](http://localhost:8080). So, if you open a browser and head to this address, you will see the following screen:
+
+![Vue.js up and running.](https://cdn.auth0.com/blog/vuejs-lambda/vuejs-up-and-running.png)
+
+Good, you can now stop your server by hitting `Ctrl + C` (or `⌘ + C` on a Mac) and save your work:
+
+```bash
+git cm 'bootstrapping the Vue.js client'
+```
+
 ### Creating an Express Project
 ### Preparing a MongoDB Instance
 
