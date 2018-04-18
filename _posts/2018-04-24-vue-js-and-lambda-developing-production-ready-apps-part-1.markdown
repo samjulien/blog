@@ -258,6 +258,26 @@ git cm 'Scaffolding the Express web application.'
 
 ### Preparing a MongoDB Instance
 
+After defining the basic structure of both your backend and frontend applications, you will need to initialise a MongoDB instance to persist your users' data. There are many options to create a new MongoDB instanc. For example:
+
+1. You can install MongoDB in your development machine, but this would make the process of upgrading to newer versions harder.
+2. You can use a MongoDB service like [MLab](https://mlab.com/), but this is a little extreme and slow for the development machine.
+3. You can use Docker to initialise a container with a MongoDB instance.
+
+Although the last alternative requires you to have Docker installed in your development machine, this is the best option for the development phase because it allows you to have multiple MongoDB instances at the same time in the same machine. So, if you don't have Docker already installed locally, head to [the Docker Community download page](https://www.docker.com/community-edition) and follow the instructions for your OS.
+
+After installing it, you can trigger a new MongoDB instance with the following command:
+
+```bash
+docker run --name mongo \
+    -p 27017:27017 \
+    -d mongo
+```
+
+Yup, that's it. It's easy like that to initialise a new MongoDB instance in a Docker container. For more information about it, you can check the instructions on [the official Docker image for MongoDB](https://hub.docker.com/_/mongo/).
+
+## Integrating Vue.js, Express, and MongoDB
+
 ## Handling Authentication with Auth0
 ### Integrating Auth0 and Your Vue.js App
 ### Securing Your Express App with Auth0
