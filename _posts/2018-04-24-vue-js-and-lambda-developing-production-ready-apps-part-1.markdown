@@ -282,6 +282,8 @@ Yup, that's it. It's easy like that to initialise a new MongoDB instance in a Do
 
 You now have all the basic building blocks in place and ready to be used. So, it's time to tie them up to see the stack in action.
 
+### Consuming MongoDB Collections with Express
+
 For starters, you will create a new file called `routes.js` in the `backend/src` directory and add the following code to it:
 
 ```js
@@ -303,6 +305,7 @@ router.post('/', async (req, res) => {
   const collection = await loadMicroPostsCollection();
   await collection.insertOne({
     text: req.body.text,
+    createdAt: new Date()
   });
   res.status(200).send();
 });
@@ -359,6 +362,180 @@ As you now have your Express app integrated with a MongoDB instance, it's time t
 
 ```bash
 git cm 'integrating Express and Mongo'
+```
+
+### Consuming Express Endpoints with Vue.js
+
+Now, you can focus on upgrading your Vue.js app to communicate with these two new endpoints. So, first, you will need a new service that will interface this communication. To define this service, create a new file called `MicroPostsService.js` inside the `./client/src/` directory and add the following code to it:
+
+```javascript
+import axios from 'axios'
+
+const url = 'http://localhost:8081/micro-posts/'
+
+class MicroPostsService {
+  static getMicroPosts () {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const serverResponse = await axios.get(url)
+        const unparsedData = serverResponse.data
+        resolve(unparsedData.map(microPost => ({
+          ...microPost,
+          createdAt: new Date(microPost.createdAt)
+        })))
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  static insertMicroPost (microPost) {
+    return axios.post({
+      text: microPost.text
+    })
+  }
+}
+
+export default MicroPostsService
+```
+
+> **Note:** Whenever you get an answer back from the `GET` endpoint, you iterate over the micro-posts returned to transform the stringified version of the `createdAt` property into real JavaScript `Date` objects. You are doing it so you can manipulate this property more easily.
+
+As you can see, this service depends on [Axios](https://github.com/axios/axios), a promise based HTTP client for JavaScript applications. So, to install Axios, issue the following command from the `./client` directory:
+
+```bash
+# using npm to install axios
+npm i axios
+```
+
+After installing this library, you can wrap your head around the `HelloWorld` component (this is the first component your users will see when they access your application). In this component, you will use the newly created service to show micro-posts to all users. So, open the `HelloWorld.vue` file and replace the contents inside the `<script>` tag with the following:
+
+```js
+import MicroPostService from '../MicroPostsService'
+
+export default {
+  name: 'HelloWorld',
+  data () {
+    return {
+      microPosts: [],
+      error: ''
+    }
+  },
+  async created () {
+    try {
+      this.microPosts = await MicroPostService.getMicroPosts()
+    } catch (error) {
+      this.error = error.message
+    }
+  }
+}
+```
+
+In the new version of this code, you are using the `created` lifecycle hook to fetch micro-posts from the backend (through the `MicroPostService.getMicroPosts` function). Then, when the request is fulfilled, you are populating the `microPosts` property so you can render it on the screen. You are also checking for any error (with `try ... catch`) and populating the `error` property if anything goes wrong.
+
+Now, to use these two properties (`microPosts` and `error`), you can replace the contents of the `<template>` tag with the following:
+
+{% highlight html %}
+{% raw %}
+<div class="container">
+  <h1>Latest Micro-Posts</h1>
+  <p class="error" v-if="error">{{ error }}</p>
+  <div class="micro-posts-container">
+    <div class="micro-post"
+         v-for="(microPost, index) in microPosts"
+         v-bind:item="microPost"
+         v-bind:index="index"
+         v-bind:key="microPost.id">
+      <div class="created-at">
+        {{ `${microPost.createdAt.getDate()}/${microPost.createdAt.getMonth() + 1}/${microPost.createdAt.getFullYear()}` }}
+      </div>
+      <p class="text">{{ microPost.text }}</p>
+      <p class="author">- Unknown</p>
+    </div>
+  </div>
+</div>
+{% endraw %}
+{% endhighlight %}
+
+This will make the component render the `error` if anything goes wrong (i.e. you are relying on a contional rendering: `v-if="error"`) or render the `microPosts` returned by the backend. For each micro-post (`v-for="(microPost, index) in microPosts"`), you are telling the component to render the date that it was created (inside the `div.created-at` element), the `text` inputed by the user (inside the `p.text` element), and the author's name (unknown for now).
+
+Lastly, to make your application look a little bit better, you can replace the contents of the `<style>` tag with the following:
+
+```css
+div.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+p.error {
+  border: 1px solid #ff5b5f;
+  background-color: #ffc5c1;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+div.micro-post {
+  position: relative;
+  border: 1px solid #5bd658;
+  background-color: #bcffb8;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+div.created-at {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 5px 15px 5px 15px;
+  background-color: darkgreen;
+  color: white;
+  font-size: 13px;
+}
+
+p.text {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+p.author {
+  font-style: italic;
+  margin-top: 5px;
+}
+```
+
+Now, to check if everything is working as expected, you can run the following commands:
+
+```bash
+# move to the backend directory
+cd ../backend/
+
+# run the backend in the background
+node src &
+
+# move back to the Vue.js client directory
+cd ../client/
+
+# start the development server
+npm run dev
+```
+
+After running the development server, head to [`http://localhost:8080`](http://localhost:8080) to check the new version of your application:
+
+![Vue.js application integrated with Express and MongoDB](https://cdn.auth0.com/blog/vuejs-lambda/vuejs-integrated-with-express-and-mongo.png)
+
+As a reminder, if you want to create new micro-posts, you will have to use some HTTP client like `curl` for now:
+
+```bash
+curl -X POST -H 'Content-Type: application/json' -d '{
+  "text": "I want pizza"
+}' 0:8081/micro-posts
+```
+
+Ok, time to save your progress:
+
+```bash
+git cm 'Integrating Vue.js, Express, and MongoDB.'
 ```
 
 ## Handling Authentication with Auth0
