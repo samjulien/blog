@@ -2,7 +2,7 @@
 layout: post
 title: "Introducing the Multi-Factor Authorization API"
 description: "Embed Multi-Factor Authorization using push notifications, SMS, or TOTP anywhere, taking full control of the experience."
-longdescription: "We have developed a new API to make use of Multi-Factor Authorization through an HTTP API, allowing developers to take full control of the experience. Push notifications, SMS, and TOTP are supported. In this article we take a look at the API while developing a CLI application."
+longdescription: "We have developed a new API to make use of Multi-Factor Authorization through an HTTP API, allowing developers to take full control of the experience. Push notifications, SMS, TOTP, and even multiple authenticators are supported. In this article we take a look at the API while developing a CLI application."
 date: 2018-04-10 12:30
 category: Announcements, Content
 author:
@@ -66,7 +66,7 @@ The API works in four simple steps:
 3. Asking the user for a code (if necessary).
 4. Final request to `/token`.
 
-> This scenario assumes the user is already enrolled in MFA and has at least one authenticator enabled. There's also a [new API for enrollment](https://auth0.com/docs/multifactor-authentication/api/otp) to have full control over the enrollment process as well.
+> This scenario assumes the user is already enrolled in MFA and has at least one authenticator enabled. There's also a [new API for enrollment](https://auth0.com/docs/multifactor-authentication/api/otp) to have full control over the enrollment process. This API also allows for obtaining a list of associated authenticators, useful for using multiple authenticator, as we will see in step 2 below.
 
 ### 1. Access Token Request to `/token`
 When a request is made to the `/token` endpoint to get an access token, normally you either get an error, or you get an access token. However, when the MFA API is enabled, the `/token` endpoint may return a new error code: `mfa_required`.
@@ -108,7 +108,8 @@ POST /mfa/challenge HTTP/1.1
 
 {
   "mfa_token": "<from step 1>",
-  "challenge_type": "otp oob"
+  "challenge_type": "otp oob",
+  "authenticator_id": "optional, if known"
 }
 ```
 
@@ -126,6 +127,8 @@ HTTP/1.1 200 OK
 ```
 
 The response tells the client which type of authenticator will be used (`challenge_type`) and also returns additional arguments relevant for that method. The `binding_method` parameter tells the client it should ask the user for a code.
+
+The client may optionally request a specific authenticator through `authenticator_id`. This allows for multiple authenticators, even for the same resource.
 
 > `OOB` means "out-of-band". All methods that are not [TOTP](https://auth0.com/blog/from-theory-to-practice-adding-two-factor-to-node-dot-js/) are OOB.
 
