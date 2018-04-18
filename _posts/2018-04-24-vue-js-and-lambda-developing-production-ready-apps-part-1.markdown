@@ -266,6 +266,8 @@ After defining the basic structure of both your backend and frontend application
 
 Although the last alternative requires you to have Docker installed in your development machine, this is the best option for the development phase because it allows you to have multiple MongoDB instances at the same time in the same machine. So, if you don't have Docker already installed locally, head to [the Docker Community download page](https://www.docker.com/community-edition) and follow the instructions for your OS.
 
+> **Note:** In the next article, you will create an MLab account to use a reliable and globally available instance of MongoDB. Don't worry, as any other service used in this series, MLab provides a free tier that is more than enough for this series.
+
 After installing it, you can trigger a new MongoDB instance with the following command:
 
 ```bash
@@ -277,6 +279,87 @@ docker run --name mongo \
 Yup, that's it. It's easy like that to initialise a new MongoDB instance in a Docker container. For more information about it, you can check the instructions on [the official Docker image for MongoDB](https://hub.docker.com/_/mongo/).
 
 ## Integrating Vue.js, Express, and MongoDB
+
+You now have all the basic building blocks in place and ready to be used. So, it's time to tie them up to see the stack in action.
+
+For starters, you will create a new file called `routes.js` in the `backend/src` directory and add the following code to it:
+
+```js
+const express = require('express');
+const MongoClient = require('mongodb').MongoClient;
+
+const router = express.Router();
+
+// retrieve latest micro-posts
+router.get('/', async (req, res) => {
+  const collection = await loadMicroPostsCollection();
+  res.send(
+    await collection.find({}).toArray()
+  );
+});
+
+// insert a new micro-post
+router.post('/', async (req, res) => {
+  const collection = await loadMicroPostsCollection();
+  await collection.insertOne({
+    text: req.body.text,
+  });
+  res.status(200).send();
+});
+
+async function loadMicroPostsCollection() {
+  const client = await MongoClient.connect('mongodb://localhost:27017/');
+  return client.db('micro-blog').collection('micro-posts');
+}
+
+module.exports = router;
+```
+
+As you can seem, the code necessary to integrate your Express application with a MongoDB instance is extremely simple (for this basic app of course). In less than 30 lines, you defined two routes for your app: one for sending micro-posts to users and one to persist new microposts in the database.
+
+Now, to use your new routes, you will have to update the `index.js` file (the one that resides in the `backend/src` directory) as follows:
+
+```js
+// ... other require statements
+const routes = require('./routes');
+
+// express app definition and middleware config
+
+app.use('/micro-posts', routes);
+
+app.listen(8081, () => {
+  console.log('listening on port 8081');
+});
+```
+
+Again, pretty straightforward, isn't it? You just had to `require` the new file and make your Express app aware of the routes defined on it through the `use` function.
+
+With these changes in place, you can test your backend with the following commands (or with any HTTP client for that matter):
+
+```bash
+# move cursor to the backend directory
+cd backend
+
+# start up your Express app
+node src
+
+# fetches the micro-posts (for now, an empty array)
+curl 0:8081/micro-posts
+
+# add the first micro-post
+curl -X POST -H 'Content-Type: application/json' -d '{
+  "text": "I love coding"
+}' 0:8081/micro-posts
+
+# fetches the micro-posts again
+curl 0:8081/micro-posts
+```
+
+As you now have your Express app integrated with a MongoDB instance, it's time to save your progress:
+
+```bash
+git cm 'integrating Express and Mongo'
+```
 
 ## Handling Authentication with Auth0
 ### Integrating Auth0 and Your Vue.js App
