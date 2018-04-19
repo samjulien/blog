@@ -539,7 +539,87 @@ git cm 'Integrating Vue.js, Express, and MongoDB.'
 ```
 
 ## Handling Authentication with Auth0
+
+Awesome, you have all the main building blocks of your app (Vue.js, Express, and MongoDB) integrated and communicating properly. Now, it's time to focus on adding some modern identity management to your app to be able to identify who is accessing it and letting users publish their own micro-posts.
+
+So, before getting into the details on how to integrate Auth0 in your Vue.js app and in your Express backend, you will need to create a new Auth0 account. If you don't have one already, now it's a good time to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account</a>.
+
 ### Integrating Auth0 and Your Vue.js App
+
+After signing up for your free Auth0 account, you will need to create a representation of your Vue.js app on it. So, [head to the Applications page inside the Auth0 management dashboard](https://manage.auth0.com/#/applications) and click on _Create Application_. Clicking on it will bring a small form that will ask you two things:
+
+1. The name of your application: you can enter something like "Vue.js Micro-Blog".
+2. The type of your application: here you will have to choose _Single Page Web Applications_.
+
+![Creating a Vue.js application on Auth0](https://cdn.auth0.com/blog/vuejs-lambda/create-vuejs-app-on-auth0.png)
+
+After filling in the form, you can click on the _Create_ button. This will redirect you to a page where you can see quick starts to help you and a few more tabs like _Settings_ and _Connections_. Then, click on the _Settings_ tab.
+
+In this new page, you will see a form where you can tweak your application configuration. For now, you are only interested on adding values to two fields:
+
+- `Allowed Callback URLs`: Here you will need to add `http://localhost:8080/#/callback` so that Auth0 know it can redirect users to this URL after the authentication process.
+- `Allowed Logout URLs`: The same idea but for the logout process. So, add `http://localhost:8080/` in this field.
+
+After inserting these values into these fields, hit the _Save Changes_ button at the bottom of the page.
+
+You can now move back to your code, but don't close the _Settings_ page just yet, you will need to copy some info from it soon.
+
+Back in your code, the first thing you will do is to install a package called [`auth0-web`](https://github.com/brunokrebs/auth0-web) in your Vue.js application:
+
+```bash
+# make sure you are in the client directory
+cd ./client/
+
+# install auth0-web
+npm i auth0-web
+```
+
+With this package in place, you will create a new component to handle the authentication callback. So, create a new file called `Callback.vue` inside the `./client/src/components/` directory and define the `<script>` section of it as follows:
+
+```html
+<script>
+</script>
+```
+
+```js
+```
+
+```css
+```
+
+Besides creating the `Callback` component, you will have to add buttons into your app so users can log in and log out. Also, you have to configure the `auth0-web` package with your Auth0 details. So, first, you will open the `App.vue` file (you can find it in the `./client/src/` directory) and you will replace the `<script>...</script>` tag with the following:
+
+<script>
+import * as Auth0 from 'auth0-web'
+
+export default {
+  name: 'App',
+  created () {
+    Auth0.configure({
+      domain: '<YOUR-AUTH0-DOMAIN>',
+      clientID: '<AN-AUTH0-CLIENT-ID>',
+      audience: '<AN-AUTH0-AUDIENCE>',
+      redirectUri: 'http://localhost:8080/#/callback',
+      responseType: 'token id_token',
+      scope: 'openid profile'
+    })
+  }
+}
+</script>
+
+As you can imagine, you will have to replace the `<YOUR-AUTH0-DOMAIN>`, `<AN-AUTH0-CLIENT-ID>`, and `<AN-AUTH0-AUDIENCE>` placeholders with details from your Auth0 account. So, back in [the Auth0 management dashboard](https://manage.auth0.com/#/applications) (hopefully, you have left it open), you can copy the value from the _Domain_ field (e.g. `bk-tmp.auth0.com`) and use it to replace `<YOUR-AUTH0-DOMAIN>` and copy the value from the _Client ID_ field (e.g. `KsX...GPy`) and use it to replace `<AN-AUTH0-CLIENT-ID>`.
+
+After that, you will have only one placeholder left to replace: `<AN-AUTH0-AUDIENCE>`. Although this placeholder refers to a value that you will define in the next section (while creating an Auth0 API for your backend app), you can go ahead and replace this placeholder with the following value: `https://micro-blog-app`. Don't worry about this value being an URL that you do not own, Auth0 will never call this URL, it is just a value to represent your backend.
+
+So, after configuring the `auth0-web` package in the `App` component, you can open the `HelloWorld` component (its file resides in the `./client/src/components/` directory) and add refactor the `<template></template>` section as follows:
+
+{% highlight html %}
+{% raw %}
+{% endraw %}
+{% endhighlight %}
+
 ### Securing Your Express App with Auth0
+
+![Creating a representation of your Express API on Auth0](https://cdn.auth0.com/blog/vuejs-lambda/create-express-api-on-auth0.png)
 
 ## Conclusion and Next Steps
