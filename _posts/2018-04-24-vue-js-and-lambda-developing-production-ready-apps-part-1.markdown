@@ -389,9 +389,9 @@ class MicroPostsService {
     })
   }
 
-  static insertMicroPost (microPost) {
-    return axios.post({
-      text: microPost.text
+  static insertMicroPost (text) {
+    return axios.post(url, {
+      text
     })
   }
 }
@@ -553,11 +553,11 @@ After signing up for your free Auth0 account, you will need to create a represen
 
 ![Creating a Vue.js application on Auth0](https://cdn.auth0.com/blog/vuejs-lambda/create-vuejs-app-on-auth0.png)
 
-After filling in the form, you can click on the _Create_ button. This will redirect you to a page where you can see quick starts to help you and a few more tabs like _Settings_ and _Connections_. Then, click on the _Settings_ tab.
+After filling in the form, you can click on the _Create_ button. This will redirect you to a page where you can see tabs like _Quick Start_, _Settings_, and _Connections_. To proceed, click on the _Settings_ tab.
 
 In this new page, you will see a form where you can tweak your application configuration. For now, you are only interested on adding values to two fields:
 
-- `Allowed Callback URLs`: Here you will need to add `http://localhost:8080/#/callback` so that Auth0 know it can redirect users to this URL after the authentication process.
+- `Allowed Callback URLs`: Here you will need to add `http://localhost:8080/callback` so that Auth0 know it can redirect users to this URL after the authentication process.
 - `Allowed Logout URLs`: The same idea but for the logout process. So, add `http://localhost:8080/` in this field.
 
 After inserting these values into these fields, hit the _Save Changes_ button at the bottom of the page.
@@ -574,20 +574,46 @@ cd ./client/
 npm i auth0-web
 ```
 
-With this package in place, you will create a new component to handle the authentication callback. So, create a new file called `Callback.vue` inside the `./client/src/components/` directory and define the `<script>` section of it as follows:
+With this package in place, you will create a new component (which you will call `Callback`) to handle the authentication response from Auth0. So, create a new file called `Callback.vue` inside the `./client/src/components/` directory and define its `<script>` section as follows:
 
 ```html
 <script>
+import * as Auth0 from 'auth0-web'
+
+export default {
+  name: 'Callback',
+  created () {
+    Auth0.handleAuthCallback(() => {
+      this.$router.push('/')
+    })
+  }
+}
 </script>
 ```
 
-```js
-```
+This is configuring the component to parse the hash (through the `Auth0.handleAuthCallback` function) returned by Auth0 to fetch the `access_token` and the `id_token` of the users that are authenticating. After handling the authentication response, this component will forward your users to the `HelloWorld` component again (`this.$router.push('/')`).
 
-```css
-```
+Before refactoring the `HelloWorld` component to make it aware of the authentication status, you can add a nice message and a nice style to your `Callback` component. To do this, add the following code after the `<script>...</script>` tag:
 
-Besides creating the `Callback` component, you will have to add buttons into your app so users can log in and log out. Also, you have to configure the `auth0-web` package with your Auth0 details. So, first, you will open the `App.vue` file (you can find it in the `./client/src/` directory) and you will replace the `<script>...</script>` tag with the following:
+{% highlight html %}
+{% raw %}
+<template>
+<div>
+  <p>Loading your profile...</p>
+</div>
+</template>
+
+<style scoped>
+div > p {
+  margin: 0 auto;
+  text-align: center;
+  font-size: 22px;
+}
+</style>
+{% endraw %}
+{% endhighlight %}
+
+Then, after creating the `Callback` component, you will add buttons into your app so users can log in and log out. But first, you have to configure the `auth0-web` package with your Auth0 details. So, open the `App.vue` file (you can find it in the `./client/src/` directory) and you will replace the `<script>...</script>` tag with the following:
 
 <script>
 import * as Auth0 from 'auth0-web'
@@ -609,14 +635,184 @@ export default {
 
 As you can imagine, you will have to replace the `<YOUR-AUTH0-DOMAIN>`, `<AN-AUTH0-CLIENT-ID>`, and `<AN-AUTH0-AUDIENCE>` placeholders with details from your Auth0 account. So, back in [the Auth0 management dashboard](https://manage.auth0.com/#/applications) (hopefully, you have left it open), you can copy the value from the _Domain_ field (e.g. `bk-tmp.auth0.com`) and use it to replace `<YOUR-AUTH0-DOMAIN>` and copy the value from the _Client ID_ field (e.g. `KsX...GPy`) and use it to replace `<AN-AUTH0-CLIENT-ID>`.
 
-After that, you will have only one placeholder left to replace: `<AN-AUTH0-AUDIENCE>`. Although this placeholder refers to a value that you will define in the next section (while creating an Auth0 API for your backend app), you can go ahead and replace this placeholder with the following value: `https://micro-blog-app`. Don't worry about this value being an URL that you do not own, Auth0 will never call this URL, it is just a value to represent your backend.
+After that, you will have only one placeholder left to replace: `<AN-AUTH0-AUDIENCE>`. Although this placeholder refers to a value that you will define in the next section (while creating an Auth0 API for your endpoints), you can go ahead and replace this placeholder with the following value: `https://micro-blog-app`. Don't worry about this value being an URL that you do not own, Auth0 will never call this URL, it is just a value to represent your backend.
 
-So, after configuring the `auth0-web` package in the `App` component, you can open the `HelloWorld` component (its file resides in the `./client/src/components/` directory) and add refactor the `<template></template>` section as follows:
+After configuring the `auth0-web` package in the `App` component, you can open the `HelloWorld` component (its file resides in the `./client/src/components/` directory) and add refactor the `<template></template>` section as follows:
 
 {% highlight html %}
 {% raw %}
+<template>
+<div class="container">
+  <h1>Latest Micro-Posts</h1>
+  <div class="users">
+    <button v-if="!profile" v-on:click="signIn">
+      Sign In
+    </button>
+    <button v-if="profile" v-on:click="signOut">
+      Sign Out
+    </button>
+    <p v-if="profile">
+      Hello there, {{ profile.name }}. Why don't you
+      <router-link :to="{ name: 'ShareThoughts' }">
+        share your thoughts?
+      </router-link>
+    </p>
+  </div>
+  <!-- ... p.error and div.micro-posts-container stay untouched ... -->
+</div>
+</template>
 {% endraw %}
 {% endhighlight %}
+
+The new version of the template adds buttons to allow users to sign in and sign out and an area that shows their names alongside with a link to `ShareThoughts`. You will create a new component to handle this route in a bit but, before that, you still have to refactor the `<script>` area of this component to support the new features:
+
+{% highlight html %}
+{% raw %}
+<script>
+import * as Auth0 from 'auth0-web'
+import MicroPostService from '../MicroPostsService'
+
+export default {
+  name: 'HelloWorld',
+  data () {
+    return {
+      microPosts: [],
+      error: '',
+      profile: null
+    }
+  },
+  async created () {
+    try {
+      this.microPosts = await MicroPostService.getMicroPosts()
+      Auth0.subscribe(() => {
+        this.profile = Auth0.getProfile()
+      })
+    } catch (error) {
+      this.error = error.message
+    }
+  },
+  methods: {
+    signIn: Auth0.signIn,
+    signOut () {
+      Auth0.signOut({
+        returnTo: 'http://localhost:8080/'
+      })
+    }
+  }
+}
+</script>
+{% endraw %}
+{% endhighlight %}
+
+As you can see, now you have a new property called `profile` on the component and you have defined two methods to handle the two buttons added to the template: `signIn` and `signOut`. These methods are just wrappers around the methods provided by the `auth0-web` package.
+
+Also, you made this component subscribe as a listener (by using the `Auth0.subscribe` function) to the authentication status. As such, when authenticated users open your app, your component will load their profile so it can show their name. Nice, right?
+
+The last missing piece to have a Vue.js application properly integrated with Auth0 is to register the `Callback` component as the responsible for the `/callback` route. To achieve this, open the `index.js` file that resides in the `./client/src/router/` directory and replace its contents with this:
+
+```javascript
+import Vue from 'vue'
+import Router from 'vue-router'
+import HelloWorld from '@/components/HelloWorld'
+import Callback from '@/components/Callback'
+
+Vue.use(Router)
+
+export default new Router({
+  mode: 'history',
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',
+      component: HelloWorld
+    },
+    {
+      path: '/callback',
+      name: 'Callback',
+      component: Callback
+    }
+  ]
+})
+```
+
+> **Note** The `mode: 'history'` property is needed because, without it, your Vue.js app won't be able to properly handle the hash present in the callback URL.
+
+If you test you application now, you will see that it is capable of authenticating users through Auth0 and of showing users' name.
+
+![Vue.js app integrated with Auth0](https://cdn.auth0.com/blog/vuejs-lambda/vuejs-app-integrated-with-auth0.png)
+
+However, you still haven't created the route where users will be able to express their mind. You can focus on this task now, but not before saving your progress:
+
+```bash
+git cm 'integrating the Vue.js client with Auth0'
+```
+
+As you will see, after integrating Auth0 into your app, you will be able to easily add secured areas in your Vue.js app.
+
+For that, the first thing you will do is to create a new file called `ShareThoughts.vue` inside the `./client/src/components/` directory. In this file, you will add the following `<script>` tag:
+
+```html
+<script>
+import MicroPostsService from '../MicroPostsService'
+
+export default {
+  name: 'ShareThoughts',
+  data () {
+    return {
+      text: ''
+    }
+  },
+  methods: {
+    async shareThouths () {
+      await MicroPostsService.insertMicroPost(this.text)
+      this.$router.push('/')
+    }
+  }
+}
+</script>
+```
+
+As you can see, the idea of this component is to let authenticated users to share their thoughts through the `shareThouths` method. This method simply delegates the communication process with the backend to the `insertMicroPost` function of the `MicroPostsService` that you defined before. After this service finishes inserting the new micro-post in your backend, the `ShareThoughts` component forwards users to the public page where they can see all micro-posts (including what they just shared).
+
+To make this new component available in your app, you need to register it under your routes. So, open the `./client/src/router/index.js` file add update it as follows:
+
+```js
+// ... other import statements ...
+import ShareThoughts from '@/components/ShareThoughts'
+import * as Auth0 from 'auth0-web'
+
+Vue.use(Router)
+
+export default new Router({
+  mode: 'history',
+  routes: [
+    // ... other routes ...
+    {
+      path: '/share-your-thoughts',
+      name: 'ShareThoughts',
+      component: ShareThoughts,
+      beforeEnter: (to, from, next) => {
+        if (Auth0.isAuthenticated()) {
+          return next()
+        }
+        this.$router.push('/')
+      }
+    }
+  ]
+})
+```
+
+If you run both your frontend app (by running `npm run dev` from the `client` directory) and your backend app (by running `node src` from the `backend` directory), you will be able to authenticate yourself and navigate to `http://localhost:8080/share-your-thoughts` to share some thoughts.
+
+![Vue.js route secured with Auth0](https://cdn.auth0.com/blog/vuejs-lambda/vuejs-secured-area.png)
+
+**Note:** If you don't authenticate yourself before trying to access this route, you will get redirected to the main route. This happens because you defined a guard condition on the `beforeEnter` hook that calls `this.$router.push('/')` for unauthenticated users. 
+
+Ok, then. From the frontend perspective, you have enough features. So, now it's time to focus on refactoring your backend application to integrate it with Auth0. But, as always, not before saving your progress:
+
+```bash
+git cm 'adding a secured route to Vue.js'
+```
 
 ### Securing Your Express App with Auth0
 
