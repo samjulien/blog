@@ -540,7 +540,7 @@ git cm 'Integrating Vue.js, Express, and MongoDB.'
 
 ## Handling Authentication with Auth0
 
-Awesome, you have all the main building blocks of your app (Vue.js, Express, and MongoDB) integrated and communicating properly. Now, it's time to focus on adding some modern identity management to your app to be able to identify who is accessing it and letting users publish their own micro-posts.
+Awesome, you have all the main building blocks of your app (Vue.js, Express, and MongoDB) integrated and communicating properly. Now, it's time to focus on adding a modern identity management tool to your app so you can identify who is accessing it and to let users publish their own micro-posts.
 
 So, before getting into the details on how to integrate Auth0 in your Vue.js app and in your Express backend, you will need to create a new Auth0 account. If you don't have one already, now it's a good time to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account</a>.
 
