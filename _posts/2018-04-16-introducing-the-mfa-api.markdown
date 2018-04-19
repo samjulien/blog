@@ -41,7 +41,7 @@ related:
 - ten-things-you-should-know-about-tokens-and-cookies
 ---
 
-We are pleased to announce the availability of our [Multi-Factor Authorization API](https://auth0.com/docs/api-auth/tutorials/multifactor-resource-owner-password). Up to now, we have provided support for MFA through a simple switch in the Auth0 Dashboard, following our premise of *simplicity* and ease of use. However, we also believe in providing powerful *building blocks* for our users. For this reason we have developed a new API to perform the full MFA flow in a flexible and convenient way. In this article we will take a look at the API and build a simple CLI app to demonstrate how to use it. Read on!
+We are pleased to announce the availability of our [Multi-Factor Authorization API](https://auth0.com/docs/api-auth/tutorials/multifactor-resource-owner-password). Up to now, we have provided support for MFA through a simple switch in the Auth0 Dashboard, following our premise of *simplicity* and ease of use. However, we also believe in providing powerful *building blocks* for our users. For this reason we have developed a new API to perform the full MFA flow, even with multiple authenticators, in a flexible and convenient way. In this article we will take a look at the API and build a simple CLI app to demonstrate how to use it. Read on!
 
 {% include tweet_quote.html quote_text="The MFA API is now available, learn how to embed MFA in your apps taking full control of the experience!" %}
 
@@ -52,7 +52,7 @@ Up to now, enabling MFA at Auth0 was simply a matter of flipping a switch and op
 
 ![MFA Switch](https://cdn.auth0.com/blog/oauth2-mfa-api/1-mfa-enable.png)
 
-However, some of our customers have requested to have more control over the MFA process. For example, one of our customers, a major bank developing a payment app akin to [Venmo](https://venmo.com/), wants to have full control of the enrollment process and second factor prompt. For this reason we have developed a new API to give back control to you when required. Let's check it out.
+However, some of our customers have requested to have more control over the MFA process. For this reason, we have been working with [ATEA Norge]() and other customers under a private BETA program to find the right implementation for this feature. The result: a new API for MFA to give back control to you when required. Let's check it out.
 
 ## A Simple API
 The API works by introducing some changes to how the `/token` endpoint behaves. Let's take a look.
