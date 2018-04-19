@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Introducing the Multi-Factor Authorization API"
-description: "Embed Multi-Factor Authorization using push notifications, SMS, or TOTP anywhere, taking full control of the experience."
-longdescription: "We have developed a new API to make use of Multi-Factor Authorization through an HTTP API, allowing developers to take full control of the experience. Push notifications, SMS, TOTP, and even multiple authenticators are supported. In this article we take a look at the API while developing a CLI application."
+title: "Introducing the Multi-Factor Authentication API"
+description: "Embed Multi-Factor Authentication using push notifications, SMS, or TOTP anywhere, taking full control of the experience."
+longdescription: "We have developed a new API to make use of Multi-Factor Authentication through an HTTP API, allowing developers to take full control of the experience. Push notifications, SMS, TOTP, and even multiple authenticators are supported. In this article we take a look at the API while developing a CLI application."
 date: 2018-04-10 12:30
 category: Announcements, Content
 author:
@@ -41,7 +41,7 @@ related:
 - ten-things-you-should-know-about-tokens-and-cookies
 ---
 
-We are pleased to announce the availability of our [Multi-Factor Authorization API](https://auth0.com/docs/api-auth/tutorials/multifactor-resource-owner-password). Up to now, we have provided support for MFA through a simple switch in the Auth0 Dashboard, following our premise of *simplicity* and ease of use. However, we also believe in providing powerful *building blocks* for our users. For this reason we have developed a new API to perform the full MFA flow, even with multiple authenticators, in a flexible and convenient way. In this article we will take a look at the API and build a simple CLI app to demonstrate how to use it. Read on!
+We are pleased to announce the availability of our [Multi-Factor Authentication API](https://auth0.com/docs/api-auth/tutorials/multifactor-resource-owner-password). Up to now, we have provided support for MFA through a simple switch in the Auth0 Dashboard, following our premise of *simplicity* and ease of use. However, we also believe in providing powerful *building blocks* for our users. For this reason we have developed a new API to perform the full MFA flow, even with multiple authenticators, in a flexible and convenient way. In this article we will take a look at the API and build a simple CLI app to demonstrate how to use it. Read on!
 
 {% include tweet_quote.html quote_text="The MFA API is now available, learn how to embed MFA in your apps taking full control of the experience!" %}
 
