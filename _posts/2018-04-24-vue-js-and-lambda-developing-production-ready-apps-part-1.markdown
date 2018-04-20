@@ -636,6 +636,8 @@ export default {
   }
 }
 </script>
+{% endraw %}
+{% endhighlight %}
 
 As you can imagine, you will have to replace the `<YOUR-AUTH0-DOMAIN>`, `<AN-AUTH0-CLIENT-ID>`, and `<AN-AUTH0-AUDIENCE>` placeholders with details from your Auth0 account. So, back in [the Auth0 management dashboard](https://manage.auth0.com/#/applications) (hopefully, you have left it open), you can copy the value from the _Domain_ field (e.g. `bk-tmp.auth0.com`) and use it to replace `<YOUR-AUTH0-DOMAIN>` and copy the value from the _Client ID_ field (e.g. `KsX...GPy`) and use it to replace `<AN-AUTH0-CLIENT-ID>`.
 
