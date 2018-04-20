@@ -457,7 +457,7 @@ Now, to use these two properties (`microPosts` and `error`), you can replace the
 {% endraw %}
 {% endhighlight %}
 
-This will make the component render the `error` if anything goes wrong (i.e. you are relying on a contional rendering: `v-if="error"`) or render the `microPosts` returned by the backend. For each micro-post (`v-for="(microPost, index) in microPosts"`), you are telling the component to render the date that it was created (inside the `div.created-at` element), the `text` inputed by the user (inside the `p.text` element), and the author's name (unknown for now).
+This will make the component render the `error` if anything goes wrong (i.e. you are relying on a conditional rendering: `v-if="error"`) or render the `microPosts` returned by the backend. For each micro-post (`v-for="(microPost, index) in microPosts"`), you are telling the component to render the date that it was created (inside the `div.created-at` element), the `text` inputted by the user (inside the `p.text` element), and the author's name (unknown for now).
 
 Lastly, to make your application look a little bit better, you can replace the contents of the `<style>` tag with the following:
 
