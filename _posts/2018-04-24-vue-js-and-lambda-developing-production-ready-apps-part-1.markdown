@@ -695,6 +695,7 @@ export default {
     signIn: Auth0.signIn,
     signOut () {
       Auth0.signOut({
+        clientID: '<AN-AUTH0-CLIENT-ID>',
         returnTo: 'http://localhost:8080/'
       })
     }
@@ -703,6 +704,8 @@ export default {
 </script>
 {% endraw %}
 {% endhighlight %}
+
+> **Note:** You must replace `<AN-AUTH0-CLIENT-ID>` with the _Client ID_ property of the Auth0 Application that you created before.
 
 As you can see, now you have a new property called `profile` on the component and you have defined two methods to handle the two buttons added to the template: `signIn` and `signOut`. These methods are just wrappers around the methods provided by the `auth0-web` package.
 
@@ -816,6 +819,153 @@ git cm 'adding a secured route to Vue.js'
 
 ### Securing Your Express App with Auth0
 
+As you have finished integrating your frontend application with Auth0, the only missing part now is adding Auth0 to your backend. For starters, you will need three to install new packages in your backend project:
+
+```bash
+# make sure you are in the backend directory
+cd ./backend
+
+# install dependencies
+npm i express-jwt jwks-rsa auth0
+```
+
+Together, these dependencies will allow you to validate `access_tokens` sent by clients and will allow your backend app to get the profile of your users (like name and picture). If you need more info about these packages, you can check the following resources: [`express-jwt`](https://github.com/auth0/express-jwt), [`jwks-rsa`](https://github.com/auth0/node-jwks-rsa), and [`auth0`](http://auth0.github.io/node-auth0/).
+
+Now, to use these packages, you will have to update only a single file: `./backend/src/routes.js`. Inside this file, update the code as follows:
+
+```js
+// ... other import statements ...
+const auth0 = require('auth0');
+const jwt = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
+
+// ... router definition and router.get('/', ...) ...
+
+// this is a middleware to validate access_tokens
+const checkJwt = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://<YOUR-AUTH0-DOMAIN>/.well-known/jwks.json`
+  }),
+
+  // Validate the audience and the issuer.
+  audience: '<AN_AUTH0_AUDIENCE>',
+  issuer: `https://<YOUR-AUTH0-DOMAIN>/`,
+  algorithms: ['RS256']
+});
+
+// insert a new micro-post with user details
+router.post('/', checkJwt, async (req, res) => {
+  const collection = await loadMicroPostsCollection();
+
+  const token = req.headers.authorization
+    .replace('bearer ', '')
+    .replace('Bearer ', '');
+
+  const authClient = new auth0.AuthenticationClient({
+    domain: '<YOUR-AUTH0-DOMAIN>',
+    clientId: 'KsXpF1d1L0vYdwiBG10VNOjw1lJmBGPy',
+  });
+
+  authClient.getProfile(token, async (err, userInfo) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+
+    await collection.insertOne({
+      text: req.body.text,
+      createdAt: new Date(),
+      author: {
+        sub: userInfo.sub,
+        name: userInfo.name,
+        picture: userInfo.picture,
+      },
+    });
+
+    res.status(200).send();
+  });
+});
+
+// ... loadMicroPostsCollection and module.exports ...
+```
+
+As you can see, this new version simply defines a middleware called `checkJwt` to validate any `access_token` sent on request headers. Then, it uses the new middleware to secure the function responsible for handling `POST` HTTP requests (`router.post('/', checkJwt, async (req, res) => { ... });`). After that, inside this function, you are fetching the `access_token` from `req.headers.authorization` so you can use it to get profile details about the user calling your API (for this, you are using `auth0.AuthenticationClient` and `authClient.getProfile`). Lastly, when your backend finishes fetching users' profiles, it uses them to add more info into micro-posts saved in your MongoDB instance.
+
+> **Note:** You have to replace the three occurrences of `<YOUR-AUTH0-DOMAIN>` with your own Auth0 domain and `<AN_AUTH0_AUDIENCE>` with the audience of an Auth0 API. You will create this API now.
+
+To create an [Auth0 API](https://auth0.com/docs/api/info) to represent your backend, [head to the APIs page in your Auth0 management dashboard](https://manage.auth0.com/#/apis) and hit the _Create API_ button. This will bring up a form where you will set a name for you API (e.g. _Micro-Blog API_), an identifier which is also known as audience (in this case you can use `https://micro-blog-app`), and a signing algorithm (you can leave it as `RS256`). Then, after filling in this form, you can click on the _Create_ button and that's it.
+
 ![Creating a representation of your Express API on Auth0](https://cdn.auth0.com/blog/vuejs-lambda/create-express-api-on-auth0.png)
+
+Back to the code, you will need to perform two changes in your Vue.js app. First, you will need to update the `MicroPostsService.js` file (which you can find in the `./client/src/` directory) so it sends users' `access_tokens` when submiting new micro-posts:
+
+```js
+// ... import axios ...
+import * as Auth0 from 'auth0-web'
+
+// ... const url ...
+
+class MicroPostsService {
+  // ... static getMicroPosts () ...
+
+  static insertMicroPost (text) {
+    return axios.post(url, {
+      text
+    }, {
+      headers: { 'Authorization': `Bearer ${Auth0.getAccessToken()}` }
+    })
+  }
+}
+
+// ... export default MicroPostsService ...
+```
+
+Then, you can update the `<template>` tag inside the `HelloWorld.vue` file as follows:
+
+{% highlight html %}
+{% raw %}
+<template>
+<div class="container">
+  <!-- ... leave h1, div.users, and p.error untouched ... -->
+  <div class="micro-posts-container">
+    <div class="micro-post" ...>
+      <!-- and simply replace p.author with this: -->
+      <p class="author">- {{ microPost.author.name || 'Unknown' }}</p>
+    </div>
+  </div>
+</div>
+</template>
+{% endraw %}
+{% endhighlight %}
+
+Now, for any new micro-post submitted by an authorized user, your Vue.js app with show their names. To see this in action, issue the following commands:
+
+```bash
+# go to the backend directory
+cd ./backend
+
+# leave Express running in the background
+node src &
+
+# go to the client directory
+cd ../client
+
+# run the local development server
+npm run dev
+```
+
+Then, head to [`http://localhost:8080`](http://localhost:8080). Now, after authenticating yourself, you can share a new thought and your name will appear on the micro-post:
+
+![Vue.js and Express apps integrated with Auth0](https://cdn.auth0.com/blog/vuejs-lambda/vuejs-and-express-apps-integrated-with-auth0.png)
+
+That's it, you have completed the first version of your micro-blog engine and you are now ready to deploy it to production on AWS. But this task will be left to the second part of the series.
+
+Time to save your progress!
+
+```bash
+git cm 'vue.js and express fully integrated with auth0'
+```
 
 ## Conclusion and Next Steps
