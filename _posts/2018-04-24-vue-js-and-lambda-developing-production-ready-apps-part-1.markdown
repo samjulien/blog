@@ -41,21 +41,21 @@ In this series, you will have the opportunity to see this great framework in act
 
 [AWS Lambda](https://aws.amazon.com/lambda/) is a serverless computer platform, provided by Amazon, that allows developers to run their code without having to spend too much time thinking about the servers needed to run it. Although the main idea of using a serverless platform is to facilitate the deployment process and the scalability of applications, AWS Lambda is not easy for newcomers. In fact, AWS Lambda on its own is not enough to run Rest APIs like the one you will need for your micro-blog engine. Besides this AWS service, you will also need to use [AWS API Gateway](https://aws.amazon.com/api-gateway/) to define how external services (or, in this case, a Vue.js client) can communicate with your serverless backend app. This last piece is exactly what makes AWS Lambda not straightforward.
 
-So, to avoid wasting your time with the intricacies of AWS API Gateway and AWS Lambda, you will take advantage of an open-source tool called [Claudia](https://claudiajs.com/). The goal of this tool is to enable youto deploy your Node.js projects to AWS Lambda and API Gateway easily.
+So, to avoid wasting your time with the intricacies of AWS API Gateway and AWS Lambda, you will take advantage of an open-source tool called [Claudia](https://claudiajs.com/). The goal of this tool is to enable you to deploy your Node.js projects to AWS Lambda and API Gateway easily.
 
 ### Express
 
-Express is the most popular framework for developing web applications on the Node.js landscape. By using it, you will have access to tons of (and great) documenation, a huge community, and a lot of middleware that will help you achieve your goals. In this series for example, you will use at least four popular middleware to define your backend enpoints: `bodyParser`, `cors`, `helmet`, and `morgan`.
+Express is the most popular framework for developing web applications on the Node.js landscape. By using it, you will have access to tons of (and great) documentation, a huge community, and a lot of middleware that will help you achieve your goals. In this series, for example, you will use at least four popular middleware to define your backend endpoints: `bodyParser`, `cors`, `helmet`, and `morgan`.
 
-If you haven't heard about them, you will find a brief explanation of what they are capable of doing and you will see that using them is pretty straightforward. You will also that defining endpoints and communicating with databases (in this case, MongoDB), cannot be easier.
+If you haven't heard about them, you will find a brief explanation of what they are capable of doing and you will see that using them is pretty straightforward. You will also note that defining endpoints and communicating with databases (in this case, MongoDB) can't be easier.
 
 ### MongoDB
 
-MongoDB is a popular NoSQL database that treats data as documents. That is, instead of the classic approach of defining data as tables and rows that relate with each other, MongoDB allows developers to persist and query complex data structures. As you will see, using MongoDB to persist JSON data sent by clients and processed by Node.js (or Express in this case) is really simple.
+MongoDB is a popular NoSQL database that treats data as documents. That is, instead of the classic approach of defining data as tables and rows that relate to each other, MongoDB allows developers to persist and query complex data structures. As you will see, using MongoDB to persist JSON data sent by clients and processed by Node.js (or Express in this case) is really simple.
 
 ### Auth0
 
-Handling identity on modern applications is not easy. For starter, if the developers choose to homegrown their own solution they will have to create everything from the sign up page, passing through the recovering password feature, till the handling of sessions and access tokens. Not to say that if they want to integrate with social networks like Facebook or Google, or if they want to allow users from companies that rely on Active Directory or SAML, they will face a scenario that is way more complex.
+Handling identity on modern applications is not easy. For starter, if the developers choose to homegrown their own solution they will have to create everything from the sign-up page, passing through the recovering password feature, till the handling of sessions and access tokens. Not to say that if they want to integrate with social networks like Facebook or Google, or if they want to allow users from companies that rely on Active Directory or SAML, they will face a scenario that is way more complex.
 
 To avoid all these challenges and to enable you to focus on what matters the most to your application (its special features) you will take advantage of Auth0. With Auth0, a global leader in Identity-as-a-Service (IDaaS), you only have to write a few lines of code to get [solid identity management solution](https://auth0.com/user-management), [single sign-on](https://auth0.com/docs/sso/single-sign-on), support for [social identity providers (like Facebook, GitHub, Twitter, etc.)](https://auth0.com/docs/identityproviders), and support for [enterprise identity providers (Active Directory, LDAP, SAML, custom, etc.)](https://auth0.com/enterprise).
 
@@ -76,7 +76,7 @@ So, without further ado, it's time to start developing!
 
 ## Vue.js, Express, and Mongo: Hands-On!
 
-So, now that you know the stack that you will use and that you know what you will build, it's time to start creating your app. To keep things organised, you will create a directory to keep both you frontend and backend source code:
+So, now that you know the stack that you will use and that you know what you will build, it's time to start creating your app. To keep things organised, you will create a directory to keep both your frontend and backend source code:
 
 ```bash
 # create the root directory
@@ -103,7 +103,7 @@ With this alias in place, you can just issue `git cm 'some message'` when you wa
 
 ### Bootstrapping Vue.js
 
-To create your Vue.js application based on best practices, you will take advantage of [the `vue-cli` tool](https://github.com/vuejs/vue-cli/tree/master). So, before using this command line interface, you will have to install it in your machine:
+To create your Vue.js application based on best practices, you will take advantage of [the `vue-cli` tool](https://github.com/vuejs/vue-cli/tree/master). So, before using this command line interface, you will have to install it on your machine:
 
 ```bash
 npm install -g vue-cli
@@ -178,7 +178,7 @@ So, as you can see, the commands above initialised NPM in the `backend` director
 - [`cors`](https://github.com/expressjs/cors): an Express middleware to make your endpoint accept cross-origin requests;
 - [`mongodb`](https://github.com/mongodb/node-mongodb-native): the MongoDB native driver for Node.js;
 - [`morgan`](https://github.com/expressjs/morgan): an HTTP request logger middleware for Node.js web apps;
-- and [`helmet`](https://github.com/helmetjs/helmet): an Express middleware that helps securing your apps with various HTTP headers.
+- and [`helmet`](https://github.com/helmetjs/helmet): an Express middleware that helps to secure your apps with various HTTP headers.
 
 > **Note:** If you want more information, you can check the official documentation of each package on the links above.
 
@@ -232,9 +232,9 @@ As you can see, the code above is quite simple. From top to bottom, it:
 
 Right now, there is no reason to start your Express application. Why? Because there are no endpoints defined on it and because you have no MongoDB instance to communicate with.
 
-In the next section, you will initialise a MongoDB instance and then create a few endpoints to communicate with it. However, before proceeding into it, you will be better of creating two new files (in the project root) to help you in your development process.
+In the next section, you will initialise a MongoDB instance and then create a few endpoints to communicate with it. However, before proceeding into it, you will be better off creating two new files (in the project root) to help you in your development process.
 
-The first one is a `.gitignore` file to keep you from commiting useless files into your Git repository. So, create this file in the project root directory and [copy the contents of this file into it](https://raw.githubusercontent.com/auth0-blog/vue-js-lambda-part-1/master/.gitignore). Or, if you prefer, you can also create and populate this file quite easily with the following commands:
+The first one is a `.gitignore` file to keep you from committing useless files into your Git repository. So, create this file in the project root directory and [copy the contents of this file into it](https://raw.githubusercontent.com/auth0-blog/vue-js-lambda-part-1/master/.gitignore). Or, if you prefer, you can also create and populate this file quite easily with the following commands:
 
 ```bash
 # move to the project root
@@ -244,7 +244,7 @@ cd ..
 curl https://raw.githubusercontent.com/auth0-blog/vue-js-lambda-part-1/master/.gitignore >> .gitignore
 ```
 
-After that, you can create the second file. This one, called `.editorconfig` will help you keeping your indentation style consistent. Again, [you can copy and paste the contents from the internet](https://raw.githubusercontent.com/auth0-blog/vue-js-lambda-part-1/master/.editorconfig), or you can use the following command:
+After that, you can create the second file. This one, called `.editorconfig` will help you keep your indentation style consistent. Again, [you can copy and paste the contents from the internet](https://raw.githubusercontent.com/auth0-blog/vue-js-lambda-part-1/master/.editorconfig), or you can use the following command:
 
 ```bash
 curl https://raw.githubusercontent.com/auth0-blog/vue-js-lambda-part-1/master/.editorconfig >> .editorconfig
@@ -258,9 +258,9 @@ git cm 'Scaffolding the Express web application.'
 
 ### Preparing a MongoDB Instance
 
-After defining the basic structure of both your backend and frontend applications, you will need to initialise a MongoDB instance to persist your users' data. There are many options to create a new MongoDB instanc. For example:
+After defining the basic structure of both your backend and frontend applications, you will need to initialise a MongoDB instance to persist your users' data. There are many options to create a new MongoDB instance. For example:
 
-1. You can install MongoDB in your development machine, but this would make the process of upgrading to newer versions harder.
+1. You can install MongoDB on your development machine, but this would make the process of upgrading to newer versions harder.
 2. You can use a MongoDB service like [MLab](https://mlab.com/), but this is a little extreme and slow for the development machine.
 3. You can use Docker to initialise a container with a MongoDB instance.
 
@@ -318,7 +318,7 @@ async function loadMicroPostsCollection() {
 module.exports = router;
 ```
 
-As you can seem, the code necessary to integrate your Express application with a MongoDB instance is extremely simple (for this basic app of course). In less than 30 lines, you defined two routes for your app: one for sending micro-posts to users and one to persist new microposts in the database.
+As you can see, the code necessary to integrate your Express application with a MongoDB instance is extremely simple (for this basic app of course). In less than 30 lines, you defined two routes for your app: one for sending micro-posts to users and one to persist new micro-posts in the database.
 
 Now, to use your new routes, you will have to update the `index.js` file (the one that resides in the `backend/src` directory) as follows:
 
@@ -408,7 +408,7 @@ As you can see, this service depends on [Axios](https://github.com/axios/axios),
 npm i axios
 ```
 
-After installing this library, you can wrap your head around the `HelloWorld` component (this is the first component your users will see when they access your application). In this component, you will use the newly created service to show micro-posts to all users. So, open the `HelloWorld.vue` file and replace the contents inside the `<script>` tag with the following:
+After installing this library, you can wrap your head around the `HelloWorld` component (this is the first component your users will see when they access your application). In this component, you will use the newly created service to show micro-posts to all users. So, open the `HelloWorld.vue` file and replace the contents of the `<script>` tag with the following:
 
 ```js
 import MicroPostService from '../MicroPostsService'
@@ -555,7 +555,7 @@ After signing up for your free Auth0 account, you will need to create a represen
 
 After filling in the form, you can click on the _Create_ button. This will redirect you to a page where you can see tabs like _Quick Start_, _Settings_, and _Connections_. To proceed, click on the _Settings_ tab.
 
-In this new page, you will see a form where you can tweak your application configuration. For now, you are only interested on adding values to two fields:
+In this new page, you will see a form where you can tweak your application configuration. For now, you are only interested in adding values to two fields:
 
 - `Allowed Callback URLs`: Here you will need to add `http://localhost:8080/callback` so that Auth0 know it can redirect users to this URL after the authentication process.
 - `Allowed Logout URLs`: The same idea but for the logout process. So, add `http://localhost:8080/` in this field.
@@ -576,7 +576,8 @@ npm i auth0-web
 
 With this package in place, you will create a new component (which you will call `Callback`) to handle the authentication response from Auth0. So, create a new file called `Callback.vue` inside the `./client/src/components/` directory and define its `<script>` section as follows:
 
-```html
+{% highlight html %}
+{% raw %}
 <script>
 import * as Auth0 from 'auth0-web'
 
@@ -589,7 +590,8 @@ export default {
   }
 }
 </script>
-```
+{% endraw %}
+{% endhighlight %}
 
 This is configuring the component to parse the hash (through the `Auth0.handleAuthCallback` function) returned by Auth0 to fetch the `access_token` and the `id_token` of the users that are authenticating. After handling the authentication response, this component will forward your users to the `HelloWorld` component again (`this.$router.push('/')`).
 
@@ -613,8 +615,10 @@ div > p {
 {% endraw %}
 {% endhighlight %}
 
-Then, after creating the `Callback` component, you will add buttons into your app so users can log in and log out. But first, you have to configure the `auth0-web` package with your Auth0 details. So, open the `App.vue` file (you can find it in the `./client/src/` directory) and you will replace the `<script>...</script>` tag with the following:
+Then, after creating the `Callback` component, you will add buttons to your app so users can log in and log out. But first, you have to configure the `auth0-web` package with your Auth0 details. So, open the `App.vue` file (you can find it in the `./client/src/` directory) and you will replace the `<script>...</script>` tag with the following:
 
+{% highlight html %}
+{% raw %}
 <script>
 import * as Auth0 from 'auth0-web'
 
@@ -740,7 +744,7 @@ export default new Router({
 
 > **Note** The `mode: 'history'` property is needed because, without it, your Vue.js app won't be able to properly handle the hash present in the callback URL.
 
-If you test you application now, you will see that it is capable of authenticating users through Auth0 and of showing users' name.
+If you test your application now, you will see that it is capable of authenticating users through Auth0 and of showing users' name.
 
 ![Vue.js app integrated with Auth0](https://cdn.auth0.com/blog/vuejs-lambda/vuejs-app-integrated-with-auth0.png)
 
@@ -754,7 +758,8 @@ As you will see, after integrating Auth0 into your app, you will be able to easi
 
 For that, the first thing you will do is to create a new file called `ShareThoughts.vue` inside the `./client/src/components/` directory. In this file, you will add the following `<script>` tag:
 
-```html
+{% highlight html %}
+{% raw %}
 <script>
 import MicroPostsService from '../MicroPostsService'
 
@@ -773,7 +778,8 @@ export default {
   }
 }
 </script>
-```
+{% endraw %}
+{% endhighlight %}
 
 As you can see, the idea of this component is to let authenticated users to share their thoughts through the `shareThouths` method. This method simply delegates the communication process with the backend to the `insertMicroPost` function of the `MicroPostsService` that you defined before. After this service finishes inserting the new micro-post in your backend, the `ShareThoughts` component forwards users to the public page where they can see all micro-posts (including what they just shared).
 
@@ -895,11 +901,11 @@ As you can see, this new version simply defines a middleware called `checkJwt` t
 
 > **Note:** You have to replace the three occurrences of `<YOUR-AUTH0-DOMAIN>` with your own Auth0 domain and `<AN_AUTH0_AUDIENCE>` with the audience of an Auth0 API. You will create this API now.
 
-To create an [Auth0 API](https://auth0.com/docs/api/info) to represent your backend, [head to the APIs page in your Auth0 management dashboard](https://manage.auth0.com/#/apis) and hit the _Create API_ button. This will bring up a form where you will set a name for you API (e.g. _Micro-Blog API_), an identifier which is also known as audience (in this case you can use `https://micro-blog-app`), and a signing algorithm (you can leave it as `RS256`). Then, after filling in this form, you can click on the _Create_ button and that's it.
+To create an [Auth0 API](https://auth0.com/docs/api/info) to represent your backend, [head to the APIs page in your Auth0 management dashboard](https://manage.auth0.com/#/apis) and hit the _Create API_ button. This will bring up a form where you will set a name for your API (e.g. _Micro-Blog API_), an identifier which is also known as audience (in this case you can use `https://micro-blog-app`), and a signing algorithm (you can leave it as `RS256`). Then, after filling in this form, you can click on the _Create_ button and that's it.
 
 ![Creating a representation of your Express API on Auth0](https://cdn.auth0.com/blog/vuejs-lambda/create-express-api-on-auth0.png)
 
-Back to the code, you will need to perform two changes in your Vue.js app. First, you will need to update the `MicroPostsService.js` file (which you can find in the `./client/src/` directory) so it sends users' `access_tokens` when submiting new micro-posts:
+Back to the code, you will need to perform two changes in your Vue.js app. First, you will need to update the `MicroPostsService.js` file (which you can find in the `./client/src/` directory) so it sends users' `access_tokens` when submitting new micro-posts:
 
 ```js
 // ... import axios ...
@@ -970,7 +976,7 @@ git cm 'vue.js and express fully integrated with auth0'
 
 ## Conclusion and Next Steps
 
-In the first part of this series, you have created a Vue.js application to work as the user interface of a micro-blog engine. You have also created an Express API to persists micro-posts in a MongoDB instance. Besides that, you have installed and configured Auth0 on both your frontend and backend applications to take advatage of a modern identity management system. With this, you have finished developing the first version of your micro-blog engine and you are ready to move it to production.
+In the first part of this series, you have created a Vue.js application to work as the user interface of a micro-blog engine. You have also created an Express API to persists micro-posts in a MongoDB instance. Besides that, you have installed and configured Auth0 on both your frontend and backend applications to take advantage of a modern identity management system. With this, you have finished developing the first version of your micro-blog engine and you are ready to move it to production.
 
 So, in the next part of this series, you will prepare your source code to deploy your backend API to AWS Lambda and your frontend Vue.js app to an AWS S3 bucket. Then, you will use [Claudia](https://claudiajs.com/), a tool that facilitates AWS Lambda management, to make your backend code live and will use the AWS CLI (Command Line Interface) tool to push your Vue.js app to AWS S3.
 
