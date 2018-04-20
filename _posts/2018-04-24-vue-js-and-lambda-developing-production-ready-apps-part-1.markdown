@@ -544,6 +544,8 @@ Awesome, you have all the main building blocks of your app (Vue.js, Express, and
 
 So, before getting into the details on how to integrate Auth0 in your Vue.js app and in your Express backend, you will need to create a new Auth0 account. If you don't have one already, now it's a good time to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account</a>.
 
+{% include tweet_quote.html quote_text="Check out how to add modern identity management to Vue.js apps." %}
+
 ### Integrating Auth0 and Your Vue.js App
 
 After signing up for your free Auth0 account, you will need to create a representation of your Vue.js app on it. So, [head to the Applications page inside the Auth0 management dashboard](https://manage.auth0.com/#/applications) and click on _Create Application_. Clicking on it will bring a small form that will ask you two things:
@@ -975,6 +977,8 @@ Time to save your progress!
 ```bash
 git cm 'vue.js and express fully integrated with auth0'
 ```
+
+{% include tweet_quote.html quote_text="Developing Vue.js apps and integrating it with an Express backend is quite easy." %}
 
 ## Conclusion and Next Steps
 
