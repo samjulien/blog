@@ -5,6 +5,7 @@ description: Learn how to use Auth0 Webtasks to build a twitter bot that pulls d
 date: 2017-07-24 08:30
 is_extend: true
 category: Product
+canonical_url: true
 author: 
   name: "Daniel James"
   url: "https://twitter.com/thzinc"
