@@ -2,7 +2,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-     {% include sharing_metas.html %}
+    {% include sharing_metas.html %}
 
     {% if page.is_tag_index or page.switch_index %}
       <title>{{ page.tag | capitalize }} - Auth0 Blog</title>
