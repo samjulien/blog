@@ -132,8 +132,7 @@ Provide a component with controls for the user to log in and log out.
 
 _app/navbar/navbar.html_
 
-{% highlight html %}
-{% raw %}
+```
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -158,8 +157,7 @@ _app/navbar/navbar.html_
     </div>
   </div>
 </nav>
-{% endraw %}
-{% endhighlight %}
+```
 
 ### Directive
 
@@ -218,13 +216,12 @@ The [callback component](https://github.com/auth0-samples/auth0-angularjs-sample
 
 _app/callback/callback.html_
 
-{% highlight html %}
-{% raw %}
+```
 <div class="loading">
   <img src="assets/loading.svg" alt="loading">
 </div>
-{% endraw %}
-{% endhighlight %}
+```
+
 
 ### Process Authentication Result
 
