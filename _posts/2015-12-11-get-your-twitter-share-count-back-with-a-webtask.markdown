@@ -1,11 +1,10 @@
 ---
-layout: post_extend
+layout: post
 title: "Get Your Twitter Share Count Back with a Webtask"
 description: "Learn how to fix your Twitter share count with a simple HTTP proxy without a server using Webtasks"
 date: 2015-12-11 13:00
 alias: /2015/12/11/get-your-twitter-share-count-back-with-a-webtask/
 category: Technical Guide, Serverless, Webtasks
-canonical_url: true
 author:
   name: Sebastián Peyrott
   url: https://twitter.com/speyrott?lang=en

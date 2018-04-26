@@ -1,10 +1,9 @@
 ---
-layout: post_extend
+layout: post
 title: "Build a Serverless Slack Bot with Webtask.io"
 description: "Learn how to create a bot that posts mentions in Zendesk to relevant Slack users using the Auth0 Webtask platform"
 date: 2016-09-14 08:30
 category: Technical Guide, Serverless, Webtask
-canonical_url: true
 author:
   name: "Thameera Senanayaka"
   url: "https://twitter.com/thameera"

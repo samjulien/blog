@@ -1,11 +1,10 @@
 ---
-layout: post_extend
+layout: post
 title: "How I Built a Twitter Bot Using Auth0 Webtasks and Data.gov"
 description: Learn how to use Auth0 Webtasks to build a twitter bot that pulls data from Data.gov and does sentiment analysis
 date: 2017-07-24 08:30
 is_extend: true
 category: Product
-canonical_url: true
 author: 
   name: "Daniel James"
   url: "https://twitter.com/thzinc"

@@ -1,10 +1,9 @@
 ---
-layout: post_extend
+layout: post
 title: "Interaction-Based Authentication for Alexa Skills with Auth0"
 description: "Learn how to easily add interaction-based authentication for your Alexa skills with Auth0."
 date: 2017-04-27 8:30
 category: Security, Frameworks, Technical Guide, Webtask
-canonical_url: true
 author:
   name: "João Angelo"
   url: "https://github.com/jmangelo"
