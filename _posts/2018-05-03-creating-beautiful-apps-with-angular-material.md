@@ -362,6 +362,31 @@ With these rules in place, you can issue `ng serve` from your project root to ch
 
 ### More Angular Material Components
 
+Now that you have your application up and running with your first Angular Material component, it's time to add more features. So, the first thing you will do is to define two new components (views) to your application, the `WelcomeComponent` and the `DashboardComponent`. To create this two new components, you can use the Angular CLI tool as follows:
+
+```bash
+ng g c welcome --module app.module
+ng g c dashboard --module app.module
+```
+
+It's important to define `--module app.module` because you have another module called `material.module` which makes Angular CLI unable to identify the targeted module automatically.
+
+After running these two commands, open the `welcome.component.html` and replace the code with this:
+
+{% highlight html %}
+{% raw %}
+<div style="text-align:center">
+  <h1>Angular Content Management System</h1>
+  <p>
+    This is a platform for technical writers to manage their blog post contents related to angular.
+    <br> Click on Login to get Started!!!
+  </p>
+</div>
+{% highlight html %}
+{% raw %}
+
+Don't worry about the `DashboardComponent` for now, you will work on it soon.
+
 ### Creating Routes
 
 ### Managing Data - Part 1
