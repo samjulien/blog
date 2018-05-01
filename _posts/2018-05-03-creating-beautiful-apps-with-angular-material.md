@@ -39,7 +39,7 @@ This specification is used by Google in the Android operating system and is also
 
 The idea of this is article is to teach you how to use Angular Material through a hands-on exercise. First, you will check the dependencies that you need in your computer to use and develop with Angular Material, then you will learn how to configure and use different components.
 
-### Setting Up Your Project Environment
+### Setup the Environment for Angular
 
 To work with Angular, you will need [Node.js](https://nodejs.org/en/) and [Angular CLI (Command Line Interface)](https://cli.angular.io/) installed in your development environment. Node.js will provide the packages needed by the CLI to work and the development server so you can check your progress in real time.
 
@@ -53,7 +53,26 @@ npm install -g @angular/cli
 
 > **Note:** Depending on the setup of your computer, you might need to use `sudo` to use the `-g` (global) flag.
 
-### Create a Project
+### Create an Angular Project
+
+Having both Node.js and Angular CLI correctly installed in your computer, you can use the following command to setup a new Angular project:
+
+```bash
+# create a new Angular project under angular-material-tutorial
+ng new angular-material-tutorial
+```
+
+This command will generate a directory/file (under a new directory called `angular-material-tutorial`) structure with a bunch of files that are needed so you can create your Angular applications. To learn the details of this structure, please, check [the Angular CLI documentation](https://github.com/angular/angular-cli).
+
+To help you throughout this tutorial, you can set an environment variable to point to the root directory of your Angular project:
+
+```bash
+# create a variable to point to the root dir
+ROOT_DIR=$(pwd)/angular-material-tutorial
+
+# move into it
+cd $ROOT_DIR
+```
 
 ### Install Angular Material and Angular CDK
 
