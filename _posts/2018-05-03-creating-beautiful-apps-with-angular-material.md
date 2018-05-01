@@ -732,7 +732,217 @@ Now, running your app (`ng serve`) and heading to [`http://localhost:4200/bashbo
 
 ![Angular Material dashboard](https://cdn.auth0.com/blog/angular-material/dashboard.png)
 
-## Securing App  with Auth0
+## Securing Angular Material with Auth0
+
+As you don't want unauthenticated users to create blog posts nor you want them to remove existing ones, you will take advantage of [Auth0](https://auth0.com) to easily secure your app.
+
+So, before integrating Auth0 into your app, you will need to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account</a>. After following the instructions there to create your account, you will need to create an [Auth0 Application](https://auth0.com/docs/applications) to represent your Angular app.
+
+To do so, click on the `New Application` button on your dashboard page. Then, fill the form shown as follows:
+
+- _Application Name:_ Angular Material Tutorial
+- _Application Type:_ Single Page Web Apps
+
+Once finished, Auth0 will show you a screen where you can see tabs like _Quick Start_, _Settings_, and _Addons_. Choose the _Settings_ tab and add `http://localhost:4200/` as a _Allowed Callback URL_. This is the URL that Auth0 is allowed to call after finishing the authentication process (this configuration exists to make the process more secure).
+
+Now, create a new file called `auth.service.ts` in the `./src/app` directory and add the following code to it:
+ 
+```ts
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import * as auth0 from 'auth0-js';
+
+@Injectable()
+export class AuthService {
+
+  auth0 = new auth0.WebAuth({
+    clientID: '<APPLICATION_CLIENT_ID>',
+    domain: '<YOUR_AUTH0_DOMAIN>',
+    responseType: 'token id_token',
+    redirectUri: 'http://localhost:4200/',
+    scope: 'openid'
+  });
+
+  constructor(public router: Router) {
+  }
+
+  public login(): void {
+    this.auth0.authorize();
+  }
+
+  public handleAuthentication(): void {
+    this.auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        window.location.hash = '';
+        this.setSession(authResult);
+        this.router.navigate(['/dashboard']);
+      } else if (err) {
+        this.router.navigate(['/']);
+        console.log(err);
+      }
+    });
+  }
+
+  private setSession(authResult): void {
+    // Set the time that the Access Token will expire at
+    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+    localStorage.setItem('access_token', authResult.accessToken);
+    localStorage.setItem('id_token', authResult.idToken);
+    localStorage.setItem('expires_at', expiresAt);
+  }
+
+  public logout(): void {
+    // Remove tokens and expiry time from localStorage
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('expires_at');
+    // Go back to the home route
+    this.router.navigate(['/']);
+  }
+
+  public isAuthenticated(): boolean {
+    // Check whether the current time is past the
+    // Access Token's expiry time
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    return new Date().getTime() < expiresAt;
+  }
+}
+```
+
+The code in this service, although lengthy, is quite simple. You are just defining an instance of `auth0.WebAuth` to interact with Auth0 and then you are defining a method called `handleAuthentication` that will fetch the tokens returned back by Auth0. Also, there are other handy methods in this service like `isAuthenticated`, `login`, and `logout`. You will use all of them soon.
+
+> **Important!** You will need to replace `<APPLICATION_CLIENT_ID>` and `<YOUR_AUTH0_DOMAIN>` in the code with the values from your Auth0 application. For example, the client id will look like `lU4PgkBaogkZP13Mv1gSkHK6VIH6xIkq` and the domain will look like `bk-tmp.auth0.com`.
+
+Also, before proceeding, you will have to install [the `auth0-js` library](https://github.com/auth0/auth0.js):
+
+```bash
+npm install auth0-js
+```
+
+Now, you can update the `app.component.html` to integrate it with your new service:
+
+```html
+<mat-sidenav-container>
+  <mat-sidenav  #sidenav role="navigation">
+   <mat-nav-list>
+    <a mat-list-item 
+        *ngIf="!auth.isAuthenticated()"
+        (click)="auth.login()">
+      <mat-icon class="icon">input</mat-icon>
+      <span class="label">Login</span>
+    </a>
+    <a mat-list-item
+        *ngIf="auth.isAuthenticated()"
+        routerLink="/">
+      <mat-icon class="icon">home</mat-icon>  
+        <span class="label">Home</span>
+    </a>
+    <a mat-list-item
+      routerLink="/dashboard">
+      <mat-icon class="icon">dashboard</mat-icon>  
+      <span class="label">Dashboard</span>
+    </a>
+    <a  mat-list-item 
+      *ngIf="auth.isAuthenticated()"
+      (click)="auth.logout()" type="button">
+      <mat-icon class="icon">input</mat-icon>
+      <span class="label">LogOut</span>
+    </a>  
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+     <div fxHide.gt-xs>
+       <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+     <div>
+       <a routerLink="/">
+          Material Blog
+       </a>
+     </div>
+     <div fxFlex fxLayout fxLayoutAlign="flex-end"  fxHide.xs>
+        <ul fxLayout fxLayoutGap="20px" class="navigation-items">
+            <li>
+                <a
+                  *ngIf="!auth.isAuthenticated()"
+                  (click)="auth.login()">
+                  <mat-icon class="icon">input</mat-icon>
+                  <span  class="label">Login</span>
+                 </a>
+            </li>
+            <li>
+              <a
+                *ngIf="auth.isAuthenticated()"
+                routerLink="/">
+                  <mat-icon class="icon">home</mat-icon>
+                  <span class="label">Home</span>
+              </a>
+            </li>
+            <li>
+                <a
+                  routerLink="/dashboard">
+                    <mat-icon class="icon">dashboard</mat-icon>
+                    <span class="label">Dashboard</span>
+                </a>
+              </li>
+            <li>
+                <a
+                *ngIf="auth.isAuthenticated()"
+                (click)="auth.logout()" type="button"
+                >
+                  <mat-icon class="icon">input</mat-icon>
+                  <span class="label">LogOut</span>
+                 </a>
+            </li>
+        </ul>
+     </div>
+    </mat-toolbar>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+```
+
+In the new version of this file, you are using the methods define in the service created before to show or hide the login and logout buttons.
+
+Now, you will need to import `AuthService` in the `AppComponent` class and make it fetch the token returned by Auth0. So, open the `app.component.ts` file and replace its contents with this:
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from './auth.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  constructor(public auth: AuthService) {
+    auth.handleAuthentication();
+  }
+}
+```
+
+Lastly, you will need to update the `app.module.ts` file as follows:
+
+```typescript
+// ... other import statements ...
+import {AuthService} from './auth.service';
+
+@NgModule({
+  // ... declarations and imports properties ...
+  providers: [DataService, AuthService],
+  // ... bootstrap property ...
+})
+export class AppModule {}
+```
+
+Running your application now, you will be able to login through Auth0. After loging in, you will see that you are redirected to the dashboard and that the _Logout_ button is shown.
+
+![Angular Material project secured with Auth0](https://cdn.auth0.com/blog/angular-material/integrated-with-auth0.png)
 
 ### Managing Data - Part 2
 
