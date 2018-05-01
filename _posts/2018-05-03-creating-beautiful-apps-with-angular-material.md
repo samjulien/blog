@@ -84,11 +84,31 @@ npm install @angular/material
 
 For now, you won't make any changes into your project's source code. First, you will install a few more cool dependencies.
 
-### Install Animations Module
-
 ### Angular Material Theme
 
+After installing Angular Material, you will configure a [theme](https://material.angular.io/guide/theming) that defines what colors will be used in your Angular Material components. To configure the basic theme, open the `src/styles.css` file and paste the following code in it:
+
+```css
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+```
+
+By the way, if you don't know what IDE (Integrated Development Environment) to use while developing with Angular, [Visual Studio Code](https://code.visualstudio.com/) is a great (and free) alternative.
+
 ### Angular Material Gesture
+
+Some components like [Slide Toggle](https://material.angular.io/components/slide-toggle/overview), [Slider](https://material.angular.io/components/slider/overview), and [Tooltip](https://material.angular.io/components/tooltip/overview) rely on a library called HammerJS to capture touch gestures. So, you will need to install HammerJS and load it into our application.
+
+To do so, from the `$ROOT_DIR` directory, run:
+
+```bash
+npm install hammerjs
+```
+
+After installing it, add the following line at the top of the `src/main.ts` file:
+
+```js
+import 'hammerjs'; 
+``` 
 
 ### Material Icons
 
