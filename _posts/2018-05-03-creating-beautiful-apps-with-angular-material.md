@@ -509,6 +509,229 @@ If you check your application now (through `ng serve`), you will be able to see 
 
 ### Managing Data - Part 1
 
+As your dashboard component has nothing more than a simple message, it's time to focus on enhancing it. The idea of this dashboard is to let users add and remove blog posts. As such, the first thing you will do it to define an interface to represent instances of blog posts.
+
+To do so, create a new file called `Post.ts` inside the `./src/app` directory and add the following code to it:
+
+```ts
+export interface Post {
+  title: string;
+  category: string;
+  date_posted: Date;
+  position: number,
+  body: string
+}
+```
+
+Now, you can use this interface to build a data service to simulate a real application. To create this service, you can run the following command:
+
+```bash
+ng g s data/data --module app.module
+````
+
+Once finished, you can open the `data.service.ts` file created and replace its code with:
+
+```ts
+import {Injectable} from '@angular/core';
+import {Post} from '../Post';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+
+@Injectable()
+export class DataService {
+
+  ELEMENT_DATA: Post[] = [
+    {position: 0, title: 'Post One', category: 'Web Development', date_posted: new Date(), body: 'Body 1'},
+    {position: 1, title: 'Post Two', category: 'Android Development', date_posted: new Date(), body: 'Body 2'},
+    {position: 2, title: 'Post Three', category: 'IOS Development', date_posted: new Date(), body: 'Body 3'},
+    {position: 3, title: 'Post Four', category: 'Android Development', date_posted: new Date(), body: 'Body 4'},
+    {position: 4, title: 'Post Five', category: 'IOS Development', date_posted: new Date(), body: 'Body 5'},
+    {position: 5, title: 'Post Six', category: 'Web Development', date_posted: new Date(), body: 'Body 6'},
+  ];
+  categories = [
+    {value: 'Web-Development', viewValue: 'Web Development'},
+    {value: 'Android-Development', viewValue: 'Android Development'},
+    {value: 'IOS-Development', viewValue: 'IOS Development'}
+  ];
+
+  constructor() {
+  }
+
+  getData(): Observable<Post[]> {
+    return Observable.of<Post[]>(this.ELEMENT_DATA);
+  }
+
+  getCategories() {
+    return this.categories;
+  }
+
+  addPost(data) {
+    this.ELEMENT_DATA.push(data);
+  }
+
+  deletePost(index) {
+    this.ELEMENT_DATA = [...this.ELEMENT_DATA.slice(0, index), ...this.ELEMENT_DATA.slice(index + 1)];
+  }
+
+  dataLength() {
+    return this.ELEMENT_DATA.length;
+  }
+}
+```
+
+In your data service, you have two different arrays: one for storing categories of posts and the other one for storing blog posts.
+
+Now, you can update your dashboard to make use of the data service to render some data. So, open the `dashboard.component.ts` file and replace its code with this:
+
+```ts
+import {Component} from '@angular/core';
+import {DataService} from '../data/data.service';
+import {Post} from '../Post';
+import {DataSource} from '@angular/cdk/table';
+import {Observable} from 'rxjs/Observable';
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
+})
+export class DashboardComponent {
+  constructor(private dataService: DataService) {
+  }
+
+  displayedColumns = ['date_posted', 'title', 'category', 'delete'];
+  dataSource = new PostDataSource(this.dataService);
+}
+
+export class PostDataSource extends DataSource<any> {
+  constructor(private dataService: DataService) {
+    super();
+  }
+
+  connect(): Observable<Post[]> {
+    return this.dataService.getData();
+  }
+
+  disconnect() {
+  }
+}
+```
+
+Then, open the `dashboard.component.html` file and replace everything with:
+
+```html
+<div>
+  <br>
+    <div class="container">
+        <div class="container">
+          <div  fxLayout="column" fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row"  fxLayoutAlign="space-around center" class="content">
+              <div class="blocks" >
+                  <button button="submit" mat-raised-button color="primary">
+                      <mat-icon>add</mat-icon> Add Post
+                  </button>
+              </div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+      <div fxLayout="row" fxLayoutAlign="center center" class="content">
+        <mat-card class="card" >
+          <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
+            <h3>Recent Posts</h3>
+          </mat-card-title>
+          <mat-card-content>
+              <div class="example-container mat-elevation-z8">
+                  <mat-table #table [dataSource]="dataSource">
+                  <ng-container matColumnDef="date_posted">
+                    <mat-header-cell *matHeaderCellDef> Date Posted </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.date_posted  | date: 'd/M/y'}} </mat-cell>
+                  </ng-container>
+                    <ng-container matColumnDef="title">
+                      <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="category">
+                      <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="delete">
+                      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                        <a
+                            type="button">
+                          <mat-icon class="icon">delete</mat-icon>
+                        </a> 
+                      </mat-cell>
+                    </ng-container>   
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                  </mat-table>
+                </div> 
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+Here, you are using some Angular Material Components like `mat-card`, `mat-button`, and `mat-table` to render the list of existing blog posts. Before proceeding, you will have to import these components into the `material.module.ts` file. So, open it and update as follows:
+
+```typescript
+import {NgModule} from '@angular/core';
+
+import {
+  // ... other modules ...
+  MatCardModule,
+  MatButtonModule,
+  MatTableModule,
+} from '@angular/material';
+
+@NgModule({
+  imports: [
+    // ... other modules ...
+    MatCardModule,
+    MatButtonModule,
+    MatTableModule,
+  ],
+  exports: [
+    // ... other modules ...
+    MatCardModule,
+    MatButtonModule,
+    MatTableModule,
+  ]
+})
+export class MaterialModule {}
+```
+
+Now, before checking your application running with these new components, open the `dashboard.component.css` file and add the following content to it:
+
+```css 
+.card {
+  min-width: 80%;
+}
+
+.example-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  min-width: 100%;
+}
+  
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+
+a {
+  cursor: pointer;
+}
+```
+
+Now, running your app (`ng serve`) and heading to [`http://localhost:4200/bashboard`](http://localhost:4200/bashboard), you will see the following screen:
+
+![Angular Material dashboard](https://cdn.auth0.com/blog/angular-material/dashboard.png)
+
 ## Securing App  with Auth0
 
 ### Managing Data - Part 2
