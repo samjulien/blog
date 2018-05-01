@@ -79,7 +79,7 @@ cd $ROOT_DIR
 To install Angular Material as a dependency of your project, run the following command:
 
 ```bash
-npm install @angular/material
+npm install @angular/material @angular/cdk
 ```
 
 For now, you won't make any changes into your project's source code. First, you will install a few more cool dependencies.
@@ -155,6 +155,7 @@ import {MaterialModule} from './material.module';
   // ... declarations property ...
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     MaterialModule,
   ],
   // ... providers and bootstrap properties ...
@@ -162,7 +163,113 @@ import {MaterialModule} from './material.module';
 export class AppModule {}
 ```
 
+> **Note:** You are also adding `BrowserAnimationsModule` so your app can count on some cool animation features (like the shadow on the click of the buttons).
+
 ### Angular Material Sidenav
+
+After defining a centralized place to import Angular Material components, you can focus on adding a navigation bar to your app. For this, you will update the `./src/app/app.module.ts` to look like this:
+
+```typescript
+import {NgModule} from '@angular/core';
+
+import {
+  MatSidenavModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatListModule,
+} from '@angular/material';
+
+@NgModule({
+  imports: [
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatListModule,
+  ],
+  exports: [
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatListModule,
+  ]
+})
+export class MaterialModule {}
+```
+
+This change will make `MatSidenavModule` available in your application. So, now, you can update the app template (`./src/app/app.component.html`) to use this component:
+
+{% highlight html %}
+{% raw %}
+<mat-sidenav-container>
+  <mat-sidenav  #sidenav role="navigation">
+   <mat-nav-list>
+    <a mat-list-item>
+      <mat-icon class="icon">input</mat-icon>
+      <span class="label">Login</span>
+    </a>
+    <a mat-list-item>
+      <mat-icon class="icon">home</mat-icon>  
+        <span class="label">Home</span>
+    </a>
+    <a mat-list-item>
+      <mat-icon class="icon">dashboard</mat-icon>  
+      <span class="label">Dashboard</span>
+    </a>
+    <a  mat-list-item type="button">
+      <mat-icon class="icon">input</mat-icon>
+      <span class="label">LogOut</span>
+    </a>  
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+     <div fxHide.gt-xs>
+       <button mat-icon-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+     <div>
+       <a>
+          Material Blog
+       </a>
+     </div>
+     <div fxFlex fxLayout fxLayoutAlign="flex-end"  fxHide.xs>
+        <ul fxLayout fxLayoutGap="20px" class="navigation-items">
+            <li>
+                <a>
+                  <mat-icon class="icon">input</mat-icon>
+                  <span  class="label">Login</span>
+                 </a>
+            </li>
+            <li>
+              <a >
+                  <mat-icon class="icon">home</mat-icon>
+                  <span class="label">Home</span>
+              </a>
+            </li>
+            <li>
+                <a>
+                    <mat-icon class="icon">dashboard</mat-icon>
+                    <span class="label">Dashboard</span>
+                </a>
+              </li>
+            <li>
+                <a>
+                  <mat-icon class="icon">input</mat-icon>
+                  <span class="label">LogOut</span>
+                 </a>
+            </li>
+        </ul>
+     </div>
+    </mat-toolbar>
+    <main>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+{% endraw %}
+{% endhighlight %}
+
+For now, you won't have anything nice to see in a browser yet, but you will get there soon.
 
 ### Angular Material and Flexbox
 
