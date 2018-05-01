@@ -112,6 +112,19 @@ import 'hammerjs';
 
 ### Material Icons
 
+Another cool thing to add to your project is the [Material Icons](https://material.io/icons/) library. To have access to this huge library of icons, update the `src/index.html` file as follows:
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- ... other tags ... -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<!-- ... body and app root ... -->
+</html>
+```
+
 ## What Will You Build
 
 ### Navigation
