@@ -273,6 +273,93 @@ For now, you won't have anything nice to see in a browser yet, but you will get 
 
 ### Angular Material and Flexbox
 
+To make your life easier when defining the layout of your Angular application, you will take advantage of the Flex layout schema introduced recently on CSS. More specifically, you will use an Angular directive called `fxFlex` to handle the Flex layout.
+
+To use it, install the Flex layout package with the following command:
+
+```bash
+npm install @angular/flex-layout
+````
+
+Then, import and configure it into `src/app.module.ts` as shown here:
+
+```typescript
+// ... other import statements ...
+import {FlexLayoutModule} from '@angular/flex-layout';
+
+@NgModule({
+  // ... declarations property ...
+  imports: [
+    // ... other modules ...
+    FlexLayoutModule,
+  ],
+  // ... providers and bootstrap properties ...
+})
+export class AppModule {}
+```
+
+If you take a close look, you will see that you are already using some features of this package in the navigation bar defined before. For example, you have added directives like `fxLayout`, `fxLayoutAlign`, and other `fxFlex` directives.
+
+Before running your app for the first time, add the following CSS rules to `app.component.css` so your navigation looks a little bit better:
+
+```css
+mat-sidenav-container, mat-sidenav-content, mat-sidenav {
+  height: 100%;
+}
+
+mat-sidenav {
+  width: 250px;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover,
+a:active {
+  color: lightgray;
+}
+
+.navigation-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.icon {
+  display: inline-block;
+  height: 30px;
+  margin: 0 auto;
+  padding-right: 5px;
+  text-align: center;
+  vertical-align: middle;
+  width: 15%;
+}
+
+.label {
+  display: inline-block;
+  line-height: 30px;
+  margin: 0;
+  width: 85%;
+}
+```
+
+Also, add the following rule to `./src/styles.css` so you don't have any white margins around your app:
+
+```css
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+body {
+  margin: 0;
+}
+```
+
+With these rules in place, you can issue `ng serve` from your project root to check your application for the first time.
+
+![Navigation bar with Angular Material](https://cdn.auth0.com/blog/angular-material/navigation.png)
+
 ### More Angular Material Components
 
 ### Creating Routes
