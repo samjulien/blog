@@ -944,9 +944,43 @@ Running your application now, you will be able to login through Auth0. After log
 
 ![Angular Material project secured with Auth0](https://cdn.auth0.com/blog/angular-material/integrated-with-auth0.png)
 
-### Managing Data - Part 2
-
 ### Enabling Data Deletion
+
+Now that your app is secured with Auth0, you will want to allow authenticated users to delete blog posts.
+To do so, you will inject `AuthService` in your `DashboardComponent` class and define a new method called `deletePost` as follows:
+
+```ts
+// ... import statements ...
+import {AuthService} from '../auth.service';
+
+// ... @Component ...
+export class DashboardComponent {
+  constructor(private dataService: DataService, public auth: AuthService) {
+  }
+
+  // ... displayedColumns and dataSource ...
+
+  deletePost(id) {
+    if (this.auth.isAuthenticated()) {
+      this.dataService.deletePost(id);
+      this.dataSource = new PostDataSource(this.dataService);
+    } else {
+      alert('Login in Before');
+    }
+  }
+}
+
+// ... PostDataSource ...
+```
+
+Now, you just have to update the `dashboard.component.html` file to bind the click event of the `delete` button to the `deletePost` method:
+
+```html
+<a   
+  (click)="deletePost(element.position)" type="button">
+  <mat-icon class="icon">delete</mat-icon>
+</a>
+```
 
 ### Enabling Data Input
 
