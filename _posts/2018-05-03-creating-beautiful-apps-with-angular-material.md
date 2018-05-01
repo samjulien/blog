@@ -125,7 +125,11 @@ Another cool thing to add to your project is the [Material Icons](https://materi
 </html>
 ```
 
-## What Will You Build
+## What Will You Build with Angular Material
+
+After setting up the Angular project structure and some dependencies, you will be able to start developing apps. In this article, to learn Angular Material through practical exercises, you will develop a dashboard for a blog engine where users will be able to insert new posts and delete existing ones. This won't be a full fledged application with a backend persistence nor enhanced features. The idea here is to show how cool and easy it is to use Angular Material.
+
+{% include tweet_quote.html quote_text="I'm learning Angular Material through practical exercises!" %}
 
 ### Navigation
 
