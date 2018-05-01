@@ -27,7 +27,13 @@ related:
 
 **TL;DR:** In this article, you will learn how to take advantage of Angular Material to create beautiful and modern Angular applications.
 
-## So Exactly is Angular Material?
+## So, What Exactly is Angular Material?
+
+Angular Material is a third-party package used on Angular projects to facilitate the development process through reutilization of common components like Cards, beautiful Inputs, Data Tables, and so on. The list of available components is big and continues to grow as we speak. So, for a full reference of components with examples, check [the official website](https://material.angular.io/).
+
+With Angular, the entire app is a composition of components and, instead of building and styling components from the group up, you can leverage with Angular Material which provides out-of-the-box styled components that follow the [Material Design Spec](https://material.io/guidelines/).
+
+This specification is used by Google in the Android operating system and is also very popular on the web due to its beautiful UI utilities.
 
 ## Get Setup
 
