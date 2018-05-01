@@ -35,7 +35,7 @@ With Angular, the entire app is a composition of components and, instead of buil
 
 This specification is used by Google in the Android operating system and is also very popular on the web due to its beautiful UI utilities.
 
-## Learning Angular Material
+## Angular Material Tutorial
 
 The idea of this is article is to teach you how to use Angular Material through a hands-on exercise. First, you will check the dependencies that you need in your computer to use and develop with Angular Material, then you will learn how to configure and use different components.
 
@@ -74,7 +74,15 @@ ROOT_DIR=$(pwd)/angular-material-tutorial
 cd $ROOT_DIR
 ```
 
-### Install Angular Material and Angular CDK
+### Install Angular Material
+
+To install Angular Material as a dependency of your project, run the following command:
+
+```bash
+npm install @angular/material
+```
+
+For now, you won't make any changes into your project's source code. First, you will install a few more cool dependencies.
 
 ### Install Animations Module
 
