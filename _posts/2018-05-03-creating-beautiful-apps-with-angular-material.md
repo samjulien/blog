@@ -389,6 +389,124 @@ Don't worry about the `DashboardComponent` for now, you will work on it soon.
 
 ### Creating Routes
 
+Now that you have multiple components, you will need to define some routes so your users can access them. To do so, you can create a file called `app.routes.ts` in the `./src/app` directory and add the following code to it:
+
+```ts
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {WelcomeComponent} from './welcome/welcome.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
+
+const routes: Routes = [
+  {path: '', component: WelcomeComponent},
+  {path: 'dashboard', component: DashboardComponent}
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRouters {}
+```
+
+In this file, you are defining two routes: one for the `WelcomeComponent` and one for the `DashboardComponent`. As such, when you head to [`http://localhost:4200`](http://localhost:4200) you will see the `WelcomeComponent` and when you head to [`http://localhost:4200/dashboard`](http://localhost:4200/dashboard), you will see the `DashboardComponent`.
+
+Besides defining this module, you will need to update the `app.component.html` file to add links to these new routes:
+
+```html
+<mat-sidenav-container>
+  <mat-sidenav  #sidenav role="navigation">
+   <mat-nav-list>
+    <a mat-list-item>
+      <mat-icon class="icon">input</mat-icon>
+      <span class="label">Login</span>
+    </a>
+    <a mat-list-item
+        routerLink="/">
+      <mat-icon class="icon">home</mat-icon>  
+        <span class="label">Home</span>
+    </a>
+    <a mat-list-item
+      routerLink="/dashboard">
+      <mat-icon class="icon">dashboard</mat-icon>  
+      <span class="label">Dashboard</span>
+    </a>
+    <a  mat-list-item 
+        type="button">
+      <mat-icon class="icon">input</mat-icon>
+      <span class="label">LogOut</span>
+    </a>  
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+     <div fxHide.gt-xs>
+       <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+     <div>
+       <a routerLink="/">
+          Material Blog
+       </a>
+     </div>
+     <div fxFlex fxLayout fxLayoutAlign="flex-end"  fxHide.xs>
+        <ul fxLayout fxLayoutGap="20px" class="navigation-items">
+            <li>
+                <a>
+                  <mat-icon class="icon">input</mat-icon>
+                  <span  class="label">Login</span>
+                 </a>
+            </li>
+            <li>
+              <a
+                routerLink="/">
+                  <mat-icon class="icon">home</mat-icon>
+                  <span class="label">Home</span>
+              </a>
+            </li>
+            <li>
+                <a
+                  routerLink="/dashboard">
+                    <mat-icon class="icon">dashboard</mat-icon>
+                    <span class="label">Dashboard</span>
+                </a>
+              </li>
+            <li>
+                <a>
+                  <mat-icon class="icon">input</mat-icon>
+                  <span class="label">LogOut</span>
+                 </a>
+            </li>
+        </ul>
+     </div>
+    </mat-toolbar>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+```
+
+Lastly, you We will need to update the `app.module.ts` file to make use of the new module:
+
+```typescript
+// ... other import statements ...
+import {AppRouters} from './app.routes';
+
+@NgModule({
+  // ... declarations property ...
+  imports: [
+    // ... other imports ...
+    AppRouters,
+  ],
+  // ... providers and bootstrap properties ...
+})
+export class AppModule {}
+```
+
+If you check your application now (through `ng serve`), you will be able to see the contents defined in the HTML file of `WelcomeComponent`. Also, if you click on the _Dashboard_ link, you will see that it loads the "dashboard works!" message.
+
 ### Managing Data - Part 1
 
 ## Securing App  with Auth0
