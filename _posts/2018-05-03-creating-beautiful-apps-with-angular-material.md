@@ -131,11 +131,38 @@ After setting up the Angular project structure and some dependencies, you will b
 
 {% include tweet_quote.html quote_text="I'm learning Angular Material through practical exercises!" %}
 
-### Navigation
-
 ### Importing Material Components
 
-### Working with Angular Material Components
+The first thing you will do is to create a new file called `material.module.ts` in the `./src/app` directory. Inside this file, you will add the following code:
+
+```typescript
+import {NgModule} from '@angular/core';
+
+@NgModule({
+  imports: [],
+  exports: []
+})
+export class MaterialModule {}
+```
+
+The idea of creating a new Angular module (`@NgModule`) is to centralize what you will import from Angular Material in a single file. So, before adding Angular Material components in this file, you will need to import and configure it in your main module (i.e. in the `./src/app/app.module.ts` file) as follows:
+
+```typescript
+// ... other import statements ...
+import {MaterialModule} from './material.module';
+
+@NgModule({
+  // ... declarations property ...
+  imports: [
+    BrowserModule,
+    MaterialModule,
+  ],
+  // ... providers and bootstrap properties ...
+})
+export class AppModule {}
+```
+
+### Angular Material Sidenav
 
 ### Angular Material and Flexbox
 
