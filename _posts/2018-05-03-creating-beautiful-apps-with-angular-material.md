@@ -35,7 +35,9 @@ With Angular, the entire app is a composition of components and, instead of buil
 
 This specification is used by Google in the Android operating system and is also very popular on the web due to its beautiful UI utilities.
 
-## Get Setup
+## Learning Angular Material
+
+The idea of this is article is to teach you how to use Angular Material through a hands-on exercise. First, you will check the dependencies that you need in your computer to use and develop with Angular Material, then you will learn how to configure and use different components.
 
 ### Setting Up Your Project Environment
 
