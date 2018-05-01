@@ -41,6 +41,18 @@ The idea of this is article is to teach you how to use Angular Material through 
 
 ### Setting Up Your Project Environment
 
+To work with Angular, you will need [Node.js](https://nodejs.org/en/) and [Angular CLI (Command Line Interface)](https://cli.angular.io/) installed in your development environment. Node.js will provide the packages needed by the CLI to work and the development server so you can check your progress in real time.
+
+Angular CLI is the tool that helps you create a new Angular project and configure Angular components, services, and so on. You will need it because an Angular project is more than just HTML and script files. That is, An angular project uses [TypeScript](https://www.typescriptlang.org/) which needs to be transpiled and optimized to run browsers. Without Angular CLI, you would need to setup and wire a lot of tools to work together, which would consume too much time.
+
+If you don't have Node.js installed in your computer, proceed to [the download page](https://nodejs.org/en/download/) and follow the instructions there (or use a tool like [N, a Node.js version manager](https://github.com/tj/n) to have multiple versions installed with ease). Then, after installing Node.js, use NPM (which comes along with Node.js) to install Angular CLI:
+
+```bash
+npm install -g @angular/cli
+```
+
+> **Note:** Depending on the setup of your computer, you might need to use `sudo` to use the `-g` (global) flag.
+
 ### Create a Project
 
 ### Install Angular Material and Angular CDK
