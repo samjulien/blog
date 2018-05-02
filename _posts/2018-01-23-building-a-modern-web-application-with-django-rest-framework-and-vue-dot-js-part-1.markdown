@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Building Modern Applications with Django and Vue.js: Part 1"
-description: "In this series, you will create, step by step, a full-stack application with Django and Vue.js."
-longdescription: "Throughout this series, you'll be using Django, Django REST framework, and Vue.js to develop an application with a REST API back-end and a Vue.js front-end. The API will be consumed by the Vue.js front-end with the help of the Axios client library and JWT authentication will be handled by Auth0."
+title: "Building Modern Applications with Django and Vue.js"
+description: "In this article, you will create, step by step, a full-stack application with Django and Vue.js."
+longdescription: "Throughout this article, you will use Django, Django REST framework, and Vue.js to develop an application with a REST API back-end and a Vue.js front-end. The API will be consumed by the Vue.js front-end with the help of Axios (the HTTP client library) and JWT authentication will be handled by Auth0."
 date: 2018-01-23 17:28
 category: Technical Guide, Python, Django
 author:
@@ -28,9 +28,9 @@ related:
 - 2017-09-28-developing-restful-apis-with-python-and-flask
 ---
 
-**TL;DR:** Throughout this series, you'll be using Django, Django REST framework, and Vue.js to develop an application with a REST API back-end and a Vue.js front-end. The API will be consumed by the Vue.js front-end with the help of the Axios client library and JWT authentication will be handled by Auth0.
+**TL;DR:** Throughout this article, you'll be using Django, Django REST framework, and Vue.js to develop an application with a REST API back-end and a Vue.js front-end. The API will be consumed by the Vue.js front-end with the help of Axios (the HTTP client library) and JWT authentication will be handled by Auth0.
 
-You are going to start by installing all the project's requirements, then you will bootstrap the Django and the Vue.js sub-projects.
+You are going to start by installing all the project's requirements, then you will bootstrap Django and Vue.js as sub-projects.
 
 You can find the final source code of the demo project that you will create in this [GitHub repository](https://github.com/auth0-blog/django-vue.js).
 
