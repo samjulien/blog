@@ -984,4 +984,219 @@ Now, you just have to update the `dashboard.component.html` file to bind the cli
 
 ### Enabling Data Input
 
+In the last feature of your app, you will use the dialog component of the Angular Material library to allow users to insert new blog posts. As you want only authenticated users to access this feature and you want to let unauthenticated users that they must login before adding blog posts, you add the `*ngIf="auth.isAuthenticated()"` directive to wrap the _Add Post_ button. So, open the `dashboard.component.html` file and add this directive to the `div class="blocks"` element that wraps this button:
+
+```html
+<div class="blocks" *ngIf="auth.isAuthenticated()">
+  <button button="submit" mat-raised-button color="primary">
+    <mat-icon>add</mat-icon> Add Post
+  </button>
+</div>
+```
+
+Now, right after this block, add the following one:
+
+```html
+<div class="blocks">
+  <a button mat-raised-button color="primary" (click)="auth.login()" *ngIf="!auth.isAuthenticated()">
+    <mat-icon>input</mat-icon>Login to Add Post
+  </a>
+</div>
+```
+
+This will be enough to tell unauthenticated users to login.
+
+Now, to enable users to create new blog posts, you will create a new component called `PostDialogComponent`. To do so, issue:
+
+```bash
+ng g c post-dialog --module app.module
+```
+
+Then, open the `post-dialog-component.html` file and put the following HTML code inside it:
+
+{% highlight html %}
+{% raw %}
+<h1 mat-dialog-title>{{data}}</h1>
+<div mat-dialog-content>
+  <form class="example-form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Post Title" type="text" required [(ngModel)]="blogPost.title" name="name">
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput placeholder="Post Body" required [(ngModel)]="blogPost.body" name="body"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select matInput placeholder="Post Category" required [(ngModel)]="blogPost.category" name="category">
+        <mat-option *ngFor="let cat of categories" [value]="cat.value">
+          {{ cat.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button type="submit" color="primary">Save</button>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button class="close" (click)="onNoClick()" color="warn">Cancel</button>
+</div>
+{% endraw %}
+{% endhighlight %}
+
+In the HTML file, you can see you are using `mat-dialog`, `mat-input`, and `mat-select` from the Angular Material library. So, as you can imagine, you will need to import them in your `material.module.ts` file:
+
+```typescript
+import {NgModule} from '@angular/core';
+
+import {
+  // ... other modules ...
+  MatDialogModule,
+  MatInputModule,
+  MatSelectModule,
+} from '@angular/material';
+
+@NgModule({
+  imports: [
+    // ... other modules ...
+    MatDialogModule,
+    MatInputModule,
+    MatSelectModule,
+  ],
+  exports: [
+    // ... other modules ...
+    MatDialogModule,
+    MatInputModule,
+    MatSelectModule,
+  ]
+})
+export class MaterialModule {}
+```
+
+Besides updating this module, you will need to import and configure the `FormsModule` from `@angular/forms` in the main module. So, open the `app.module.ts` file and update it as follows:
+
+```typescript
+// ... other imports ...
+import {FormsModule} from '@angular/forms';
+
+@NgModule({
+  // ... declarations property ...
+  imports: [
+    // ... other modules ...
+    FormsModule,
+  ],
+  // ... providers and bootstrap ...
+})
+export class AppModule {}
+```
+
+Also, to make your dialog look nice, you can insert the following rules in the `post-dialog-component.css` file:
+
+```css 
+.example-form {
+    display: flex;
+    flex-direction: column;
+}
+  
+.example-form > * {
+    width: 100%;
+}
+
+.close{
+    width: 100%;
+}
+```
+
+Then, you can open the `post-dialog-component.ts` file and replace its code with the following; 
+
+```ts 
+import {Component, EventEmitter, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {DataService} from '../data/data.service';
+
+@Component({
+  selector: 'app-post-dialog',
+  templateUrl: './post-dialog.component.html',
+  styleUrls: ['./post-dialog.component.css']
+})
+export class PostDialogComponent {
+  blogPost = {
+    title: '',
+    body: '',
+    category: '',
+    position: 0,
+    date_posted: new Date()
+  };
+  public event: EventEmitter<any> = new EventEmitter();
+
+  constructor(
+    public dialogRef: MatDialogRef<PostDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dataService: DataService
+  ) {
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  onSubmit(): void {
+    this.blogPost.position = this.dataService.dataLength();
+    this.event.emit({data: this.blogPost});
+    this.dialogRef.close();
+  }
+
+  categories = this.dataService.getCategories();
+}
+```
+
+To make a button open up this dialog box, you need to tell it to do so by binding a click event to the button. So, open the `dashboard.component.html` and modify the button you created before to look like this:
+
+```ts
+<div class="blocks" *ngIf="auth.isAuthenticated()">
+  <button button="submit" mat-raised-button color="primary" (click)="openDialog()">
+    <mat-icon>add</mat-icon> Add Post
+  </button>
+</div>
+```
+
+Then, in the TypeScript file of the `dashboard.component`, you will have update the code as:
+
+```ts 
+// ... other import statements ...
+import {PostDialogComponent} from '../post-dialog/post-dialog.component';
+import {MatDialog} from '@angular/material';
+
+// ... @Component ...
+export class DashboardComponent {
+  constructor(public auth: AuthService, public dialog: MatDialog, private dataService: DataService) {
+  }
+  // ... displayedColumns, dataSource, and deletePost ...
+
+  openDialog(): void {
+    let dialogRef = this.dialog.open(PostDialogComponent, {
+      width: '600px',
+      data: 'Add Post'
+    });
+    dialogRef.componentInstance.event.subscribe((result) => {
+      this.dataService.addPost(result.data);
+      this.dataSource = new PostDataSource(this.dataService);
+    });
+  }
+}
+
+// ... PostDataSource ...
+```
+
+Lastly, open the `./src/app/app.module.ts` file and add the following property to `@NgModule`:
+
+```typescript
+entryComponents: [
+  PostDialogComponent
+],
+```
+
+Now, to see the dialog in action, run `ng serve`, login, and head to [`http://localhost:4200/dashboard`](http://localhost:4200/dashboard). From there, hit the _Add Post_ button and you will see the following screen:
+
+![Angular Material components - showing the dialog component](https://cdn.auth0.com/blog/angular-material/dialog-component.png)
+
+That's it! You have just created you first app with Angular Material. Easy right?!
+
 ## Conclusion
