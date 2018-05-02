@@ -114,7 +114,8 @@ import 'hammerjs';
 
 Another cool thing to add to your project is the [Material Icons](https://material.io/icons/) library. To have access to this huge library of icons, update the `src/index.html` file as follows:
 
-```html
+{% highlight html %}
+{% raw %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -123,7 +124,8 @@ Another cool thing to add to your project is the [Material Icons](https://materi
 </head>
 <!-- ... body and app root ... -->
 </html>
-```
+{% endraw %}
+{% endhighlight %}
 
 ## What Will You Build with Angular Material
 
@@ -279,7 +281,7 @@ To use it, install the Flex layout package with the following command:
 
 ```bash
 npm install @angular/flex-layout
-````
+```
 
 Then, import and configure it into `src/app.module.ts` as shown here:
 
@@ -382,8 +384,8 @@ After running these two commands, open the `welcome.component.html` and replace 
     <br> Click on Login to get Started!!!
   </p>
 </div>
-{% highlight html %}
-{% raw %}
+{% endraw %}
+{% endhighlight %}
 
 Don't worry about the `DashboardComponent` for now, you will work on it soon.
 
@@ -413,7 +415,8 @@ In this file, you are defining two routes: one for the `WelcomeComponent` and on
 
 Besides defining this module, you will need to update the `app.component.html` file to add links to these new routes:
 
-```html
+{% highlight html %}
+{% raw %}
 <mat-sidenav-container>
   <mat-sidenav  #sidenav role="navigation">
    <mat-nav-list>
@@ -486,7 +489,8 @@ Besides defining this module, you will need to update the `app.component.html` f
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
-```
+{% endraw %}
+{% endhighlight %}
 
 Lastly, you We will need to update the `app.module.ts` file to make use of the new module:
 
@@ -527,7 +531,7 @@ Now, you can use this interface to build a data service to simulate a real appli
 
 ```bash
 ng g s data/data --module app.module
-````
+```
 
 Once finished, you can open the `data.service.ts` file created and replace its code with:
 
@@ -619,7 +623,8 @@ export class PostDataSource extends DataSource<any> {
 
 Then, open the `dashboard.component.html` file and replace everything with:
 
-```html
+{% highlight html %}
+{% raw %}
 <div>
   <br>
     <div class="container">
@@ -673,7 +678,8 @@ Then, open the `dashboard.component.html` file and replace everything with:
     </div>
   </div>
 </div>
-```
+{% endraw %}
+{% endhighlight %}
 
 Here, you are using some Angular Material Components like `mat-card`, `mat-button`, and `mat-table` to render the list of existing blog posts. Before proceeding, you will have to import these components into the `material.module.ts` file. So, open it and update as follows:
 
@@ -821,7 +827,8 @@ npm install auth0-js
 
 Now, you can update the `app.component.html` to integrate it with your new service:
 
-```html
+{% highlight html %}
+{% raw %}
 <mat-sidenav-container>
   <mat-sidenav  #sidenav role="navigation">
    <mat-nav-list>
@@ -904,7 +911,8 @@ Now, you can update the `app.component.html` to integrate it with your new servi
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
-```
+{% endraw %}
+{% endhighlight %}
 
 In the new version of this file, you are using the methods define in the service created before to show or hide the login and logout buttons.
 
@@ -986,23 +994,27 @@ Now, you just have to update the `dashboard.component.html` file to bind the cli
 
 In the last feature of your app, you will use the dialog component of the Angular Material library to allow users to insert new blog posts. As you want only authenticated users to access this feature and you want to let unauthenticated users that they must login before adding blog posts, you add the `*ngIf="auth.isAuthenticated()"` directive to wrap the _Add Post_ button. So, open the `dashboard.component.html` file and add this directive to the `div class="blocks"` element that wraps this button:
 
-```html
+{% highlight html %}
+{% raw %}
 <div class="blocks" *ngIf="auth.isAuthenticated()">
   <button button="submit" mat-raised-button color="primary">
     <mat-icon>add</mat-icon> Add Post
   </button>
 </div>
-```
+{% endraw %}
+{% endhighlight %}
 
 Now, right after this block, add the following one:
 
-```html
+{% highlight html %}
+{% raw %}
 <div class="blocks">
   <a button mat-raised-button color="primary" (click)="auth.login()" *ngIf="!auth.isAuthenticated()">
     <mat-icon>input</mat-icon>Login to Add Post
   </a>
 </div>
-```
+{% endraw %}
+{% endhighlight %}
 
 This will be enough to tell unauthenticated users to login.
 
