@@ -51,7 +51,7 @@ This article is composed of the following sections:
 
 ## Introduction to Python and Django
 
-[Python](https://www.python.org/) is a general-purpose programming language and it's among the most popular programming languages in the world. It's readable, efficient, and [easy to learn](http://lifehacker.com/five-best-programming-languages-for-first-time-learners-1494256243/1497409477). Python is also a portable language available for major operating systems such as Linux, Windows, and Mac.
+[Python](https://www.python.org/) is a general-purpose programming language and it's among the most popular programming languages in the world nowadays. It's readable, efficient, and [easy to learn](http://lifehacker.com/five-best-programming-languages-for-first-time-learners-1494256243/1497409477). Python is also a portable language available for major operating systems such as Linux, Windows, and Mac.
 
 For web developers, Python has many great tools and frameworks that make developers more productive and able to build prototypes in no time. The most popular framework for web development in the Python landscape is [Django](https://www.djangoproject.com/). Django is advertised as *the framework for perfectionists with tight deadlines* because of its ability to allow developers to quickly build prototypes.
 
@@ -736,10 +736,6 @@ After authenticating, you will be redirected to your Vue.js application, where t
 
 ## Conclusion and Next Steps
 
-In this article, you have bootstrapped both the Django back-end project and the Vue.js front-end application. You have also added JWT authentication to your back-end using Auth0. In the next part, you will see how to create the REST API using Django REST framework and then how to consume it from the Vue.js front-end using Axios. You will also see how to create our project front-end views.
+In this article, you have bootstrapped both the Django back-end project and the Vue.js front-end application. You have also added JWT authentication to your back-end using Auth0. If you are interested on learning more about how to create REST APIs using Django REST framework and then how to consume it from the Vue.js front-end using Axios, leave a message on the comments so we can know how popular the topic is.
 
-These are some screenshots from the demo project we are going to continue building in the next parts:
-
-![The final Django + Vue.js application](https://cdn.auth0.com/blog/django-vuejs/complete-app.png)
-
-Stay tuned!
+Have fun!
