@@ -1200,3 +1200,5 @@ Now, to see the dialog in action, run `ng serve`, login, and head to [`http://lo
 That's it! You have just created you first app with Angular Material. Easy right?!
 
 ## Conclusion
+
+In this article, you had the chance to use Angular Material components to create a beautiful application without investing too much time thinking about styles. What is great is that besides being easy to use, Angular Material components leverage best practices and a common UI that most users out there are already used to. Awesome, right?
