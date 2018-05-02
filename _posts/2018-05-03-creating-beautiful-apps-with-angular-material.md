@@ -25,7 +25,7 @@ related:
 - 2016-11-07-migrating-an-angular-1-app-to-angular-2-part-1
 ---
 
-**TL;DR:** In this article, you will learn how to take advantage of Angular Material to create beautiful and modern Angular applications.
+**TL;DR:** In this article, you will learn how to take advantage of Angular Material to create beautiful and modern Angular applications. You will start from scratch, installing Node.js and Angular CLI (in case you don't have them yet), then you will install and configure the dependencies needed to develop with Angular Material. You can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/angular-material).
 
 ## So, What Exactly is Angular Material?
 
