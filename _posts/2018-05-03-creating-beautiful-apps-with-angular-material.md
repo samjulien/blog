@@ -37,7 +37,7 @@ This specification is used by Google in the Android operating system and is also
 
 ## Angular Material Tutorial
 
-The idea of this is article is to teach you how to use Angular Material through a hands-on exercise. First, you will check the dependencies that you need in your computer to use and develop with Angular Material, then you will learn how to configure and use different components.
+The idea of this is article is to teach you how to use Angular Material through a hands-on exercise. First, you will check the dependencies that you need on your computer to use and develop with Angular Material, then you will learn how to configure and use different components.
 
 ### Setup the Environment for Angular
 
@@ -55,7 +55,7 @@ npm install -g @angular/cli
 
 ### Create an Angular Project
 
-Having both Node.js and Angular CLI correctly installed in your computer, you can use the following command to setup a new Angular project:
+Having both Node.js and Angular CLI correctly installed on your computer, you can use the following command to set up a new Angular project:
 
 ```bash
 # create a new Angular project under angular-material-tutorial
@@ -82,7 +82,7 @@ To install Angular Material as a dependency of your project, run the following c
 npm install @angular/material @angular/cdk
 ```
 
-For now, you won't make any changes into your project's source code. First, you will install a few more cool dependencies.
+For now, you won't make any changes to your project's source code. First, you will install a few more cool dependencies.
 
 ### Angular Material Theme
 
@@ -129,7 +129,7 @@ Another cool thing to add to your project is the [Material Icons](https://materi
 
 ## What Will You Build with Angular Material
 
-After setting up the Angular project structure and some dependencies, you will be able to start developing apps. In this article, to learn Angular Material through practical exercises, you will develop a dashboard for a blog engine where users will be able to insert new posts and delete existing ones. This won't be a full fledged application with a backend persistence nor enhanced features. The idea here is to show how cool and easy it is to use Angular Material.
+After setting up the Angular project structure and some dependencies, you will be able to start developing apps. In this article, to learn Angular Material through practical exercises, you will develop a dashboard for a blog engine where users will be able to insert new posts and delete existing ones. This won't be a full-fledged application with a backend persistence nor enhanced features. The idea here is to show how cool and easy it is to use Angular Material.
 
 {% include tweet_quote.html quote_text="I'm learning Angular Material through practical exercises!" %}
 
@@ -348,7 +348,7 @@ a:active {
 }
 ```
 
-Also, add the following rule to `./src/styles.css` so you don't have any white margins around your app:
+Also, add the following rule to `./src/styles.css` so you don't have any white margins on your app:
 
 ```css
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
@@ -914,7 +914,7 @@ Now, you can update the `app.component.html` to integrate it with your new servi
 {% endraw %}
 {% endhighlight %}
 
-In the new version of this file, you are using the methods define in the service created before to show or hide the login and logout buttons.
+In the new version of this file, you are using the methods defined in the service created before to show or hide the login and logout buttons.
 
 Now, you will need to import `AuthService` in the `AppComponent` class and make it fetch the token returned by Auth0. So, open the `app.component.ts` file and replace its contents with this:
 
@@ -948,7 +948,7 @@ import {AuthService} from './auth.service';
 export class AppModule {}
 ```
 
-Running your application now, you will be able to login through Auth0. After loging in, you will see that you are redirected to the dashboard and that the _Logout_ button is shown.
+Running your application now, you will be able to log in through Auth0. After logging in, you will see that you are redirected to the dashboard and that the _Logout_ button is shown.
 
 ![Angular Material project secured with Auth0](https://cdn.auth0.com/blog/angular-material/integrated-with-auth0.png)
 
@@ -993,7 +993,7 @@ Now, you just have to update the `dashboard.component.html` file to bind the cli
 
 ### Enabling Data Input
 
-In the last feature of your app, you will use the dialog component of the Angular Material library to allow users to insert new blog posts. As you want only authenticated users to access this feature and you want to let unauthenticated users that they must login before adding blog posts, you add the `*ngIf="auth.isAuthenticated()"` directive to wrap the _Add Post_ button. So, open the `dashboard.component.html` file and add this directive to the `div class="blocks"` element that wraps this button:
+In the last feature of your app, you will use the dialog component of the Angular Material library to allow users to insert new blog posts. As you want only authenticated users to access this feature and you want to let unauthenticated users that they must log in before adding blog posts, you add the `*ngIf="auth.isAuthenticated()"` directive to wrap the _Add Post_ button. So, open the `dashboard.component.html` file and add this directive to the `div class="blocks"` element that wraps this button:
 
 {% highlight html %}
 {% raw %}
@@ -1017,7 +1017,7 @@ Now, right after this block, add the following one:
 {% endraw %}
 {% endhighlight %}
 
-This will be enough to tell unauthenticated users to login.
+This will be enough to tell unauthenticated users to log in.
 
 Now, to enable users to create new blog posts, you will create a new component called `PostDialogComponent`. To do so, issue:
 
@@ -1054,7 +1054,7 @@ Then, open the `post-dialog-component.html` file and put the following HTML code
 {% endraw %}
 {% endhighlight %}
 
-In the HTML file, you can see you are using `mat-dialog`, `mat-input`, and `mat-select` from the Angular Material library. So, as you can imagine, you will need to import them in your `material.module.ts` file:
+In the HTML file, you can see you are using `mat-dialog`, `mat-input`, and `mat-select` from the Angular Material library. So, as you can imagine, you will need to import them into your `material.module.ts` file:
 
 ```typescript
 import {NgModule} from '@angular/core';
@@ -1210,7 +1210,7 @@ Now, to see the dialog in action, run `ng serve`, login, and head to [`http://lo
 
 ![Angular Material components - showing the dialog component](https://cdn.auth0.com/blog/angular-material/dialog-component.png)
 
-That's it! You have just created you first app with Angular Material. Easy right?!
+That's it! You have just created your first app with Angular Material. Easy right?!
 
 ## Conclusion
 
