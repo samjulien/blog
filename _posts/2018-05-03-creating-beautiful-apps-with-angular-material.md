@@ -983,12 +983,13 @@ export class DashboardComponent {
 
 Now, you just have to update the `dashboard.component.html` file to bind the click event of the `delete` button to the `deletePost` method:
 
-```html
-<a   
-  (click)="deletePost(element.position)" type="button">
+{% highlight html %}
+{% raw %}
+<a (click)="deletePost(element.position)" type="button">
   <mat-icon class="icon">delete</mat-icon>
 </a>
-```
+{% endraw %}
+{% endhighlight %}
 
 ### Enabling Data Input
 
