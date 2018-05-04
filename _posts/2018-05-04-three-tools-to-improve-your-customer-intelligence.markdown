@@ -37,13 +37,13 @@ Figuring out your system for customer intelligence will help you avoid potential
 
 [Social Login](https://auth0.com/learn/social-login/) is a feature that allows companies to have a comprehensive view of each of their customers and better understand their needs. By incorporating data from providers like LinkedIn, Amazon, Google, and many more, you can build a full image of these individuals as consumers — adding not only their names and photographs but also the specific brands they follow:
 
-![Social login combines data about your user from multiple sources](/Users/olaf/Desktop/social-login-incorperates-data-from-multiple-sources.png)
+![Social login combines data about your user from multiple sources](https://cdn.auth0.com/blog/three-tools-to-improve-your-customer-intelligence/social-login-incorperates-data-from-multiple-sources.png)
 
 A manager like Auth0 supports 30+ social providers. Depending on your customer base and the type of information you're seeking, you might choose Facebook for personal data or PayPal for purchase history.
 
 {% include tweet_quote.html quote_text="Auth0 supports 30+ social identity providers allowing you to access a comprehensive view of each of your customers and better understand their needs." %}
 
-![Auth0 supports 30+ social identity providers](/Users/olaf/Desktop/auth0-supports-over-30-social-identity-providers.gif)
+![Auth0 supports 30+ social identity providers](https://cdn.auth0.com/blog/three-tools-to-improve-your-customer-intelligence/auth0-supports-over-30-social-identity-providers.gif)
 
 It's relatively simple to add a [Social Login feature](https://auth0.com/learn/social-login/) to your app. In Auth0’s Management Dashboard, click Connections and then Social. From there, just flip on the switch of the selected social network provider, and choose the applications you would like to use from this provider. Since each provider has already verified the users on their platform, this cuts down on the risk of letting in fake accounts.
 
@@ -54,7 +54,7 @@ Incorporating Social Login can be a simple fix that opens the door to numerous a
 To reduce friction on your platform and avoid wasting users' time by having them fill out lengthy forms, [progressive profiling](https://auth0.com/blog/progressive-profiling/) is another tool for gradually building up a customer's profile each time they interact with your product. For example, you might begin with something as simple as requesting their first and last name, along with an email address:
 
 <p style="text-align: center;">
-  <img src="file:///Users/olaf/Desktop/auth0-supports-progressive-profiling-to-build-up-user-data-over-time.png" alt="Auth0 supports progressive profiling to build-up user data over time" width="323"/>
+  <img src="https://cdn.auth0.com/blog/three-tools-to-improve-your-customer-intelligence/auth0-supports-progressive-profiling-to-build-up-user-data-over-time.png" alt="Auth0 supports progressive profiling to build-up user data over time" width="323"/>
 </p>
 
 From there, you might ask for additional details on the second or third login, such as:
@@ -65,7 +65,7 @@ From there, you might ask for additional details on the second or third login, s
 
 All of these answers come together in a full view of each user:
 
-![Auth0 user profiles have a data rich user experience](/Users/olaf/Desktop/auth0-user-profiles-have-a-data-rich-user-experience.png)
+![Auth0 user profiles have a data rich user experience](https://cdn.auth0.com/blog/three-tools-to-improve-your-customer-intelligence/auth0-user-profiles-have-a-data-rich-user-experience.png)
 
 Rich user profiles can allow you to brainstorm appropriate product updates. For example, if a major subset of your users is located in a particular country, you might consider adding a language option to your app or website to smooth their experience. 
 
@@ -80,7 +80,7 @@ To build an even more robust customer view, automatically grab publicly availabl
 The quickly growing CRM tool [ProsperWorks](https://www.prosperworks.com/), for example, works with the [FullContact Person API](https://www.fullcontact.com/developer/customers/prosperworks/) to allow users to add names, photos, and additional data from social profiles into sales contacts.
 
 <p>
-  <img src="file:///Users/olaf/Desktop/display-contact-details-next-to-messages-for-a-richer-understanding-of-your-users.png" alt="Display contact details next to messages for a richer understanding of your users" />
+  <img src="https://cdn.auth0.com/blog/three-tools-to-improve-your-customer-intelligence/display-contact-details-next-to-messages-for-a-richer-understanding-of-your-users.png" alt="Display contact details next to messages for a richer understanding of your users" />
   <small>
     <a href="https://www.fullcontact.com/developer/customers/prosperworks/">[Source]</a>
   </small>
@@ -99,10 +99,10 @@ Your ability to cross-check each of your customers with profile enrichment will 
 Enhanced customer intelligence systems can help your company innovate in myriad ways. Closely observing user behavior can bring to light new ideas for your business. The online dating app [Bumble](https://bumble.com/), for example, recently picked up on the trend that many of its users were also searching for new jobs and friends and exchanging money with subscriptions on other apps. This allowed Bumble to roll out a new line of services:
 
 <p>
-   <img src="file:///Users/olaf/Desktop/bumble-releases-new-products-based-on-user-trends.png" alt="Bumble releases new products based on user trends" />
-   <small>
-     <a href="https://bumble.com/">[Source]</a>
-   </small>
- </p>
+  <img src="https://cdn.auth0.com/blog/three-tools-to-improve-your-customer-intelligence/bumble-releases-new-products-based-on-user-trends.png" alt="Bumble releases new products based on user trends" />
+  <small>
+    <a href="https://bumble.com/">[Source]</a>
+  </small>
+</p>
 
 Deliberate, professional, and tight customer intelligence can allow you to develop entirely new revenue streams. While you can try to do this in-house, many find that it is an excellent capability to turn over to an external provider that spends 24/7 staying on the cutting edge of their specific software, making sure it is as efficient and safe as it can be for customers and end users.
