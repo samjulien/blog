@@ -32,19 +32,21 @@ related:
 
 **TL;DR:** By now, your development workflow must have a solid foundation based on [part 1](https://auth0.com/blog/ruby-on-rails-killer-workflow-with-docker-part-1). You have continuous testing and live reloading set up already. In this second and final part, you'll do three things. First, you will secure your app with [Auth0](https://auth0.com). Then, you'll establish a pipeline to automatically deploy your changes to [Heroku]. Lastly, you'll also use [Travis CI] as a quality gate to run tests before deployment.
 
-## Cloud Authentication by Auth0
+## Identity Management with Auth0
 
-It is better to have Authentication from the start. It will force you to think about modeling records accordingly. This is where you can use the free-tier login given by [Auth0] to try it out.
+It is better to have authentication from the start. It will force you to think about modeling records accordingly. This is where you can use the free-tier login given by [Auth0] to try it out.
 
 ### Auth0 Tenant and Client
 
-If you have not done so already, sign up to [Auth0] and follow the instructions:
+If you have not done so yet, now is a good time to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account</a>. After signing up, follow these instructions:
 
-1. Sign up / Login to Auth0 
-2. Create a domain/tenant
-3. Create a regular web application 
+1. [Go to the Applications page in your Auth0 dashboard](https://manage.auth0.com/#/applications).
+2. Click on the _Create Application_ button.
+3. Input a new for the new application (e.g. "BookShelf").
+4. Select _Regular Web Applications_ as the application type.
+5. Click on the _Create_ button.
 
-This article uses tenant named *tugboat* and a client named *BookShelf*. 
+> This article uses tenant named *tugboat* (i.e. the domain is `tugboat.auth0.com`) and a client named *BookShelf*. 
 
 Once the client is created, within the list of technologies shown, select **Ruby On Rails**. [Auth0] shows the [Quick Start Guide](https://auth0.com/docs/quickstart/webapp/rails/01-login) for rails by default. 
 
@@ -52,15 +54,15 @@ A cool feature of the guide is that the code samples show your client name and o
 
 It also has instructions for some of the most **commonly faced issues**. It will come in handy if you run into any such issues. The focus, for now, is on getting the authentication working and moving on to building the app.
 
-[Auth0] reaches our application through callback URLs. So it is important to tell Auth0 client what the callback URL will be. Under settings section, find a text box that asks for **Allowed Callback URLs** and add this:
+[Auth0] reaches our application through callback URLs. So it is important to tell Auth0 client what the callback URL will be. Under the _Settings_ tab of your new application, find a text box that asks for **Allowed Callback URLs** and add this:
 
 ```bash
 http://localhost:3000/auth/oauth2/callback
 ```
 
-If you try to reach this URL on a browser now, you'll be getting a routing error. 
+Then, hit the _Save Changes_ button on the bottom of the page. If you try to reach this URL on a browser now, you'll be getting a routing error. 
 
-Time to Fix it.
+Time to fix it.
 
 ## Add Auth0 at Rails End
 
