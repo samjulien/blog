@@ -30,7 +30,7 @@ related:
 - 2017-01-03-rails-5-with-auth0
 ---
 
-By now, your development workflow must have a solid foundation based on part 1. You have continuous testing and live reloading set up already. In this second and final part, you'll connect your app to Auth0. You'll establish a pipeline to automatically deploy your changes to [Heroku]. You'll also use [Travis CI] as a quality gate to run tests before deployment.
+**TL;DR:** By now, your development workflow must have a solid foundation based on [part 1](https://auth0.com/blog/ruby-on-rails-killer-workflow-with-docker-part-1). You have continuous testing and live reloading set up already. In this second and final part, you'll do three things. First, you will secure your app with [Auth0](https://auth0.com). Then, you'll establish a pipeline to automatically deploy your changes to [Heroku]. Lastly, you'll also use [Travis CI] as a quality gate to run tests before deployment.
 
 ## Cloud Authentication by Auth0
 
