@@ -97,47 +97,56 @@ docker-compose up --build
 
 ### Secrets Need To Stay So
 
-The **client secret** key from Auth0 should be available for the Rails app, but that has to be a secret. One way is to add it as a plain environment variable. But secrets as environment variables are [not so safe](https://www.engineyard.com/blog/encrypted-rails-secrets-on-rails-5.1) either. Rails 5.2 gives an option to encrypt secrets, store them in a file and commit them to version control. You can read more about it on [Engine Yard](https://www.engineyard.com/blog/rails-encrypted-credentials-on-rails-5.2).
+The **client secret** key from Auth0 should be available for the Rails app, but that has to be a secret. One way is to add it as a plain environment variable. But secrets as environment variables are [not so safe](https://www.engineyard.com/blog/encrypted-rails-secrets-on-rails-5.1) either. 
 
-Get into a shell within the container to start with:
+Rails 5.2 gives an option to encrypt such secrets, in the name of **credentials**, store them in a file and commit them to version control. You can read more about it on [Engine Yard](https://www.engineyard.com/blog/rails-encrypted-credentials-on-rails-5.2). These credentials are stored in `credentials.yml.enc` while the key to decrypt the file is stored within `master.key` file. These two files are _automatically_ generated when you created a new Rails project. 
+
+>**Tip**: It is very important that you do not lose `master.key` file. It is not and should not be added to the repository. Rails project adds `master.key` to `.gitignore` by default, so that it is excluded from version control. There is no way of recovering it if you permanently delete the file. In such cases, you might have to delete `credentials.yml.enc` and run `rails credentials:edit` to generate both the files from scratch. 
+
+While the container is up and running on a terminal, Get into another terminal to access shell within the container:
 
 ```bash
 docker-compose exec --user $(id -u):$(id -g) app /bin/bash
 ```
 
-That takes you to the terminal within the container. Then you'll have a chance to set up secret files.
+That takes you to the terminal within the container. Then you'll have a chance to set up credentials.
 
 Client secret is the value from the Auth0 Application you just created (*BookShelf* in this case). You can find this and the other properties in the same _Settings_ tab where you added the callback URL.
 
 When you are in the terminal within the container, run these commands:
 
 ```bash
-rails secrets:setup
-
 EDITOR=nano rails credentials:edit
 ```
 
-That'll open up the file in an editor within the terminal. It will have `secret_key_base` entry by default, just leave that alone. Add Set it up to look like the one below:
+That command will warn you about `nano` editor not having enough permission. Not to worry. Hit `Enter`. That'll open up the file in an editor within the terminal. It will have `secret_key_base` entry by default, just leave that alone. Add following records right after `secret_key_base`:
 
 ```yml
 # ....
 auth0:
-  client_id: <YOUR_AUTH0_CLIENT_ID>
-  secret: <YOUR_AUTH0_CLIENT_SECRET>
+ client_id: <YOUR_AUTH0_CLIENT_ID>
+ secret: <YOUR_AUTH0_CLIENT_SECRET>
 ```
 
-Please make sure to replace `<YOUR_AUTH0_CLIENT_ID>` and `<YOUR_AUTH0_CLIENT_SECRET>` with the values from your Auth0 Application. The ones shown above are placeholders.
+Please make sure to replace `<YOUR_AUTH0_CLIENT_ID>` and `<YOUR_AUTH0_CLIENT_SECRET>` with the values from your Auth0 Application. The ones shown above are placeholders. Also, leave a new line after `secret` as the last line.
 
-**Warning:** the problem with using an editor in the terminal is, if you leave any syntax errors, it is difficult to open it again. `rails credentials:edit` throws error while trying to fix the very syntax error that is causing the issue. You might have to pull it from your previous commit and redo the changes. 
-
-Nano editor by default shows the keys, but just in case:
-
+You can save the changes by following the keystrokes given in the editor:
 * `Ctrl + o` will save the changes 
 * `Ctrl + x` will close the editor
 
-You might have noticed that the `rails secrets:setup` command asked you to set up the flag `config.read_encrypted_secrets = true`. That's the instruction asking rails to load secrets from the encrypted file. So, you need to uncomment `config.require_master_key = true` in the `config/environments/production.rb` file.
+**Warning:** the problem with using an editor in the terminal is, if you leave any syntax errors, it is difficult to open it again. `rails credentials:edit` throws error while trying to fix the very syntax error that is causing the issue. You might have to pull it from your previous commit and redo the changes. 
 
-You will also set up the `RAILS_MASTER_KEY` on Heroku environment. But that can wait, as the local environment has the master key in the file `master.key` (and that **should not** be included in version control). Rails by default adds the file to `.gitignore` for you.
+You can verify if your changes are saved properly by running the following command within the same shell:
+
+```
+rails credentials:show
+```
+
+You can now `exit` out of the shell.
+
+To instruct rails to load secrets from the encrypted file. So, you need to uncomment `config.require_master_key = true` in the `config/environments/production.rb` file.
+
+You will also set up the `RAILS_MASTER_KEY` on Heroku environment. But that can wait, as the local environment has the master key in the file `master.key`.
 
 ### Add Middleware Strategy
 
@@ -191,7 +200,6 @@ Rails.application.routes.draw do
   root "home#show"
   get "/auth/oauth2/callback" => "auth0#callback"
   get "/auth/failure" => "auth0#failure"
-
 end
 ```
 
@@ -226,13 +234,11 @@ The debug section will be blank for now, as there is no `userinfo` within sessio
 
 Click on that login link and it should take you to a beautiful page provided by [Auth0]. Just use the sign in option provided by Google (or any provider you've switched on within Auth0).
 
-Once you give permission, it should redirect back to the same home page on your app.
+Once you authorize the app to use your domain, it should redirect back to the same home page on your app.
 
 But this time, the `userinfo` from the session is printed for you on the page, along with email and name.  
 
 **Congratulations!** You have effectively set up a trustable cloud authentication system that you can build upon. 
-
-![image of session info]()
 
 ## Travis CI Integration
 
@@ -240,11 +246,13 @@ Next up is to get help from a nice bot. [Travis] allows you to test the applicat
 
 Once you set up a login within Travis-CI, you should be able to add your git repository to the list.
 
-Click on that small **+** button just beside **My repositories**. It should list down your git repositories. If you cannot find it, try **Sync Account** once.
+Click on that small **+** button just beside _My repositories_ on Travis Home Page. It should list down your git repositories. If you cannot find it, try _Sync Account_ once.
 
-You can click on that small cog that denotes settings and you should be able to select when do you want to build.
+Flip the repository on using the checkbox on the left.
 
-Switch on **Build only if .travis.yml is present** option. 
+Click on the small cog that denotes settings and you should be able to select when do you want to build.
+
+Switch on _Build only if .travis.yml is present_ option.
 
 Back at the project folder, add a file named `.travis.yml` to the project root folder with this content:
 
@@ -263,27 +271,30 @@ script:
   - bin/rake 
 ```
 
-Translating that, you are instructing Travis to use `ruby`. `bundle install` is the one that'll take a long time, so you are caching that for future use. You are asking for a `postgresql` service to enable database.
+Translating that, you are instructing Travis to use `ruby`. The command `bundle install` is the one that'll take a long time, so you are caching that for future use. You are asking for a `postgresql` service to enable database.
 
 The actual `script` section enables database migration. You do not have any database yet, but worth making it future proof. 
 
-`before_script` section instructed Travis to use the new `database.travis.yml` by copying it to default `database.yml`. You've also created a database for test region. This is required as the original one is adapted to run tests locally in your docker container test environment:
+The section named`before_script` instructed Travis to use the new `database.travis.yml` by copying it to default `database.yml`. You've also created a database for test region. This is required as the original `database.yml` is adapted to run tests locally in your docker container test environment. But where is the `database.travis.yml` file coming from? That's the one you'll create next:
 
 ```yml
+# config/database.travis.yml
 test:
   adapter: postgresql
   database: auth0app_test
 ```
 
-**Commit and push** your changes to `staging` branch. You should see Travis coming alive once the changes are pushed.
+**Commit and push** your changes to `staging` branch. You should see Travis coming alive once the changes are pushed. You can watch the build and test progress on the tab named _Current_ on the repository page of Travis CI.
 
 The first build **failed!**. Get comfortable reading through the error messages on the Travis build log.
 
-You can see that missing `RAILS_MASTER_KEY` is the reason. You can set it up on Travis repository settings page. You can access it under 'more options' menu.
+You can see that missing `RAILS_MASTER_KEY` is the reason. You can set it up on Travis repository settings page. You can access it under 'more options' menu. 
 
-Under **Environment Variables** section, add a variable named `RAILS_MASTER_KEY` and add the value from your key file stored at `config/master.key`. Ensure you disable `Display value in build log`, that would defeat the whole purpose of keeping secrets.
+>**Tip:** There was a strange behavior on Travis once, where I couldn't find _Settings_ as an entry under _More Options_ menu and I had to go back to _Add Repository_ page to get into settings. **Refresh the repository page** showing _failed build_ in bright red. That would also help you bring things back to normal.
 
-Go back to the **Current** tab on your [TravisCI] repository page and use the option **Restart Build**.
+Under _Environment Variables_ section, add a variable named `RAILS_MASTER_KEY` and fill the value field with the key stored at `config/master.key`. Click _Add_ to save the environment variable. Ensure you disable `Display value in build log`, that would defeat the whole purpose of keeping secrets.
+
+Go back to the _Current_ tab on your [TravisCI] repository page and use the option _Restart Build_.
 
 You should see a **green and happy** badge showing the test was successful. 
 
@@ -295,24 +306,28 @@ Now that your own quality gate is ready, you can move on to publishing your appl
 
 Heroku allows you to create apps for staging and production environment. It also allows automatic deployment from different branches. Free tier allows you to run your app in production mode and test it out.
 
-Sign up to [Heroku] first and set up a link to your GitHub profile. You can do this within **Applications** tab in **Account Settings**.
+Sign up to [Heroku] first and set up a link to your GitHub profile. You can do this within [Applications](https://dashboard.heroku.com/account/applications) tab in **Account Settings**.
 
 Once a link to GitHub profile is in place, You need to follow these steps to create a new pipeline:
 
-1. create a new pipeline within your portfolio. Use the `new` menu at the top right corner.
-2. While creating the pipeline, connect to the **GitHub repository** where you've stored the app.
+1. Come back to the [Heroku home page](https://dashboard.heroku.com/apps) and create a new pipeline within your portfolio. Use the `new` menu at the top right corner.
+2. While creating the pipeline, connect to the _GitHub repository_ where you've stored the app.
 
 Step 2 above will ensure your app is ready for automatic deployment on successful test runs on GitHub (via TravisCI).
 
 ### Setup Staging App
 
-Within the pipeline, click on **Add app** -> **create new app** under staging area. Give it a name like `bookshelfstaging`. Once you create the app, use the arrow menu at the top of the staging card to open menu. You'll have an option to **configure automatic deployment**. Select `staging` branch for automatic deployment and check the option to **wait for CI**.
+Within the _staging_ area on the pipeline page, click on **Add app** -> **create new app**. Give it a name like `bookshelfstaging`. 
 
-Now that your staging app is ready. You can click on the staging link that opens up the detailed staging page. There you'll have fine-grained control over all aspects of the application. 
+Once you create the app, use the arrow menu at the top to access an option named _configure automatic deployment_. Select `staging` branch for automatic deployment, check the option to _wait for CI_ and click on _Enable Automatic Deploy_. You can close that pop up once your changes are applied.
 
-For now, search for a **Postgres** addon under **Resources** tab. Select **Heroku Postgres** from the search results, select **Hobby dev - free** option if you don't want to pay now and click on **Provision**.
+Now that your staging app is ready. You can click on the name you have given under _staging area_ to opens up the detailed staging page. There you'll have fine-grained control over all aspects of the application. 
 
-Your next stop should be **Settings** tab where you can **Reveal Config Vars**. You should be able to see a `DATABASE_URL` in there, which was added by default when you added **Heroku Postgres** addon. But where does this environment variable go? That would be the `config/database.yml` file.
+For now, search for a _Postgres_ addon under _Resources_ tab. Select _Heroku Postgres_ from the search results, select _Hobby dev - free_ option if you don't want to pay now and click on _Provision_.
+
+Your next stop should be the _Settings_ tab where you can _Reveal Config Vars_ within the  _Config Vars_ section. Add a key named `RAILS_MASTER_KEY` and the value for the key will be from `config/master.key`. Click _Add_ to save the changes.
+
+You should be able to see a `DATABASE_URL` in there, which was added by default when you added _Heroku Postgres_ addon. But where does this environment variable go? That would be the `config/database.yml` file.
 
 Change the `production` section to look like this:
 
@@ -324,32 +339,29 @@ production:
 
 In fact, the `database.yml` file has this instruction commented above the `production` section. You can just un-comment the section while commenting out the previous `production` section. 
 
-That should also remind you about the `RAILS_MASTER_KEY`. The same **Config Vars** section allows you to add that as a key and the value for the key will be from `config/master.key`.
-
 Commit the change to `database.yml` file and push it to staging branch. 
 
 This is probably the highest point of the movie. You should be able to see a lot of things coming together. You can watch these live:
 
-* Travis tests the new changes
-* Heroku Pipeline page shows *One check pending*
-* Heroku starts to build the app once Travis tests are completed.
-* Heroku shows a hash for the deployed version.
+* Travis triggers a build and tests the new changes
+* While Travis build is in progress, Heroku Pipeline page shows *One check pending*
+* Heroku starts to build the app once Travis tests are completed. You can view the _Build log_ as the build progresses.
+* Heroku shows a hash for the deployed version along with a message _Deployed just now_.
 
 **You are almost there!** Now you should be able to open the staging region of the app in the browser. Heroku shows that as an option on the arrow menu. In this case, it launches https://bookshelfstaging.herokuapp.com/ . 
 
 ![Heroku automatic deployment](https://cdn.auth0.com/blog/docker-ruby/show_heroku_deployment_after_travis_test.gif)
 
-Just one problem. The *Login* link on the home page is broken. But a helpful message **Callback URL mismatch** is shown by Auth0. That's the hint.
+Just one problem. The *Login* link on the home page is broken. But a helpful message _Callback URL mismatch_ is shown by Auth0. That's the hint.
 
-Go back to your Auth0 client and add the callback URL shown on the error page. Now the **Allowed Callback URLs** box should look like:
+The error page also showed a link to _Applications Settings Page_ to easily go back to your Auth0 client. Add the callback URL shown on the error page. Now the _Allowed Callback URLs_ box should look like:
 
 ```
-http://localhost:3000/auth/oauth2/callback,https://bookshelfstaging.herokuapp.com/auth/oauth2/callback
+http://localhost:3000/auth/oauth2/callback,https://<YOUR_STAGING_APP_NAME>.herokuapp.com/auth/oauth2/callback
 ```
+Use the staging app name that comes up in the URL instead of <YOUR_STAGING_APP_NAME> in the URL above. Note the delimiter `,` right after the first URL. **Remember to save** the changes to settings. That covers both local and staging environment. 
 
-**Remember to save** the changes to settings. That covers both local and staging environment. 
-
-If you go back to the app on the browser and click on **Login** link now, you should see the familiar Auth0 login page. If you try and log in, it should come back to the app with the home page showing plain text details of the login.
+If you go back to the app on the browser and click on _Login_ link now, you should see the familiar Auth0 login page. If you try and log in, it should come back to the app with the home page showing user details in plain text.
 
 That's it. 
 
@@ -357,38 +369,47 @@ That's it.
 
 There is nothing new here. You have already done all that in the staging area. You'll have to repeat the steps.
 
-* Create another application under **production** section. 
-* Use **Configure automatic deployment** option to select deployment from `master` branch this time. 
-* Remember to enable **wait for CI**.
-* Add a **Heroku Postgres** addon.
+* Create another application under _production_ section. 
+* Use _Configure automatic deployment_ option to select deployment from `master` branch this time. 
+* Remember to enable _wait for CI_.
+* Add a _Heroku Postgres_ addon.
 * **No need** to touch `database.yml`. You are already covered there.
-* Add `RAILS_MASTER_KEY` config var.
+* Add `RAILS_MASTER_KEY` config variable.
 
 But how do you deploy something to production? That's when you go back to a very well known workflow on GitHub.
 
-You create a [Pull Request](https://help.github.com/articles/creating-a-pull-request/) on your repository. Helpfully, GitHub shows a message that shows recently published branches, along with an option to **Compare and Pull Request**.  Click on that and it should take you to a new pull request page.
+You create a [Pull Request](https://help.github.com/articles/creating-a-pull-request/) on your repository. Helpfully, GitHub shows a message that shows recently published branches, along with an option to _Compare and Pull Request_.  Click on that and it should take you to a new pull request page.
 
-Give it a good title and description. Watch out for the message **Able to merge** with a green tick. That's a sign that `master` branch can receive changes from your `staging` branch. This will be helpful when more than one person gets to push changes.
+Give it a good title and description. Watch out for the message _Able to merge_ with a green tick. That's a sign that `master` branch can receive changes from your `staging` branch. This will be helpful when more than one person gets to push changes.
 
-Once you create the pull request, the detailed PR page shows **One check pending** and starts to build and test the project via Travis CI.
+Once you create the pull request, the detailed PR page shows _One check pending_ and starts to build and test the pull request via Travis CI.
 
 Note: testing the pull request takes time as the bundler cache is not used from staging branch.
 
-Once all Travis Tests are over, you'll see **All checks** have passed with the merge button turning bright green. You can now safely **merge the pull request** to `master` branch.
+Once all Travis Tests are over, you'll see _All checks_ have passed with the merge button turning bright green. You can now safely _merge the pull request_ to `master` branch. Click on _Merge pull request_ button and then on _Confirm Merge_ button. 
 
-Once the pull request is merged, Travis starts the final test. You can **watch the magic** as it unfolds within the Heroku pipeline page.
+Once the pull request is merged, Travis starts the final test, this time for the commit added to the `master` branch via the PR. You can **watch the magic** as it unfolds within the Heroku pipeline page.
 
-Now, use the **Open app in browser** option from Heroku app. You should see the familiar page. And if you click on the **Login** link, you should see familiar failure!
+>**Tip:** If you want to cut down on one of these builds while following the tutorial, Travis CI settings allow you to switch off _Build for PRs_. In reality, you'd want to leave that option switched on when you have several pull requests coming in.
 
-Auth0 callback URL mismatch. Take that URL shown on that error page and add it to **Allowed Callback URLs** section within Auth0 client.
+Your production app within Heroku should show that the production app has been successfully built and deployed, with a hash. 
+
+In case it shows no activity, give the page a _Refresh_. If your build fails, check the logs. `RAILS_MASTER_KEY` is an important one that can trip you off when it is not set up properly. The _Deploy_ tab within each app gives you an option to manually trigger deploy when you make minor configuration changes.
+
+Now, use the _Open app in browser_ option from Heroku app. You should see the familiar page. And if you click on the _Login_ link, you should see familiar failure!
+
+Auth0 callback URL mismatch. Take that URL shown on that error page and add it to _Allowed Callback URLs_ section within Auth0 client.
 
 It looks like this now:
 
 ```
-http://localhost:3000/auth/oauth2/callback,https://bookshelfstaging.herokuapp.com/auth/oauth2/callback,https://shelvedbooks.herokuapp.com/auth/oauth2/callback
+http://localhost:3000/auth/oauth2/callback,https://<YOUR_STAGING_APP_NAME>.herokuapp.com/auth/oauth2/callback,
+https://<YOUR_PRODUCTION_APP_NAME>.herokuapp.com/auth/oauth2/callback
 ```
 
-Back at the browser, if you load the production application and try **Login**, you should get the user details back on home screen.
+Replace `<YOUR_PRODUCTION_APP_NAME> with your actual production app name. The easiest way is to copy the URL shown on the Auth0 error page, just like what you did while setting up staging.
+
+Back at the browser, if you load the production application and try _Login_, you should get the user details back on home screen.
 
 So much for a full-scale workflow. You are done. From here on out, building your app is where you'd spend your time.
 
@@ -397,7 +418,7 @@ It will be useful for you to be aware of possible issues that you may run into. 
 
 1. In case you get **Cookie Overflow** error, consult this [troubleshooting page](https://auth0.com/docs/quickstart/webapp/rails) from Auth0. Rails has a separate block for *enabling/disabling* caching within the `development.rb`. You might need to enable caching and change `config.cache_store = :null_store` to `:memory_store`
 
- 2. You may also run into **CSRF-Detected** error while trying to log in if session store is not configured properly. Check [this issue](https://github.com/omniauth/omniauth-oauth2/issues/58) and [this one](https://github.com/mkdynamic/omniauth-facebook/issues/73) to see if you have run into one of those scenarios. Setting domain to `:all` while configuring `config/initializers/session_store.rb` helped in development, but introduced the same issue on production. You might find alternative methods in [this wiki page](https://github.com/plataformatec/devise/wiki/How-To:-Use-subdomains).
+2. You may also run into **CSRF-Detected** error while trying to log in if session store is not configured properly. Check [this issue](https://github.com/omniauth/omniauth-oauth2/issues/58) and [this one](https://github.com/mkdynamic/omniauth-facebook/issues/73) to see if you have run into one of those scenarios. Setting domain to `:all` while configuring `config/initializers/session_store.rb` helped in development, but introduced the same issue on production. You might find alternative methods in [this wiki page](https://github.com/plataformatec/devise/wiki/How-To:-Use-subdomains).
 
 ### To The Explorer In You
 
@@ -411,6 +432,15 @@ Take in another cup of your favorite drink. You are going put the authentication
 
 The idea is to allow users to move books between shelves. 
 
+A little primer on Rails components.
+
+* Models are abstractions to database records. They represent the domain.
+* Controllers respond to user interactions. They talk to the models and provide data to the presentation layer.
+* Helpers are utility functions that support controllers and sometimes Views.
+* Views are HTML pages that you see in the browser. They are generated dynamically using the data provided by controllers. There can be static pages too.
+
+You'll create all these now.
+
 ### Models and DB
 
 Start by creating necessary models with the usual commands. You'd just need three models:
@@ -421,7 +451,7 @@ Start by creating necessary models with the usual commands. You'd just need thre
 
 While it is possible to run commands from the host terminal by creating a temporary container each time, it may not be the quickest solution. It is better to get into a bash prompt in the terminal within the container.
 
-Run this while you are in the app folder:
+Make sure that the container is running Rails server and guard. On another terminal, run this (while you are in the project folder):
 
 ```bash
 docker-compose exec --user $(id -u):$(id -g) app /bin/bash
@@ -451,26 +481,32 @@ rails g model Book title:string author:string
 rails g model Shelf place:integer user:references book:references
 ```
 
-`rails g` stands for `rails generate`. That should create database migration files, models, and tests. Before you apply the migrations to the database, **there is one important addition** to the shelves migration file.  Add an index to mark the combination of book and user as a unique combination.
+>Note: `rails g scaffold Book title:string` will create all the routes, controller, and actions along with tests and helper files. Try it and see if you'd like it.
 
-Note: `rails g scaffold Book title:string` will create all the routes, controller, and actions along with tests and helper files. Try it and see if you'd like it.
+`rails g` stands for `rails generate`. That should create database migration files, models, and tests. Before you apply the migrations to the database, **there is one important addition** to the shelves migration file.  Leave the block `create_table` as it is. Add an index to mark the combination of book and user as a unique combination.
 
 ```rb
 # db/migrate/2018...._create_shelves.rb
-class CreateShelves < ActiveRecord::Migration[5.1]
+class CreateShelves < ActiveRecord::Migration[5.2]
   def change
     create_table :shelves do |t|
-     # ...
+      t.integer :place
+      t.references :user, foreign_key: true
+      t.references :book, foreign_key: true
+      t.timestamps
     end
-
     add_index :shelves, [:book_id,:user_id], unique: true
   end
 end
 ```
 
-Of course, you might want to think about a proper indexing strategy for other models.
+Remember to save the file before you move on. Of course, you might want to think about a proper indexing strategy for other models.
 
 Time to apply the database changes. Within the same terminal that runs inside the container, you can run `rails db:migrate` to apply changes.
+
+```bash
+rails db:migrate
+```
 
 The `Shelf` model represents the relationship between models. You'll recognize those from earlier `rails g model` statement. You need to introduce an enum for different types of shelves. 
 
@@ -484,7 +520,8 @@ class Shelf < ApplicationRecord
   scope :by_user, ->(user) { where(user_id: user)} 
 end
 ```
-For a particular user, one book can be under only one shelf. This constrain is added via `validates` statement and this is in line with the `index` created during migration.
+
+For a particular user, one book can be on only one shelf. This constraint is added via `validates` statement and this is in line with the `index` created during migration.
 
 Finally, another scope that filters shelf by a user, this can be used in controllers at a later stage.
 
@@ -501,11 +538,13 @@ class Book < ApplicationRecord
   }
 end
 ```
+
 First two statements set up a `has_many` relationship between shelves and users (through shelves). You need to set up a scope that allows you to pull out books from a particular shelf. You'll use that scope within controllers in a minute.
 
 Finally, the `User` model. It's not huge. In fact, you are not even going to store the name and image attributes to the database. That will be available when the user logs in from Auth0. The only thing you'll store within `User` model is the email.
 
 ```rb
+# app/models/user.rb
 class User < ApplicationRecord
     attr_accessor :name
     attr_accessor :image
@@ -517,6 +556,7 @@ end
 Just to hydrate the database, you can create a seed file with a list of books like this:
 
 ```rb
+# db/seeds.rb
 # Shelf.delete_all
 # Book.delete_all
 books=Book.create([
@@ -527,7 +567,8 @@ books=Book.create([
     {title: 'book5', author: 'author3'},
 ])
 ```
-Run the seeding command on a shell within the container. If you are still within the terminal that generated models, you are right where you need to be and you can skip the `docker-compose exec` and get to `rails db:seed`:
+
+Run the seeding command on a shell within the container. If you are still within the terminal that generated models and migrated DB, you are right where you need to be and you can skip the `docker-compose exec` and get to `rails db:seed`:
 
 ```bash
 docker-compose exec app /bin/bash
@@ -536,8 +577,9 @@ rails db:seed
 
 This will fill the database with a list of books. In case you want to have a fresh start, you can un-comment the first two lines. Since shelf depends on book model, that one needs to be deleted first. Then all the existing books can be deleted, leaving only newly created books. Needless to say **this can cost you** dearly if you run it in production.
 
+Now that the database is ready, you can exit out of the shell within the container.
 
-Now that the database is ready, you can tell your app that such a model exists and how to respond to users when they ask for it.
+Time to tell your app that models are ready and how to respond to users when they ask for it.
 
 ### Authentication Helpers
 
@@ -627,18 +669,17 @@ module LogoutHelper
     hash.map { |k, v| "#{k}=#{URI.escape(v)}" unless v.nil? }.reject(&:nil?).join('&')
   end
 end
-
 ```
 
 This appears to be a complex one, but in reality, all it is doing is just constructing the URL for logout with different parameters. Especially, if you piece domain, path, and query, you'd get something like `tugboat.auth0.com/v2/logout?returnTo=http://localhost:3000/&client_id=u1k...`. 
 
-**Auth0 configuration**: This is an important step where you need to configure [Auth0] client with the following **Allowed Logout URLs**:
+**Auth0 configuration**: This is an important step where you need to configure [Auth0] client with the following _Allowed Logout URLs_:
 
 ```
-http://localhost:3000/, https://bookshelfstaging.herokuapp.com/, https://shelvedbooks.herokuapp.com/
+http://localhost:3000/, https://<YOUR_STAGING_APP_NAME>.herokuapp.com/, https://<YOUR_PRODUCTION_APP_NAME>.herokuapp.com/
 ```
 
-Remember to **save changes**. 
+Use your Heroku pipeline to get actual names for those URLs above. Remember to _Save changes_. 
 
 ### Controllers
 
@@ -670,7 +711,6 @@ class Auth0Controller < ApplicationController
         User.find_or_create_by!(email: email_id)
     end
 end
-
 ```
 
 This controller is something you have set up earlier. It is now ready to create users on the successful callback from Auth0.
@@ -681,7 +721,7 @@ Plain and simple use of the information sent from Auth0. There are loads of othe
 
 As you can see, `logout` action has also been added here and it uses the `logout_url` helper function you've set up earlier.
 
-Books need a controller. That's what you'd do next.
+Books need a controller too. That's what you'd do next.
 
 ```rb
 # app/controllers/books_controller.rb
@@ -730,14 +770,19 @@ class BooksController < ApplicationController
       params.require(:book).permit(:title, :author)
     end
 end
-
 ```
 
 That's a slimmed down version of the controller to make it easy to understand. Rails uses REST architecture and you can see the controller is ready to handle the usual CRUD (Create, Read, Update, Delete) operations. `before_action :authenticate_user!` takes care of authentication before any user can create/amend a book. `authenticate_user` comes from the `Auth0Helper` you've set up earlier.
 
+* The `index` method provides a list of books. The parameter `place` shows where the book is.
+* The `show` method displays a single book.
+* The `new` method routes to a form allowing you to create a new book.
+* The method `create` saves the book sent via the `new` form
+* The method `set_book` finds the current book being used for all actions (except for `index` as it involves more than one book) 
+
 `book_params` method is also an important one that protects you from any malicious extra parameters sent in by the aliens.
 
-*Note*: Just like scaffolding, you can run `rails g resources Books name:string` to generate boilerplate for necessary Model and Controllers. You'll get both HTML and JSON templates generated for you to play around. But writing your own actions helps you think more about each of the actions. Playing with both scaffolding and writing code on your own can help you learn Rails internals.
+>**Note**: Just like scaffolding, you can run `rails g resources Books name:string` to generate boilerplate for necessary Model and Controllers. You'll get both HTML and JSON templates generated for you to play around. But writing your own actions helps you think more about each of the actions. Playing with both scaffolding and writing code on your own can help you learn Rails internals.
 
 Go ahead and create another controller for shelves. This controller binds books to users. 
 
@@ -770,8 +815,8 @@ class ShelvesController < ApplicationController
       params.require(:shelf).permit(:place, :book_id)
     end
 end
-
 ```
+
 To simplify things, you'll set up create and update actions. While creating the shelf, you'll have to pass in the user along with other params. But while updating, the user is already set up, so you just need to pass rest of the params.
 
 You need to give one last visit to the home controller.
@@ -796,7 +841,9 @@ You are now ready to show off your actions to users with views.
 
 ### Views
 
-Views present information from controllers coming from models in HTML format (and also JSON if you are using scaffolding along with `jbuilder` gem). HTML files are stored in `erb` format that allows Ruby programming inside the templates before final HTML files are generated for each request.
+Views present information from controllers coming from models in HTML format (and also JSON if you are using scaffolding along with `jbuilder` gem). 
+
+HTML files are stored in `erb` format that allows Ruby programming inside the templates before final HTML files are generated for each request. It is a preprocessor for Rails views.
 
 Start from the top. `application.html.erb` is the base template for all of your Rails controllers.
 
@@ -813,12 +860,11 @@ Start from the top. `application.html.erb` is the base template for all of your 
     <%= yield %>
   </body>
 </html>
-
 {% endhighlight %}
 
-You need to add a partial for navigation. Include that partial within this `application.html.erb` and that'll show up on all pages. By the way, that small `<%= yield %>` at the bottom is the placeholder for rest of your pages.
+Note that there is only one line you need to introduce. The line starting with `<header>`. This is to add a partial for navigation. Partial is sort of a component or piece of code that can be plugged in. You may see they resemble ReactJS components if you are coming from that end of the universe. Include that partial within this `application.html.erb` and that'll show up on all pages. By the way, that small `<%= yield %>` at the bottom is the placeholder for rest of your pages.
 
-On to the navigation partial now.
+On to the navigation partial now, you need to create a new file named `_navbar.html.erb`. The `_` prefix marks a partial file:
 
 {% highlight html %}
 <!-- app/views/layouts/_navbar.html.erb-->
@@ -838,11 +884,13 @@ On to the navigation partial now.
 </nav>
 {% endhighlight %}
 
-That's just an image and a title on the left. You can use your own logo or the one from the repository to get going. On the right, you will add links to profile and log out.
+That's just an image and a title on the left and a link to _Profile_ and _Logout_ on the right. 
+
+Place that `book.svg` file under `app/assets/images/` folder. Without that file, Rails will throw an error. You can use your own logo or the one from the repository to get going.
 
 Few more views to handle books, and you'll be done.
 
-Start with a view to creating new books.
+Start with a view to creating new books. Create folders as required based on the path given in the comments below:
 
 {% highlight html %}
 <!-- app/views/books/new.html.erb-->
@@ -853,14 +901,13 @@ Start with a view to creating new books.
 </div>
 {% endhighlight %}
 
-The view names are usually derived from controller actions. That's how Rails know which view to render.
+The view names are usually derived from controller actions. That's how Rails knows which view to render.
 
 The corresponding `new` action from controllers gives context under `@book`. That'll be used in the form partial to create a book. That's up next.
 
 {% highlight html %}
 <!-- app/views/books/_form.html.erb-->
 <%= form_with(model: book, local: true) do |form| %>
-
   <div class="field">
     <%= form.label :title %>
     <%= form.text_field :title, id: :book_title %>
@@ -874,9 +921,7 @@ The corresponding `new` action from controllers gives context under `@book`. Tha
   <div class="actions">
     <p></p><%= form.submit %>
   </div>
-
 <% end %>
-
 {% endhighlight %}
 
 Rails takes care of creating a form that can send a POST request to controller action `create` when this form is submitted.
@@ -944,7 +989,7 @@ Final sprint. Index of all books and by their place in the shelf. This again tak
 
 That view takes care of listing all the books sent from `index` action within books controller.
 
-In addition, it has a link to add new books at the bottom. But there is a partial at the top that lists option to filter books by shelves.
+In addition, it has a link to add new books at the top. But there is a partial at the top that lists option to filter books by shelves.
 
 The `shelf_list` partial gives a list of links that will filter books.
 
@@ -988,7 +1033,6 @@ Rails.application.routes.draw do
   resources :books
   resources :shelves
 end
-
 ```
 
 That's some heavy lifting. Lot of changes that **the container needs restarting**. Stop it with `Ctrl + C` and run these on the same terminal:
@@ -998,7 +1042,11 @@ docker-compose down
 docker-compose up
 ```
 
-Try loading http://localhost:3000/ now. It should redirect you to the login page. Once you log in, it should take you to book list.
+Try loading http://localhost:3000/ now. It should redirect you to the login page. _It may not be pretty, yet_. 
+
+It may even have previous login details retained. You can try _Logout_ and _Login_ again. Once you log in, it should take you to book list.
+
+If it does, the soul of the application is alive and kicking. You just need to _beautify_ it.
 
 ### Styles
 
@@ -1008,26 +1056,7 @@ The application views may not be very impressive at first sight. But you should 
 
 You can also use [Sass] files as Rails comes with built-in support. 
 
-For example, add a new file `home.scss`. Add following style rules. 
-
-```scss
-/* app/assets/stylesheets/home.scss */
-
-.card {
-    max-width: 18em;
-    padding: 1em;
-    border-radius: 3px;
-    box-shadow: 0 2px 4px grey;
-    text-align: center;
-    margin: 0 auto;
-    background: rgba(255,255,255,.5);
-}
-
-```
-
-That immediately center aligns text with box shadow and moves the whole section to the center of the screen.
-
-Another example, the top navigation.
+For example, add a new file `header.scss`. Add following style rules. 
 
 ```scss
 /* app/assets/stylesheets/header.scss */
@@ -1048,12 +1077,30 @@ nav {
     }
     li { padding: .5em; }
 }
-
 ```
+
+If you are logged in and on the books index page, that change should reflect on the page navigation bar. Adding new files sometimes might need a manual refresh instead of live reloading. But once you've added a new file, changes to the files are automatically applied to the view on the browser.
+
+Another example, the Home page.
+
+```scss
+/* app/assets/stylesheets/home.scss */
+.card {
+    max-width: 18em;
+    padding: 1em;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px grey;
+    text-align: center;
+    margin: 0 auto;
+    background: rgba(255,255,255,.5);
+}
+```
+
+The file `home.scss` should already be available. Just add those styles, save the file and on the web page, click on _Logout_ to go back go home page.
 
 Have a look at [CSS reference at MDN](https://developer.mozilla.org/en-US/docs/Web/CSS) if you are new to stylesheets. Also, worth checking [Sass](https://sass-lang.com/). Truly, CSS with superpowers. Apart from nesting selector styles, it has several other features. A lot of them are and will come into native CSS. 
 
-I suggest you pull stylesheets from the [repository](https://github.com/vijayabharathib/dockerized-rails-app) to save yourself some time.
+I suggest you pull stylesheets from the [repository](https://github.com/vijayabharathib/dockerized-rails-app) to save yourself some time. You'll see about 4 `.scss` files, take all of them.
 
 ### Deploy
 
@@ -1063,7 +1110,7 @@ You've done a lot of work. In fact, too many files that they should already be o
 * Watch [Heroku] deploy the app to staging. Check.
 * Open staging app and create a book. Uh ho!
 
-There is something missing. That is, you need to migrate the database schema to Heroku. Remember running `rails db:migrate`? You need to tell Heroku to run that command whenever you deploy. Heroku has a release feature mentioned in [this post](https://mentalized.net/journal/2017/04/22/run-rails-migrations-on-heroku-deploy/) will help.
+**There is something missing.** That is, you need to migrate the database schema to Heroku. Remember running `rails db:migrate`? You need to tell Heroku to run that command whenever you deploy. Heroku has a release feature mentioned in [this post](https://mentalized.net/journal/2017/04/22/run-rails-migrations-on-heroku-deploy/) will help.
 
 You need to set up a `Procfile` within the project root directory.
 
@@ -1074,18 +1121,20 @@ release: rails db:migrate
 
 The first one `web` declares the web server. The second one `release` is the one that will be executed once build is completed.
 
+_More Options_ menu on Heroku gives you control over a console within Heroku. You'll find an option _Run Console_ within the application (staging or production) page. You can use that console to run rails commands such as `rails db:create`, `rails db:rollback` and `rails db:migrate` when required. You can ignore `rails db:migrate` as it is automated as part of the release. But you should indeed run `rails db:seed` to hydrate the staging database. 
 
-**More Options** menu gives you control over a console within Heroku. You can use that console to run rails commands such as `rails db:create`, `rails db:rollback` and `rails db:migrate` when required. You should indeed run `rails db:seed` to hydrate the staging database. 
-
-
-Open staging environment in the browser. You can do this from Heroku page itself. Try and create a book. Things should work like they've worked in development now.
+Open staging environment in the browser. You can do this from Heroku page itself. Try and create a book manually. Move books around shelves. Things should work like they've worked in development now.
 
 The reason? `release` tag in the `Procfile` migrated the database schema. So users and books can be created without any trouble.
 
 Great! Take a break, you deserve it!
 
+And you know how to take this to production? Remember creating a pull request between _staging_ and _master_ branches on [GitHub]? The same process should push things to production on Heroku, once you merge the pull request.
+
 **Logs:**
+
 There are three logs on Heroku that you'll find useful.
+
 1. If you open staging pipeline on Heroku, you'll be able to see **log generated during build** under **Activity** tab. This shows the build activities and their status.
 2. The same activity tab will also show **Release log** generated while running the `release` activity in `Procfile`. In this case, it would show database migrations.
 3. You'll also be able to see general application runtime log using **More** options menu at the top right corner.
@@ -1094,7 +1143,7 @@ Use these to find out what's happening when you run into an issue.
 
 ## Debugging
 
-You need a few more blades in your swiss army knife to debug the application. You can use these 4 options depending on what you are debugging.
+Here is a bonus when you run into issues. You need a few more blades in your swiss army knife to debug the application. You can use these 4 options depending on what you are debugging.
 
 ### Debug Information on Views
 
@@ -1167,6 +1216,7 @@ You get a black section with a prompt `>>`. You can run any command that you run
 config.web_console.whitelisted_ips = ['172.19.0.0/16']
 # ... just leave all else intact
 ```
+
 You need to restart the server and access the page again.
 
 Remember to remove the console. Otherwise, add console conditionally for development region alone. Use the same strategy you've used for `<%= debug %>`.
@@ -1186,7 +1236,6 @@ class HomeController < ApplicationController
   end
   # ...
 end
-
 ```
 
 But that would need interaction on the terminal. `docker-compose up` was not built to handle inputs. It just logs the output. See this [issue](https://github.com/docker/compose/issues/4677).
@@ -1203,12 +1252,11 @@ services:
     #...
     tty: true
     stdin_open: true
-
 ```
 
 While debugging with `byebug`, you need to use `docker-compose run --service-ports app` instead of `docker-compose up`. 
 
-Once the server is ready, reload the home page. If you notice, the home page keeps loading for a long time. That is because byebug caught up the execution and waiting for you on the terminal.
+Once the server is ready, reload the home page. If you notice, the home page keeps loading for a long time. That is because `byebug` caught up the execution and waiting for you on the terminal.
 
 Go ahead and have a look at the terminal. `byebug` shows the line where it paused execution. You can type `help` or `var` and hit `Enter` to get some output.
 
@@ -1218,7 +1266,6 @@ Did you notice *anything strange*? Did the characters you typed on the terminal 
 
 More on debugging in the [Rails Guides](http://guides.rubyonrails.org/debugging_rails_applications.html)
 
-
 ## Conclusion
 
 Thank you so much for staying with me so far. I know this is a dense article and it's great you've come this far. Hope this helped you think about creating that one app you had at the back of your mind. Once you get comfortable with the workflow, it encourages you to reuse most of it. Such as the `Gemfile` and `docker-compose.yml`, which makes it easy to spring up new applications.
@@ -1227,7 +1274,7 @@ But that's not all, your journey ends only when you tweak the workflow to improv
 
 I invite you to share your thoughts. Anything that can be improved or anything that could speed things up? Share that in the discussion, it will benefit all of us. See you there.
 
-Finally, thanks to [Bruno Krebs](https://twitter.com/brunoskrebs) for his excellent insights during the review. 
+Finally, thanks to [Bruno Krebs](https://twitter.com/brunoskrebs) for his excellent insights and attention to details during the review. 
 
 [GitHub]: https://github.com/
 [Travis]: https://travis-ci.org/
