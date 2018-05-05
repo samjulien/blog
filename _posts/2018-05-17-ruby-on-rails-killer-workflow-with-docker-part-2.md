@@ -228,7 +228,7 @@ You are now ready to add that much-awaited Login button.
  <%= debug session[:userinfo] %>
 {% endhighlight %}
 
-If you had the container up and running with Guard, and the browser is connected to the livereload server, you should see the changes on the browser immediately.
+If you had the container up and running with Guard, and the browser is connected to the live reload server, you should see the changes on the browser immediately.
 
 The debug section will be blank for now, as there is no `userinfo` within session yet.
 
@@ -339,7 +339,7 @@ production:
 
 In fact, the `database.yml` file has this instruction commented above the `production` section. You can just un-comment the section while commenting out the previous `production` section. 
 
-Commit the change to `database.yml` file and push it to staging branch. 
+Commit the change to `database.yml` file and push it to the staging branch. 
 
 This is probably the highest point of the movie. You should be able to see a lot of things coming together. You can watch these live:
 
@@ -361,7 +361,7 @@ http://localhost:3000/auth/oauth2/callback,https://<YOUR_STAGING_APP_NAME>.herok
 ```
 Use the staging app name that comes up in the URL instead of <YOUR_STAGING_APP_NAME> in the URL above. Note the delimiter `,` right after the first URL. **Remember to save** the changes to settings. That covers both local and staging environment. 
 
-If you go back to the app on the browser and click on _Login_ link now, you should see the familiar Auth0 login page. If you try and log in, it should come back to the app with the home page showing user details in plain text.
+If you go back to the app on the browser and click on the _Login_ link now, you should see the familiar Auth0 login page. If you try and log in, it should come back to the app with the home page showing user details in plain text.
 
 That's it. 
 
@@ -384,7 +384,7 @@ Give it a good title and description. Watch out for the message _Able to merge_ 
 
 Once you create the pull request, the detailed PR page shows _One check pending_ and starts to build and test the pull request via Travis CI.
 
-Note: testing the pull request takes time as the bundler cache is not used from staging branch.
+Note: testing the pull request takes time as the bundler cache is not used from the staging branch.
 
 Once all Travis Tests are over, you'll see _All checks_ have passed with the merge button turning bright green. You can now safely _merge the pull request_ to `master` branch. Click on _Merge pull request_ button and then on _Confirm Merge_ button. 
 
@@ -416,7 +416,7 @@ So much for a full-scale workflow. You are done. From here on out, building your
 **Troubleshooting**: 
 It will be useful for you to be aware of possible issues that you may run into. Lookout for these:
 
-1. In case you get **Cookie Overflow** error, consult this [troubleshooting page](https://auth0.com/docs/quickstart/webapp/rails) from Auth0. Rails has a separate block for *enabling/disabling* caching within the `development.rb`. You might need to enable caching and change `config.cache_store = :null_store` to `:memory_store`
+1. In case you get **Cookie Overflow** error, consult this [troubleshooting page](https://auth0.com/docs/quickstart/webapp/rails) from Auth0. Rails have a separate block for *enabling/disabling* caching within the `development.rb`. You might need to enable caching and change `config.cache_store = :null_store` to `:memory_store`
 
 2. You may also run into **CSRF-Detected** error while trying to log in if session store is not configured properly. Check [this issue](https://github.com/omniauth/omniauth-oauth2/issues/58) and [this one](https://github.com/mkdynamic/omniauth-facebook/issues/73) to see if you have run into one of those scenarios. Setting domain to `:all` while configuring `config/initializers/session_store.rb` helped in development, but introduced the same issue on production. You might find alternative methods in [this wiki page](https://github.com/plataformatec/devise/wiki/How-To:-Use-subdomains).
 
@@ -984,7 +984,6 @@ Final sprint. Index of all books and by their place in the shelf. This again tak
       <% end %>
   </section>
 </div>
-
 {% endhighlight %}
 
 That view takes care of listing all the books sent from `index` action within books controller.
