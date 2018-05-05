@@ -30,7 +30,7 @@ related:
 - 2017-01-03-rails-5-with-auth0
 ---
 
-**TL;DR:** By now, your development workflow must have a solid foundation based on [part 1](https://auth0.com/blog/ruby-on-rails-killer-workflow-with-docker-part-1). You have continuous testing and live reloading set up already. In this second and final part, you'll do three things. First, you will secure your app with [Auth0](https://auth0.com). Then, you'll establish a pipeline to automatically deploy your changes to [Heroku]. Lastly, you'll also use [Travis CI] as a quality gate to run tests before deployment.
+**TL;DR:** By now, your development workflow must have a solid foundation based on [part 1](https://auth0.com/blog/ruby-on-rails-killer-workflow-with-docker-part-1). You have continuous testing and live reloading set up already. In this second and final part, you'll do three things. First, you will secure your app with [Auth0](https://auth0.com). Then, you'll establish a pipeline to automatically deploy your changes to [Heroku]. Lastly, you'll also use [Travis CI][Travis] as a quality gate to run tests before deployment.
 
 {% include tweet_quote.html quote_text="Learn how to use @Docker to put together a modern development workflow for @rails." %}
 
@@ -133,8 +133,9 @@ auth0:
 Please make sure to replace `<YOUR_AUTH0_CLIENT_ID>` and `<YOUR_AUTH0_CLIENT_SECRET>` with the values from your Auth0 Application. The ones shown above are placeholders. Also, leave a new line after `secret` as the last line.
 
 You can save the changes by following the keystrokes given in the editor:
-* `Ctrl + o` will save the changes 
-* `Ctrl + x` will close the editor
+
+- `Ctrl + o` will save the changes;
+- `Ctrl + x` will close the editor;
 
 **Warning:** the problem with using an editor in the terminal is, if you leave any syntax errors, it is difficult to open it again. `rails credentials:edit` throws error while trying to fix the very syntax error that is causing the issue. You might have to pull it from your previous commit and redo the changes. 
 
@@ -227,7 +228,7 @@ You are now ready to add that much-awaited Login button.
   <h2>Built on Ruby on Rails secured with Auth0</h2>
   <a class="btn green" href="/auth/auth0">Login</a>
 </section>
- <%= debug session[:userinfo] %>
+<%= debug session[:userinfo] %>
 {% endhighlight %}
 
 If you had the container up and running with Guard, and the browser is connected to the live reload server, you should see the changes on the browser immediately.
@@ -248,7 +249,7 @@ Next up is to get help from a nice bot. [Travis] allows you to test the applicat
 
 Once you set up a login within Travis-CI, you should be able to add your git repository to the list.
 
-Click on that small **+** button just beside _My repositories_ on Travis Home Page. It should list down your git repositories. If you cannot find it, try _Sync Account_ once.
+Click on that small `+` button just beside _My repositories_ on Travis Home Page. It should list down your git repositories. If you cannot find it, try _Sync Account_ once.
 
 Flip the repository on using the checkbox on the left.
 
@@ -296,7 +297,7 @@ You can see that missing `RAILS_MASTER_KEY` is the reason. You can set it up on 
 
 Under _Environment Variables_ section, add a variable named `RAILS_MASTER_KEY` and fill the value field with the key stored at `config/master.key`. Click _Add_ to save the environment variable. Ensure you disable `Display value in build log`, that would defeat the whole purpose of keeping secrets.
 
-Go back to the _Current_ tab on your [TravisCI] repository page and use the option _Restart Build_.
+Go back to the _Current_ tab on your [TravisCI][Travis]repository page and use the option _Restart Build_.
 
 You should see a **green and happy** badge showing the test was successful. 
 
@@ -350,7 +351,7 @@ This is probably the highest point of the movie. You should be able to see a lot
 * Heroku starts to build the app once Travis tests are completed. You can view the _Build log_ as the build progresses.
 * Heroku shows a hash for the deployed version along with a message _Deployed just now_.
 
-**You are almost there!** Now you should be able to open the staging region of the app in the browser. Heroku shows that as an option on the arrow menu. In this case, it launches https://bookshelfstaging.herokuapp.com/ . 
+**You are almost there!** Now you should be able to open the staging region of the app in the browser. Heroku shows that as an option on the arrow menu. In this case, it launches https://bookshelfstaging.herokuapp.com/. 
 
 ![Heroku automatic deployment](https://cdn.auth0.com/blog/docker-ruby/show_heroku_deployment_after_travis_test.gif)
 
@@ -404,12 +405,12 @@ Auth0 callback URL mismatch. Take that URL shown on that error page and add it t
 
 It looks like this now:
 
-```
+```bash
 http://localhost:3000/auth/oauth2/callback,https://<YOUR_STAGING_APP_NAME>.herokuapp.com/auth/oauth2/callback,
 https://<YOUR_PRODUCTION_APP_NAME>.herokuapp.com/auth/oauth2/callback
 ```
 
-Replace `<YOUR_PRODUCTION_APP_NAME> with your actual production app name. The easiest way is to copy the URL shown on the Auth0 error page, just like what you did while setting up staging.
+Replace `<YOUR_PRODUCTION_APP_NAME>` with your actual production app name. The easiest way is to copy the URL shown on the Auth0 error page, just like what you did while setting up staging.
 
 Back at the browser, if you load the production application and try _Login_, you should get the user details back on home screen.
 
@@ -677,7 +678,7 @@ This appears to be a complex one, but in reality, all it is doing is just constr
 
 **Auth0 configuration**: This is an important step where you need to configure [Auth0] client with the following _Allowed Logout URLs_:
 
-```
+```bash
 http://localhost:3000/, https://<YOUR_STAGING_APP_NAME>.herokuapp.com/, https://<YOUR_PRODUCTION_APP_NAME>.herokuapp.com/
 ```
 
@@ -1099,15 +1100,15 @@ Another example, the Home page.
 
 The file `home.scss` should already be available. Just add those styles, save the file and on the web page, click on _Logout_ to go back go home page.
 
-Have a look at [CSS reference at MDN](https://developer.mozilla.org/en-US/docs/Web/CSS) if you are new to stylesheets. Also, worth checking [Sass](https://sass-lang.com/). Truly, CSS with superpowers. Apart from nesting selector styles, it has several other features. A lot of them are and will come into native CSS. 
+Have a look at [CSS reference at MDN](https://developer.mozilla.org/en-US/docs/Web/CSS) if you are new to stylesheets. Also, worth checking [Sass]. Truly, CSS with superpowers. Apart from nesting selector styles, it has several other features. A lot of them are and will come into native CSS. 
 
 I suggest you pull stylesheets from the [repository](https://github.com/vijayabharathib/dockerized-rails-app) to save yourself some time. You'll see about 4 `.scss` files, take all of them.
 
 ### Deploy
 
-You've done a lot of work. In fact, too many files that they should already be on Git. Commit and Push your changes. 
+You've done a lot of work. In fact, too many files that they should already be on Git. Commit and Push your changes.
 
-* Watch tests as they run on [Travis CI]. Check.
+* Watch tests as they run on [Travis CI][Travis]. Check.
 * Watch [Heroku] deploy the app to staging. Check.
 * Open staging app and create a book. Uh ho!
 
@@ -1283,3 +1284,4 @@ Finally, thanks to [Bruno Krebs](https://twitter.com/brunoskrebs) for his excell
 [Travis]: https://travis-ci.org/
 [Heroku]: https://dashboard.heroku.com
 [Auth0]: http://auth0.com/ 
+[Sass]: https://sass-lang.com/
