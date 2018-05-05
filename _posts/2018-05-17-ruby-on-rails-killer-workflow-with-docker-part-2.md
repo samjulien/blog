@@ -32,6 +32,8 @@ related:
 
 **TL;DR:** By now, your development workflow must have a solid foundation based on [part 1](https://auth0.com/blog/ruby-on-rails-killer-workflow-with-docker-part-1). You have continuous testing and live reloading set up already. In this second and final part, you'll do three things. First, you will secure your app with [Auth0](https://auth0.com). Then, you'll establish a pipeline to automatically deploy your changes to [Heroku]. Lastly, you'll also use [Travis CI] as a quality gate to run tests before deployment.
 
+{% include tweet_quote.html quote_text="Learn how to use @Docker to put together a modern development workflow for @rails." %}
+
 ## Identity Management with Auth0
 
 It is better to have authentication from the start. It will force you to think about modeling records accordingly. This is where you can use the free-tier login given by [Auth0] to try it out.
@@ -1264,6 +1266,8 @@ Go ahead and have a look at the terminal. `byebug` shows the line where it pause
 Did you notice *anything strange*? Did the characters you typed on the terminal never came up, but the output did? It did for me. I'm typing in without looking at the characters. If you know how to solve this, please do let me know!
 
 More on debugging in the [Rails Guides](http://guides.rubyonrails.org/debugging_rails_applications.html)
+
+{% include tweet_quote.html quote_text="I just learnt how @TravisCI, @Docker, and @Rails together. Awesome!" %}
 
 ## Conclusion
 
