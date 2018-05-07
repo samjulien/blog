@@ -760,6 +760,8 @@ export class AppModule { }
 
 The `CUSTOM_ELEMENTS_SCHEMA` allows Angular to ignore unknown tag, since they are Web Components. This prevents the compiler raises errors because of the presence of `<my-rating>` tag in the application's markup. In fact, now you can use this tag in any HTML template.
 
+{% include asides/javascript-at-auth0.markdown %}
+
 ## Summary
 
 In this post we explored how Stencil allows us to create Web Component without too much effort. We used Stencil's syntax to incrementally define a rating component: from the definition of its appearance to the management of interactivity. In the end, we compiled the component for using in production and analyzed a few scenarios of integration.
