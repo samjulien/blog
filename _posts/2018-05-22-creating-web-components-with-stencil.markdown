@@ -41,6 +41,8 @@ In past years a few libraries tried to remedy these Web Component problems provi
 
 In [August 2017 the Ionic team announced](https://www.youtube.com/watch?v=UfD-k7aHkQE) [Stencil.js](https://stenciljs.com), a performant compiler that generates Web Components by combining the best concepts of the most popular UI JavaScript frameworks and libraries. Unlike *Polymer* and *X-Tag*, *Stencil* is not another library that allows you to use Web Components in your project. It is a building tool that allows you to use a high-level abstraction to define your UI components and to generate pure JavaScript code implementing standard-based Web Components. The compiled code runs in all major browsers, since Stencil uses a small polyfill only on browsers that lack some needed features.
 
+{% include tweet_quote.html quote_text="The @stenciljs library is building tool that facilitates the creation of web components that you can use with @reactjs and @angular." %}
+
 So, let's give Stencil a try and see how to build and use a Web Component.
 
 ## Setup of the Stencil Environment
@@ -759,6 +761,8 @@ export class AppModule { }
 ```
 
 The `CUSTOM_ELEMENTS_SCHEMA` allows Angular to ignore unknown tag, since they are Web Components. This prevents the compiler raises errors because of the presence of `<my-rating>` tag in the application's markup. In fact, now you can use this tag in any HTML template.
+
+{% include tweet_quote.html quote_text="Using @stenciljs web components with @reactjs and @angular is easy." %}
 
 {% include asides/javascript-at-auth0.markdown %}
 
