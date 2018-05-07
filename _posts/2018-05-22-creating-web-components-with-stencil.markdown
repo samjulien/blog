@@ -25,7 +25,7 @@ related:
 - 2016-10-05-build-your-first-app-with-polymer-and-web-components
 ---
 
-**TL;DR:** This article will show you how to create Web Components with Stencil, a tool that allows you to use a high level syntax to define components and that generates them based on vanilla JavaScript. Throughout the article, you will build a simple rating component and then you will integrate it with React and Angular. [You can find the final code of this component in this GitHub repository](https://github.com/andychiare/rating-stencil-component).
+**TL;DR:** This article will show you how to create Web Components with Stencil, a tool that allows you to use a high level syntax to define components and that generates them based on vanilla JavaScript. Throughout the article, you will build a simple rating component and then you will integrate it with React and Angular. [You can find the final code of this component in this GitHub repository](https://github.com/auth0-blog/stencial-rating-component).
 
 ---
 
@@ -222,7 +222,7 @@ We assigned an `id` attribute to the component's markup and added a script block
 
 Now we want to add more interactivity to our rating component. We want the number of full stars of the component to follow the mouse movement when it is over it. It should return to its original number when the mouse is out of its area, like in the following animation:
 
-![Animated rating component built with Stencil.](https://cdn.auth0.com/blog/stencil/animated-rating-component.gif)
+![Animated rating component built with Stencil.](https://cdn.auth0.com/blog/stencil/animated-rating-component-v2.gif)
 
 In addition, we want to set a new value when the user clicks on one of the component's stars.
 
@@ -685,6 +685,31 @@ After a few seconds, you will find a `dist` folder in the root of the project fo
 
 In other words, Stencil generates code for different production scenarios. You can bring everything every time or make a selection. Anyway, the minimal content required in a context with HTML and vanilla JavaScript consists of `my-rating.js` file and `my-rating` folder.
 
+So, if you make these changes to your Stencil project, don't forget to update the `./src/index.html` file as follows:
+
+```html
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Stencil Component Starter</title>
+  <script src="/build/my-rating.js"></script>
+  <script>
+    window.onload = function () {
+      let rating = document.getElementById("myRatingComponent");
+      rating.addEventListener("onRatingUpdated", function (event) {
+        alert(event.detail.value);
+      })
+    };
+  </script>
+</head>
+<body>
+<my-rating id="myRatingComponent" max-value="6" value="2"></my-rating>
+</body>
+</html>
+```
+
 ## Using Stencil Component with React and Angular
 
 After building your component, you are ready to use it in your Web application. As we said at the beginning of this post, Web Components are meant to be natively supported by standard browsers as long as they support [the features required by the standard](https://caniuse.com/#search=web%20component). However, as Stencil produces code to polyfill the missing features, you can actually use your Web Component in any recent browser (e.g. Microsoft Edge).
@@ -770,4 +795,4 @@ The `CUSTOM_ELEMENTS_SCHEMA` allows Angular to ignore unknown tag, since they ar
 
 In this post we explored how Stencil allows us to create Web Component without too much effort. We used Stencil's syntax to incrementally define a rating component: from the definition of its appearance to the management of interactivity. In the end, we compiled the component for using in production and analyzed a few scenarios of integration.
 
-The final code of the project developed throughout the post can be downloaded from the [GitHub repository](https://github.com/andychiare/rating-stencil-component).
+The final code of the project developed throughout the post can be downloaded from this [GitHub repository](https://github.com/auth0-blog/stencial-rating-component).
