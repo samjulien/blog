@@ -2,31 +2,30 @@
 layout: post
 title: "Creating Web Components with Stencil"
 description: "A practical tutorial showing how to create Web Components using Stencil."
-longdescription: "This post will show how to use Stencil to create Web Components that can be used in any Web application, regardless the JavaScript framework you are using."
-date: xxxx-xx-xx xx:xx
-category: Technical Guide, Stencil, JavaScript, Web Components
+longdescription: "In this article, you will learn how to use Stencil to create Web Components that can be used in any modern web application. You will start by creating a simple rating component that allows users to choose a number of stars and then you will see how to integrate it with React and Angular."
+date: 2018-05-22 08:30
+category: Technical Guide, Frontend, JavaScript
 author:
   name: "Andrea Chiarelli"
   url: "https://twitter.com/andychiare"
   mail: "andrea.chiarelli.ac@gmail.com"
-  avatar: "https://pbs.twimg.com/profile_images/827888770510880769/nnvUxzSd_400x400.jpg"
+  avatar: "https://cdn.auth0.com/blog/guest-author/andrea-chiarelli.jpg"
 design:
   bg_color: "#2B1743"
   image: https://cdn.auth0.com/blog/webapps-aspnet2-react/logo.png
 tags:
 - stencil
 - javascript
-- web components
-- compiler
-- framework
+- web-components
+- frontend
+- react
+- angular
 related:
-- xxxxxxxxx
-
+- 2017-03-16-web-components-how-to-craft-your-own-custom-components
+- 2016-10-05-build-your-first-app-with-polymer-and-web-components
 ---
 
-**TL;DR:** This post will show you how to create Web Components by using Stencil, a tool that allows you to use a high level syntax to define components and that generates Web Components based on vanilla JavaScript. In the article we will build a simple Web Component whose [final code you can find in this GitHub repository](https://github.com/andychiare/rating-stencil-component).
-
-
+**TL;DR:** This article will show you how to create Web Components with Stencil, a tool that allows you to use a high level syntax to define components and that generates them based on vanilla JavaScript. Throughout the article, you will build a simple rating component and then you will integrate it with React and Angular. [You can find the final code of this component in this GitHub repository](https://github.com/andychiare/rating-stencil-component).
 
 ---
 
@@ -532,7 +531,7 @@ By declaring a prop as mutable you allow it to be changed from inside the compon
 
 ## Emitting events
 
-Stencil also allows to emit events so that users of your component can be informed when something happens. For example, you could emit an event when the current value of your rating component changes. Let's make a few changes to the code of the component:
+Stencil also allows you to emit events so that users of your component can be informed when something happens. For example, you could emit an event when the current value of your rating component changes. Let's make a few changes to the code of the component:
 
 ```typescript
 import  { Component, Prop, State, EventEmitter, Event } from  '@stencil/core';
@@ -615,7 +614,7 @@ We simply added an event listener that will show an alert with the new value ass
 
 ## Building for production
 
-Now that we have a working component and are satisfied with its features, we can prepare it for production building. Since we used the component starter project, you will found references to a generic component's name. For example, if you open the `stencil.config.js` file in a text editor, you will find the following content:
+Now that we have a working component and are satisfied with its features, we can prepare it for production building. Since we used the component starter project, you will find references to a generic component's name. For example, if you open the `stencil.config.js` file in a text editor, you will find the following content:
 
 ```javascript
 exports.config = {
@@ -635,16 +634,14 @@ exports.devServer = {
   root: 'www',
   watchGlob: '**/**'
 }
-
 ```
 
-This file contains Stencil specific config options, and among the others you can find the generic `mycomponent` name assigned to the `namespace` property. You might want to change it into a more meaningful name, say for example `my-rating`.
+This file contains Stencil specific config options and, among the others, you can find the generic `mycomponent` name assigned to the `namespace` property. You might want to change it into a more meaningful name, say for example `my-rating`.
 
 Even the `package.json` file contains some generic names:
 
-```json
+```js
 {
-  "name": "my-component{
   "name": "my-component",
   "version": "0.0.1",
   "description": "Stencil Component Starter",
@@ -655,7 +652,7 @@ Even the `package.json` file contains some generic names:
     "dist/"
   ],
   "browser": "dist/mycomponent.js",
-  ...
+  // ...
 }
 ```
 
@@ -681,21 +678,16 @@ Once you have prepared your build configuration, type the command `npm run build
 
 After a few seconds, you will find a `dist` folder in the root of the project folder with everything you need to use your brand new Web Component. This folder contains three subfolders and one file:
 
-- `my-rating.js`
-  This file is the entry point of our component.
-
-- `collection`
-  This folder is useful when you are building a complete application with Stencil, since it allows to share components more efficiently
-- `my-rating`
-  This folder contains the compiled code of your Stencil component implementing a true Web Component
-- `types`
-  This folder contains the TypeScript definitions that may be useful when you use your component in a TypeScript application
+- `my-rating.js`: This file is the entry point of our component.
+- `collection`: This folder is useful when you are building a complete application with Stencil, since it allows to share components more efficiently.
+- `my-rating`: This folder contains the compiled code of your Stencil component implementing a true Web Component.
+- `types`: This folder contains the TypeScript definitions that may be useful when you use your component in a TypeScript application.
 
 In other words, Stencil generates code for different production scenarios. You can bring everything every time or make a selection. Anyway, the minimal content required in a context with HTML and vanilla JavaScript consists of `my-rating.js` file and `my-rating` folder.
 
 ## Using the component in your application
 
-After building your component, you are ready to use it in your Web application. As we said at the beginning of this post, Web Components are meant to be natively supported by standard browsers as long as they support [the features required by the standard](https://caniuse.com/#search=web%20component). Stencil produces code to polyfill the missing features, so you can actually use your Web Component in any recent browser.
+After building your component, you are ready to use it in your Web application. As we said at the beginning of this post, Web Components are meant to be natively supported by standard browsers as long as they support [the features required by the standard](https://caniuse.com/#search=web%20component). However, as Stencil produces code to polyfill the missing features, you can actually use your Web Component in any recent browser (e.g. Microsoft Edge).
 
 In order to use your rating component in a plain HTML page you should simply insert a script tag in the head section with a reference to the `my-rating.js` file, as shown in the following example:
 
@@ -723,7 +715,7 @@ In order to use your rating component in a plain HTML page you should simply ins
 
 Here we created an HTML page with the same logic we used in the development environment.
 
-If you have an application built with React, you can still use your rating component without any problem. Assuming you have built your React app with [create-react-app](https://github.com/facebook/create-react-app), you need to copy the folder containing the distribution code inside the `public` folder of your project. Then open the `index.html` file and put in it the same  HTML script element we've seen for the vanilla JavaScript case. Now you can use the `<my-rating>` tag inside any JSX expression in your application. For example, the following is the standard App component created by `create-react-app`  with the rating component used in the JSX:
+If you have an application built with React, you can still use your rating component without any problem. Assuming you have built your React app with [create-react-app](https://github.com/facebook/create-react-app), you need to copy the folder containing the distribution code (`dist`) inside the `public` folder of your project. Then open the `index.html` file and put in it the same HTML script element we've seen for the vanilla JavaScript case. Now you can use the `<my-rating>` tag inside any JSX expression in your application. For example, the following is the standard App component created by `create-react-app` with the rating component used in the JSX:
 
 ```javascript
 import React, { Component } from 'react';
@@ -768,7 +760,7 @@ import { AppComponent } from './app.component';
 export class AppModule { }
 ```
 
-The CUSTOM_ELEMENTS_SCHEMA allows Angular to ignore unknown tag, since they are Web Components. This prevents the compiler raises errors because of the presence of `<my-rating>` tag in the application's markup. In fact, now you can use this tag in any HTML template.
+The `CUSTOM_ELEMENTS_SCHEMA` allows Angular to ignore unknown tag, since they are Web Components. This prevents the compiler raises errors because of the presence of `<my-rating>` tag in the application's markup. In fact, now you can use this tag in any HTML template.
 
 ## Summary
 
