@@ -245,10 +245,6 @@ export  class  MyRatingComponent  {
   
   @State() starList: Array<object> = [];
 
-  componentWillLoad() {
-    this.createStarList();
-  }
-
   createStarList() {
     let starList = [];
 
@@ -294,10 +290,6 @@ export  class  MyRatingComponent  {
   @Prop() value: number = 0;
 
   @State() starList: Array<object> = [];
-
-  componentWillLoad() {
-    this.createStarList(this.value);
-  }
 
   setValue(newValue) {
     this.value = newValue;
