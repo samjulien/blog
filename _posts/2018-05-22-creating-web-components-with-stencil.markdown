@@ -49,7 +49,7 @@ So, let's give Stencil a try and see how to build and use a Web Component.
 
 To become familiar with *Stencil*, we are going to build a rating Web Component, that is a UI component allowing the user to provide his feedback about a product, an article or whatever by assigning a number of stars like in the following picture:
 
-![](./xxx-images/starRating.png)
+![Stencil Component that you will build throught the tutorial](https://cdn.auth0.com/blog/stencil/rating-component.png)
 
 As a first step towards this goal, you need to setup the *Stencil* development environment. So, be sure to get installed at least version 6.11.0 of [Node.js](https://nodejs.org) and then clone the component starter project from the Ionic team's GitHub repository, as shown below:
 
@@ -64,11 +64,11 @@ These commands clone the `stencil-component-starter` repository into a local fol
 
 The component starter project provides a standard *Node.js* development environment. In particular, you can see a few configuration files in the root folder and the `src` folder containing a folder structure, as shown in the following picture:
 
-![](E:\Data\xxxPersonal\stencil-test\my-starter-web-component\my-component\img\project-folders.png)
+![Basic directory structure of a Stencil project.](https://cdn.auth0.com/blog/stencil/basic-directory-structure.png)
 
 The component starter project contains a very basic and working component that you can see in action by typing `npm start`. After a few seconds a browser window like the following will be open:
 
-![](./xxx-images/running-starter-component.png)
+![A basic component built with Stencil.](https://cdn.auth0.com/blog/stencil/initial-component.png)
 
 We are going to build our component by exploiting the infrastructure of this basic project.
 
@@ -78,7 +78,7 @@ In order to implement our rating component, let's create a `my-rating-component`
 
 ```css
 .rating {
-    color: orange;
+  color: orange;
 }
 ```
 
@@ -88,23 +88,23 @@ The `.tsx` file will contain the following TypeScript code:
 import  { Component } from  '@stencil/core';
 
 @Component({
-   tag: 'my-rating',
-   styleUrl: 'my-rating-component.css',
-   shadow: true
+  tag: 'my-rating',
+  styleUrl: 'my-rating-component.css',
+  shadow: true
 })
 export  class  MyRatingComponent  {
-   render() {
+  render() {
     return  (
       <div>
         <span class="rating">&#x2605;</span>
-		<span class="rating">&#x2605;</span>
-		<span class="rating">&#x2605;</span>
-		<span class="rating">&#x2606;</span>
-		<span class="rating">&#x2606;</span>
-		<span class="rating">&#x2606;</span>
+        <span class="rating">&#x2605;</span>
+        <span class="rating">&#x2605;</span>
+        <span class="rating">&#x2606;</span>
+        <span class="rating">&#x2606;</span>
+        <span class="rating">&#x2606;</span>
       </div>
     );
-   }
+  }
 }
 ```
 
@@ -133,7 +133,7 @@ Now that you have defined your first component, you can can remove the default c
 
 As you can see, the body of the HTML page contains the newly defined `<my-rating>` tag that identifies our component. After saving the `index.html` file, type `npm start` in a console window and you will see your component in a browser as in the following picture:
 
-![](./xxx-images/basic-component.png)
+![First version of the Stencil rating component.](https://cdn.auth0.com/blog/stencil/initial-rating-component.png)
 
 > **Note**: The Stencil development environment provides support for hot reloading, so if your environment is running after an `npm start`, any changes to the project's files will cause its automatic rebuilding and running. This means that you don't need to type again `npm start`.
 
@@ -189,7 +189,7 @@ Finally, the `createStarList()` method dynamically creates the sequence of the s
 
 By applying these changes you will get the following result:
 
-![](./xxx-images/component-with-properties.png)
+![Stencil rating component running with props.](https://cdn.auth0.com/blog/stencil/rating-component-with-props.png)
 
 ## The Reactive Nature of Properties on Stencil
 
@@ -222,7 +222,7 @@ We assigned an `id` attribute to the component's markup and added a script block
 
 Now we want to add more interactivity to our rating component. We want the number of full stars of the component to follow the mouse movement when it is over it. It should return to its original number when the mouse is out of its area, like in the following animation:
 
-![](E:/Data/xxxPersonal/Auth0/fork/blog/_posts/xxx-images/animated-rating-component.gif)
+![Animated rating component built with Stencil.](https://cdn.auth0.com/blog/stencil/animated-rating-component.gif)
 
 In addition, we want to set a new value when the user clicks on one of the component's stars.
 
@@ -693,7 +693,7 @@ In order to use your rating component in a plain HTML page you should simply ins
 
 ```html
 <!DOCTYPE html>
-<htmllang="en">
+<html dir="ltr" lang="en">
 <head>
   <meta charset="utf-8">
   <title>My Application</title>
