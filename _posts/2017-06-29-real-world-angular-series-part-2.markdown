@@ -3,7 +3,7 @@ layout: post
 title: "Real-World Angular Series - Part 2: Authentication and Data Modeling"
 description: "Build and deploy a real-world app with MongoDB, Express, Angular, and Node (MEAN): authentication, authorization, and data modeling."
 date: 2017-06-29 8:30
-category: Technical guide, Angular, Angular 4
+category: Technical guide, Angular, Angular 6
 banner:
   text: "Auth0 makes it easy to add authentication to your Angular application."
 author:
@@ -75,10 +75,10 @@ Let's pick up right where we left off [last time](https://auth0.com/blog/real-wo
 First let's install a new dependency. We need the [auth0-js](https://www.npmjs.com/package/auth0-js) package to interface with our [Auth0 account](https://auth0.com/blog/real-world-angular-series-part-1#auth0-setup). Install this package with npm from the project root:
 
 ```bash
-$ npm install auth0-js --save
+$ npm install auth0-js@latest --save
 ```
 
-### Environment Configuration
+### Dynamic Environment Configuration
 
 Let's create a file to store information about our app's environment. We're currently developing on `localhost:4200`, but the app will be deployed on the Node server eventually, and in production, it will run on a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy). We'll need to make sure our development environment doesn't break our production environment and vice versa.
 
@@ -101,6 +101,8 @@ export const ENV = {
 ```
 
 This code detects the host environment and sets the app's base URI and base API URI. We'll import this `ENV` configuration wherever we need to detect and use these URIs.
+
+> **Note:** Another way to do this would be to set up your `environments/environment.*.ts` files with environment-dependent settings. In our app, we will allow this to be generated dynamically based on the URL, but feel free to use the `environment.*.ts` files instead if you prefer.
 
 ### Authentication Configuration
 
@@ -145,7 +147,7 @@ Now open the generated `auth.service.ts` file and add the necessary code to our 
 // src/app/auth/auth.service.ts
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { AUTH_CONFIG } from './auth.config';
 import * as auth0 from 'auth0-js';
 
