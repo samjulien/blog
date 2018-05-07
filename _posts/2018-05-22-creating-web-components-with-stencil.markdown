@@ -245,6 +245,10 @@ export  class  MyRatingComponent  {
   
   @State() starList: Array<object> = [];
 
+  componentWillLoad() {
+    this.createStarList();
+  }
+
   createStarList() {
     let starList = [];
 
