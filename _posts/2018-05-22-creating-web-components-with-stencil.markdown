@@ -295,6 +295,10 @@ export  class  MyRatingComponent  {
 
   @State() starList: Array<object> = [];
 
+  componentWillLoad() {
+    this.createStarList(this.value);
+  }
+
   setValue(newValue) {
     this.value = newValue;
     this.createStarList(this.value);
