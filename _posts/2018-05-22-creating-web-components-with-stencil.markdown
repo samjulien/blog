@@ -35,7 +35,7 @@ Have you ever struggled with integrating UI components implemented for different
 
 Web Components are a set of [standard specifications](https://www.webcomponents.org/specs) that allow to create custom and reusable components by simply using HTML, CSS and JavaScript. In other words, Web Components allow you to define new custom HTML tags and behaviours by using standard technologies. These custom components should be natively supported by any Web browser, regardless the framework you are using to build your Web pages or your Web application. This should be the end of any JavaScript library interoperability nightmare, but... but there are still a few problems: mainly [the browser support for all the features](https://caniuse.com/#search=web%20component) and the low level of Web Components APIs.
 
-## How Stencil fits in the Web Components world
+## How Stencil Fits in the Web Components World
 
 In past years a few libraries tried to remedy these Web Component problems providing a higher level of abstraction and filling the browser's lack of support regarding some basic features. Among others, [Polymer](https://www.polymer-project.org/) and [X-Tag](https://x-tag.github.io/) helped many developers to adopt Web Components in their projects.
 
@@ -43,7 +43,7 @@ In [August 2017 the Ionic team announced](https://www.youtube.com/watch?v=UfD-k7
 
 So, let's give Stencil a try and see how to build and use a Web Component.
 
-## Setup of the Stencil environment
+## Setup of the Stencil Environment
 
 To become familiar with *Stencil*, we are going to build a rating Web Component, that is a UI component allowing the user to provide his feedback about a product, an article or whatever by assigning a number of stars like in the following picture:
 
@@ -70,7 +70,7 @@ The component starter project contains a very basic and working component that y
 
 We are going to build our component by exploiting the infrastructure of this basic project.
 
-## Creating a basic component
+## Creating a Basic Stencil Component
 
 In order to implement our rating component, let's create a `my-rating-component` folder inside the `/src/components` folder. In this newly created folder, put one file named `my-rating-component.tsx` and one named `my-rating-component.css`. The `.css` file will contain the following code:
 
@@ -110,7 +110,7 @@ The `.tsx` extension indicates that the file contains TypeScript and JSX code. A
 
 The `render()` method describes the component's appearance by using JSX expressions. In our example the component's markup consists of a sequence of six span HTML elements: three of them contain the HTML entity for the full star (`&#x2605;`) and the other three contain the code for the empty star (`&#x2606;`).
 
-## Interactively testing a component
+## Manually Testing a Stencil Component
 
 Now that you have defined your first component, you can can remove the default component included in the starter component project. So remove the `/src/my-component` folder. Then open the `index.html` file in the `src` folder and replace its content with the following markup:
 
@@ -135,7 +135,7 @@ As you can see, the body of the HTML page contains the newly defined `<my-rating
 
 > **Note**: The Stencil development environment provides support for hot reloading, so if your environment is running after an `npm start`, any changes to the project's files will cause its automatic rebuilding and running. This means that you don't need to type again `npm start`.
 
-## Adding properties
+## Adding Properties to Stencil Components
 
 The component you have created so far is not so interesting, after all. It is quite static since it simply shows a fixed number of full and empty stars and the user cannot interact with it. It would be a bit more useful if at least the user could assign the total number of stars to show and the number of full stars indicating the current rating value. Adding these features is quite simple. Let's change the component definition as follows:
 
@@ -189,7 +189,7 @@ By applying these changes you will get the following result:
 
 ![](./xxx-images/component-with-properties.png)
 
-## The reactive nature of component properties
+## The Reactive Nature of Properties on Stencil
 
 The component's properties are not only a way to set customized initial values through HTML attributes. The mapping between the attributes and the properties is *reactive*. This means that any change to the attribute fires the render() method so that the component's UI is updated. You can verify this behaviour by changing the content of the index.html file as follows:
 
@@ -216,9 +216,7 @@ The component's properties are not only a way to set customized initial values t
 
 We assigned an `id` attribute to the component's markup and added a script block calling the `setTimeout()` JavaScript function that schedules the execution of a function after 5 seconds. The scheduled function changes the `value` property of the component. So you will see your rating component with an initial number of two full stars and after five seconds you will see it with four full stars.
 
-
-
-## Managing component state
+## Managing State of Stencil Components
 
 Now we want to add more interactivity to our rating component. We want the number of full stars of the component to follow the mouse movement when it is over it. It should return to its original number when the mouse is out of its area, like in the following animation:
 
@@ -272,7 +270,7 @@ With respect to the previous version, this code imports the `@State()` decorator
 
 > **Note**: Stencil watches state and props for changes in order to run the `render()` method. However it actually compares references for changes, so a change in data inside an array or to an object's property doesn't cause a re-rendering of the component. You need to assign a new array or object to the state.
 
-## Handling events
+## Handling Events with Stencil
 
 Once we added support for state management, let's make the user to interact with our component. For this purpose, you need to capture mouse events in order to create the visual effect described above and to allow the user to assign a new rating value. You can handle the needed mouse event by adding to the component some new code, as shown in the following:
 
@@ -344,7 +342,7 @@ Now let's restore the previous version of the `index.html` file  by removing the
 
 Now let's run the project and look at the browser.
 
-## Managing component lifecycle
+## Managing Stencil Components' Lifecycle
 
 Unfortunately running the code written until now results in a blank page. What happens?
 
@@ -420,7 +418,7 @@ export  class  MyRatingComponent  {
 
 This small change solves our issue, but another problem still remains: when a user clicks a star, the number of full stars doesn't change. Why the `setValue()` method does not work?
 
-## Managing mutable properties
+## Managing Mutable Properties on Stencil
 
 We said above that a component property decorated with `@Prop()` acquires a reactive nature. This means that if a change to the property occurs from the external of the component, this immediately fires the re-rendering of the component itself. However, the property change can only occur by an external action. Props are immutable from inside the component. This means that an internal attempt change the value of a prop doesn't work. This is the reason why the `setValue()` method doesn't work as expected.
 
@@ -529,7 +527,7 @@ export  class  MyRatingComponent  {
 
 By declaring a prop as mutable you allow it to be changed from inside the component, and then the `setValue()` method will work.
 
-## Emitting events
+## Emitting Events from Stencil Components
 
 Stencil also allows you to emit events so that users of your component can be informed when something happens. For example, you could emit an event when the current value of your rating component changes. Let's make a few changes to the code of the component:
 
@@ -612,7 +610,7 @@ You can handle the `onRatingUpdate` event as shown by the following code:
 
 We simply added an event listener that will show an alert with the new value assigned to the rating component when the user clicks a star.
 
-## Building for production
+## Preparing Stencil Components for Production
 
 Now that we have a working component and are satisfied with its features, we can prepare it for production building. Since we used the component starter project, you will find references to a generic component's name. For example, if you open the `stencil.config.js` file in a text editor, you will find the following content:
 
@@ -685,7 +683,7 @@ After a few seconds, you will find a `dist` folder in the root of the project fo
 
 In other words, Stencil generates code for different production scenarios. You can bring everything every time or make a selection. Anyway, the minimal content required in a context with HTML and vanilla JavaScript consists of `my-rating.js` file and `my-rating` folder.
 
-## Using the component in your application
+## Using Stencil Component with React and Angular
 
 After building your component, you are ready to use it in your Web application. As we said at the beginning of this post, Web Components are meant to be natively supported by standard browsers as long as they support [the features required by the standard](https://caniuse.com/#search=web%20component). However, as Stencil produces code to polyfill the missing features, you can actually use your Web Component in any recent browser (e.g. Microsoft Edge).
 
