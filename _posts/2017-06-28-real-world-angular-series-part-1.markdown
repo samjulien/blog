@@ -3,7 +3,7 @@ layout: post
 title: "Real-World Angular Series - Part 1: MEAN Setup & Angular Architecture"
 description: "Build and deploy a real-world app with MongoDB, Express, Angular, and Node (MEAN): MEAN setup and Angular architecture."
 date: 2017-06-28 8:30
-category: Technical guide, Angular, Angular 4
+category: Technical guide, Angular, Angular 6
 banner:
   text: "Auth0 makes it easy to add authentication to your Angular application."
 author:
@@ -305,6 +305,16 @@ Finally, we need to import all the files we just created. Open the `styles.scss`
 
 // global styles
 @import 'base';
+```
+
+### Global  Polyfill
+
+The last setup step we'll take is to add a global window polyfill to our `src/polyfills.ts` file. Open this file and add the following:
+
+```typescript
+// src/polyfills.ts
+(window as any).global = window;
+...
 ```
 
 Now our Angular app has everything we need to get started developing features. However, before we move forward with any more client side development, let's set up MongoDB and our Node.js API!
@@ -728,7 +738,7 @@ Let's start with the Header component we just generated. Open the `header.compon
 // src/app/header/header.component.ts
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
-import 'rxjs/add/operator/filter';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -744,7 +754,9 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     // If nav is open after routing, close it
     this.router.events
-      .filter(event => event instanceof NavigationStart && this.navOpen)
+      .pipe(
+        filter(event => event instanceof NavigationStart && this.navOpen)
+      )
       .subscribe(event => this.toggleNav());
   }
 
@@ -930,7 +942,7 @@ Our Footer component is very simple: just a static paragraph with a link to the 
 {% highlight html %}
 <!-- src/app/footer/footer.component.html -->
 <p class="text-center">
-  MIT 2017
+  MIT 2018
 </p>
 {% endhighlight %}
 
@@ -965,9 +977,8 @@ Open the `app.component.ts` file:
 ```typescript
 // src/app/app.component.ts
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/debounceTime';
+import { fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -982,8 +993,10 @@ export class AppComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    Observable.fromEvent(window, 'resize')
-      .debounceTime(200)
+    fromEvent(window, 'resize')
+      .pipe(
+        debounceTime(200)
+      )
       .subscribe((event) => this._resizeFn(event));
 
     this._initWinHeight = window.innerHeight;
