@@ -45,6 +45,8 @@ We are pleased to announce the availability of our [Multi-Factor Authentication 
 
 {% include tweet_quote.html quote_text="The MFA API is now available, learn how to embed MFA in your apps taking full control of the experience!" %}
 
+> **Note**: for most MFA scenarios, we still recommend the use of [Universal Login](https://auth0.com/docs/hosted-pages/login) whenever possible. This new API is meant for advanced use cases where Universal Login is not flexible enough. [Universal Login is the best alternative](https://auth0.com/blog/authentication-provider-best-practices-centralized-login/) in most cases.
+
 ---
 
 ## Why?
@@ -53,6 +55,8 @@ Up to now, enabling MFA at Auth0 was simply a matter of flipping a switch and op
 ![MFA Switch](https://cdn.auth0.com/blog/oauth2-mfa-api/1-mfa-enable.png)
 
 However, some of our customers have requested to have more control over the MFA process. For this reason, we have been working with [ATEA Norge](https://www.atea.no/) and other customers under a private BETA program to find the right implementation for this feature. The result: a new API for MFA to give back control to you when required. Let's check it out.
+
+> **Note**: for most MFA scenarios, we still recommend the use of [Universal Login](https://auth0.com/docs/hosted-pages/login) whenever possible. This new API is meant for advanced use cases where Universal Login is not flexible enough. [Universal Login is the best alternative](https://auth0.com/blog/authentication-provider-best-practices-centralized-login/) in most cases.
 
 ## A Simple API
 The API works by introducing some changes to how the `/token` endpoint behaves. Let's take a look.
