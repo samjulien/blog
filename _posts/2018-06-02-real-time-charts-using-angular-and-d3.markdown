@@ -28,7 +28,7 @@ related:
 
 ## Introduction
 
-With evolution of the web, needs of users are also increasing. The capabilities of the web in the present era can be used to build very rich interfaces. The interfaces may include widgets in the dashboards, huge tables with incrementally loading data, different types of charts and anything that you can think of. Thanks to the technologies like WebSockets, users want to see the UI updated as early as possible. This is a good problem for you to know how to dael with.
+With the evolution of the web, needs of users are also increasing. The capabilities of the web in the present era can be used to build very rich interfaces. The interfaces may include widgets in the dashboards, huge tables with incrementally loading data, different types of charts and anything that you can think of. Thanks to the technologies like WebSockets, users want to see the UI updated as early as possible. This is a good problem for you to know how to deal with.
 
 In this article, you will build a virtual market application that shows a D3 multi-line chart. That chart will consume data from a Node.js backend consisting of an Express API and a SocketIO instance to get this data in real time.
 
@@ -42,7 +42,7 @@ So, to create this server and this Angular application, you will a directory to 
 # move into the server directory
 cd virtual-market/server/
 
-# initialise it as a NPM project
+# initialise it as an NPM project
 npm init -y
 ```
 
@@ -56,7 +56,7 @@ Once they are installed, you can start building your server.
 
 ### Building the Express API
 
-First, create a new file called `market.js` inside the `server` directory. This file will be used like a utility. It will contain the data of a virtual market and it will contain a method to update the data. For now, you will add the data alone and the method will be added while creating the Socket.IO endpoint. So, add the following code to this file:
+First, create a new file called `market.js` inside the `server` directory. This file will be used as a utility. It will contain the data of a virtual market and it will contain a method to update the data. For now, you will add the data alone and the method will be added while creating the Socket.IO endpoint. So, add the following code to this file:
 
 ```js
 const marketPositions = [
@@ -297,9 +297,9 @@ Then, open the `market-chart.component.html` file and replace its default conten
 {% endraw %}
 {% endhighlight %}
 
-The D3 chart will be rendered inside this `<div #chart>` element. As you can see, you created a local reference for the div element (`#chart`). You will use this reference in your component class, while configuring D3.
+The D3 chart will be rendered inside this `<div #chart>` element. As you can see, you created a local reference for the div element (`#chart`). You will use this reference in your component class while configuring D3.
 
-This component will not use the `MarketStatusService` to fetch data. Instead, it will accept the data as input. The goal of this approach is to make the `market-chart` component reusable. For this, the component will have an `Input` field and the value to this field will be passed from the `app-root` component. The component will use the `ngOnChanges` lifecycle hook to render the chart whenever there is change in the data. It will also use the `OnPush` change detection strategy to ensure that the chart is re-rendered only when the input changes.
+This component will not use the `MarketStatusService` to fetch data. Instead, it will accept the data as input. The goal of this approach is to make the `market-chart` component reusable. For this, the component will have an `Input` field and the value to this field will be passed from the `app-root` component. The component will use the `ngOnChanges` lifecycle hook to render the chart whenever there is a change in the data. It will also use the `OnPush` change detection strategy to ensure that the chart is re-rendered only when the input changes.
 
 So, open the file `market-chart.component.ts` and add the following code to it:
 
@@ -341,7 +341,7 @@ export class MarketChartComponent implements OnChanges {
 }
 ```
 
-Now, the `MarketChartComponent` class has everything required to render the chart. In addition to the local reference for the div (`chartElement`) and the lifecycle hook, the class has a few fields that will be used while rendering the chart. The `parseDate` method converts string value to Date objects and the private fields `svgElement` and `chartProps` will be used to hold the reference of the SVG element and the properties of the chart respectively. These fields will be quite useful to re-render the chart.
+Now, the `MarketChartComponent` class has everything required to render the chart. In addition to the local reference for the div (`chartElement`) and the lifecycle hook, the class has a few fields that will be used while rendering the chart. The `parseDate` method converts string values to Date objects and the private fields `svgElement` and `chartProps` will be used to hold the reference of the SVG element and the properties of the chart respectively. These fields will be quite useful to re-render the chart.
 
 Now, the most complex part of the tutorial. Add the following method to the `MarketChartComponent` class:
 
@@ -618,8 +618,10 @@ Now, if you head to (`http://localhost:4200`)[http://localhost:4200], you will s
 
 Awesome, right?
 
+{% include asides/angular.markdown %}
+
 ## Conclusion
 
-As you saw in this tutorial, the web has capabilities that allows you to build very rich applications. Your real-time chart, for example, adds a huge value to your app because there the user knows that they will have the latest data without having to refresh the page or performing any action. This kind of interactivity improves your users' experiences and will contribute to their hapiness.
+As you saw in this tutorial, the web has capabilities that allow you to build very rich applications. Your real-time chart, for example, adds a huge value to your app because there the user knows that they will have the latest data without having to refresh the page or performing any action. This kind of interactivity improves your users' experiences and will contribute to their happiness.
 
-WDYT? Ready to add some real-time data into the web?
+WDYT? Ready to add some real-time data to the web?
