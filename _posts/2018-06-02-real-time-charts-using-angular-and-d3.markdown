@@ -127,6 +127,8 @@ As this command starts your Node.js server on port `3000`, you can visit the [`h
 To show a real-time chart, you will need to simulate a real-time market data by updating it every 5 seconds. For this, you will add a new method to the `market.js` file. This method will be called from a Socket.IO endpoint that you will add to your `index.js` file. So, open the file `market.js` and add the following code to it:
 
 ```js
+const moment = require('moment');
+
 // const marketPositions ...
 
 let counter = 0;
@@ -181,7 +183,7 @@ io.on('connection', function (socket) {
 // http.listen(3000, ...
 ```
 
-With these changes in place, you can start building the Angular client to use this. To keep the server running, issue the command `node index.js`, if you haven't done it yet.
+With these changes in place, you can start building the Angular client to use this.
 
 ## Building the Angular Application
 
@@ -490,30 +492,51 @@ Save these changes and run the application using the `ng serve` command (or `npm
 
 ![Showing a D3 chart with static data in an Angular application.](https://cdn.auth0.com/blog/angular-d3-socketio/d3-charts-with-static-data.png)
 
-### Updating the Chart when the Market has an Update
-Now that we have the chart rendered on the page, let's receive the market updates from socket.io and update the chart. To receive the updates, we need to add a listener to the socket.io endpoint in the service `market-status.service.ts`. Open this file and add the following method to it:
+### Adding Real-Time Capabilities to the D3 Chart
+
+Now that you have the chart rendered on the page, you can make it receive the market updates from Socket.IO to make it real-time. To receive these updates, you need to add a listener to the Socket.IO endpoint in the `market-status.service.ts` file. So, open this file and replace its code with:
 
 ```typescript
-getUpdates() {
-  let socket = socketio(this.baseUrl);
-  let marketSub =  new Subject<MarketPrice>();
-  let marketSubObservable = Observable.from(marketSub);
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
-  socket.on('market', (marketStatus: MarketPrice) => {
-    marketSub.next(marketStatus);
-  });
+import {MarketPrice} from './market-price';
+import { Subject, from } from  'rxjs';
+import * as socketio from 'socket.io-client';
 
-  return marketSubObservable;
+@Injectable({
+  providedIn: 'root'
+})
+export class MarketStatusService {
+
+  private baseUrl =  'http://localhost:3000';
+  constructor(private httpClient: HttpClient) { }
+
+  getInitialMarketStatus() {
+    return this.httpClient.get<MarketPrice[]>(`${this.baseUrl}/api/market`);
+  }
+
+  getUpdates() {
+    let socket = socketio(this.baseUrl);
+    let marketSub = new Subject<MarketPrice>();
+    let marketSubObservable = from(marketSub);
+
+    socket.on('market', (marketStatus: MarketPrice) => {
+      marketSub.next(marketStatus);
+    });
+
+    return marketSubObservable;
+  }
 }
 ```
 
-The above method does three important things:
+The new method, `getUpdates`, does three important things:
 
- - Creates a manager for the socket.io endpoint at the given URL
- - Creates an RxJS `Subject` and gets the observable from this subject. The observable is returned from this method so that it could be used by the consumer of the service to listen to the updates
- - The call to `on` method on the socket.io manager adds a listener to the `market` event. The callback passed to this method is called whenever the socket.io event publishes something
+ - it creates a manager for the Socket.IO endpoint at the given URL;
+ - it creates a RxJS `Subject` and gets an `Observable` from this subject. This observable is returned from this method so consumers can listen to the updates;
+ - The call to the `on` method on the Socket.IO manager adds a listener to the `market` event. The callback passed to this method is called whenever the Socket.IO endpoint publishes something new.
 
-This method has to be consumed in the `app-root` component. Open the file `app.component.ts` and modify the constructor as shown below:
+Now, you have to make the `AppComponent` class consume the `getUpdates()` method. So, open the `app.component.ts` file and modify the constructor as shown below:
 
 ```typescript
 constructor(private marketStatusSvc: MarketStatusService) {
@@ -529,9 +552,9 @@ constructor(private marketStatusSvc: MarketStatusService) {
 }
 ```
 
-In the above snippet, the statements marked with the numbers are the new lines added to the constructor. Observe the statement labeled with 3. This statement creates a new array instead of updating the field `marketStatus`. This is done to let the consuming `app-market-chart` component know about the change when we have an update.
+In the above snippet, the statements marked with the numbers are the new lines added to the constructor. Observe the statement labeled with 3. This statement creates a new array instead of updating the field `marketStatus`. This is done to let the consuming `app-market-chart` component know about the change when you have an update.
 
-The last change we need to do to see the chart working is, updating the chart with the new data. Open the file `market-chart.component.ts` and add the following method to it:
+The last change you will need to do to see the chart working in real time is to make the flowing data hit the chart. To do this, open the `market-chart.component.ts` file and add the following method the `MarketChartComponent` class:
 
 ```typescript
 updateChart() {
@@ -565,30 +588,38 @@ updateChart() {
 }
 ```
 
-The comments added in the snippet explain what we are doing in it. This method has to be called from the `ngOnChanges` method. Change this method as shown below:
+The comments added in the snippet explain what you are doing in this method. Now, you have to make the `ngOnChanges` method call this new method. So, change the `ngOnChanges()` method in the `MarketChartComponent` class as shown below:
 
 ```typescript
 ngOnChanges() {
   if (this.marketStatus &&  this.chartProps) {
     this.updateChart();
-  }
-  else if (this.marketStatus) {
+  } else if (this.marketStatus) {
     this.buildChart();
   }
 }
 ```
 
-Now if you run the application, you will see an error on the browser console saying `global is not defined`.
+Now, if you run the application, you will see an error on the browser console saying `global is not defined`.
 
-[Figure 2 - console error saying global is not defined]
+![Console error saying global is not defined.](https://cdn.auth0.com/blog/angular-d3-socketio/global-error.png)
 
-This is because, Angular CLI 6 removed the global object and socket IO uses it. To fix this, add the following statement to the file `polyfills.ts`:
+This is because Angular CLI 6 removed the global object and SocketIO uses it. To fix this problem, add the following statement to the `polyfills.ts` file:
 
 ```typescript
 (window as any).global = window;
 ```
 
-With this, all the changes are done. Save the changes and run the application. Now you will see the graph updating once in every 5 seconds.
+With this, all the changes are done. Save all your files and run the applications again. You can move into the `server` directory in one terminal and issue `node index.js` to run your backend API, then move to the `angular-d3-chart` directory and issue `npm start` to run the Angular application.
+
+Now, if you head to (`http://localhost:4200`)[http://localhost:4200], you will see your nice chart with real-time data flowing into it every 5 seconds.
+
+![Real-time chart with Angular, D3, and SocketIO.](https://cdn.auth0.com/blog/angular-d3-socketio/chart-with-real-time-data.png)
+
+Awesome, right?
 
 ## Conclusion
-As we saw in this tutorial, the web has capabilities to build very rich applications to show realtime updates to the users in a format that gives an immediate impression about the change in data. Let's use these features to build great experiences for our users!
+
+As you saw in this tutorial, the web has capabilities that allows you to build very rich applications. Your real-time chart, for example, adds a huge value to your app because there the user knows that they will have the latest data without having to refresh the page or performing any action. This kind of interactivity improves your users' experiences and will contribute to their hapiness.
+
+WDYT? Ready to add some real-time data into the web?
