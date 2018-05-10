@@ -32,6 +32,8 @@ With the evolution of the web, needs of users are also increasing. The capabilit
 
 In this article, you will build a virtual market application that shows a D3 multi-line chart. That chart will consume data from a Node.js backend consisting of an Express API and a SocketIO instance to get this data in real time.
 
+{% include tweet_quote.html quote_text="Learn how to create real-time @Angular apps with D3 and Socket.IO" %}
+
 ## Creating a Virtual Market Server
 
 The demo app you are going to build consists of two parts. One is a Node.js server that provides market data and the other is an Angular application consuming this data. As stated, the server will consist of an Express API and a SocketIO endpoint to serve the data continuously.
@@ -617,6 +619,8 @@ Now, if you head to (`http://localhost:4200`)[http://localhost:4200], you will s
 ![Real-time chart with Angular, D3, and SocketIO.](https://cdn.auth0.com/blog/angular-d3-socketio/chart-with-real-time-data.png)
 
 Awesome, right?
+
+{% include tweet_quote.html quote_text="Adding real-time capabilities to @Angular is easy with D3 and Socket.IO" %}
 
 {% include asides/angular.markdown %}
 
