@@ -54,37 +54,47 @@ npm install express moment socket.io
 
 Once they are installed, you can start building your server.
 
-### Building an Express API
-Add a new file and name it `market.js`. This file will be used like a utility. It will contain the data of a virtual market and it will contain a method to update the data. For now, we will add the data alone and the method will be added while creating the socket.io endpoint. Add the following code to this file:
+### Building the Express API
+
+First, create a new file called `market.js` inside the `server` directory. This file will be used like a utility. It will contain the data of a virtual market and it will contain a method to update the data. For now, you will add the data alone and the method will be added while creating the Socket.IO endpoint. So, add the following code to this file:
 
 ```js
-const moment = require("moment");
-
-let marketPositions = [
-  {
-    "date": "10-05-2012",
-    "close": 68.55,
-    "open": 74.55
-  },
-  // You can add a few more records
+const marketPositions = [
+  {"date": "10-05-2012", "close": 68.55, "open": 74.55},
+  {"date": "09-05-2012", "close": 74.55, "open": 69.55},
+  {"date": "08-05-2012", "close": 69.55, "open": 62.55},
+  {"date": "07-05-2012", "close": 62.55, "open": 56.55},
+  {"date": "06-05-2012", "close": 56.55, "open": 59.55},
+  {"date": "05-05-2012", "close": 59.86, "open": 65.86},
+  {"date": "04-05-2012", "close": 62.62, "open": 65.62},
+  {"date": "03-05-2012", "close": 64.48, "open": 60.48},
+  {"date": "02-05-2012", "close": 60.98, "open": 55.98},
+  {"date": "01-05-2012", "close": 58.13, "open": 53.13},
+  {"date": "30-04-2012", "close": 68.55, "open": 74.55},
+  {"date": "29-04-2012", "close": 74.55, "open": 69.55},
+  {"date": "28-04-2012", "close": 69.55, "open": 62.55},
+  {"date": "27-04-2012", "close": 62.55, "open": 56.55},
+  {"date": "26-04-2012", "close": 56.55, "open": 59.55},
+  {"date": "25-04-2012", "close": 59.86, "open": 65.86},
+  {"date": "24-04-2012", "close": 62.62, "open": 65.62},
+  {"date": "23-04-2012", "close": 64.48, "open": 60.48},
+  {"date": "22-04-2012", "close": 60.98, "open": 55.98},
+  {"date": "21-04-2012", "close": 58.13, "open": 53.13}
 ];
 
 module.exports = {
-  marketPositions
+  marketPositions,
 };
 ```
 
-If you need more data in the `marketPositions` array, copy it from the demo code. I kept just one record in the array to fit it in the article.
-
-Add another file and name it `index.js`. This file will do all the Node.js work required. For now, we will add the code to create an express REST endpoint to serve the data. Add the following code to the file `index.js`.
+Now, add another file and name it `index.js`. This file will do all the Node.js work required. For now, you will add the code to create an Express REST API to serve the data. So, add the following code to the file `index.js`:
 
 ```js
 const app = require('express')();
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
 const market = require('./market');
 
-const port =  3000;
+const port = 3000;
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -101,13 +111,16 @@ http.listen(port, () => {
 });
 ```
 
-After saving this file, you can start the server. Run the following command to start the server:
+After saving this file, you can check if everything is going well. Run the following command to start your Express REST API:
 
 ```bash
+# from the server directory, run the server
 node index.js
 ```
 
-This command starts the Node.js server on the port 3000. Once the server starts, you can visit the URL [http://localhost:3000/api/market](http://localhost:3000/api/market) to see the market updates on last few days.
+As this command starts your Node.js server on port `3000`, you can visit the [`http://localhost:3000/api/market`](http://localhost:3000/api/market) URL to see the market updates on last few days.
+
+![Fake market data to show on real-time Angular application.](https://cdn.auth0.com/blog/angular-d3-socketio/market-data-v2.png)
 
 ### Adding Socket IO to Serve Data in Realtime
 We need to simulate a realtime market by updating the market data once in every 5 seconds. For this, we will add a method to the file `market.js` and this method will be called from the socket.io endpoint to be created in `index.js`. Open the file `market.js` and add the following code to it:
