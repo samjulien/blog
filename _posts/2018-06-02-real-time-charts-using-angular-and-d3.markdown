@@ -122,49 +122,53 @@ As this command starts your Node.js server on port `3000`, you can visit the [`h
 
 ![Fake market data to show on real-time Angular application.](https://cdn.auth0.com/blog/angular-d3-socketio/market-data-v2.png)
 
-### Adding Socket IO to Serve Data in Realtime
-We need to simulate a realtime market by updating the market data once in every 5 seconds. For this, we will add a method to the file `market.js` and this method will be called from the socket.io endpoint to be created in `index.js`. Open the file `market.js` and add the following code to it:
+### Adding Socket.IO to Serve Data in Real Time
+
+To show a real-time chart, you will need to simulate a real-time market data by updating it every 5 seconds. For this, you will add a new method to the `market.js` file. This method will be called from a Socket.IO endpoint that you will add to your `index.js` file. So, open the file `market.js` and add the following code to it:
 
 ```js
-let counter =  0;
+// const marketPositions ...
+
+let counter = 0;
 
 function updateMarket() {
-  let diff = Math.floor(Math.random() *  1000) /  100;
-  let lastDay = moment(marketPositions[0].date, "DD-MM-YYYY").add(1, "days");
+  const diff = Math.floor(Math.random() * 1000) / 100;
+  const lastDay = moment(marketPositions[0].date, 'DD-MM-YYYY').add(1, 'days');
   let open;
   let close;
 
-  if (counter %  2  ===  0) {
+  if (counter % 2 === 0) {
     open = marketPositions[0].open + diff;
     close = marketPositions[0].close + diff;
-  }
-  else {
+  } else {
     open = Math.abs(marketPositions[0].open - diff);
     close = Math.abs(marketPositions[0].close - diff);
   }
 
   marketPositions.unshift({
-    date: lastDay.format("DD-MM-YYYY"),
+    date: lastDay.format('DD-MM-YYYY'),
     open,
     close
   });
   counter++;
 }
 
-```
-
-The `updateMarket` method generates a random number and it either adds this value to the last market value or subtracts this value from the last market value to generate some randomness in the figures. Then it adds this entry to the `marketPositions` array. Modify the export statement to include the `updateMarket` method as well.
-
-```js
 module.exports = {
   marketPositions,
-  updateMarket
+  updateMarket,
 };
 ```
 
-Open the file `index.js`, we will now add a socket.io connection to this file. The socket.io connection will call the `updateMarket` method after every 5 seconds to update the market data and will emit an update on the socket.io endpoint to update the latest data to all the connections. The following snippet shows the code to be added for this:
+The `updateMarket` method generates a random number every time it is called and adds it to (or subtracts it from) the last market value to generate some randomness in the figures. Then, it adds this entry to the `marketPositions` array.
+
+Now, open the `index.js` file, so you can create a Socket.IO connection to it. This connection will call the `updateMarket` method after every 5 seconds to update the market data and will emit an update on the Socket.IO endpoint to update the latest data for all listeners. In this file, make the following changes:
 
 ```js
+// ... other import statements ...
+const io = require('socket.io')(http);
+
+// ... app.use and app.get ...
+
 setInterval(function () {
   market.updateMarket();
   io.sockets.emit('market', market.marketPositions[0]);
@@ -173,9 +177,11 @@ setInterval(function () {
 io.on('connection', function (socket) {
   console.log('a user connected');
 });
+
+// http.listen(3000, ...
 ```
 
-Now the server is ready and we can start building the Angular client to use this. To keep the server running, issue the command `node index.js`, if you haven't done it yet.
+With these changes in place, you can start building the Angular client to use this. To keep the server running, issue the command `node index.js`, if you haven't done it yet.
 
 ## Building Angular Application
 ### Setting up the application
