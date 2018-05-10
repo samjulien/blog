@@ -24,7 +24,7 @@ related:
 - 2018-04-30-whats-new-in-rxjs-6
 ---
 
-**TL;DR:** Charts create some of the most catchy sections on any business applications and a chart that updates in realtime is a huge value add for the users. Here we will see how to create such charts using Angular and D3. The source code of this article is available in this [GitHub repository](https://github.com/sravikiran/angular-d3-chart/).
+**TL;DR:** Charts create some of the most catchy sections on any business applications. A chart that updates in real time is even more catchy/useful and adds huge value for users. Here, you will see how to create real-time charts using Angular, D3, and Socket.IO. You can find the final code produced throughout this article in [this GitHub repository](https://github.com/auth0-blog/angular-d3-socketio).
 
 ## Introduction
 With evolution of the web, needs of its users are also increasing. The capabilities of the web in the present era can be used to build very rich interfaces. The interfaces may include widgets in the dashboards, huge tables with incrementally loading data, different types of charts and anything that you can think of. Thanks to the technologies like WebSockets, users want to see the UI updated as early as possible. This is a good problem for us to solve.
