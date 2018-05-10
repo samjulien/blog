@@ -27,9 +27,10 @@ related:
 **TL;DR:** Charts create some of the most catchy sections on any business applications. A chart that updates in real time is even more catchy/useful and adds huge value for users. Here, you will see how to create real-time charts using Angular, D3, and Socket.IO. You can find the final code produced throughout this article in [this GitHub repository](https://github.com/auth0-blog/angular-d3-socketio).
 
 ## Introduction
-With evolution of the web, needs of its users are also increasing. The capabilities of the web in the present era can be used to build very rich interfaces. The interfaces may include widgets in the dashboards, huge tables with incrementally loading data, different types of charts and anything that you can think of. Thanks to the technologies like WebSockets, users want to see the UI updated as early as possible. This is a good problem for us to solve.
 
-This article will build a virtual market application that shows a d3 multi-line chart. That chart consumes data from a Node.js backend consisting of an Express API and SocketIO to get this data in realtime and update the chart whenever it receives a new piece.
+With evolution of the web, needs of users are also increasing. The capabilities of the web in the present era can be used to build very rich interfaces. The interfaces may include widgets in the dashboards, huge tables with incrementally loading data, different types of charts and anything that you can think of. Thanks to the technologies like WebSockets, users want to see the UI updated as early as possible. This is a good problem for you to know how to dael with.
+
+In this article, you will build a virtual market application that shows a D3 multi-line chart. That chart will consume data from a Node.js backend consisting of an Express API and a SocketIO instance to get this data in real time.
 
 ## Creating a Virtual Market Server
 The demo app we are going to build consists of two parts. One is a Node.js server serving market data and the other is an Angular application consuming the data. As stated, the server will consist of an express API and a socket io endpoint to serve the data continuously.
