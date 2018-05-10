@@ -183,33 +183,36 @@ io.on('connection', function (socket) {
 
 With these changes in place, you can start building the Angular client to use this. To keep the server running, issue the command `node index.js`, if you haven't done it yet.
 
-## Building Angular Application
-### Setting up the application
-To generate the Angular application, you can use Angular CLI. There are two ways to do it. One is to install the CLI globally and use it and the other is to use npx. I like using npx for this, because it avoids the need to install the package globally and it works with the packages installed in an application as well. Incase if you are not aware of [npx](https://www.npmjs.com/package/npx), it is a command line utility that gets installed with npm version 5.2 and above. npx makes the job of using the global npm packages easier by removing the need of installing the package globally. If you want to use npx, make sure that you have npm 5.2 or above installed. Go to the `virtual-market` folder on a command prompt and run the following command to generate the project:
+## Building the Angular Application
+
+To generate your Angular application, you can use Angular CLI. There are two ways to do it. One is to install a local copy of the CLI globally in your machine and the other is to use a tool that comes with NPM that is called `npx`. Using `npx` is better because it avoids the need to install the package locally and because you always get the latest version. If you want to use `npx`, make sure that you have npm 5.2 or above installed.
+
+Then, go back to the main directory of your whole project (i.e. the `virtual-market` directory) and run the following command to generate the Angular project:
 
 ```bash
 npx @angular/cli new angular-d3-chart
 ```
 
-Once the project is generated, we need to install the d3 and socket.io client libraries. Move to the project folder on the command prompt and run the following command to install these libraries:
+Once the project is generated, you need to install both the D3 and Socket.IO NPM libraries. So, move to the `angular-d3-chart` directory and run the following command to install these libraries:
 
 ```bash
 npm install d3 socket.io-client
 ```
 
-As we will be using these libraries with TypeScript, it is good to have their typings installed. Run the following command to install the typings:
+As you will use these libraries with TypeScript, it is good to have their typings installed. So, run the following command to install the typings:
 
 ```bash
 npm i @types/d3 @types/socket.io-client -D
 ```
 
-Now the setup process is done and you can run the application to see if everything is fine. Run the following command to start the application:
+Now that the setup process is done, you can run the application to see if everything is fine:
 
 ```bash
+# from the angular-d3-chart directory
 npm start
 ```
 
-Open a browser and change the URL to [http://localhost:4200](http://localhost:4200) to see the default page.
+To see the default Angular application, just point your browser to the [`http://localhost:4200`](http://localhost:4200) URL.
 
 ### Building a component to display multi-line chart
 Now that the application setup is ready, let's add the required code to it. We will be adding a component to display a multiline d3 chart and the chart will use the data served by the Node.js server. As first thing, let's create a service to fetch the data. For now, the service will consume the REST API to get the stock data. We will consume realtime data from the socket.io endpoint later. Run the following command to add a file for this service:
