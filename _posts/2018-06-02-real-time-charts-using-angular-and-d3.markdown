@@ -24,7 +24,7 @@ related:
 - 2018-04-30-whats-new-in-rxjs-6
 ---
 
-**TL;DR:** Charts create some of the most catchy sections on any business applications. A chart that updates in real time is even more catchy/useful and adds huge value for users. Here, you will see how to create real-time charts using Angular, D3, and Socket.IO. You can find the final code produced throughout this article in [this GitHub repository](https://github.com/auth0-blog/angular-d3-socketio).
+**TL;DR:** Charts create some of the most catchy sections on any business applications. A chart that updates in real time is even more catchy/useful and adds huge value for users. Here, you will see how to create real-time charts using [Angular](https://angular.io/), [D3](https://d3js.org/), and [Socket.IO](https://socket.io/). You can find the final code produced throughout this article in [this GitHub repository](https://github.com/auth0-blog/angular-d3-socketio).
 
 ## Introduction
 
@@ -189,7 +189,7 @@ With these changes in place, you can start building the Angular client to use th
 
 ## Building the Angular Application
 
-To generate your Angular application, you can use Angular CLI. There are two ways to do it. One is to install a local copy of the CLI globally in your machine and the other is to use a tool that comes with NPM that is called `npx`. Using `npx` is better because it avoids the need to install the package locally and because you always get the latest version. If you want to use `npx`, make sure that you have npm 5.2 or above installed.
+To generate your Angular application, you can use [Angular CLI](https://cli.angular.io/). There are two ways to do it. One is to install a local copy of the CLI globally in your machine and the other is to use a tool that comes with NPM that is called `npx`. Using `npx` is better because it avoids the need to install the package locally and because you always get the latest version. If you want to use `npx`, make sure that you have npm 5.2 or above installed.
 
 Then, go back to the main directory of your whole project (i.e. the `virtual-market` directory) and run the following command to generate the Angular project:
 
