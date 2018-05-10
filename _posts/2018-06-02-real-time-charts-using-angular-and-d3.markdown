@@ -33,21 +33,26 @@ With evolution of the web, needs of users are also increasing. The capabilities 
 In this article, you will build a virtual market application that shows a D3 multi-line chart. That chart will consume data from a Node.js backend consisting of an Express API and a SocketIO instance to get this data in real time.
 
 ## Creating a Virtual Market Server
-The demo app we are going to build consists of two parts. One is a Node.js server serving market data and the other is an Angular application consuming the data. As stated, the server will consist of an express API and a socket io endpoint to serve the data continuously.
 
-Create a folder and name it `virtual-market`. Inside this folder, create a sub folder named `server`. Open a command prompt in the `server` folder and run the following command to generate the `package.json` file:
+The demo app you are going to build consists of two parts. One is a Node.js server that provides market data and the other is an Angular application consuming this data. As stated, the server will consist of an Express API and a SocketIO endpoint to serve the data continuously.
+
+So, to create this server and this Angular application, you will a directory to hold the source code. As such, create a new directory called `virtual-market` and, inside this folder, create a sub-directory called `server`. In a terminal (e.g. Bash or PowerShell), you can move into the `server` directory and run the following command:
 
 ```bash
+# move into the server directory
+cd virtual-market/server/
+
+# initialise it as a NPM project
 npm init -y
 ```
 
-This command generates the `package.json` file with default configuration. Then run the following command to install the required packages for the server:
+This command will generate the `package.json` file with some default properties. After initialising this directory as a NPM project, run the following command to install some dependencies of the server:
 
 ```bash
 npm install express moment socket.io
 ```
 
-Once they are installed, we are good to build the server.
+Once they are installed, you can start building your server.
 
 ### Building an Express API
 Add a new file and name it `market.js`. This file will be used like a utility. It will contain the data of a virtual market and it will contain a method to update the data. For now, we will add the data alone and the method will be added while creating the socket.io endpoint. Add the following code to this file:
