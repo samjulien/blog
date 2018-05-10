@@ -1,21 +1,27 @@
 ---
 layout: post
-title: "Realtime Charts using Angular and D3"
-description: "Learn how to build a multi-line chart using D3 and Angular and how to update it in realtime."
-date: "2018-02-05 08:30"
+title: "Real-Time Charts using Angular, D3, and Socket.IO"
+description: "Learn how to use Angular, D3, and Socket.IO to build an application that provides real-time charts to its users."
+longdescription: "In this article, you will learn how to use Angular, D3, and Socket.IO to build an application that provides real-time charts to its users. You will start from scratch so you get the opportunity to grasp the whole process."
+date: "2018-06-02 08:30"
 author:
   name: "Ravi Kiran"
   url: "sravi_kiran"
   mail: "yuvakiran2009@gmail.com"
-  avatar: "https://twitter.com/sravi_kiran/profile_image?size=original"
+  avatar: "https://cdn.auth0.com/blog/guest-author/ravi_kiran.jpeg"
+design:
+  bg_color: "#012C6C"
+  image: https://cdn.auth0.com/blog/angular5/logo.png
 tags:
-- javascript
 - angular
-- node
-- socketio
 - d3
+- real-time
+- socketio
+- frontend
+- guest-author
 related:
-- 2017-11-15-an-example-of-all-possible-elements
+- 2018-05-07-whats-new-in-angular6
+- 2018-04-30-whats-new-in-rxjs-6
 ---
 
 **TL;DR:** Charts create some of the most catchy sections on any business applications and a chart that updates in realtime is a huge value add for the users. Here we will see how to create such charts using Angular and D3. The source code of this article is available in this [GitHub repository](https://github.com/sravikiran/angular-d3-chart/).
