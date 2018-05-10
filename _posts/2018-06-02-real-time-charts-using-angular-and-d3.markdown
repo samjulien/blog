@@ -214,27 +214,24 @@ npm start
 
 To see the default Angular application, just point your browser to the [`http://localhost:4200`](http://localhost:4200) URL.
 
-### Building a component to display multi-line chart
-Now that the application setup is ready, let's add the required code to it. We will be adding a component to display a multiline d3 chart and the chart will use the data served by the Node.js server. As first thing, let's create a service to fetch the data. For now, the service will consume the REST API to get the stock data. We will consume realtime data from the socket.io endpoint later. Run the following command to add a file for this service:
+### Building a Component to Display the D3 Chart
+
+Now that your Angular application setup is ready, you can start writing its code. First, you will add a component to display the multi-line D3 chart. Second, you will create a service to fetch the data. For now, this service will consume static data from the REST API then, in no time, you will add real-time capabilities to your app.
+
+So, run the following command to add a file for this service:
 
 ```bash
 npx ng generate service market-status
 ```
 
-Or you could use the shorter form of this command:
-
-```bash
-npx ng g s market-status
-```
-
-To consume the REST APIs, we need the `HttpClient` service from the module `HttpClientModule`. The module `HttpClientModule` has to be imported into the application's module for this. Open the file `app.module.ts` and change it as shown below:
+To consume the REST APIs, you need to use the `HttpClient` service from the `HttpClientModule` module. This module has to be imported into the application's module for this. As such, open the `app.module.ts` file and replace its code with this:
 
 ```typescript
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 
 @NgModule({
   declarations: [
@@ -247,28 +244,24 @@ import { AppComponent } from './app.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
-The changes made in this file are marked with numbered comments. The `HttpClientModule` is imported and it is added to the `imports` section of the module.
+As you can see, the new version of this file does nothing besides adding the `HttpClientModule` to the `imports` section of the `AppModule` module.
 
-
-Open the file `market-status.service.ts` on your editor and add the following code to it:
+Now, open the `market-status.service.ts` file and add the following code to it:
 
 ```typescript
-import { Injectable } from  '@angular/core';
-import { HttpClient } from  '@angular/common/http';
-import { Subject, Observable } from  'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
-import  *  as socketio from  'socket.io-client';
-
-import { MarketPrice } from  './market-price';
+import {MarketPrice} from './market-price';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MarketStatusService {
-  
+
   private baseUrl =  'http://localhost:3000';
   constructor(private httpClient: HttpClient) { }
 
@@ -278,9 +271,7 @@ export class MarketStatusService {
 }
 ```
 
-The variable `socketio` imported in the above file will be used later to fetch data from the Socket IO endpoint.
-
-The `MarketStatusService` uses the class `MarketPrice` for the structure of the data received from the API. Let's create this class now. Add a new file named `market-price.ts` to the `app` folder and add the following code to it:
+This service uses the `MarketPrice` class to structure the data received from your backend API (`baseUrl =  'http://localhost:3000'`). To add this class to your project, create a new file named `market-price.ts` in the `app` folder and add the following code to it:
 
 ```typescript
 export  class MarketPrice {
@@ -290,27 +281,31 @@ export  class MarketPrice {
 }
 ```
 
-Add a new component to the application, this will show the multi-line d3 chart. The following command adds this component:
+Now, add a new component to the application, so you can show the multi-line D3 chart. The following command adds this component:
 
 ```bash
 npx ng g c market-chart
 ```
 
-Open the file `market-chart.component.html` and replace the default content in this file with the following:
+Then, open the `market-chart.component.html` file and replace its default content with this:
 
-```html
+{% highlight html %}
+{% raw %}
 <div #chart></div>
-```
+{% endraw %}
+{% endhighlight %}
 
-The d3 chart will be rendered inside this div element. As you see, we created a local variable for the div element, it will be used to get the reference of the element in the component class. This component will not use the `MarketStatusService` to fetch data. Instead, it will accept the data as input. This is done to make the `market-chart` component reusable. For this, the component will have an `Input` field and the value to this field will be passed from the `app-root` component. The component will use the `ngOnChanges` lifecycle hook to render the chart whenever there is change in the data and it will use the `OnPush` change detection strategy to ensure that the chart is re-rendered only when the input changes.
+The D3 chart will be rendered inside this `<div #chart>` element. As you can see, you created a local reference for the div element (`#chart`). You will use this reference in your component class, while configuring D3.
 
-Open the file `market-chart.component.ts` and add the following code to it:
+This component will not use the `MarketStatusService` to fetch data. Instead, it will accept the data as input. The goal of this approach is to make the `market-chart` component reusable. For this, the component will have an `Input` field and the value to this field will be passed from the `app-root` component. The component will use the `ngOnChanges` lifecycle hook to render the chart whenever there is change in the data. It will also use the `OnPush` change detection strategy to ensure that the chart is re-rendered only when the input changes.
+
+So, open the file `market-chart.component.ts` and add the following code to it:
 
 ```typescript
-import { Component, OnChanges, Input, ElementRef, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild} from '@angular/core';
 import * as d3 from 'd3';
 
-import { MarketPrice } from '../market-price';
+import {MarketPrice} from '../market-price';
 
 @Component({
   selector: 'app-market-chart',
@@ -344,9 +339,9 @@ export class MarketChartComponent implements OnChanges {
 }
 ```
 
-Now the `MarketChartComponent` class has everything required to render the chart. In addition to the local variable for the div and the lifecycle hook, the class has a few fields that will be used while rendering the chart. The `parseDate` method converts string value to date. It is used by the `formatData` method. The private fields `svgElement` and `chartProps` will be used to hold reference of the SVG element and the properties of the chart respectively. These fields would be quite useful to re-render the chart.
+Now, the `MarketChartComponent` class has everything required to render the chart. In addition to the local reference for the div (`chartElement`) and the lifecycle hook, the class has a few fields that will be used while rendering the chart. The `parseDate` method converts string value to Date objects and the private fields `svgElement` and `chartProps` will be used to hold the reference of the SVG element and the properties of the chart respectively. These fields will be quite useful to re-render the chart.
 
-Add the following method to the `MarketChartComponent` to build the chart:
+Now, the most complex part of the tutorial. Add the following method to the `MarketChartComponent` class:
 
 ```typescript
  buildChart() {
@@ -438,7 +433,9 @@ Add the following method to the `MarketChartComponent` to build the chart:
 }
 ```
 
-Refer to the comments added before every section in the above method to understand what it does. It has to be called from the `ngOnChanges` lifecycle hook. Change code in this method as follows:
+Refer to the comments added before every section in the above method to understand what the code is doing. Also, if you have any specific doubt, just leave a comment.
+
+Now, you will have to change the `ngOnChanges` function (still in your `MarketChartComponent` class) to call this method:
 
 ```typescript
 ngOnChanges() {
@@ -448,48 +445,50 @@ ngOnChanges() {
 }
 ```
 
-Now we need to use this component in the `app-root` component to see the chart. Open the file `app.component.html` and place the following code in it:
+Now, you need to insert this component in the `app-root` component to see the chart. So, open the `app.component.html` file and replace its content with:
 
-```html
+{% highlight html %}
+{% raw %}
 <app-market-chart [marketStatus]="marketStatusToPlot"></app-market-chart>
-```
+{% endraw %}
+{% endhighlight %}
 
-And replace content of the file `app.component.ts` with the following code:
+Then, you have to replace the content of the `app.component.ts` file with the following code:
 
 ```typescript
-import { Component } from  '@angular/core';
-import { MarketStatusService } from  './market-status.service';
-import { Observable } from  'rxjs/Observable';
-import { MarketPrice } from  './market-price';
+import {Component} from '@angular/core';
+import {MarketStatusService} from './market-status.service';
+import {Observable} from 'rxjs';
+import {MarketPrice} from './market-price';
 
 @Component({
-selector: 'app-root',
-templateUrl: './app.component.html',
-styleUrls: ['./app.component.css']
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
-export  class AppComponent {
-  title =  'app';
+export class AppComponent {
+  title = 'app';
   marketStatus: MarketPrice[];
   marketStatusToPlot: MarketPrice[];
 
   set MarketStatus(status: MarketPrice[]) {
     this.marketStatus = status;
-    this.marketStatusToPlot =  this.marketStatus.slice(0, 20);
+    this.marketStatusToPlot = this.marketStatus.slice(0, 20);
   }
 
   constructor(private marketStatusSvc: MarketStatusService) {
 
-  this.marketStatusSvc.getInitialMarketStatus()
-    .subscribe(prices => {
-      this.MarketStatus = prices;
-    });
+    this.marketStatusSvc.getInitialMarketStatus()
+      .subscribe(prices => {
+        this.MarketStatus = prices;
+      });
   }
 }
 ```
 
-Save these changes and run the application using the `ng serve` command. Visit the URL http://localhost:4200, you will see a page with a chart similar to the following image:
+Save these changes and run the application using the `ng serve` command (or `npm start`). Now, head to the [http://localhost:4200/](http://localhost:4200) URL and you will see a page with a chart similar to the following image:
 
-[Figure 1 - image of chart]
+![Showing a D3 chart with static data in an Angular application.](https://cdn.auth0.com/blog/angular-d3-socketio/d3-charts-with-static-data.png)
 
 ### Updating the Chart when the Market has an Update
 Now that we have the chart rendered on the page, let's receive the market updates from socket.io and update the chart. To receive the updates, we need to add a listener to the socket.io endpoint in the service `market-status.service.ts`. Open this file and add the following method to it:
