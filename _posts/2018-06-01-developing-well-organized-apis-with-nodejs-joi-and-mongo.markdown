@@ -794,42 +794,37 @@ module.exports = serviceLocator;
 
 You are almost ready to take this baby for a spin!!! But, lastly, you have to setup routes and request validation with `joi`.
 
-### Setting up validation with `joi`
-If you are not familiar with `joi`, checkout the github [repo](https://github.com/hapijs/joi#example) for a quickstart. 
+### Setting Up Validation With Joi
 
-To use `joi`, we create blueprints or schemas for JavaScript objects (an object that stores information) to ensure validation of key information. `joi` runs validation against the rule we declared in the schemas for all requests.
+If you are not familiar with Joi, you can checkout [their GitHub repo](https://github.com/hapijs/joi#example) for a quickstart. But, as you will see, it's easy to use Joi.
 
-Let's have a look at the schema defining rules to validate the endpoints for creating users.
+Frst, you will need to create blueprints or schemas for JavaScript objects (an object that stores information) to ensure validation of key information. Joi runs validation against the rule you declared in the schemas for all requests.
 
-Inside `./app/validations/`, create `create_user.js`:
+So, inside the `./app/validations/` directory, create a file called `create_user.js` and add this code to it:
 
 ```js
-// app/validations/create_user.js
-
 'use strict';
 
 const joi = require('joi');
 
 module.exports = joi.object().keys({
-    username: joi.string().alphanum().min(4).max(15).required(),
-    birthdate: joi.date().required()
+  username: joi.string().alphanum().min(4).max(15).required(),
+  birthdate: joi.date().required()
 }).required();
 ```
+
 The above schema defines the following constraints:
 
-* username
-    * a required string
-    * must contain only alphanumeric characters
-    * at least 4 characters long but no more than 15
+* `username`
+    * a required string;
+    * must contain only alphanumeric characters;
+    * at least 4 characters long but no more than 15;
+* `birthdate`
+    * a required date field;
 
-* birthdate
-    * a required date field
-
-Now that you know how `joi` works, let's create validations for the remaining endpoints.
+Now that you know how `joi` works, you can create validations for the remaining endpoints. So, create a file called `create_birthdates.js` inside the `./app/validations` directory and add this code to it:
 
 ```js
-// app/validations/create_birthdates.js
-
 'use strict';
 
 const joi = require('joi');
@@ -840,9 +835,9 @@ module.exports = joi.object().keys({
 }).required();
 ```
 
-```js
-// app/validations/get_birthdates-user.js
+Then, create a file called `get_birthdates-user.js` inside the same directory and add this:
 
+```js
 'use strict';
 
 const joi = require('joi');
@@ -850,154 +845,143 @@ const joi = require('joi');
 module.exports = {
     username: joi.string().alphanum().min(4).max(30).required()
 };
-
 ```
-Now that we have the schema defining the validation rules, let's create a tiny library to run the validation everytime request is made.
 
-Inside `./app/lib/`, create `validator.js`:
+After defining the validation rules, you will need to create a tiny library to run the validation everytime request is made. So, inside the `./app/lib/` directory, create a file called `validator.js` and add this:
 
 ```js
-// app/lib/validator.js
-
 'use strict';
 
-let httpStatus              = require('http-status');
-let errors                  = require('restify-errors');
+let httpStatus = require('http-status');
+let errors = require('restify-errors');
 
-/**
- * Route Parameter validation middleware
- *
- * @param log an instance of the console logger
- * @param joi an instance of the joi schema validator
- * @returns {Function}
- */
-module.exports.paramValidation = function(log, joi) {
+module.exports.paramValidation = function (log, joi) {
 
-    return function(req, res, next) {
+  return function (req, res, next) {
 
-        // always allow validation to allow unknown fields by default.
-        let options = {
-            allowUnknown: true
-        };
-
-        let validation = req.route.spec.validation; //validation object in route
-        if (!validation) {
-            return next(); // skip validation if not set
-        }
-
-        let validProperties = ['body', 'query', 'params'];
-
-        for (let i in validation) {
-            if (validProperties.indexOf(i) < 0) {
-                log.debug('Route contains unsupported validation key');
-                throw new Error('An unsupported validation key was set in route');
-
-            } else {
-                if (req[i] === undefined) {
-                    log.debug('Empty request ' + i + ' was sent');
-
-                    res.send(
-                        httpStatus.BAD_REQUEST,
-                        new errors.InvalidArgumentError('Missing request ' + i)
-                    );
-                    return;
-                }
-
-                let result = joi.validate(req[i], validation[i], options);
-
-                if (result.error) {
-                    log.debug('validation error - %s', result.error.message);
-
-                    res.send(
-                        httpStatus.BAD_REQUEST,
-                        new errors.InvalidArgumentError(
-                            'Invalid request ' + i + ' - ' + result.error.details[0].message
-                        )
-                    );
-                    return;
-
-                } else {
-                    log.info('successfully validated request parameters');
-                }
-            }
-        }
-
-        next();
+    // always allow validation to allow unknown fields by default.
+    let options = {
+      allowUnknown: true
     };
+
+    let validation = req.route.spec.validation; //validation object in route
+    if (!validation) {
+      return next(); // skip validation if not set
+    }
+
+    let validProperties = ['body', 'query', 'params'];
+
+    for (let i in validation) {
+      if (validProperties.indexOf(i) < 0) {
+        log.debug('Route contains unsupported validation key');
+        throw new Error('An unsupported validation key was set in route');
+
+      } else {
+        if (req[i] === undefined) {
+          log.debug('Empty request ' + i + ' was sent');
+
+          res.send(
+            httpStatus.BAD_REQUEST,
+            new errors.InvalidArgumentError('Missing request ' + i)
+          );
+          return;
+        }
+
+        let result = joi.validate(req[i], validation[i], options);
+
+        if (result.error) {
+          log.debug('validation error - %s', result.error.message);
+
+          res.send(
+            httpStatus.BAD_REQUEST,
+            new errors.InvalidArgumentError(
+              'Invalid request ' + i + ' - ' + result.error.details[0].message
+            )
+          );
+          return;
+
+        } else {
+          log.info('successfully validated request parameters');
+        }
+      }
+    }
+
+    next();
+  };
 };
 ```
-Firstly, the function retrieves the `validation` property defined in the route `spec`. We proceed to check if the `request` object contains a valid `validation property` key e.g. `body`, `query` or `params`. 
 
+As you can see, firstly, the function retrieves the `validation` property defined in the route `spec`. Then, you proceed to check if the `request` object contains a valid property (key e.g. `body`, `query` or `params`). If it does, you validate the value obtained from the `request` object with the predefined set of rules (schema) for the request path. If the input is invalid, the result will be an `Error` object.
 
-If it does, we validate the value obtained from the `request` object  with the predefined set of rules (schema) for the request path. If the input is invalid, the result will be an Error object.
-
-Now, let's define the routes and provide the validation rules for all the paths.
-
-Inside `./app/routes/`, create `routes.js`:
+Now, you can define the routes and provide the validation rules for all the paths. So, inside `./app/routes/`, create the `routes.js` file and add this:
 
 ```js
-// app/routes/routes.js
-
 'use strict';
 
 module.exports.register = (server, serviceLocator) => {
 
-    server.post(
-        {
-            path: '/users',
-            name: 'Create User',
-            version: '1.0.0',
-            validation: {
-                body: require('./app/validations/create_user')
-            }
-        },
-        (req, res, next) =>
-            serviceLocator.get('userController').create(req, res, next)
-    );
+  server.post(
+    {
+      path: '/users',
+      name: 'Create User',
+      version: '1.0.0',
+      validation: {
+        body: require('./app/validations/create_user')
+      }
+    },
+    (req, res, next) =>
+      serviceLocator.get('userController').create(req, res, next)
+  );
 
-    server.get(
-        {
-            path: '/users/:username',
-            name: 'Get User',
-            version: '1.0.0',
-            validation: {
-                params: require('./app/validations/get_birthdates-user.js')
-            }
-        },
-        (req, res, next) =>
-            serviceLocator.get('userController').get(req, res, next)
-    );
+  server.get(
+    {
+      path: '/users/:username',
+      name: 'Get User',
+      version: '1.0.0',
+      validation: {
+        params: require('./app/validations/get_birthdates-user.js')
+      }
+    },
+    (req, res, next) =>
+      serviceLocator.get('userController').get(req, res, next)
+  );
 
-    server.get(
-        {
-            path: '/birthdates/:username',
-            name: 'Get Birthdates',
-            version: '1.0.0',
-            validation: {
-                params: require('./app/validations/get_birthdates-user.js')
-            }
-        },
-        (req, res, next) =>
-            serviceLocator.get('birthdateController').listAll(req, res, next)
-    );
+  server.get(
+    {
+      path: '/birthdates/:username',
+      name: 'Get Birthdates',
+      version: '1.0.0',
+      validation: {
+        params: require('./app/validations/get_birthdates-user.js')
+      }
+    },
+    (req, res, next) =>
+      serviceLocator.get('birthdateController').listAll(req, res, next)
+  );
 
-    server.post(
-        {
-            path: '/birthdates/:username',
-            name: 'Create Birthdate',
-            version: '1.0.0',
-            validation: {
-                body: require('./app/validations/create_birthdates')
-            }
-        },
-        (req, res, next) =>
-            serviceLocator.get('birthdateController').create(req, res, next)
-    );
+  server.post(
+    {
+      path: '/birthdates/:username',
+      name: 'Create Birthdate',
+      version: '1.0.0',
+      validation: {
+        body: require('./app/validations/create_birthdates')
+      }
+    },
+    (req, res, next) =>
+      serviceLocator.get('birthdateController').create(req, res, next)
+  );
 };
 ```
-We now have four endpoints defined, POST - `/users`, GET - `/users/{username}`, GET - `/birthdates/{username}`, POST - `/birthdates/{username}`. 
 
-After defining the route spefication in the first arguments, we specify the controller to handle the request to that particular path.
+Now, you have four endpoints defined:
+
+- `POST` `/users`;
+- `GET` `/users/{username}`;
+- `GET` `/birthdates/{username}`;
+- `POST` `/birthdates/{username}`;
+
+After defining the route spefication in the first arguments, you specify the controller to handle the request to that particular path.
 
 ### Handling restify errors
 Restify has built in error event listener that get fired when Error is encountered by restify as part of a next(error) statement. Let's proceed to add handlers for possible errors we want to listen for.
