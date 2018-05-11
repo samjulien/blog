@@ -45,59 +45,68 @@ You will use [Joi](https://github.com/hapijs/joi) to validate `params`, `queries
 
 MongoDB is a cross-platform and open-source document-oriented database (also known as a NoSQL database). You will use MongoDB to persist and retrieve the data (birthdates) managed by the API that you will build throughout the article.
 
-## Building Birthdates API
-Firstly, check if you have Node.js, npm and mongo installed:
+## Building the Birthdates API
 
-```sh
-$ node --version
-$ npm --version
-$ mongo --version
-```
-
-If you don't, go grab Node.js and npm from [here](https://Node.js.org) and [mongo](https://mongodb.org).
-
-### Birthdates API endpoints:
-* [POST] Create a user - `/users` 
-* [GET] Fetch a user - `/users/{username}` 
-* [POST] Create birthdates - `/birthdates` 
-* [GET] Get birthdates - `/birthdates/{username}`
-
-### Setup the project structure
-We will be creating the project from barebones, so let's create all the directories we need. Let's name the project `birthdates-api`.
-Execute the following commands from your preferred directory to setup the project:
-
-
-```sh
-$ mkdir birthdates-api
-$ cd birthdates-api
-$ mkdir app .circleci logs
-$ cd app
-$ mkdir configs controllers lib middlewares models routes services validations
-```
-
-Next is to initialize the project with `npm` so we can have package.json file to describe our project and manage the dependencies.
-Execute the command below in the root directory of the project (`"{some_path}/birthdates-api/"`) and follow the prompt (set the `entry point` to `server.js`):
+Firstly, you will need to check if you have Node.js, NPM, and a MongoDB instance installed in your development machine:
 
 ```bash
-$ npm init
+node --version
+npm --version
+mongo --version
+```
+
+If you don't have Node.js and NPM, go [grab them from this URL](https://nodejs.org/en/download/). If you don't have MongoDB, you can find instructions on [how to install it in this URL](https://docs.mongodb.com/manual/installation/).
+
+### Birthdates API Endpoints
+
+After checking the dependencies, you can start building your application. In the end, you will have an API with the following endpoints:
+
+* `POST` `/users`: An endpoint to create new users.
+* `GET` `/users/{username}`: An endpoint to retrieve users by their usernames. 
+* `POST` `/birthdates`: And endpoint to register new birthdates.
+* `POST` `/birthdates/{username}`: An endpoint to retrieve the birthdate of a certain user.
+
+### Setup the Project Structure
+
+You will start the creation of your app from scratch. So, create a new directory called `birthdates-api` (this will be referenced as the project root) and execute the following commands:
+
+
+```bash
+# if you haven't yet, create the project root
+mkdir birthdates-api
+
+# move the terminal into it
+cd birthdates-api
+
+# create subdirectories
+mkdir -p app/configs app/controllers app/lib app/middlewares \
+  app/models app/routes app/services app/validations
+```
+
+Next, you will need to initialize the project with `npm` so you get a `package.json` file to describe your project and manage its dependencies. So, execute the command below in the project root and follow the prompt (set the `entry point` to `server.js`):
+
+```bash
+# answer all questions asked by NPM
+npm init
 ```
 
 ### Installing Dependencies
-Let's install the app dependencies:
+
+After initialising your project with NPM, you can install its dependencies:
 
 
-```sh
-$ npm install --save mongoose restify joi http-status restify-errors restify-url-semver winston@next dotenv
+```bash
+npm install --save mongoose restify joi http-status restify-errors restify-url-semver winston@next dotenv
 ```
 
-* mongoose is a MongoDB object modeling tool designed to work in an asynchronous environment.
-* http-status - Utility to interact with HTTP status code.
-* restify-errors is a package that contains sets of error contructors to create new error objects with their default status codes.
-* restify-url-semver is used for versioning restify api
-* winston - A universal logging library with support for multiple transports.
-* dotenv is a tiny package that loads environment variables from `.env` file into `process.env`.
+The list below provides a brief explanation of what these libraries do:
 
-
+* `mongoose` is a MongoDB object modeling tool designed to work in an asynchronous environment.
+* `http-status` is a utility to interact with HTTP status code.
+* `restify-errors` is a library that contains sets of error contructors to create new error objects with their default status codes.
+* `restify-url-semver` is a library used for versioning the Restify API.
+* `winston` is a universal logging library with support for multiple transports.
+* `dotenv` is a tiny package that loads environment variables from `.env` file into `process.env`.
 
 ### Creating app configuration
 
