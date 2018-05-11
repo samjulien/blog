@@ -29,39 +29,21 @@ In this article, you will build a birthdates API that lets you register and quer
 
 Structuring Node.js APIs has been a pain most beginner Node.js developers have been through. So, in the next sections, you will learn how to properly structure and organise a RESTful Node.js API with some cool tools like Restify, Joi and MongoDB. 
 
-## What we are using:
+## What Tools Will You Use
 
-### - restify
-Restify is a Node.js web service framework optimized for building semantically correct RESTful web services ready for production use at scale. 
+As mentioned, you will use tools like Restify, Joi, and MongoDB. This section provides a brief overview about these tools.
 
-### - joi
-We would use `joi` to validate `params`, `queries` and `body` of the endpoints, find `joi` [here](https://github.com/hapijs/joi). Joi basically check for correctness, it seats at the `routes` level, the request only gets to the `controller` after successful validation.
+### Restify
 
-### - mongodb
-MongoDB is a cross-platform and open-source document-oriented database, a  NoSQL database. We'll use it for the api we are building in this tutorial. 
+[Restify](http://restify.com/) is a Node.js web service framework optimized for building semantically-correct RESTful web services ready for production. If you check their official web page, you will see that big companies like Netflix and Pinterest use Restify in their applications.
 
-### - custom libraries
-For this project, I used the following custom libraries you'd find in `app/lib/` directory:
+### Joi
 
-* jsend - This is a formatter used to customize how responses are sent to the client, it follows the Jsend specification for sending JSON response.
-Example: 
+You will use [Joi](https://github.com/hapijs/joi) to validate `params`, `queries`, and the `body` of requests. Joi, seating at the route level, basically check for correctness of the requests sent to the API. Only requests that are semantically correct reach the controllers of your application.
 
-```js
-{
-    status : "success",
-    data : {
-        "post" : { 
-            "id" : 1, "title" : "A blog post", "body" : "Some useful content" 
-            }
-        }
-}
-```
+### MongoDB
 
-* logger - This is a wrapper around [winston](https://github.com/winstonjs/winston) logger.
-* service_locator - All the dependencies of the project would be managed by this ligthweight library. 
-* validator -  This is the validator we built around joi to validate request params and body.
-
-Let's get started!!!
+MongoDB is a cross-platform and open-source document-oriented database (also known as a NoSQL database). You will use MongoDB to persist and retrieve the data (birthdates) managed by the API that you will build throughout the article.
 
 ## Building Birthdates API
 Firstly, check if you have Node.js, npm and mongo installed:
