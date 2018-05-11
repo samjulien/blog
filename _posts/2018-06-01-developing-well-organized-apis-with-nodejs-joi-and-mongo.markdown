@@ -330,128 +330,98 @@ For this tutorial, you created two transports; `console` and `file`. Both transp
 
 Based on the environment, you can set the value of console logging to false or true in the `.env` file. Again, for this tutorial you enabled logging to the console so you can see all your logs in the console without having to tail a log file. However, logging to the console is not advisable in a production environment.
 
-### Setting up Dependency injection
-Instead of having your objects creating a dependency, you pass the needed dependencies in to the object externally, and you make it somebody else's problem. To achieve this, we can use an object higher up in the dependency graph or a dependency injector (library) to pass the dependencies. 
+### Setting Up Dependency Injection
 
-For this tutorial, we will use a custom library, `service_locator` to inject dependencies to the objects that needs to hold a reference to them.
+Instead of having your objects creating a dependency, you can pass the needed dependencies into the object externally. To achieve this, you can use an object higher up in the dependency graph or a dependency injector (library) to pass the dependencies. 
 
-Create `service_locator.js` inside `app/lib/`
+For this tutorial, you will use a custom library called `service_locator` to inject dependencies to the objects that needs to hold a reference to them.
+
+So, create a file called `service_locator.js` inside the `./app/lib/` directory and add the following code:
 
 ```js
-// app/lib/service_locator.js
-
 'use strict';
 
-/**
- * A Service Locator.
- *
- * Used to register and resolve dependency in a recursive mannner.
- * @class ServiceLocator
- * @constructor
- */
 function ServiceLocator() {
-    this.dependencyMap = {};
-    this.dependencyCache = {};
+  this.dependencyMap = {};
+  this.dependencyCache = {};
 }
 
-/**
- * Adds a dependency to the container.
- *
- * @method register
- * @param  {String}   dependencyName The dependency name
- * @param  {Function} constructor    The function used for initially instantiating the dependency.
- * @return {void}
- */
-ServiceLocator.prototype.register = function(dependencyName, constructor) {
-    if (typeof constructor !== 'function') {
-        throw new Error(dependencyName + ': Dependency constructor is not a function');
-    }
+ServiceLocator.prototype.register = function (dependencyName, constructor) {
+  if (typeof constructor !== 'function') {
+    throw new Error(dependencyName + ': Dependency constructor is not a function');
+  }
 
-    if (!dependencyName) {
-        throw new Error('Invalid depdendency name provided');
-    }
+  if (!dependencyName) {
+    throw new Error('Invalid depdendency name provided');
+  }
 
-    this.dependencyMap[dependencyName] = constructor;
+  this.dependencyMap[dependencyName] = constructor;
 };
 
-ServiceLocator.prototype.get = function(dependencyName) {
-    if (this.dependencyMap[dependencyName] === undefined) {
-        throw new Error(dependencyName + ': Attempting to retrieve unknown dependency');
-    }
+ServiceLocator.prototype.get = function (dependencyName) {
+  if (this.dependencyMap[dependencyName] === undefined) {
+    throw new Error(dependencyName + ': Attempting to retrieve unknown dependency');
+  }
 
-    if (typeof this.dependencyMap[dependencyName] !== 'function') {
-        throw new Error(dependencyName + ': Dependency constructor is not a function');
-    }
+  if (typeof this.dependencyMap[dependencyName] !== 'function') {
+    throw new Error(dependencyName + ': Dependency constructor is not a function');
+  }
 
-    if (this.dependencyCache[dependencyName] === undefined) {
-        const dependencyConstructor = this.dependencyMap[dependencyName];
-        const dependency = dependencyConstructor(this);
-        if (dependency) {
-            this.dependencyCache[dependencyName] = dependency;
-        }
+  if (this.dependencyCache[dependencyName] === undefined) {
+    const dependencyConstructor = this.dependencyMap[dependencyName];
+    const dependency = dependencyConstructor(this);
+    if (dependency) {
+      this.dependencyCache[dependencyName] = dependency;
     }
+  }
 
-    return this.dependencyCache[dependencyName];
+  return this.dependencyCache[dependencyName];
 };
 
-/**
- * Clears all the dependencies from this container and from the cache.
- * @method clear
- * @return {void}
- */
-ServiceLocator.prototype.clear = function() {
-    this.dependencyCache = {};
-    this.dependencyMap = {};
+ServiceLocator.prototype.clear = function () {
+  this.dependencyCache = {};
+  this.dependencyMap = {};
 };
 
 module.exports = new ServiceLocator();
-
 ```
-Let's analyze it:
 
-* `register` method takes in the dependency name and its constructor, then proceeds to add it to the `dependencyMap` object initialized in our `ServiceLocator` constructor.
+The following list provides a brief analysis of the code above:
 
-* `get` method retrieves a dependency from the `dependencyMap` that matches the name passed in as the function argument. If the requested dependency is not in the cache, it initializes the dependency and adds it to the cache then returns it.
+* The `register` method takes in the dependency name and its constructor, then proceeds to add it to the `dependencyMap` object initialized in your `ServiceLocator` constructor.
+* The `get` method retrieves a dependency from the `dependencyMap` object that matches the name passed in as the function argument. If the requested dependency is not in the cache, it initializes the dependency and adds it to the cache then returns it.
+* The `clear` method basically just removes all dependencies from the map and from the cache.
 
-* `clear` basically just removes all dependencies from the map and cache
+You will use the `serviceLocator` object to manage our app dependencies.
 
-We will use the serviceLocator object to manage our app dependencies.
-
-Let's proceed to create `di.js` file inside `app/configs/` where we will initialize all our app dependencies.
-
+Now, you can proceed to create a file called `di.js` (Dependency Injection) inside the `./app/configs/` where you will initialize all your app dependencies.
 
 ```js
-// app/configs/di.js
-
 'use strict';
 
 const serviceLocator = require('app/lib/service_locator');
 const config = require('app/configs/configs')();
 
 serviceLocator.register('logger', () => {
-    const logger = require('app/lib/logger').create(config.application_logging);
-
-    return logger;
+  return require('app/lib/logger').create(config.application_logging);
 });
 
 serviceLocator.register('httpStatus', () => {
-    return require('http-status');
+  return require('http-status');
 });
 
 serviceLocator.register('mongoose', () => {
-    const mongoose = require('mongoose');
-
-    return mongoose;
+  return require('mongoose');
 });
 
 serviceLocator.register('errs', () => {
-    return require('restify-errors');
+  return require('restify-errors');
 });
 
 module.exports = serviceLocator;
 ```
 
-Calling the  `register` method adds a dependency to the dependency graph and can be retrieved by calling the `get` method with the `dependencyName`.
+Calling the `register` method adds a dependency to the dependency graph that can be retrieved by calling the `get` method with the `dependencyName`.
 
 ### Setup our database
 Before we proceed, let's start mongodb server in a separate terminal window and leave it running:
