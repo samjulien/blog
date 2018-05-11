@@ -94,7 +94,6 @@ npm init
 
 After initialising your project with NPM, you can install its dependencies:
 
-
 ```bash
 npm install --save mongoose restify joi http-status restify-errors restify-url-semver winston@next dotenv
 ```
@@ -108,17 +107,13 @@ The list below provides a brief explanation of what these libraries do:
 * `winston` is a universal logging library with support for multiple transports.
 * `dotenv` is a tiny package that loads environment variables from `.env` file into `process.env`.
 
-### Creating app configuration
+### Creating the App Configuration
 
-Storing app config in the environment is one of the methodologies in [12 factor app](https://12factor.net/) techniques which defines specifications for building software-as-a-service apps in modern era.
-An app’s config is everything that is likely to vary between deploys, using environment variables makes it easy to change values of configs depending on the environment without having to change any code.
+An app’s configuration is everything that is likely to vary between environments. So, using environment variables makes it easy to change values of configs depending on the environment without having to change any code.
 
+As such, you will create a new file called `.env` in the project root and add to it the following variables:
 
-Let's create app configuration and store in `.env` file in the root directory of our project.
-
-```sh
-# .env
-
+```bash
 NODE_PATH=.
 APPLICATION_ENV=development
 
@@ -132,35 +127,32 @@ DB_HOST=localhost
 DB_NAME=birthdates
 ```
 
-Next is to load the variables in `config.js` file
-
-Inside `app/configs`, create `configs.js` and add the code below:
+Next, you will load these variables in a `config.js` file. So, inside the `app/configs` directory, create the `configs.js` file and add the code below:
 
 ```js
-// app/configs/configs.js
-
 'use strict';
 
 module.exports = () => ({
-    app: {
-        name: process.env.APP_NAME,
-        port: process.env.APP_PORT || 8000,
-        environment: process.env.APPLICATION_ENV,
-        logpath: process.env.LOG_PATH,
-    },
-    mongo: {
-        port: process.env.DB_PORT,
-        host: process.env.DB_HOST,
-        name: process.env.DB_NAME
-    },
-    application_logging: {
-        file: process.env.LOG_PATH,
-        level: process.env.LOG_LEVEL || 'info',
-        console: process.env.LOG_ENABLE_CONSOLE || true
-    }
+  app: {
+    name: process.env.APP_NAME,
+    port: process.env.APP_PORT || 8000,
+    environment: process.env.APPLICATION_ENV,
+    logpath: process.env.LOG_PATH,
+  },
+  mongo: {
+    port: process.env.DB_PORT,
+    host: process.env.DB_HOST,
+    name: process.env.DB_NAME
+  },
+  application_logging: {
+    file: process.env.LOG_PATH,
+    level: process.env.LOG_LEVEL || 'info',
+    console: process.env.LOG_ENABLE_CONSOLE || true
+  }
 });
 ```
-Node.js environment variables are always loaded into `process.env`. So to access any variable declared in `.env` file, all we do is `process.env.VAR_NAME`. So if we want to change a variable due to change in environment, we don't need to modify the `config` file, we modify the `.env` file.
+
+Node.js environment variables are always loaded into the `process.env` object. So, to access any variable declared in `.env` file, all you need to do is to call `process.env.VAR_NAME`. That is, if you want to change a variable due to change in the environment, you don't need to modify the `config` file. You just need to modify the `.env` file.
 
 ### Setting up Restify Server
 
