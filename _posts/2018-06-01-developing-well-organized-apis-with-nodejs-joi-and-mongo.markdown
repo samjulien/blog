@@ -127,7 +127,7 @@ DB_HOST=localhost
 DB_NAME=birthdates
 ```
 
-Next, you will load these variables in a `configs.js` file. So, inside the `app/configs` directory, create the `configs.js` file and add the code below:
+Next, you will load these variables in a `configs.js` file. So, inside the `./app/configs` directory, create the `configs.js` file and add the code below:
 
 ```js
 'use strict';
@@ -530,77 +530,73 @@ In this file, you defined two schemas:
 * `birthdatesSchema`: This used as a subdocument in the users model defining the `fullname` of the person whose birthdates you want to save and the `birthdates` properties.
 * `userSchema`: You defined `username` of the user, their `birthdate`, and array of `birthdates` from the `birthdatesSchema`. You also enabled `timestamp` which automatically adds `created_at` and `updated_at` properties to every document.
 
-### Add API Specific code
-Next is to setup `services`, `controllers` and `routers` to handle requests. Inside `app/services`, we will create `user` service to handle business related to the `users` such as creating user, fetching user, etc. 
+### Developing the API Source Code
+
+Next you will set up `services`, `controllers`, and `routers` to handle requests. Inside the `./app/services` directory, you will create the `user` service to handle business related to the `users` endpoint (such as creating user, fetching user, etc). So, create a file called `user.js` inside this directory and add the following code to it:
 
 ```js
-// app/services/user.js
-
 'use strict';
 
 class UserService {
-    constructor(log, mongoose, httpStatus, errs) {
-        this.log = log;
-        this.mongoose = mongoose;
-        this.httpStatus = httpStatus;
-        this.errs = errs;
+  constructor(log, mongoose, httpStatus, errs) {
+    this.log = log;
+    this.mongoose = mongoose;
+    this.httpStatus = httpStatus;
+    this.errs = errs;
+  }
+
+  async createUser(body) {
+    const Users = this.mongoose.model('Users');
+    const {username} = body;
+    const user = await Users.findOne({username});
+
+    if (user) {
+      const err = new this.errs.InvalidArgumentError(
+        'User with username already exists'
+      );
+      return err;
     }
 
-    async createUser(body) {
-        const Users = this.mongoose.model('Users');
-        const { username } = body;
-        const user = await Users.findOne({ username });
+    let newUser = new Users(body);
+    newUser.birthdate = new Date(body.birthdate);
+    newUser = await newUser.save();
 
-        if (user) {
-            const err = new this.errs.InvalidArgumentError(
-                'User with username already exists'
-            );
-            return err;
-        }
+    this.log.info('User Created Successfully');
+    return newUser;
+  }
 
-        let newUser = new Users(body);
-        newUser.birthdate = new Date(body.birthdate);
-        newUser = await newUser.save();
+  async getUser(username) {
+    const Users = this.mongoose.model('Users');
+    const user = await Users.findOne({username});
 
-        this.log.info('User Created Successfully');
-        return newUser;
+    if (!user) {
+      const err = new this.errs.NotFoundError(
+        `User with username - ${username} does not exists`
+      );
+      return err;
     }
 
-    async getUser(username) {
-        const Users = this.mongoose.model('Users');
-        const user = await Users.findOne({ username });
-
-        if (!user) {
-            const err = new this.errs.NotFoundError(
-                `User with username - ${username} does not exists`
-            );
-            return err;
-        }
-
-        this.log.info('User fetched Successfully');
-        return user;
-    }
+    this.log.info('User fetched Successfully');
+    return user;
+  }
 }
 
 module.exports = UserService;
 ```
-Let's analyze it:
 
-* `constructor` initalizes all the dependencies passed to it from our dependency injection file when creating the object.
+This is a brief analysis over this file:
 
-* `createUser` method checks if the user with the username in the request body exist then throws an error that 'User with username already exists' already exists otherwise it proceeds to save the user and returns the result to the controller.
+* The `constructor` initalizes all the dependencies passed to it from your dependency injection file when creating the object.
+* The `createUser` method checks if the user with the username in the request body exists then throws an error that 'User with username already exists' already exists. Otherwise it proceeds to save the user and returns the result to the controller.
+* The `getUser` method fetches the user that matches the `username` provided and returns the result to the controller.
 
-* `getUser` method fetches the user that matches the `username` provided and returns the result to the controller.
+Now, you have the chunks of code to create a user and get a specified user. So, you can proceed to create the controller to implement this service. 
 
-Now we have the chunks of code to create a user and get a specified user. Let's proceed to create the controller to implement this service. 
+By the way, noticed how you were able to recieve and initialize the dependencies of the `user service` inside it's constructor? The dependency injection makes that possible, you will get to that part soon.
 
-Noticed how we were able to recieve and initialize the dependencies of the `user service` inside it's constructor? The dependency injection makes that possible, we will get to that part soon.
-
-Inside `app/controllers/`, create `user.js`:
+Now, inside the `./app/controllers/` directory, create another `user.js` file. Now, insert this code inside it:
 
 ```js
-// app/controllers/user.js
-
 'use strict';
 
 class UserController {
@@ -638,129 +634,122 @@ class UserController {
 
 module.exports = UserController;
 ```
-The controller basically calls the services to perform particular action and sends response back to the client. 
 
-Now, let's create birthdate service and controller to save and fetch birthdates. Inside `app/services`, create `birthdates.js`.
+The controller basically calls the services to perform particular actions and sends response back to the client.
+
+Now, you can create the birthdate service and controller to save and fetch birthdates. So, inside the `./app/services` directory create a file called `birthdates.js` and add this:
 
 ```js
-// app/services/birthdates.js
-
 'use strict';
 
 class BirthdateService {
-    constructor(log, mongoose, httpStatus, errs) {
-        this.log = log;
-        this.mongoose = mongoose;
-        this.httpStatus = httpStatus;
-        this.errs = errs;
+  constructor(log, mongoose, httpStatus, errs) {
+    this.log = log;
+    this.mongoose = mongoose;
+    this.httpStatus = httpStatus;
+    this.errs = errs;
+  }
+
+  async createBirthdate(username, body) {
+    const Users = this.mongoose.model('Users');
+    const user = await Users.findOne({username});
+    const {birthdate, fullname} = body;
+
+    if (!user) {
+      const err = new this.errs.NotFoundError(
+        `User with username - ${username} does not exists`
+      );
+      return err;
     }
 
-    async createBirthdate(username, body) {
-        const Users = this.mongoose.model('Users');
-        const user = await Users.findOne({ username });
-        const { birthdate, fullname } = body;
+    user.birthdates.push({
+      birthdate: this.formatBirthdate(birthdate),
+      fullname
+    });
 
-        if (!user) {
-            const err = new this.errs.NotFoundError(
-                `User with username - ${username} does not exists`
-            );
-            return err;
-        }
+    return user.save();
+  }
 
-        user.birthdates.push({
-            birthdate: this.formatBirthdate(birthdate),
-            fullname
-        });
+  formatBirthdate(date) {
+    return new Date(date);
+  }
 
-        return user.save();
+  async getBirthdates(username) {
+    const Users = this.mongoose.model('Users');
+    const user = await Users.findOne({username});
+
+    if (!user) {
+      const err = new this.errs.NotFoundError(
+        `User with username - ${username} does not exists`
+      );
+      return err;
     }
 
-    formatBirthdate(date) {
-        return new Date(date);
-    }
-
-    async getBirthdates(username) {
-        const Users = this.mongoose.model('Users');
-        const user = await Users.findOne({ username });
-
-        if (!user) {
-            const err = new this.errs.NotFoundError(
-                `User with username - ${username} does not exists`
-            );
-            return err;
-        }
-
-        return user.birthdates;
-    }
+    return user.birthdates;
+  }
 }
 
 module.exports = BirthdateService;
-
 ```
-Let's analyze it:
 
-* `constructor` initalizes all the dependencies passed to it from our dependency injection file when creating the object.
+The following list provides a brief analysis over the code above:
 
-* `createBirthdate` method fetches the user that made the request, then saves the `birthdates` with the `fullname` and returns the result to the Birthdate controller which completes the request. 
+* The `constructor` method initalizes all the dependencies passed to it from your dependency injection file when creating the object.
+* The `createBirthdate` method fetches the user that made the request, then saves the `birthdates` with the `fullname` and returns the result to the Birthdate controller completing the request.
+* The `getBirthdates` method gets all the `birthdates` of the user that made the request and returns the result to the Birthdate controller.
 
-* `getBirthdates` method gets all the `birthdates` of the user that made the request and returns the result to the Birthdate controller which completes the request.
-
-Let's proceed to create the controller for our `birthdates service`.
-
-Inside `app/controllers/`, create `birthdates.js`:
+Now, create the `birthdates.js` file inside the `./app/controllers/` directory with this code:
 
 ```js
-// app/controllers/birthdates
-
 'use strict';
 
 const serviceLocator = require('./app/lib/service_locator');
 
 class BirthdateController {
-    constructor(log, birthdateService, httpSatus) {
-        this.log = log;
-        this.birthdateService = birthdateService;
-        this.httpSatus = httpSatus;
-    }
+  constructor(log, birthdateService, httpSatus) {
+    this.log = log;
+    this.birthdateService = birthdateService;
+    this.httpSatus = httpSatus;
+  }
 
-    async create(req, res) {
-        try {
-            const { body } = req;
-            const { username } = req.params;
-            const result = await this.birthdateService.createBirthdate(
-                username,
-                body
-            );
-            if(result instanceof Error) 
-                res.send(result);
-            else res.send(`${body.fullname}'s birthdate saved successfully!`)
-        } catch (err) {
-            this.log.error(err.message);
-            res.send(err);
-        }
+  async create(req, res) {
+    try {
+      const {body} = req;
+      const {username} = req.params;
+      const result = await this.birthdateService.createBirthdate(
+        username,
+        body
+      );
+      if (result instanceof Error)
+        res.send(result);
+      else res.send(`${body.fullname}'s birthdate saved successfully!`)
+    } catch (err) {
+      this.log.error(err.message);
+      res.send(err);
     }
+  }
 
-    async listAll(req, res) {
-        try {
-            const { username } = req.params;
-            const result = await this.birthdateService.getBirthdates(username);
-            res.send(result);
-        } catch (err) {
-            this.log.error(err.message);
-            res.send(err);
-        }
+  async listAll(req, res) {
+    try {
+      const {username} = req.params;
+      const result = await this.birthdateService.getBirthdates(username);
+      res.send(result);
+    } catch (err) {
+      this.log.error(err.message);
+      res.send(err);
     }
+  }
 }
 
 module.exports = BirthdateController;
 ```
-We need to register the services and controllers we just created with our `serviceLocator` so we can inject their dependencies with ease.
-Open up `app/configs/di.js` and add the code below:
+
+Now, you need to register the services and controllers you just created in your `serviceLocator` module. You will do this so you can inject dependencies with ease.
+
+So, open up the `./app/configs/di.js` file and insert the following code just before the last line (i.e. before `module.exports = serviceLocator;`):
 
 ```js
-// app/configs/di.js
-
-...
+// ... leave the rest above untouched ...
 
 serviceLocator.register('birthdateService', (serviceLocator) => {
     const log = serviceLocator.get('logger');
@@ -799,8 +788,11 @@ serviceLocator.register('userController', (serviceLocator) => {
 
     return new UserController(log, userService, httpStatus);
 });
+
+module.exports = serviceLocator;
 ```
-We are almost ready to take this baby for a spin!!! :grin: But lastly, we have to setup routes and request validation with `joi`.
+
+You are almost ready to take this baby for a spin!!! But, lastly, you have to setup routes and request validation with `joi`.
 
 ### Setting up validation with `joi`
 If you are not familiar with `joi`, checkout the github [repo](https://github.com/hapijs/joi#example) for a quickstart. 
@@ -809,7 +801,7 @@ To use `joi`, we create blueprints or schemas for JavaScript objects (an object 
 
 Let's have a look at the schema defining rules to validate the endpoints for creating users.
 
-Inside `app/validations/`, create `create_user.js`:
+Inside `./app/validations/`, create `create_user.js`:
 
 ```js
 // app/validations/create_user.js
@@ -862,7 +854,7 @@ module.exports = {
 ```
 Now that we have the schema defining the validation rules, let's create a tiny library to run the validation everytime request is made.
 
-Inside `app/lib/`, create `validator.js`:
+Inside `./app/lib/`, create `validator.js`:
 
 ```js
 // app/lib/validator.js
@@ -941,7 +933,7 @@ If it does, we validate the value obtained from the `request` object  with the p
 
 Now, let's define the routes and provide the validation rules for all the paths.
 
-Inside `app/routes/`, create `routes.js`:
+Inside `./app/routes/`, create `routes.js`:
 
 ```js
 // app/routes/routes.js
@@ -1010,7 +1002,7 @@ After defining the route spefication in the first arguments, we specify the cont
 ### Handling restify errors
 Restify has built in error event listener that get fired when Error is encountered by restify as part of a next(error) statement. Let's proceed to add handlers for possible errors we want to listen for.
 
-Inside `app/lib/`, create `error_handler.js`:
+Inside `./app/lib/`, create `error_handler.js`:
 
 ```js
 // app/lib/error_handler.js 
