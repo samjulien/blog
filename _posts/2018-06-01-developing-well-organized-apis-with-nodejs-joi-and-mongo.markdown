@@ -399,11 +399,11 @@ Now, you can proceed to create a file called `di.js` (Dependency Injection) insi
 ```js
 'use strict';
 
-const serviceLocator = require('app/lib/service_locator');
-const config = require('app/configs/configs')();
+const serviceLocator = require('./app/lib/service_locator');
+const config = require('./app/configs/configs')();
 
 serviceLocator.register('logger', () => {
-  return require('app/lib/logger').create(config.application_logging);
+  return require('./app/lib/logger').create(config.application_logging);
 });
 
 serviceLocator.register('httpStatus', () => {
@@ -423,112 +423,112 @@ module.exports = serviceLocator;
 
 Calling the `register` method adds a dependency to the dependency graph that can be retrieved by calling the `get` method with the `dependencyName`.
 
-### Setup our database
-Before we proceed, let's start mongodb server in a separate terminal window and leave it running:
+### Setting Up a Database
 
-```sh
-$ mongod
+Before you proceed, you will need to start a MongoDB server in a separate terminal window and leave it running:
+
+```bash
+mongod
 ```
+
+> **Note:** You can also use a service like [mLab](https://mlab.com/) or you can [use Docker to initiliase a MongoDB instance](https://github.com/brunokrebs/cheat-sheet/tree/master/docker#mongodb-commands).
 
 If the command above fails, checkout their [documentation](https://docs.mongodb.com/manual/tutorial/) on how to start the server for your OS.
 
-Create `database.js` inside `app/configs/`
+Then, create a file called `database.js` inside the `./app/configs/`directory with the following code:
 
 ```js
-// app/configs/database.js
-
 'use strict';
 
-const serviceLocator = require('app/lib/service_locator');
+const serviceLocator = require('./app/lib/service_locator');
 const logger = serviceLocator.get('logger');
 
 class Database {
-    constructor(port, host, name) {
-        this.mongoose = serviceLocator.get('mongoose');
-        this._connect(port, host, name);
-    }
+  constructor(port, host, name) {
+    this.mongoose = serviceLocator.get('mongoose');
+    this._connect(port, host, name);
+  }
 
-    _connect(port, host, name) {
-        this.mongoose.Promise = global.Promise;
-        this.mongoose.connect(`mongodb://${host}:${port}/${name}`);
-        const { connection } = this.mongoose;
-        connection.on('connected', () =>
-            logger.info('Database Connection was Successful')
-        );
-        connection.on('error', (err) =>
-            logger.info('Database Connection Failed' + err)
-        );
-        connection.on('disconnected', () =>
-            logger.info('Database Connection Disconnected')
-        );
-        process.on('SIGINT', () => {
-            connection.close();
-            logger.info(
-                'Database Connection closed due to NodeJs process termination'
-            );
-            process.exit(0);
-        });
+  _connect(port, host, name) {
+    this.mongoose.Promise = global.Promise;
+    this.mongoose.connect(`mongodb://${host}:${port}/${name}`);
+    const {connection} = this.mongoose;
+    connection.on('connected', () =>
+      logger.info('Database Connection was Successful')
+    );
+    connection.on('error', (err) =>
+      logger.info('Database Connection Failed' + err)
+    );
+    connection.on('disconnected', () =>
+      logger.info('Database Connection Disconnected')
+    );
+    process.on('SIGINT', () => {
+      connection.close();
+      logger.info(
+        'Database Connection closed due to NodeJs process termination'
+      );
+      process.exit(0);
+    });
 
-        // initialize Model
-        require('app/models/Users');
-    }
+    // initialize Model
+    require('./app/models/Users');
+  }
 }
 
 module.exports = Database;
 ```
-Our Database class has just a single method that connects to the running mongodb server. We added some listeners for series of events that might occur in the server lifecycle. Lastly in the `_connect()` method we initialize our `users` model which we will create in the next section.
 
-For our Birthdates api, we need to define a model, `Users` and a submodel, `Birthdates`. The `Users` model would hold the properties of the user using the api e.g. `username`, `birthdate` and lastly `birthdates`. The `birthdates` submodel would define the `fullname` and `birthdates` of our friends and we will embed it as an array inside the `Users` model.
+This class has just a single method that connects to the running mongodb server. Note that you added some listeners for series of events (like `error` or `disconnected`) that might occur in the server lifecycle. Lastly in the `_connect()` method, you initialized your `users` model. You will create the `./app/models/Users` module now.
 
-Create `Users.js` inside `app/models/`
+For your Birthdates api, you need to define a model, `Users`, and a submodel, `Birthdates`. The `Users` model will hold the properties of the user using the API (e.g. `username`, `birthdate`, and `birthdates`). The `birthdates` submodel will define the `fullname` and `birthdates` of your friends and you will embed it as an array inside the `Users` model.
+
+So, create the `Users.js` file inside the `./app/models/` directory and add this code:
 
 ```js
-// app/models/Users.js
-
 'use strict';
 
-const config = require('app/configs/configs');
-const serviceLocator = require('app/lib/service_locator');
+const config = require('./app/configs/configs');
+const serviceLocator = require('./app/lib/service_locator');
 const mongoose = serviceLocator.get('mongoose');
 
 const birthdatesSchema = new mongoose.Schema({
-    fullname: {
-        type: String,
-        trim: true,
-        required: true
-    },
-    birthdate: {
-        type: Date,
-        required: true
-    }
+  fullname: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  birthdate: {
+    type: Date,
+    required: true
+  }
 });
 
 const userSchema = new mongoose.Schema({
     username: {
-        type: String,
-        trim: true,
-        required: true,
-        unique: true,
-        lowercase: true
+      type: String,
+      trim: true,
+      required: true,
+      unique: true,
+      lowercase: true
     },
     birthdate: {
-        type: Date,
-        required: true
+      type: Date,
+      required: true
     },
     birthdates: [birthdatesSchema]
-},
-{
+  },
+  {
     timestamps: true
-});
+  }
+);
 
 module.exports = mongoose.model('Users', userSchema);
 ```
 
-We defined two schemas:
+In this file, you defined two schemas:
 
-* `birthdatesSchema`: This used as a subdocument in the users model defining the `fullname` of the person whose birthdates we want to save and the `birthdates` properties.
-
-* `userSchema`: We defined `username` of the user, their `birthdate` and array of `birthdates` from the `birthdatesSchema`. We also enabled `timestamp` which automatically adds `created_at` and `updated_at` properties to every document.
+* `birthdatesSchema`: This used as a subdocument in the users model defining the `fullname` of the person whose birthdates you want to save and the `birthdates` properties.
+* `userSchema`: You defined `username` of the user, their `birthdate`, and array of `birthdates` from the `birthdatesSchema`. You also enabled `timestamp` which automatically adds `created_at` and `updated_at` properties to every document.
 
 ### Add API Specific code
 Next is to setup `services`, `controllers` and `routers` to handle requests. Inside `app/services`, we will create `user` service to handle business related to the `users` such as creating user, fetching user, etc. 
@@ -714,7 +714,7 @@ Inside `app/controllers/`, create `birthdates.js`:
 
 'use strict';
 
-const serviceLocator = require('app/lib/service_locator');
+const serviceLocator = require('./app/lib/service_locator');
 
 class BirthdateController {
     constructor(log, birthdateService, httpSatus) {
@@ -767,7 +767,7 @@ serviceLocator.register('birthdateService', (serviceLocator) => {
     const mongoose = serviceLocator.get('mongoose');
     const httpStatus = serviceLocator.get('httpStatus');
     const errs = serviceLocator.get('errs');
-    const BirthdateService = require('app/services/birthdates');
+    const BirthdateService = require('./app/services/birthdates');
 
     return new BirthdateService(log, mongoose, httpStatus, errs);
 });
@@ -777,7 +777,7 @@ serviceLocator.register('userService', (serviceLocator) => {
     const mongoose = serviceLocator.get('mongoose');
     const httpStatus = serviceLocator.get('httpStatus');
     const errs = serviceLocator.get('errs');
-    const UserService = require('app/services/user');
+    const UserService = require('./app/services/user');
 
     return new UserService(log, mongoose, httpStatus, errs);
 });
@@ -786,7 +786,7 @@ serviceLocator.register('birthdateController', (serviceLocator) => {
     const log = serviceLocator.get('logger');
     const httpStatus = serviceLocator.get('httpStatus');
     const birthdateService = serviceLocator.get('birthdateService');
-    const BirthdateController = require('app/controllers/birthdates');
+    const BirthdateController = require('./app/controllers/birthdates');
 
     return new BirthdateController(log, birthdateService, httpStatus);
 });
@@ -795,7 +795,7 @@ serviceLocator.register('userController', (serviceLocator) => {
     const log = serviceLocator.get('logger');
     const httpStatus = serviceLocator.get('httpStatus');
     const userService = serviceLocator.get('userService');
-    const UserController = require('app/controllers/user');
+    const UserController = require('./app/controllers/user');
 
     return new UserController(log, userService, httpStatus);
 });
@@ -956,7 +956,7 @@ module.exports.register = (server, serviceLocator) => {
             name: 'Create User',
             version: '1.0.0',
             validation: {
-                body: require('app/validations/create_user')
+                body: require('./app/validations/create_user')
             }
         },
         (req, res, next) =>
@@ -969,7 +969,7 @@ module.exports.register = (server, serviceLocator) => {
             name: 'Get User',
             version: '1.0.0',
             validation: {
-                params: require('app/validations/get_birthdates-user.js')
+                params: require('./app/validations/get_birthdates-user.js')
             }
         },
         (req, res, next) =>
@@ -982,7 +982,7 @@ module.exports.register = (server, serviceLocator) => {
             name: 'Get Birthdates',
             version: '1.0.0',
             validation: {
-                params: require('app/validations/get_birthdates-user.js')
+                params: require('./app/validations/get_birthdates-user.js')
             }
         },
         (req, res, next) =>
@@ -995,7 +995,7 @@ module.exports.register = (server, serviceLocator) => {
             name: 'Create Birthdate',
             version: '1.0.0',
             validation: {
-                body: require('app/validations/create_birthdates')
+                body: require('./app/validations/create_birthdates')
             }
         },
         (req, res, next) =>
