@@ -127,7 +127,7 @@ DB_HOST=localhost
 DB_NAME=birthdates
 ```
 
-Next, you will load these variables in a `config.js` file. So, inside the `app/configs` directory, create the `configs.js` file and add the code below:
+Next, you will load these variables in a `configs.js` file. So, inside the `app/configs` directory, create the `configs.js` file and add the code below:
 
 ```js
 'use strict';
@@ -154,137 +154,122 @@ module.exports = () => ({
 
 Node.js environment variables are always loaded into the `process.env` object. So, to access any variable declared in `.env` file, all you need to do is to call `process.env.VAR_NAME`. That is, if you want to change a variable due to change in the environment, you don't need to modify the `config` file. You just need to modify the `.env` file.
 
-### Setting up Restify Server
+### Setting Up the Restify Server
 
-#### Create a formatter to be used by restify for json responses
-Inside `lib` directory, create `jsend.js`:
+The first thing you will do to set up your new Restify Server is to create a file called `jsend.js` in the `lib` directory. Inside this file, you will add the following code:
 
 ```js
-// app/lib/jsend.js
-
 'use strict';
-/**
- * JSON formatter.
- * @public
- * @function formatJSON
- * @param    {Object} req  the request object
- * @param    {Object} res  the response object
- * @param    {Object} body response body
- * @returns  {String}
- */
+
 function formatJSend(req, res, body) {
-    function formatError(res, body) {
-        const isClientError = res.statusCode >= 400 && res.statusCode < 500;
-        if (isClientError) {
-            return {
-                status: 'error',
-                message: body.message,
-                code: body.code
-            };
-        } else {
-            const inDebugMode = process.env.NODE_ENV === 'development';
-
-            return {
-                status: 'error',
-                message: inDebugMode ? body.message : 'Internal Server Error',
-                code: inDebugMode ? body.code : 'INTERNAL_SERVER_ERROR',
-                data: inDebugMode ? body.stack : undefined
-            };
-        }
-    }
-
-    function formatSuccess(res, body) {
-        if (body.data && body.pagination) {
-            return {
-                status: 'success',
-                data: body.data,
-                pagination: body.pagination,
-            };
-        }
-
-        return {
-            status: 'success',
-            data: body
-        };
-    }
-
-    let response;
-    if (body instanceof Error) {
-        response = formatError(res, body);
+  function formatError(res, body) {
+    const isClientError = res.statusCode >= 400 && res.statusCode < 500;
+    if (isClientError) {
+      return {
+        status: 'error',
+        message: body.message,
+        code: body.code
+      };
     } else {
-        response = formatSuccess(res, body);
+      const inDebugMode = process.env.NODE_ENV === 'development';
+
+      return {
+        status: 'error',
+        message: inDebugMode ? body.message : 'Internal Server Error',
+        code: inDebugMode ? body.code : 'INTERNAL_SERVER_ERROR',
+        data: inDebugMode ? body.stack : undefined
+      };
+    }
+  }
+
+  function formatSuccess(res, body) {
+    if (body.data && body.pagination) {
+      return {
+        status: 'success',
+        data: body.data,
+        pagination: body.pagination,
+      };
     }
 
-    response = JSON.stringify(response);
-    res.header('Content-Length', Buffer.byteLength(response));
-    res.header('Content-Type', 'application/json');
+    return {
+      status: 'success',
+      data: body
+    };
+  }
 
-    return response;
+  let response;
+  if (body instanceof Error) {
+    response = formatError(res, body);
+  } else {
+    response = formatSuccess(res, body);
+  }
+
+  response = JSON.stringify(response);
+  res.header('Content-Length', Buffer.byteLength(response));
+  res.header('Content-Type', 'application/json');
+
+  return response;
 }
 
 module.exports = formatJSend;
 ```
-Let's analyze it:
 
-The function checks the body of the response if it's an error type, in that case it calls the `formatError` function that construct a `jsend` compliant error response with the http status code. Otherwise, the `formatSuccess` is called for every successful request transaction and formatted following the `jsend` json response specification.
+The main function, `formatJSend` (the other two are used only by this function), checks the body of the response to see if it's an error type or not. If it is, it calls the `formatError` function that construct a `jsend` compliant error response with the HTTP status code. Otherwise, the `formatSuccess` is called for every successful request transaction and formatted following the `jsend` json response specification.
 
-Our formatter overrides the default restify formatter for `content-type` of `application/json`
+Your formatter overrides the default Restify formatter for `content-type` of `application/json`.
 
-
-Let's create a `server.js` file in the root directory of the project to start the restify server and require our `jsend` formatter.
+Now, you can create a `server.js` file in the project root to start the Restify server and use your `jsend` formatter.
 
 ```js
-// server.js
-
 'use strict';
 
-require('dotenv').config()
-const config = require('app/configs/configs')();
+require('dotenv').config();
+const config = require('./app/configs/configs')();
 const restify = require('restify');
 const versioning = require('restify-url-semver');
 
 // Initialize and configure restify server
 const server = restify.createServer({
-    name: config.app.name,
-    versions: ['1.0.0'],
-    formatters: {
-        'application/json': require('app/lib/jsend')
-    }
+  name: config.app.name,
+  versions: ['1.0.0'],
+  formatters: {
+    'application/json': require('./app/lib/jsend')
+  }
 });
 
 // Set API versioning and allow trailing slashes
 server.pre(restify.pre.sanitizePath());
-server.pre(versioning({ prefix: '/' }));
+server.pre(versioning({prefix: '/'}));
 
 // Set request handling and parsing
 server.use(restify.plugins.acceptParser(server.acceptable));
 server.use(restify.plugins.queryParser());
 server.use(
-    restify.plugins.bodyParser({
-        mapParams: false
-    })
+  restify.plugins.bodyParser({
+    mapParams: false
+  })
 );
 
 // start server
 server.listen(config.app.port, () => {
-    console.log(`${config.app.name} Server is running on port - 
+  console.log(`${config.app.name} Server is running on port - 
     ${config.app.port}`);
 });
 ```
 
-First thing we did was to load the variables in `.env` file into `process.env` once the app starts up. We proceed to importing dependencies and creating server with the configuration we created previously.
+First thing you did was to load the variables from the `.env` file into `process.env` once the app starts up. Then, you started importing dependencies and creating server with the configuration you created previously.
 
-__NOTE: Unix users would need this command: 
-`export $(cat .env | sed -e /^$/d -e /^#/d | xargs)` in the root directory - `birthdates-api/` to load the .env variables to shell environment.__
+> Unix users can use `export $(cat .env | sed -e /^$/d -e /^#/d | xargs)` in the project root to load the `.env` variables to shell environment.
 
-Inside the project root directory, start the server with this command:
+Inside the project root, you can start the server with this command:
 
-```sh
-$ node server.js
+```bash
+node server.js
 ```
+
 If it was successful, you should see this in your console:
 
-![Server is Running](https://i.imgur.com/yk47VG9.png)
+![Node.js application running](https://cdn.auth0.com/blog/nodejs-apis/server-running.png)
 
 ### Setting up Logger
 
