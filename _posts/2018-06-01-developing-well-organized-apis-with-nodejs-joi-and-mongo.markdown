@@ -983,21 +983,15 @@ Now, you have four endpoints defined:
 
 After defining the route spefication in the first arguments, you specify the controller to handle the request to that particular path.
 
-### Handling restify errors
-Restify has built in error event listener that get fired when Error is encountered by restify as part of a next(error) statement. Let's proceed to add handlers for possible errors we want to listen for.
+### Handling Restify Errors
 
-Inside `./app/lib/`, create `error_handler.js`:
+Restify has built in error event listener that get fired when an `Error` is encountered by restify as part of a `next(error)` statement. So, now you need to add handlers for possible errors you want to listen for.
+
+So, inside `./app/lib/`, create `error_handler.js` and add this:
 
 ```js
-// app/lib/error_handler.js 
-
 'use strict';
 
-/**
- * Allows us to register the restify server handlers.
- *
- * @param  {server} server An instance of the restify server
- */
 module.exports.register = (server) => {
     var httpStatusCodes = require('http-status');
 
@@ -1034,7 +1028,8 @@ module.exports.register = (server) => {
     });
 };
 ```
-Whenever error is encountered in our application, the appropriate error handler is called. If an error not defined above should occur, the last handler we declared, `restifyError` would catch such a `error`.
+
+Whenever error is encountered in your application, the appropriate error handler is called. If an error not defined above occurs, the last handler you declared, `restifyError`, will catch it.
 
 ### Finishing up
 Let's update the `server.js` file to initialize the route and our request validator.
