@@ -271,73 +271,64 @@ If it was successful, you should see this in your console:
 
 ![Node.js application running](https://cdn.auth0.com/blog/nodejs-apis/server-running.png)
 
-### Setting up Logger
+### Setting up a Logger
 
-Let's create a wrapper for `winston` to format the output of the logs and create transport based on the environment.
-Create `logger.js` inside `app/lib/`
+Now, you will create a wrapper for the `winston` library to format the output of the logs and create transport based on the environment.
+
+So, create a file called `logger.js` inside `./app/lib/` and add the following code:
 
 ```js
-// app/lib/logger.js
+'use strict';
 
-"use strict";
+const {createLogger, format, transports} = require('winston');
+const {combine, timestamp, label, prettyPrint} = format;
 
-const { createLogger, format, transports } = require('winston');
-const { combine, timestamp, label, prettyPrint } = format;
+const createTransports = function (config) {
+  const customTransports = [];
 
-/**
-    * Creates transports based on config values
-    * @returns {array} the created transports
-    */
-const createTransports = function(config) {
-    const customTransports = [];
+  // setup the file transport
+  if (config.file) {
 
-    // setup the file transport
-    if (config.file) {
+    // setup the log transport
+    customTransports.push(
+      new transports.File({
+        filename: config.file,
+        level: config.level
+      })
+    );
+  }
 
-        // setup the log transport
-        customTransports.push(
-            new transports.File({
-                filename: config.file,
-                level: config.level
-            })
-        );
-    }
+  // if config.console is set to true, a console logger will be included.
+  if (config.console) {
+    customTransports.push(
+      new transports.Console({
+        level: config.level
+      })
+    );
+  }
 
-    // if config.console is set to true, a console logger will be included.
-    if (config.console) {
-        customTransports.push(
-            new transports.Console({
-                level: config.level
-            })
-        );
-    }
-
-    return customTransports;
+  return customTransports;
 };
 
 module.exports = {
-    /**
-        * Creates a new logger instance using the config provided.
-        * @param  {object} config The config used to setup the logger transports.
-        * @return {logger} Returns a new instance of the winston logger.
-        */
-    create: function (config) {
-        return new createLogger({
-            transports: createTransports(config),
-            format: combine(
-                    label({ label: 'Birthdates API' }),
-                    timestamp(),
-                    prettyPrint()
-                )
-        });
-    }
+  create: function (config) {
+    return new createLogger({
+      transports: createTransports(config),
+      format: combine(
+        label({label: 'Birthdates API'}),
+        timestamp(),
+        prettyPrint()
+      )
+    });
+  }
 };
 ```
-For a quickstart on how to create winston logger, have a look at the [documentation](http://github.com/winstonjs/winston). 
 
-For this tutorial, we created two transports; `console` and `file`. Both transports use the log level we set in our environment variable which can be overrid in the code with `logger.log_level(...)` e.g. `logger.info(...)` instead of `logger.log(...)` which uses the default log level in our `.env` file. 
+For a better understanding on how to create Winston logger, you can have a look at the [official Winston documentation](http://github.com/winstonjs/winston). 
 
-Based on the environment you can set the value of console logging to false or true in `.env` file. Again, for this tutorial we enabled logging to the console so we can see all our logs in the console without having to tail a log file. However, logging to the console is not advisable in a production environment.
+For this tutorial, you created two transports; `console` and `file`. Both transports use the log level you set in your environment variable which can be overriden in the code with `logger.log_level(...)` (e.g. `logger.info(...)` instead of `logger.log(...)`).
+
+Based on the environment, you can set the value of console logging to false or true in the `.env` file. Again, for this tutorial you enabled logging to the console so you can see all your logs in the console without having to tail a log file. However, logging to the console is not advisable in a production environment.
 
 ### Setting up Dependency injection
 Instead of having your objects creating a dependency, you pass the needed dependencies in to the object externally, and you make it somebody else's problem. To achieve this, we can use an object higher up in the dependency graph or a dependency injector (library) to pass the dependencies. 
