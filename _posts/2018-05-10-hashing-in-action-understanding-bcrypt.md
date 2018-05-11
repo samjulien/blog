@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "Hashing in Action: Understanding bcrypt"
-description: "bcrypt allows us to build a password security platform that can scale with computation power and always hashes every password with a salt."
-longdescription: "bcrypt allows us to build a password security platform that can scale with computation power. It provides us with hashing and salting mechanisms that can be tuned to run slower as our servers, or the computers available to attackers, get faster."
+description: "The bcrypt hashing function allows us to build a password security platform that scales with computation power and always hashes every password with a salt."
+longdescription: "The bcrypt hashing function allows us to build a password security platform that can scale with computation power. It provides us with hashing and salting mechanisms that can be tuned to run slower as our servers, or the computers available to attackers, get faster."
 date: 2018-04-20 8:30
 category: Technical Guide, Security
 design: 
@@ -30,11 +30,11 @@ related:
 ---
 
 
-In previous posts to this Authentication Saga, we learned that storing passwords in **plaintext** is must never be an option. Instead, we want to provide a [one-way road to security](https://auth0.com/blog/hashing-passwords-one-way-road-to-security/) by **hashing** passwords. However, we also explored that hashing alone is not sufficient to mitigate more involved attacks such as rainbow tables. A [better way to store passwords](https://auth0.com/blog/hashing-passwords-one-way-road-to-security/) is to add salt to the hashing process: adding additional random data to the input of a hashing function that makes each password hash unique. The ideal authentication platform would integrate these two processes, hashing and salting, seamlessly.
+In previous posts to this Authentication Saga, we learned that storing passwords in **plaintext** must never be an option. Instead, we want to provide a [one-way road to security](https://auth0.com/blog/hashing-passwords-one-way-road-to-security/) by **hashing** passwords. However, we also explored that hashing alone is not sufficient to mitigate more involved attacks such as rainbow tables. A [better way to store passwords](https://auth0.com/blog/hashing-passwords-one-way-road-to-security/) is to add a salt to the hashing process: adding additional random data to the input of a hashing function that makes each password hash unique. The ideal authentication platform would integrate these two processes, hashing and salting, seamlessly.
 
-There are plenty of cryptographic functions to choose from such as the [`SHA2` family](https://en.wikipedia.org/wiki/SHA-2) and the [`SHA-3` family](https://en.wikipedia.org/wiki/SHA-3). However, one design problem with the `SHA` families is that they were designed to be computationally fast. How fast a cryptographic function can calculate a hash has an immediate and significant bearing on how safe the password is. 
+There are plenty of cryptographic functions to choose from such as the [`SHA2` family](https://en.wikipedia.org/wiki/SHA-2) and the [`SHA-3` family](https://en.wikipedia.org/wiki/SHA-3). However, one design problem with the `SHA` families is that they were designed to be computationally fast. How fast a cryptographic function can calculate a hash has an immediate and significant bearing on how safe the password is.
 
-Modern hardware in the form of CPUs and GPUs could compute millions, or even billions, of SHA-256 hashes per second. Unfortunately, we don't have a way to modify the speed of the function to make it adapt to the evolution of hardware speed. We need a solution that is adaptable and can be made slower at hashing passwords to bring attackers almost to a halt.
+Faster calculations mean faster brute-force attacks, for example. Modern hardware in the form of CPUs and GPUs could compute millions, or even billions, of SHA-256 hashes per second. Instead of a fast function, we need a function that is slow at hashing passwords to bring attackers almost to a halt. We also want this function to be adaptive so that we can compensate for future faster hardware by being able to make the function run slower and slower over time. 
 
 At Auth0, the integrity and security of our data are one of our highest priorities. We use the industry-grade and battle-tested `bcrypt` algorithm to securely hash **and** salt passwords. `bcrypt` allows building a password security platform that can evolve alongside hardware technology to guard against the threats that the future may bring, such as attackers having the computing power to crack passwords twice as fast. Let's learn about the design and specifications that make `bcrypt` a cryptographic security standard. 
 
@@ -54,16 +54,16 @@ This attack vector was well understood by cryptographers in the 90s and an algor
 
 Inherently, an attacker could then carry out a complete dictionary attack with extreme efficiency. Thus, cryptography that was exponentially more difficult to break as hardware became faster was required in order to hinder the speed benefits that attackers could get from hardware.
 
-The Blowfish cipher is a fast [block cipher](https://en.wikipedia.org/wiki/Block_cipher) except when changing keys: each new key requires the [pre-processing equivalent to encrypting about 4 kilobytes of text](https://en.wikipedia.org/wiki/Blowfish_(cipher)), which is considered very slow compared to other block ciphers. This slow key changing is beneficial to password hashing methods such as `bcrypt` since the extra computational demand helps protect against dictionary and brute force attacks by **slowing down the attack**. 
+The Blowfish cipher is a fast [block cipher](https://en.wikipedia.org/wiki/Block_cipher) except when changing [keys](https://en.wikipedia.org/wiki/Key_(cryptography)), the parameters that establish the functional output of a cryptographic algorithm: each new key requires the [pre-processing equivalent to encrypting about 4 kilobytes of text](https://en.wikipedia.org/wiki/Blowfish_(cipher)), which is considered very slow compared to other block ciphers. This slow key changing is beneficial to password hashing methods such as `bcrypt` since the extra computational demand helps protect against dictionary and brute force attacks by **slowing down the attack**. 
 
 As shown in ["Blowfish in practice"](https://en.wikipedia.org/wiki/Blowfish_(cipher)), `bcrypt` is able to mitigate those kinds of attacks by combining the expensive key setup phase of Blowfish with a variable number of iterations to increase the workload and duration of hash calculations. The largest benefit of `bcrypt` is that, over time, the [iteration count can be increased to make it slower](https://en.wikipedia.org/wiki/Bcrypt) allowing `bcrypt` to scale with computing power. We can dimish any benefits attackers may get from faster hardware by increasing the number of iterations to make `bcrypt` slower.
 
-{% include tweet_quote.html quote_text="bcrypt` was designed for password hashing hence it is a slow algorithm. This is good for password hashing as it reduces the number of passwords by second an attacker could hash when crafting a dictionary attack. " %}
+{% include tweet_quote.html quote_text="`bcrypt` was designed for password hashing hence it is a slow algorithm. This is good for password hashing as it reduces the number of passwords by second an attacker could hash when crafting a dictionary attack. " %}
 
 Another benefit of `bcrypt` is that it requires a salt by default. It uses a 128-bit salt and encrypts a 192-bit magic value as noted in the [USENIX documentation](https://www.usenix.org/legacy/events/usenix99/provos/provos_html/node5.html#sec:bcrypt).
 
 
-{% include tweet_quote.html quote_text="`bcrypt` forces you to follow security best practices as it requires a salt as part of the hashing process. Hashing combined with salts protects you against rainbow table attacks! Is `bcrypt` part of your security strategy?" %}
+{% include tweet_quote.html quote_text="`bcrypt` forces you to follow security best practices as it requires a salt as part of the hashing process. Hashing combined with salts protects you against rainbow table attacks! Are password salts part of your security strategy?" %}
 
 What's that magic value? Let's take a deeper look at how this hashing function works!
 
@@ -86,7 +86,7 @@ What we are going through this first phase is to promote [key strengthening](htt
 The magic value is the 192-bit value `OrpheanBeholderScryDoubt`. This value is encrypted 64 times using `eksblowfish` in [ECB mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_(ECB)) with the state from the previous phase. The output of this phase is the cost and the 128-bit salt value concatenated with the result of the encryption loop.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/intro-bcrypt/bcrypt-algo.png" alt="Algorith that shows the two phases that make up the bcrypt implementation">
+  <img src="https://cdn.auth0.com/blog/intro-bcrypt/bcrypt-algo.png" alt="Algorithm that shows the two phases that make up the bcrypt implementation">
 </p>
 
 The resulting hash is prefixed with `$2a$`, `$2y$`, or `$2b$`. The prefixes are added to indicate usage of `bcrypt` and its version.
@@ -127,7 +127,7 @@ const plainTextPassword1 = 'DFGh5546*%^__90';
 
 for (let saltRounds = 10; saltRounds < 21; saltRounds++) {
     console.time(`bcrypt | cost: ${saltRounds}, time to hash`);
-    bcrypt.hashSync(plainTextPassword1, 1);
+    bcrypt.hashSync(plainTextPassword1, saltRounds);
     console.timeEnd(`bcrypt | cost: ${saltRounds}, time to hash`);
 }
 ```
@@ -176,9 +176,9 @@ If we wanted to predict how long would it take to hash a password in this system
 
 A cost factor of `30` could take `44370461014.7` milliseconds to calculate. That is, `739507.68` minutes or `513.55` days! A much faster machine optimized with the latest and the greatest technology available today could have smaller computation times. However, `bcrypt` can easily scale our hashing process to accommodate to faster hardware, leaving us a lot of wiggle room to prevent attackers from benefiting from future technology improvements.
 
-If we ever detect or suspect that a data breach has compromised passwords, even in hash form, we must prompt our users to change their password right away. What hashing and salting do for us is to prevent a brute-force attack of billions of attempts to be successful. A single password crack is computationally feasible, but we try to make the process as slow as possible to give the most time for our users to change their passwords. 
+If a company ever detects or suspects that a data breach has compromised passwords, even in hash form, it must prompt its users to change their password right away. While hashing and salting prevent a brute-force attack of billions of attempts to be successful, a single password crack is computationally feasible. An attacker may, with tremendous amount of computational power, or by sheer luck, crack a single password, but even then, the process would be most certainly slow due to the characteristics of `bcrypt`, giving the company and their users precious time to change passwords. 
 
-What if an unlucky users take too long and their password hash is cracked? That's where [two-factor authentication](https://auth0.com/learn/two-factor-authentication/) and [multi-factor authentication](https://auth0.com/learn/get-started-with-mfa/) come handy! If the user has enabled two-factor authentication, then the attacker would need a random code on top of the plaintext password to be able to log in. That's why in today's industry, making two-factor authentication available, some experts may say mandatory, for users is at the core of a strong password protection and identity management strategy.
+What if unlucky users take too long and their password hash is cracked? That's where [two-factor authentication](https://auth0.com/learn/two-factor-authentication/) and [multi-factor authentication](https://auth0.com/learn/get-started-with-mfa/) come handy! If the user has enabled two-factor authentication, then the attacker would need a random code on top of the plaintext password to be able to log in. That's why in today's industry, making two-factor authentication available, some experts may say mandatory, for users is at the core of a strong password protection and identity management strategy.
 
 {% include tweet_quote.html quote_text="If a salted password hash is cracked, having two-factor authentication or multi-factor authentication enabled for the user account would prevent the attacker from logging in before the user can change the password." %}
 
@@ -284,7 +284,7 @@ Notice how in both techniques we are storing the hash and not the password. **Th
 
 Once we have our passwords stored in the database, how do we validate a user login? Let's check that out.
 
-### Authenticating a Password with a Hash
+### Validating a Password with a Hash
 
 Using the `bycrypt.hash` method, let's see how we can compare a provided password with a created hash. Since we are not connecting to a database in this example, we are going to create the hash and save it somewhere, like a text editor. The hash I got is:
 
@@ -348,10 +348,10 @@ Other languages would follow a similar workflow:
 
 ## Simplifying Password Management with Auth0
 
-The main idea of authentication is to compare two hashes and determine if they match each other. The process is very complex. A solid identity strategy demands an organization to keep current with cryptographic advances, design a process to phase out deprecated or vulnerable algorithms, provide pen testing, invest in physical and network security among many others. With all factors considered, it isn't easy or inexpensive. 
+The main idea of password verification is to compare two hashes and determine if they match each other. The process is very complex. A solid identity strategy demands an organization to keep current with cryptographic advances, design a process to phase out deprecated or vulnerable algorithms, provide pen testing, invest in physical and network security among many others. With all factors considered, it isn't easy or inexpensive. 
 
 You can minimize the overhead of hashing, salting and password management through [Auth0](https://auth0.com/). We solve the most complex identity use cases with an extensible and easy to integrate platform that secures billions of logins every month.
 
-Auth0 helps you prevent critical identity data from falling into the wrong hands. We never store passwords in cleartext. Passwords are always hashed and salted using [bcrypt](https://en.wikipedia.org/wiki/Bcrypt). Additionally, data at rest and in motion is always encrypted by using TLS with at least 128-bit AES encryption. We've built state-of-the-art security into our product, to protect your business and your users.
+Auth0 helps you prevent critical identity data from falling into the wrong hands. We never store passwords in cleartext. Passwords are always hashed and salted using [bcrypt](https://en.wikipedia.org/wiki/Bcrypt). Both data at rest and in motion is encrypted - all network communication uses TLS with at least 128-bit AES encryption. We've built state-of-the-art security into our product, to protect your business and your users.
 
 Make the internet safer, <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account</a> today.
