@@ -24,8 +24,10 @@ related:
 **TL;DR:** This article covers building an api with [Restify](https://restify.com), using [joi](https://github.com/hapijs/joi) to validate request and [mongodb](https://mongodb.org) as the database. The projects fully implements Dependency Injection technology. The full code can be found on [github](https://github.com/biodunch/birthdates-api.git).
 
 ## Developing Well-Organized APIs with Node.js
-We will be building a Birthdates api that lets you create birthdates of your friends and fetch all birthdates.
-Structuring Node.js api has been a pain most beginner Node.js developers have been through. I would walk you through how to properly structure and organise a restful Node.js API built with some cool tools like restify, joi and mongodb. 
+
+In this article, you will build a birthdates API that lets you register and query birthdays from the people you know.
+
+Structuring Node.js APIs has been a pain most beginner Node.js developers have been through. So, in the next sections, you will learn how to properly structure and organise a RESTful Node.js API with some cool tools like Restify, Joi and MongoDB. 
 
 ## What we are using:
 
