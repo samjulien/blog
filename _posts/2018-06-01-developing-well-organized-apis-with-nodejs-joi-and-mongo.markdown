@@ -1149,3 +1149,11 @@ This will get you a response similar to:
    ]
 }
 ```
+
+{% include asides/node.markdown %}
+
+## Conclusion
+
+In this article, you learned how to use great tools like Node.js, Mongoose, Restify, Joi, and Mongo to build well-organised RESTful APIs. You also learned that without too much effort you can integrate a simple module to handle the injection of dependencies on modules. Although lengthy, the content of this article is not hard to grasp and paves the way for more complex applications.
+
+In a next opportunity, you will see how to integrate the project created here in a CI/CD (Continuous Integration and Continuous Delivery) workflow to automate the release process. Stay tuned!
