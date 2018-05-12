@@ -399,11 +399,11 @@ Now, you can proceed to create a file called `di.js` (Dependency Injection) insi
 ```js
 'use strict';
 
-const serviceLocator = require('./app/lib/service_locator');
-const config = require('./app/configs/configs')();
+const serviceLocator = require('../lib/service_locator');
+const config = require('./configs')();
 
 serviceLocator.register('logger', () => {
-  return require('./app/lib/logger').create(config.application_logging);
+  return require('../lib/logger').create(config.application_logging);
 });
 
 serviceLocator.register('httpStatus', () => {
@@ -440,7 +440,7 @@ Then, create a file called `database.js` inside the `./app/configs/`directory wi
 ```js
 'use strict';
 
-const serviceLocator = require('./app/lib/service_locator');
+const serviceLocator = require('../lib/service_locator');
 const logger = serviceLocator.get('logger');
 
 class Database {
@@ -471,7 +471,7 @@ class Database {
     });
 
     // initialize Model
-    require('./app/models/Users');
+    require('../models/Users');
   }
 }
 
@@ -487,8 +487,8 @@ So, create the `Users.js` file inside the `./app/models/` directory and add this
 ```js
 'use strict';
 
-const config = require('./app/configs/configs');
-const serviceLocator = require('./app/lib/service_locator');
+const config = require('../configs/configs');
+const serviceLocator = require('../lib/service_locator');
 const mongoose = serviceLocator.get('mongoose');
 
 const birthdatesSchema = new mongoose.Schema({
@@ -703,7 +703,7 @@ Now, create the `birthdates.js` file inside the `./app/controllers/` directory w
 ```js
 'use strict';
 
-const serviceLocator = require('./app/lib/service_locator');
+const serviceLocator = require('../lib/service_locator');
 
 class BirthdateController {
   constructor(log, birthdateService, httpSatus) {
@@ -756,7 +756,7 @@ serviceLocator.register('birthdateService', (serviceLocator) => {
     const mongoose = serviceLocator.get('mongoose');
     const httpStatus = serviceLocator.get('httpStatus');
     const errs = serviceLocator.get('errs');
-    const BirthdateService = require('./app/services/birthdates');
+    const BirthdateService = require('../services/birthdates');
 
     return new BirthdateService(log, mongoose, httpStatus, errs);
 });
@@ -766,7 +766,7 @@ serviceLocator.register('userService', (serviceLocator) => {
     const mongoose = serviceLocator.get('mongoose');
     const httpStatus = serviceLocator.get('httpStatus');
     const errs = serviceLocator.get('errs');
-    const UserService = require('./app/services/user');
+    const UserService = require('../services/user');
 
     return new UserService(log, mongoose, httpStatus, errs);
 });
@@ -775,7 +775,7 @@ serviceLocator.register('birthdateController', (serviceLocator) => {
     const log = serviceLocator.get('logger');
     const httpStatus = serviceLocator.get('httpStatus');
     const birthdateService = serviceLocator.get('birthdateService');
-    const BirthdateController = require('./app/controllers/birthdates');
+    const BirthdateController = require('../controllers/birthdates');
 
     return new BirthdateController(log, birthdateService, httpStatus);
 });
@@ -784,7 +784,7 @@ serviceLocator.register('userController', (serviceLocator) => {
     const log = serviceLocator.get('logger');
     const httpStatus = serviceLocator.get('httpStatus');
     const userService = serviceLocator.get('userService');
-    const UserController = require('./app/controllers/user');
+    const UserController = require('../controllers/user');
 
     return new UserController(log, userService, httpStatus);
 });
@@ -926,7 +926,7 @@ module.exports.register = (server, serviceLocator) => {
       name: 'Create User',
       version: '1.0.0',
       validation: {
-        body: require('./app/validations/create_user')
+        body: require('../validations/create_user')
       }
     },
     (req, res, next) =>
@@ -939,7 +939,7 @@ module.exports.register = (server, serviceLocator) => {
       name: 'Get User',
       version: '1.0.0',
       validation: {
-        params: require('./app/validations/get_birthdates-user.js')
+        params: require('../validations/get_birthdates-user.js')
       }
     },
     (req, res, next) =>
@@ -952,7 +952,7 @@ module.exports.register = (server, serviceLocator) => {
       name: 'Get Birthdates',
       version: '1.0.0',
       validation: {
-        params: require('./app/validations/get_birthdates-user.js')
+        params: require('../validations/get_birthdates-user.js')
       }
     },
     (req, res, next) =>
@@ -965,7 +965,7 @@ module.exports.register = (server, serviceLocator) => {
       name: 'Create Birthdate',
       version: '1.0.0',
       validation: {
-        body: require('./app/validations/create_birthdates')
+        body: require('../validations/create_birthdates')
       }
     },
     (req, res, next) =>
@@ -1031,33 +1031,52 @@ module.exports.register = (server) => {
 
 Whenever error is encountered in your application, the appropriate error handler is called. If an error not defined above occurs, the last handler you declared, `restifyError`, will catch it.
 
-### Finishing up
-Let's update the `server.js` file to initialize the route and our request validator.
+### Wrapping Up
+
+To wrap up your Node.js API, you will need to update the `server.js` file to initialize the route and our request validator. So, open this file and replace the code with this:
 
 ```js
-// server.js
+"use strict";
 
-...
-
-const serviceLocator = require("app/configs/di");
-const validator = require("app/lib/validator");
-const handler = require("app/routes/error_handler");
-const routes = require("app/routes/routes");
+const config = require("./app/configs/configs")();
+const restify = require("restify");
+const versioning = require("restify-url-semver");
 const joi = require("joi");
-const logger = serviceLocator.get("logger");
 
+// Require DI
+const serviceLocator = require("./app/configs/di");
+const validator = require("./app/lib/validator");
+const handler = require("./app/routes/handlers");
+const routes = require("./app/routes/routes");
+const logger = serviceLocator.get("logger");
 const server = restify.createServer({
-    ...
+  name: config.app.name,
+  versions: ["1.0.0"],
+  formatters: {
+    "application/json": require("./app/lib/formatters/jsend")
+  }
 });
 
 // Initialize the database
-const Database = require("app/configs/database");
+const Database = require("./app/configs/database");
 new Database(config.mongo.port, config.mongo.host, config.mongo.name);
 
-...
+// Set API versioning and allow trailing slashes
+server.pre(restify.pre.sanitizePath());
+server.pre(versioning({ prefix: "/" }));
+
+// Set request handling and parsing
+server.use(restify.plugins.acceptParser(server.acceptable));
+server.use(restify.plugins.queryParser());
+server.use(
+  restify.plugins.bodyParser({
+    mapParams: false
+  })
+);
 
 // initialize validator for all requests
 server.use(validator.paramValidation(logger, joi));
+server.use(validator.headerValidation(logger));
 
 // Setup Error Event Handling
 handler.register(server);
@@ -1065,58 +1084,52 @@ handler.register(server);
 // Setup route Handling
 routes.register(server, serviceLocator);
 
+// start server
 server.listen(config.app.port, () => {
-    ...
+  console.log(`${config.app.name} Server is running on port - 
+    ${config.app.port}`);
 });
-
 ```
 
-### Conclusion 
-That's it!!! We have just built a well organised api with Restify.
-Let's take our baby for a spin, shall we ?
+That's it!!! You have just built a well organised API with Restify. Time take your baby for a spin!
 
-First we create a `User`:
+As you probably noticed, the `./app/configs/configs.js` that you created earlier depends on a few environment variable that you must set before you start your app. The following code snippet sets these variables and then starts your app (just keep in mind that you might have to adjust values to your environment):
+
+```bash
+export APP_NAME=birthdates-api
+export DB_PORT=27017
+export DB_HOST=localhost
+export DB_NAME=birthdates-db
+
+# make sure you are running this from the project root
+node server.js
+```
+
+After running your application, you can issue the following create a `User`:
 
 ```sh
-$ curl -H "Content-Type: application/json" -X POST -d '{"username":"biodunch","birthdate":"12/2/2000"}' localhost:5000/v1/users
+curl -H "Content-Type: application/json" -X POST -d '{
+  "username": "biodunch",
+  "birthdate": "12/2/2000"
+}' localhost:8000/v1/users
 ```
 
-Response:
-
-```json
-{
-   "status":"success",
-   "data":{
-      "_id":"5adbb4819b09be4ea8da5902",
-      "username":"biodunch",
-      "birthdate":"2000-12-01T23:00:00.000Z",
-      "birthdates":[],
-      "createdAt":"2018-04-21T22:00:33.838Z",
-      "updatedAt":"2018-04-21T22:00:33.838Z",
-      "__v":0
-   }
-}
-```
-Now, let's create birthdate for the created user:
+Then, you can register a birthdate of a friend of this user with this command:
 
 ```sh
-$ curl -H "Content-Type: application/json" -X POST -d '{"fullname":"Falomo Olumide","birthdate":"10/3/2000"}' localhost:5000/v1/birthdates/biodunch
-```
-Response:
-
-```json
-{
-   "status":"success",
-   "data":"Falomo Olumide's birthdate saved successfully!"
-}
+curl -H "Content-Type: application/json" -X POST -d '{
+  "fullname": "Falomo Olumide",
+  "birthdate":"10/3/2000"
+}' localhost:8000/v1/birthdates/biodunch
 ```
 
-Now, let's fetch the birthdates saved by `biodunch` :)
+Then, to fetch the birthdates saved by `biodunch`, you can issue this command:
 
 ```sh
-$ curl localhost:5000/v1/birthdates/biodunch
+curl localhost:8000/v1/birthdates/biodunch
 ```
-Response:
+
+This will get you a response similar to:
 
 ```json
 {
