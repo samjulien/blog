@@ -16,12 +16,19 @@ tags:
 - mongo
 - joi
 - restify
+- mongoose
+- api
+- rest
+- backend
+- node
+- di
+- dependency-injection
 related:
 - 2018-05-02-nodejs-10-new-changes-deprecations
 - 2018-03-29-vuejs-kanban-board-the-development-process
 ---
 
-**TL;DR:** This article covers building an api with [Restify](https://restify.com), using [joi](https://github.com/hapijs/joi) to validate request and [mongodb](https://mongodb.org) as the database. The projects fully implements Dependency Injection technology. The full code can be found on [github](https://github.com/biodunch/birthdates-api.git).
+**TL;DR:** In this article, you will learn how to build well-organized APIs with [Node.js](https://nodejs.org/), [Restify](https://restify.com), [Joi](https://github.com/hapijs/joi), and [MongoDB](https://mongodb.org). You will also have a chance to learn how to use dependency injection on this stack. If needed, [you can find the code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/nodejs-restify).
 
 ## Developing Well-Organized APIs with Node.js
 
