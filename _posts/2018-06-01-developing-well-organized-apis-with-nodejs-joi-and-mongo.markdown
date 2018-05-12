@@ -36,11 +36,11 @@ related:
 
 In this article, you will build a birthdates API that lets you register and query birthdays from the people you know.
 
-Structuring Node.js APIs has been a pain most beginner Node.js developers have been through. So, in the next sections, you will learn how to properly structure and organise a RESTful Node.js API with some cool tools like Restify, Joi and MongoDB. 
+Structuring Node.js APIs has been a pain most beginner Node.js developers have been through. So, in the next sections, you will learn how to properly structure and organise a RESTful Node.js API with some cool tools like Restify, Joi, and MongoDB. 
 
 ## What Tools Will You Use
 
-As mentioned, you will use tools like Restify, Joi, and MongoDB. This section provides a brief overview about these tools.
+As mentioned, you will use tools like Restify, Joi, and MongoDB. This section provides a brief overview of these tools.
 
 ### Restify
 
@@ -56,7 +56,7 @@ MongoDB is a cross-platform and open-source document-oriented database (also kno
 
 ## Building the Birthdates API
 
-Firstly, you will need to check if you have Node.js, NPM, and a MongoDB instance installed in your development machine:
+Firstly, you will need to check if you have Node.js, NPM, and a MongoDB instance installed on your development machine:
 
 ```bash
 node --version
@@ -266,7 +266,7 @@ server.listen(config.app.port, () => {
 });
 ```
 
-First thing you did was to load the variables from the `.env` file into `process.env` once the app starts up. Then, you started importing dependencies and creating server with the configuration you created previously.
+The first thing you did was to load the variables from the `.env` file into `process.env` once the app starts up. Then, you started importing dependencies and creating the server with the configuration you created previously.
 
 > Unix users can use `export $(cat .env | sed -e /^$/d -e /^#/d | xargs)` in the project root to load the `.env` variables to shell environment.
 
@@ -335,15 +335,15 @@ module.exports = {
 
 For a better understanding on how to create Winston logger, you can have a look at the [official Winston documentation](http://github.com/winstonjs/winston). 
 
-For this tutorial, you created two transports; `console` and `file`. Both transports use the log level you set in your environment variable which can be overriden in the code with `logger.log_level(...)` (e.g. `logger.info(...)` instead of `logger.log(...)`).
+For this tutorial, you created two transports; `console` and `file`. Both transports use the log level you set in your environment variable which can be overridden in the code with `logger.log_level(...)` (e.g. `logger.info(...)` instead of `logger.log(...)`).
 
-Based on the environment, you can set the value of console logging to false or true in the `.env` file. Again, for this tutorial you enabled logging to the console so you can see all your logs in the console without having to tail a log file. However, logging to the console is not advisable in a production environment.
+Based on the environment, you can set the value of console logging to false or true in the `.env` file. Again, for this tutorial, you enabled logging to the console so you can see all your logs in the console without having to tail a log file. However, logging to the console is not advisable in a production environment.
 
 ### Setting Up Dependency Injection
 
 Instead of having your objects creating a dependency, you can pass the needed dependencies into the object externally. To achieve this, you can use an object higher up in the dependency graph or a dependency injector (library) to pass the dependencies. 
 
-For this tutorial, you will use a custom library called `service_locator` to inject dependencies to the objects that needs to hold a reference to them.
+For this tutorial, you will use a custom library called `service_locator` to inject dependencies into the objects that need to hold a reference to them.
 
 So, create a file called `service_locator.js` inside the `./app/lib/` directory and add the following code:
 
@@ -432,7 +432,7 @@ module.exports = serviceLocator;
 
 Calling the `register` method adds a dependency to the dependency graph that can be retrieved by calling the `get` method with the `dependencyName`.
 
-{% include tweet_quote.html quote_text="Using Dependency Injection with @nodejs is easy. You don't even need a NPM package for this." %}
+{% include tweet_quote.html quote_text="Using Dependency Injection with @nodejs is easy. You don't even need an NPM package for this." %}
 
 ### Setting Up a Database
 
@@ -444,7 +444,7 @@ mongod
 
 > **Note:** You can also use a service like [mLab](https://mlab.com/) or you can [use Docker to initiliase a MongoDB instance](https://github.com/brunokrebs/cheat-sheet/tree/master/docker#mongodb-commands).
 
-If the command above fails, checkout their [documentation](https://docs.mongodb.com/manual/tutorial/) on how to start the server for your OS.
+If the command above fails, check out their [documentation](https://docs.mongodb.com/manual/tutorial/) on how to start the server for your OS.
 
 Then, create a file called `database.js` inside the `./app/configs/`directory with the following code:
 
@@ -489,9 +489,9 @@ class Database {
 module.exports = Database;
 ```
 
-This class has just a single method that connects to the running mongodb server. Note that you added some listeners for series of events (like `error` or `disconnected`) that might occur in the server lifecycle. Lastly in the `_connect()` method, you initialized your `users` model. You will create the `./app/models/Users` module now.
+This class has just a single method that connects to the running MongoDB server. Note that you added some listeners for series of events (like `error` or `disconnected`) that might occur in the server lifecycle. Lastly, in the `_connect()` method, you initialized your `users` model. You will create the `./app/models/Users` module now.
 
-For your Birthdates api, you need to define a model, `Users`, and a submodel, `Birthdates`. The `Users` model will hold the properties of the user using the API (e.g. `username`, `birthdate`, and `birthdates`). The `birthdates` submodel will define the `fullname` and `birthdates` of your friends and you will embed it as an array inside the `Users` model.
+For your Birthdates API, you need to define a model, `Users`, and a submodel, `Birthdates`. The `Users` model will hold the properties of the user using the API (e.g. `username`, `birthdate`, and `birthdates`). The `birthdates` submodel will define the `fullname` and `birthdates` of your friends and you will embed it as an array inside the `Users` model.
 
 So, create the `Users.js` file inside the `./app/models/` directory and add this code:
 
@@ -539,11 +539,11 @@ module.exports = mongoose.model('Users', userSchema);
 In this file, you defined two schemas:
 
 * `birthdatesSchema`: This used as a subdocument in the users model defining the `fullname` of the person whose birthdates you want to save and the `birthdates` properties.
-* `userSchema`: You defined `username` of the user, their `birthdate`, and array of `birthdates` from the `birthdatesSchema`. You also enabled `timestamp` which automatically adds `created_at` and `updated_at` properties to every document.
+* `userSchema`: You defined `username` of the user, their `birthdate`, and an array of `birthdates` from the `birthdatesSchema`. You also enabled `timestamp` which automatically adds `created_at` and `updated_at` properties to every document.
 
 ### Developing the API Source Code
 
-Next you will set up `services`, `controllers`, and `routers` to handle requests. Inside the `./app/services` directory, you will create the `user` service to handle business related to the `users` endpoint (such as creating user, fetching user, etc). So, create a file called `user.js` inside this directory and add the following code to it:
+Next, you will set up `services`, `controllers`, and `routers` to handle requests. Inside the `./app/services` directory, you will create the `user` service to handle business related to the `users` endpoint (such as creating users, fetching users, etc). So, create a file called `user.js` inside this directory and add the following code to it:
 
 ```js
 'use strict';
@@ -598,12 +598,12 @@ module.exports = UserService;
 This is a brief analysis over this file:
 
 * The `constructor` initalizes all the dependencies passed to it from your dependency injection file when creating the object.
-* The `createUser` method checks if the user with the username in the request body exists then throws an error that 'User with username already exists' already exists. Otherwise it proceeds to save the user and returns the result to the controller.
+* The `createUser` method checks if the user with the username in the request body exists then throws an error that 'User with username already exists' already exists. Otherwise, it proceeds to save the user and returns the result to the controller.
 * The `getUser` method fetches the user that matches the `username` provided and returns the result to the controller.
 
 Now, you have the chunks of code to create a user and get a specified user. So, you can proceed to create the controller to implement this service. 
 
-By the way, noticed how you were able to recieve and initialize the dependencies of the `user service` inside it's constructor? The dependency injection makes that possible, you will get to that part soon.
+By the way, noticed how you were able to receive and initialize the dependencies of the `user service` inside its constructor? The dependency injection makes that possible, you will get to that part soon.
 
 Now, inside the `./app/controllers/` directory, create another `user.js` file. Now, insert this code inside it:
 
@@ -646,7 +646,7 @@ class UserController {
 module.exports = UserController;
 ```
 
-The controller basically calls the services to perform particular actions and sends response back to the client.
+The controller basically calls the services to perform particular actions and sends the response back to the client.
 
 Now, you can create the birthdate service and controller to save and fetch birthdates. So, inside the `./app/services` directory create a file called `birthdates.js` and add this:
 
@@ -803,13 +803,13 @@ serviceLocator.register('userController', (serviceLocator) => {
 module.exports = serviceLocator;
 ```
 
-You are almost ready to take this baby for a spin!!! But, lastly, you have to setup routes and request validation with `joi`.
+You are almost ready to take this baby for a spin!!! But, lastly, you have to set up routes and request validation with `joi`.
 
 ### Setting Up Validation With Joi
 
-If you are not familiar with Joi, you can checkout [their GitHub repo](https://github.com/hapijs/joi#example) for a quickstart. But, as you will see, it's easy to use Joi.
+If you are not familiar with Joi, you can check out [their GitHub repo](https://github.com/hapijs/joi#example) for a quick start. But, as you will see, it's easy to use Joi.
 
-Frst, you will need to create blueprints or schemas for JavaScript objects (an object that stores information) to ensure validation of key information. Joi runs validation against the rule you declared in the schemas for all requests.
+First, you will need to create blueprints or schemas for JavaScript objects (an object that stores information) to ensure validation of key information. Joi runs validation against the rule you declared in the schemas for all requests.
 
 So, inside the `./app/validations/` directory, create a file called `create_user.js` and add this code to it:
 
@@ -992,13 +992,13 @@ Now, you have four endpoints defined:
 - `GET` `/birthdates/{username}`;
 - `POST` `/birthdates/{username}`;
 
-After defining the route spefication in the first arguments, you specify the controller to handle the request to that particular path.
+After defining the route specification in the first arguments, you specify the controller to handle the request to that particular path.
 
 {% include tweet_quote.html quote_text="Joi can help you keep your data consistent by validating requests in @nodejs applications." %}
 
 ### Handling Restify Errors
 
-Restify has built in error event listener that get fired when an `Error` is encountered by restify as part of a `next(error)` statement. So, now you need to add handlers for possible errors you want to listen for.
+Restify has built-in error event listener that get fired when an `Error` is encountered by restify as part of a `next(error)` statement. So, now you need to add handlers for possible errors you want to listen for.
 
 So, inside `./app/lib/`, create `error_handler.js` and add this:
 
@@ -1042,7 +1042,7 @@ module.exports.register = (server) => {
 };
 ```
 
-Whenever error is encountered in your application, the appropriate error handler is called. If an error not defined above occurs, the last handler you declared, `restifyError`, will catch it.
+Whenever an error is encountered in your application, the appropriate error handler is called. If an error not defined above occurs, the last handler you declared, `restifyError`, will catch it.
 
 ### Wrapping Up
 
@@ -1104,7 +1104,7 @@ server.listen(config.app.port, () => {
 });
 ```
 
-That's it!!! You have just built a well organised API with Restify. Time take your baby for a spin:
+That's it!!! You have just built a well-organised API with Restify. Time take your baby for a spin:
 
 ```bash
 # make sure you are running this from the project root
