@@ -163,7 +163,7 @@ Node.js environment variables are always loaded into the `process.env` object. S
 
 ### Setting Up the Restify Server
 
-The first thing you will do to set up your new Restify Server is to create a file called `jsend.js` in the `lib` directory. Inside this file, you will add the following code:
+The first thing you will do to set up your new Restify Server is to create a file called `jsend.js` in the `./app/lib` directory. Inside this file, you will add the following code:
 
 ```js
 'use strict';
@@ -1043,34 +1043,35 @@ Whenever error is encountered in your application, the appropriate error handler
 To wrap up your Node.js API, you will need to update the `server.js` file to initialize the route and our request validator. So, open this file and replace the code with this:
 
 ```js
-"use strict";
+'use strict';
 
-const config = require("./app/configs/configs")();
-const restify = require("restify");
-const versioning = require("restify-url-semver");
-const joi = require("joi");
+require('dotenv').config();
+const config = require('./app/configs/configs')();
+const restify = require('restify');
+const versioning = require('restify-url-semver');
+const joi = require('joi');
 
 // Require DI
-const serviceLocator = require("./app/configs/di");
-const validator = require("./app/lib/validator");
-const handler = require("./app/routes/handlers");
-const routes = require("./app/routes/routes");
-const logger = serviceLocator.get("logger");
+const serviceLocator = require('./app/configs/di');
+const validator = require('./app/lib/validator');
+const handler = require('./app/lib/error_handler');
+const routes = require('./app/routes/routes');
+const logger = serviceLocator.get('logger');
 const server = restify.createServer({
   name: config.app.name,
-  versions: ["1.0.0"],
+  versions: ['1.0.0'],
   formatters: {
-    "application/json": require("./app/lib/formatters/jsend")
+    'application/json': require('./app/lib/jsend')
   }
 });
 
 // Initialize the database
-const Database = require("./app/configs/database");
+const Database = require('./app/configs/database');
 new Database(config.mongo.port, config.mongo.host, config.mongo.name);
 
 // Set API versioning and allow trailing slashes
 server.pre(restify.pre.sanitizePath());
-server.pre(versioning({ prefix: "/" }));
+server.pre(versioning({ prefix: '/' }));
 
 // Set request handling and parsing
 server.use(restify.plugins.acceptParser(server.acceptable));
@@ -1083,7 +1084,6 @@ server.use(
 
 // initialize validator for all requests
 server.use(validator.paramValidation(logger, joi));
-server.use(validator.headerValidation(logger));
 
 // Setup Error Event Handling
 handler.register(server);
@@ -1098,16 +1098,9 @@ server.listen(config.app.port, () => {
 });
 ```
 
-That's it!!! You have just built a well organised API with Restify. Time take your baby for a spin!
-
-As you probably noticed, the `./app/configs/configs.js` that you created earlier depends on a few environment variable that you must set before you start your app. The following code snippet sets these variables and then starts your app (just keep in mind that you might have to adjust values to your environment):
+That's it!!! You have just built a well organised API with Restify. Time take your baby for a spin:
 
 ```bash
-export APP_NAME=birthdates-api
-export DB_PORT=27017
-export DB_HOST=localhost
-export DB_NAME=birthdates-db
-
 # make sure you are running this from the project root
 node server.js
 ```
@@ -1118,7 +1111,7 @@ After running your application, you can issue the following create a `User`:
 curl -H "Content-Type: application/json" -X POST -d '{
   "username": "biodunch",
   "birthdate": "12/2/2000"
-}' localhost:8000/v1/users
+}' localhost:5000/v1/users
 ```
 
 Then, you can register a birthdate of a friend of this user with this command:
@@ -1127,13 +1120,13 @@ Then, you can register a birthdate of a friend of this user with this command:
 curl -H "Content-Type: application/json" -X POST -d '{
   "fullname": "Falomo Olumide",
   "birthdate":"10/3/2000"
-}' localhost:8000/v1/birthdates/biodunch
+}' localhost:5000/v1/birthdates/biodunch
 ```
 
 Then, to fetch the birthdates saved by `biodunch`, you can issue this command:
 
 ```sh
-curl localhost:8000/v1/birthdates/biodunch
+curl localhost:5000/v1/birthdates/biodunch
 ```
 
 This will get you a response similar to:
