@@ -30,6 +30,8 @@ related:
 
 **TL;DR:** In this article, you will learn how to build well-organized APIs with [Node.js](https://nodejs.org/), [Restify](https://restify.com), [Joi](https://github.com/hapijs/joi), and [MongoDB](https://mongodb.org). You will also have a chance to learn how to use dependency injection on this stack. If needed, [you can find the code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/nodejs-restify).
 
+{% include tweet_quote.html quote_text="Learn how to build well-organized APIs with @nodejs, Restify, Joi, and @MongoDB." %}
+
 ## Developing Well-Organized APIs with Node.js
 
 In this article, you will build a birthdates API that lets you register and query birthdays from the people you know.
@@ -429,6 +431,8 @@ module.exports = serviceLocator;
 ```
 
 Calling the `register` method adds a dependency to the dependency graph that can be retrieved by calling the `get` method with the `dependencyName`.
+
+{% include tweet_quote.html quote_text="Using Dependency Injection with @nodejs is easy. You don't even need a NPM package for this." %}
 
 ### Setting Up a Database
 
@@ -989,6 +993,8 @@ Now, you have four endpoints defined:
 - `POST` `/birthdates/{username}`;
 
 After defining the route spefication in the first arguments, you specify the controller to handle the request to that particular path.
+
+{% include tweet_quote.html quote_text="Joi can help you keep your data consistent by validating requests in @nodejs applications." %}
 
 ### Handling Restify Errors
 
