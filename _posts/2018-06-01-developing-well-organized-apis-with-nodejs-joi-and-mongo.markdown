@@ -2,7 +2,7 @@
 layout: post
 title: "Developing Well-Organized APIs with Node.js, Joi, and Mongo"
 description: "In this article, you will learn how to create well-organized APIs with Node.js, Restify, Joi, and MongoDB."
-date: 2018-04-03 08:30
+date: 2018-06-01 08:30
 category: Technical Guide, Backend, NodeJS
 author:
   name: "Biodun Chris"
