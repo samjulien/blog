@@ -31,8 +31,9 @@ This article takes you through a small project built with WebVR. Although you wo
 
 ## Prerequisites
 
-Building VR experiences in the web starts with building great WebGL (Web Graphics Layer) content. WebGL is a browser API that allows us to design 3D graphics on the Web.
-WebGL in itself is a very complex API to use. Luckily, libraries like [ThreeJS](https://threejs.org) are available to help us build 3D content fast and easy. Thus, basic knowledge of the Threejs library is also required to follow up with this article.
+Building virtual-reality (VR) experiences in the web starts with building great WebGL (Web Graphics Layer) content. [WebGL is a browser API that allows us to design 3D graphics on the web](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API).
+
+WebGL by itself is a very complex API to use. Luckily, libraries like [ThreeJS](https://threejs.org) are available to help you build 3D content fast and easy.
 
 ## What we would be building
 
