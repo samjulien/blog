@@ -125,87 +125,81 @@ You will make this viewable using a Head Mounted Device like Google Cardboard or
 
 ### Getting the Required Libraries
 
-To begin we first need to add the required libraries to build our scene and use the WebVr API.
+To begin, you first need to add the required libraries to build your 3D scene and use the WebVr API.
 
-We will be making use of the following libraries:
+In this tutorial, you will use the following libraries:
 
 1.  [ES6 Promise Polyfill](https://github.com/stefanpenner/es6-promise)
 2.  [ThreeJS Core Library](https://github.com/mrdoob/three.js/)
 3.  [WebVr Polyfill](https://github.com/immersive-web/webvr-polyfill)
 4.  [Google WebVr UI](https://github.com/googlevr/webvr-ui)
 
-Thus add the code below to `stage.html`
+So, now, create the `stage.html` and add the following code:
 
-```markup
+{% highlight html %}
+{% raw %}
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-    <title>WebVR Demo</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <style>
-        body {
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            color: #fff;
-            margin: 0px;
-            padding: 0;
-            overflow: hidden;
-        }
+  <title>WebVR Demo</title>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <style>
+    body {
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      color: #fff;
+      margin: 0px;
+      padding: 0;
+      overflow: hidden;
+    }
 
-        /* Position the button on the bottom of the page. */
+    /* Position the button on the bottom of the page. */
 
-        #ui {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            font-family: 'Karla', sans-serif;
-            z-index: 1;
-        }
+    #ui {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-family: 'Karla', sans-serif;
+      z-index: 1;
+    }
 
-        a#magic-window {
-            display: block;
-            color: white;
-            margin-top: 1em;
-        }
-    </style>
+    a#magic-window {
+      display: block;
+      color: white;
+      margin-top: 1em;
+    }
+  </style>
 </head>
 
 <body>
-    <div id="ui">
-        <div id="vr-button"></div>
-        <a id="magic-window" href="#">Try it without a headset</a>
-    </div>
+<div id="ui">
+  <div id="vr-button"></div>
+  <a id="magic-window" href="#">Try it without a headset</a>
+</div>
 </body>
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.min.js"></script>
 <script src="http://threejs.org/build/three.js"></script>
 <script src="http://threejs.org/examples/js/controls/VRControls.js"></script>
 <script src="http://threejs.org/examples/js/effects/VREffect.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/webvr-polyfill@latest/build/webvr-polyfill.js'></script>
 <script src="https://googlevr.github.io/webvr-ui/build/webvr-ui.min.js"></script>
-
-
-
 </html>
-```
+{% endraw %}
+{% endhighlight %}
 
-The code above can be be described as the boilerplate markup for WebVR projects. In the `<head>` section `meta` tags are used to set defaults that optimize and make the mobile experience responsive across supported devices.
+The code above can be described as the boilerplate markup for WebVR projects. In the `<head>` section, `meta` tags are used to set defaults that optimize and make the mobile experience responsive across supported devices.
 
-We then have some light styling for page style normalization and for styling the WebVr UI.
+Then, you have some basic styling for page style normalization and for styling the WebVR user interface (UI).
 
-In the page `<body>` we have the markup that holds our WebVR UI widgets.
-
-After the `<body>` tag we then include all the required libraries and polyfills.
+After that, in the `<body>` section of the page, you have the markup that holds your WebVR UI widgets. Then, after the `<body>` tag, you are including all the required libraries and polyfills.
 
 ### Setting Up the 3D Scene
 
