@@ -25,9 +25,9 @@ related:
 - 2018-02-08-developing-games-with-react-redux-and-svg-part-2
 ---
 
-**TL;DR:** One of the greatest moments for the web is when an API emerges that brings the ability to create an application on the web (with web technologies) that was (previously) only possible to develop natively.
-The emergence of the WebVR API is one of such fireworks moment that opens a whole new world of exciting possibilities. The WebVR API empowers web developers to build Virtual Reality experiences with web technologies and also enable users to have that fully immersed experience using just their browser.
-This article takes you through a small project built with WebVR. And even though we won't be going into details on the basics, it helps you to understand all the moving parts and how everything fits together to create amazing virtual reality scenes.
+**TL;DR:** One of the greatest moments for the web is when an API emerges and brings the ability to create an application on the web (with web technologies) that was only possible to develop natively. The emergence of [the WebVR API](https://developer.mozilla.org/en-US/docs/Web/API/WebVR_API) is one of such fireworks moment that opens a whole new world of exciting possibilities. The WebVR API empowers web developers to build virtual-reality experiences with web technologies and also enable users to have that fully immersed experience using just their browser.
+
+This article takes you through a small project built with WebVR. Although you won't be going into details on the basics, it will help you to understand all the moving parts and how everything fits together to create amazing virtual reality scenes.
 
 ## Prerequisites
 
