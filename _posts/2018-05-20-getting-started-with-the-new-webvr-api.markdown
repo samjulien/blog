@@ -35,9 +35,9 @@ Building virtual-reality (VR) experiences in the web starts with building great 
 
 WebGL by itself is a very complex API to use. Luckily, libraries like [ThreeJS](https://threejs.org) are available to help you build 3D content fast and easy.
 
-## What we would be building
+## What You Will Build
 
-We will be building an application which allows a user to login with their Google account and then be taken into a 3D world where the user sees their name floating in space.
+In this article, you will build an application that allows users to login with their Google account and then be taken into a 3D world where the user sees their name floating in space.
 
 ## Setting Up Google Authentication
 
