@@ -115,13 +115,13 @@ After that, you setup a listener on the `authenticated` event. This event is the
 
 After the atuhentication process is fulfilled, you redirected your users to a page called `stage.html`. You will create your WebVR world in this page in no time.
 
-Notice that you made your `index.html` call Lock's `show` method to instantly display Auth0's login box when the page loads.
+Also notice that you made your `index.html` call Lock's `show` method to instantly display Auth0's login box when the page loads.
 
 ## Building the Scene
 
-Now to the main action. We are going to be building a 3D scene using a Skybox, add the user's name from the saved profile and make it rotate in space right before the user's eyes.
-We will make this viewable using a Head Mounted Device like Google Cardboard.
-Create another `html` file and name it `stage.html`.
+Now to the main action. You are going to build a 3D scene using a skybox, add users' name from the saved profile, and make it rotate in space right before the user's eyes.
+
+You will make this viewable using a Head Mounted Device like Google Cardboard or a simple web browser.
 
 ### Getting the Required Libraries
 
