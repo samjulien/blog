@@ -52,65 +52,70 @@ After signing up for your Auth0 account, you will have to create a new [Auth0 Ap
 
 ![Creating the Auth0 Application for your WebVR app.](https://cdn.auth0.com/blog/webvr/creating-an-auth0-application.png)
 
-After filling in this form, just hit the _Create_ Button and leave it the page open.
+After filling in this form, just hit the _Create_ button. When done, Auth0 will redirect you to the _Quick Start_ section of your new Auth0 Application. From there, click on the _Settings_ tab. This will open a form with a bunch of fields. In this moment, you will only need to do one thing: add `http://localhost:8080/` to the _Allowed Callback URLs_. Just don't forget to hit the _Save_ button after making this change (you can also hit `Ctrl` + `S` or `⌘` + `S`).
 
-### Google Login with Auth0 Lock
+## Creating the WebVR Application
 
-Create `index.html`, this is the file/page that will be loaded when our application starts up.
-To begin using Lock, you first need to include the Auth0 Lock script, we would be adding the script from a CDN
+Now that you already have your Auth0 account properly configured, it is time to start creating your app. So, the first thing you will do is to create a new directory called `webvr-tutorial` in your computer (from now on, this directory will be referenced as the _project root_).
 
-```markup
+```bash
+# create the project root
+mkdir webvr-tutorial
+
+# move the terminal into it
+cd webvr-tutorial
+```
+
+After that, you will create a new file called `index.html` in the project root and will add the following code to it:
+
+{% highlight html %}
+{% raw %}
+<html>
+<head>
+  <title>WebVR Demo</title>
+</head>
+<body>
 <script src="https://cdn.auth0.com/js/lock/11.5.2/lock.min.js"></script>
-```
-
-Then setup Lock with your Auth0 Application client name and client Id thus:
-
-```javascript
-var lock = new Auth0Lock("CLIENT_ID", "CLIENT_DOMAIN", {
-  allowedConnections: ["google-oauth2"],
-  rememberLastLogin: false,
-  socialButtonStyle: "big",
-  languageDictionary: { title: "WebVR Demo" },
-  language: "en",
-  theme: {},
-  closable: false,
-  auth: {
-    redirect: false
-  }
-});
-
-lock.on("authenticated", function(authResult) {
-  lock.getUserInfo(authResult.accessToken, function(error, profile) {
-    if (error) {
-      console.log(error);
-      return;
-    }
-
-    localStorage.setItem("accessToken", authResult.accessToken);
-    localStorage.setItem("profile", JSON.stringify(profile));
-
-    //Go to VR Page
-    window.location.replace("stage.html");
+<script>
+  const lock = new Auth0Lock("<AUTH0-CLIENT-ID>", "<AUTH0-DOMAIN>", {
+    allowedConnections: ["google-oauth2"],
   });
-});
 
-lock.on("authorization_error", function(error) {
-  console.log("authorization_error", error);
-});
+  lock.on("authenticated", function (authResult) {
+    lock.getUserInfo(authResult.accessToken, function (error, profile) {
+      if (error) {
+        console.log(error);
+        return;
+      }
 
-lock.show();
-```
+      localStorage.setItem("accessToken", authResult.accessToken);
+      localStorage.setItem("profile", JSON.stringify(profile));
 
-In the code above, we first setup Auth0 Lock using our Application's client Id and domain and instruct it to use the Google login by entering `google-oauth2` into the `allowedConnections` array.
+      //Go to VR Page
+      window.location.replace("stage.html");
+    });
+  });
 
-We then setup a listener on the `authenticated` event. This event is then handled by calling the Lock's `getUserInfo` function and passing the access token returned from the authenctication results.
-The callback to this function will save the access token and user profile in the browser's local storage to access later.
+  lock.on("authorization_error", function (error) {
+    console.log("authorization_error", error);
+  });
 
-We then immediately redirect to our would-be virtual reality scene page which we will have in a file called `stage.html`.
+  lock.show();
+</script>
+</body>
+</html>
+{% endraw %}
+{% endhighlight %}
 
-Also, we add an event handler to take care of the `authorization_error` error event.
+> **Note:** You will have to replace `<AUTH0-CLIENT-ID>` and `<AUTH0-DOMAIN>` with your own Auth0 properties. That is, you will have to replace `<AUTH0-CLIENT-ID>` with the _Client ID_ property found in the _Settings_ tab of the Auth0 Application that you created in the previous section and you will have to replace `<AUTH0-DOMAIN>` with the domain of your Auth0 tenant (something like: `bk-samples.auth0.com`). You can also find this information in the _Settings_ tab of your Auth0 Application.
 
-Lastly, we call Lock's `show` method to instantly display Auth0's login box when the page loads.
+In the `<script>` section of the code above, you first set up Auth0 Lock using your Auth0 Application's _Client Id_ and _Domain_ then you instructed it to use the Google login by entering `google-oauth2` into the `allowedConnections` array.
+
+After that, you setup a listener on the `authenticated` event. This event is then handled by calling the Lock's `getUserInfo` function and passing the access token returned from the authenctication results. The callback to this function will save the access token and user profile in the browser's local storage to access later.
+
+After the atuhentication process is fulfilled, you redirected your users to a page called `stage.html`. You will create your WebVR world in this page in no time.
+
+Notice that you made your `index.html` call Lock's `show` method to instantly display Auth0's login box when the page loads.
 
 ## Building the Scene
 
