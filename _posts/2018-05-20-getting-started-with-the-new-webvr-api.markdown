@@ -39,32 +39,20 @@ WebGL by itself is a very complex API to use. Luckily, libraries like [ThreeJS](
 
 In this article, you will build an application that allows users to login with their Google account and then be taken into a 3D world where the user sees their name floating in space.
 
-## Setting Up Google Authentication
+## Setting Up Auth0
 
-To authenticate with Google we are going to be using Auth0 Lock, an embeddable login form for desktop, tablet and mobile devices.
+To authenticate your users with Google, you are going to use [Auth0](https://auth0.com/) and [Auth0 Lock](https://auth0.com/docs/libraries/lock/), an embeddable authentication form for desktop, tablet, and mobile devices. If you don't have an Auth0 account yet, <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">now is a good time to sign up for a free one.</a> No credit cards required! :)
 
-### Setup Google Social Login on Auth0 Account
+### Creating an Auth0 Application
 
-To use Auth0 Lock, we first need to setup an application on our Auth0 account for this project and enable that client to use Google authentication.
-Log into your Auth0 dashboard and go to Applications, then create a new application by clicking the big orange **+Create Application** button.
+After signing up for your Auth0 account, you will have to create a new [Auth0 Application](https://auth0.com/docs/applications) to represent your WebVR app. To do this, [head to the Applications section of your management dashboard](https://manage.auth0.com/#/applications) and click on the _Create Application_ button. Then, fill the form presented as follows:
 
-![Create App](images/new-app-button.jpg "Create Application")
+- _Name_: Any name to identify your application. Something like "WebVR Tutorial" will do.
+- _Choose an application type_: Select _Single Page Web Applications_ here.
 
-Create a new application by entering the name and selecting **Regular Web Applications**, then click the **Create** button.
+![Creating the Auth0 Application for your WebVR app.](https://cdn.auth0.com/blog/webvr/creating-an-auth0-application.png)
 
-![Create App](images/create-app.jpg "Create Application")
-
-After creating your application, go to **Connections->Social** on the sidemenu, click the Google tab and enter your Google+ API credentials.
-
-![Setup Google](images/setup-google.jpg "Setup Google Authentication")
-
----
-
-Now click on the Applications tab on the same dialog and enable your app to use the Google authentication.
-
-![Configure Apps](images/setup-google-apps.jpg "Configure App to use Google Authentication")
-
-Close out of the dialog and turn on the toggle button on the Google tab.
+After filling in this form, just hit the _Create_ Button and leave it the page open.
 
 ### Google Login with Auth0 Lock
 
