@@ -41,7 +41,7 @@ WebGL by itself is a very complex API to use. Luckily, libraries like [ThreeJS](
 
 ## What You Will Build
 
-In this article, you will build an application that allows users to login with their Google account and then be taken into a 3D world where the user sees their name floating in space.
+In this article, you will build an application that allows users to log in with their Google account and then be taken into a 3D world where the user sees their name floating in space.
 
 ## Setting Up Auth0
 
@@ -56,7 +56,7 @@ After signing up for your Auth0 account, you will have to create a new [Auth0 Ap
 
 ![Creating the Auth0 Application for your WebVR app.](https://cdn.auth0.com/blog/webvr/creating-an-auth0-application.png)
 
-After filling in this form, just hit the _Create_ button. When done, Auth0 will redirect you to the _Quick Start_ section of your new Auth0 Application. From there, click on the _Settings_ tab. This will open a form with a bunch of fields. In this moment, you will only need to do one thing: add `http://localhost:8080/` to the _Allowed Callback URLs_. Just don't forget to hit the _Save_ button after making this change (you can also hit `Ctrl` + `S` or `⌘` + `S`).
+After filling in this form just hit the _Create_ button. When done, Auth0 will redirect you to the _Quick Start_ section of your new Auth0 Application. From there, click on the _Settings_ tab. This will open a form with a bunch of fields. At this moment, you will only need to do one thing: add `http://localhost:8080/` to the _Allowed Callback URLs_. Just don't forget to hit the _Save_ button after making this change (you can also hit `Ctrl` + `S` or `⌘` + `S`).
 
 ## Creating the WebVR Application
 
@@ -115,11 +115,11 @@ After that, you will create a new file called `index.html` in the project root a
 
 In the `<script>` section of the code above, you first set up Auth0 Lock using your Auth0 Application's _Client Id_ and _Domain_ then you instructed it to use the Google login by entering `google-oauth2` into the `allowedConnections` array.
 
-After that, you setup a listener on the `authenticated` event. This event is then handled by calling the Lock's `getUserInfo` function and passing the access token returned from the authenctication results. The callback to this function will save the access token and user profile in the browser's local storage to access later.
+After that, you set up a listener on the `authenticated` event. This event is then handled by calling the Lock's `getUserInfo` function and passing the access token returned from the authentication results. The callback to this function will save the access token and user profile in the browser's local storage to access later.
 
-After the atuhentication process is fulfilled, you redirected your users to a page called `stage.html`. You will create your WebVR world in this page in no time.
+After the authentication process is fulfilled, you redirected your users to a page called `stage.html`. You will create your WebVR world in this page in no time.
 
-Also notice that you made your `index.html` call Lock's `show` method to instantly display Auth0's login box when the page loads.
+Also, notice that you made your `index.html` call Lock's `show` method to instantly display Auth0's login box when the page loads.
 
 ## Building the Scene with WebVR
 
@@ -129,7 +129,7 @@ You will make this viewable using a Head Mounted Device like Google Cardboard or
 
 ### Adding the Libraries in the WebVR App
 
-To begin, you first need to add the required libraries to build your 3D scene and use the WebVr API.
+To begin, you first need to add the required libraries to build your 3D scene and use the WebVR API.
 
 In this tutorial, you will use the following libraries:
 
@@ -207,7 +207,7 @@ After that, in the `<body>` section of the page, you have the markup that holds 
 
 ### Setting Up 3D Scenes in WebVR
 
-To setup your scene, you need to setup some global variables which will represent all the elements needed in your scene that needs to be accessible globally.
+To set up your scene, you need to setup some global variables which will represent all the elements needed in your scene that needs to be accessible globally.
 
 You will also need to declare three functions:
 
@@ -433,14 +433,14 @@ controls.standing = true;
 camera.position.y = controls.userHeight;
 ```
 
-Next, you applly VR stereo rendering to your renderer.
+Next, you apply VR stereo rendering to your renderer.
 
 ```javascript
 effect = new THREE.VREffect(renderer);
 effect.setSize(window.innerWidth, window.innerHeight);
 ```
 
-To create the 3D world in which the user will be immersed in, you create a skybox using the Threejs BoxGeometry and map materials of a dessert environment around it. Finally, you add it to the scene.
+To create the 3D world in which the user will be immersed in, you create a skybox using the Threejs `BoxGeometry` and map materials of a desert environment around it. Finally, you add it to the scene.
 
 ```javascript
 //Add Skybox
