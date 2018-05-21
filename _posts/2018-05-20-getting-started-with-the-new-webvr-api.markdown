@@ -191,7 +191,7 @@ So, now, create the `stage.html` file and add the following code:
 <script src="http://threejs.org/build/three.js"></script>
 <script src="http://threejs.org/examples/js/controls/VRControls.js"></script>
 <script src="http://threejs.org/examples/js/effects/VREffect.js"></script>
-<script src='https://cdn.jsdelivr.net/npm/webvr-polyfill@latest/build/webvr-polyfill.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/webvr-polyfill@0.9.41/build/webvr-polyfill.js'></script>
 <script src="https://googlevr.github.io/webvr-ui/build/webvr-ui.min.js"></script>
 </html>
 {% endraw %}
@@ -239,6 +239,8 @@ Below is the complete code with the variable declaration and the three functions
 
   function onLoad() {
     /* Threejs Section */
+    // configuring crossOrigin
+    THREE.TextureLoader.prototype.crossOrigin = '';
 
     // Setup three.js WebGL renderer. Note: Antialiasing is a big performance hit.
     // Only enable it if you actually need to.
@@ -270,12 +272,12 @@ Below is the complete code with the variable declaration and the three functions
     //Add Skybox
     const desertGeometry = new THREE.CubeGeometry(10000, 10000, 10000);
     const desertMaterials = [
-      new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_front.png"), side: THREE.DoubleSide }),
-      new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_back.png"), side: THREE.DoubleSide }),
-      new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_up.png"), side: THREE.DoubleSide }),
-      new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_down.png"), side: THREE.DoubleSide }),
-      new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_right.png"), side: THREE.DoubleSide }),
-      new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_left.png"), side: THREE.DoubleSide })
+      new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://cdn.auth0.com/blog/webvr/desertsky_front.png"), side: THREE.DoubleSide }),
+      new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://cdn.auth0.com/blog/webvr/desertsky_back.png"), side: THREE.DoubleSide }),
+      new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://cdn.auth0.com/blog/webvr/desertsky_up.png"), side: THREE.DoubleSide }),
+      new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://cdn.auth0.com/blog/webvr/desertsky_down.png"), side: THREE.DoubleSide }),
+      new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://cdn.auth0.com/blog/webvr/desertsky_right.png"), side: THREE.DoubleSide }),
+      new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://cdn.auth0.com/blog/webvr/desertsky_left.png"), side: THREE.DoubleSide })
     ];
 
     const desertMaterial = new THREE.MultiMaterial(desertMaterials);
@@ -286,19 +288,15 @@ Below is the complete code with the variable declaration and the three functions
 
     scene.add(desert);
 
-
     const ambientLight = new THREE.AmbientLight(0xffffff);
     scene.add(ambientLight);
-
 
     /* Create 3D objects. */
 
     //Add name text
     const loader = new THREE.FontLoader();
 
-    loader.load('https://plugintests-e13a7.firebaseapp.com/fonts/helvetiker_regular.typeface.json', function (font) {
-
-
+    loader.load('https://cdn.auth0.com/blog/webvr/helvetiker_regular.typeface.json', function (font) {
       const textGeometry = new THREE.TextGeometry(profile.name, {
         font: font,
         size: 80,
@@ -446,12 +444,12 @@ To create the 3D world in which the user will be immersed in, you create a skybo
 //Add Skybox
 const desertGeometry = new THREE.CubeGeometry(10000, 10000, 10000);
 const desertMaterials = [
-  new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_front.png"), side: THREE.DoubleSide }),
-  new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_back.png"), side: THREE.DoubleSide }),
-  new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_up.png"), side: THREE.DoubleSide }),
-  new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_down.png"), side: THREE.DoubleSide }),
-  new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_right.png"), side: THREE.DoubleSide }),
-  new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_left.png"), side: THREE.DoubleSide })
+  new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://cdn.auth0.com/blog/webvr/desertsky_front.png"), side: THREE.DoubleSide }),
+  new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://cdn.auth0.com/blog/webvr/desertsky_back.png"), side: THREE.DoubleSide }),
+  new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://cdn.auth0.com/blog/webvr/desertsky_up.png"), side: THREE.DoubleSide }),
+  new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://cdn.auth0.com/blog/webvr/desertsky_down.png"), side: THREE.DoubleSide }),
+  new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://cdn.auth0.com/blog/webvr/desertsky_right.png"), side: THREE.DoubleSide }),
+  new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://cdn.auth0.com/blog/webvr/desertsky_left.png"), side: THREE.DoubleSide })
 ];
 
 const desertMaterial = new THREE.MultiMaterial(desertMaterials);
@@ -476,7 +474,7 @@ Then, you add users' name in space using a `TextGeometry` after loading your des
 //Add name text
 const loader = new THREE.FontLoader();
 
-loader.load('https://plugintests-e13a7.firebaseapp.com/fonts/helvetiker_regular.typeface.json', function (font) {
+loader.load('https://cdn.auth0.com/blog/webvr/helvetiker_regular.typeface.json', function (font) {
   const textGeometry = new THREE.TextGeometry(profile.name, {
     font: font,
     size: 80,
@@ -588,12 +586,30 @@ This simple function simply re-calibrates the camera position settings and page 
 
 Done! That's all the code you need for the project. Now you can proceed to test it in a web browser.
 
-## Testing the Project
+## Testing the WebVR App
 
-Awesome! you can now test your WebVr project in the browser and a Head mounted device like Google Cardboard. Below is a demonstration of what the test should look like in your browser.
+To test your WebVR application, you can take advantage of tools like [`http-server`](https://github.com/indexzero/http-server). If you do have Node.js and NPM installed in your machine, you can install `http-server` globally with this command:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/rdlaSNY4WCc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+```bash
+npm install http-server -g
+```
+
+Then, you can go to your project root and type:
+
+```bash
+http-server
+```
+
+This will run a lightweight HTTP server that you can access in web browser heading to [`http://localhost:8080/`](http://localhost:8080/). Accessing this page will bring the login form of Auth0 where you will be able to sign in with your Google account.
+
+After the authentication process, you will see a screen like this one:
+
+![WebVR application up and running.](https://cdn.auth0.com/blog/webvr/webvr-application-up-and-running.png)
+
+Then, if you click on the _Try it without a headset_ link, you will be able to look around by clicking and moving your mouse.
+
+Nice right?
 
 ## Conclusion
 
-The future of Virtual Reality is on the Web. The Web offers a simple and quick way for the user to easily get immersed in a Virtual Reality. As the WebVR API continues to evolve, the future is exciting for developers developing virtual experiences on the Web.
+The future of virtual reality is on the web. The web offers a simple and quick way for the user to easily get immersed in a virtual reality. As the WebVR API continues to evolve, the future is exciting for developers developing virtual experiences on the web.
