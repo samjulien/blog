@@ -25,6 +25,752 @@ related:
 - 2018-02-08-developing-games-with-react-redux-and-svg-part-2
 ---
 
-**TL;DR:** A brief synopsis that includes link to a [github repo](http://www.github.com/).
+**TL;DR:** One of the greatest moments for the web is when an API emerges that brings the ability to create an application on the web (with web technologies) that was (previously) only possible to develop natively.
+The emergence of the WebVR API is one of such fireworks moment that opens a whole new world of exciting possibilities. The WebVR API empowers web developers to build Virtual Reality experiences with web technologies and also enable users to have that fully immersed experience using just their browser.
+This article takes you through a small project built with WebVR. And even though we won't be going into details on the basics, it helps you to understand all the moving parts and how everything fits together to create amazing virtual reality scenes.
+
+## Prerequisites
+
+Building VR experiences in the web starts with building great WebGL (Web Graphics Layer) content. WebGL is a browser API that allows us to design 3D graphics on the Web.
+WebGL in itself is a very complex API to use. Luckily, libraries like [ThreeJS](https://threejs.org) are available to help us build 3D content fast and easy. Thus, basic knowledge of the Threejs library is also required to follow up with this article.
+
+## What we would be building
+
+We will be building an application which allows a user to login with their Google account and then be taken into a 3D world where the user sees their name floating in space.
+
+## Setting Up Google Authentication
+
+To authenticate with Google we are going to be using Auth0 Lock, an embeddable login form for desktop, tablet and mobile devices.
+
+### Setup Google Social Login on Auth0 Account
+
+To use Auth0 Lock, we first need to setup an application on our Auth0 account for this project and enable that client to use Google authentication.
+Log into your Auth0 dashboard and go to Applications, then create a new application by clicking the big orange **+Create Application** button.
+
+![Create App](images/new-app-button.jpg "Create Application")
+
+Create a new application by entering the name and selecting **Regular Web Applications**, then click the **Create** button.
+
+![Create App](images/create-app.jpg "Create Application")
+
+After creating your application, go to **Connections->Social** on the sidemenu, click the Google tab and enter your Google+ API credentials.
+
+![Setup Google](images/setup-google.jpg "Setup Google Authentication")
 
 ---
+
+Now click on the Applications tab on the same dialog and enable your app to use the Google authentication.
+
+![Configure Apps](images/setup-google-apps.jpg "Configure App to use Google Authentication")
+
+Close out of the dialog and turn on the toggle button on the Google tab.
+
+### Google Login with Auth0 Lock
+
+Create `index.html`, this is the file/page that will be loaded when our application starts up.
+To begin using Lock, you first need to include the Auth0 Lock script, we would be adding the script from a CDN
+
+```markup
+<script src="https://cdn.auth0.com/js/lock/11.5.2/lock.min.js"></script>
+```
+
+Then setup Lock with your Auth0 Application client name and client Id thus:
+
+```javascript
+var lock = new Auth0Lock("CLIENT_ID", "CLIENT_DOMAIN", {
+  allowedConnections: ["google-oauth2"],
+  rememberLastLogin: false,
+  socialButtonStyle: "big",
+  languageDictionary: { title: "WebVR Demo" },
+  language: "en",
+  theme: {},
+  closable: false,
+  auth: {
+    redirect: false
+  }
+});
+
+lock.on("authenticated", function(authResult) {
+  lock.getUserInfo(authResult.accessToken, function(error, profile) {
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    localStorage.setItem("accessToken", authResult.accessToken);
+    localStorage.setItem("profile", JSON.stringify(profile));
+
+    //Go to VR Page
+    window.location.replace("stage.html");
+  });
+});
+
+lock.on("authorization_error", function(error) {
+  console.log("authorization_error", error);
+});
+
+lock.show();
+```
+
+In the code above, we first setup Auth0 Lock using our Application's client Id and domain and instruct it to use the Google login by entering `google-oauth2` into the `allowedConnections` array.
+
+We then setup a listener on the `authenticated` event. This event is then handled by calling the Lock's `getUserInfo` function and passing the access token returned from the authenctication results.
+The callback to this function will save the access token and user profile in the browser's local storage to access later.
+
+We then immediately redirect to our would-be virtual reality scene page which we will have in a file called `stage.html`.
+
+Also, we add an event handler to take care of the `authorization_error` error event.
+
+Lastly, we call Lock's `show` method to instantly display Auth0's login box when the page loads.
+
+## Building the Scene
+
+Now to the main action. We are going to be building a 3D scene using a Skybox, add the user's name from the saved profile and make it rotate in space right before the user's eyes.
+We will make this viewable using a Head Mounted Device like Google Cardboard.
+Create another `html` file and name it `stage.html`.
+
+### Getting the Required Libraries
+
+To begin we first need to add the required libraries to build our scene and use the WebVr API.
+
+We will be making use of the following libraries:
+
+1.  [ES6 Promise Polyfill](https://github.com/stefanpenner/es6-promise)
+2.  [ThreeJS Core Library](https://github.com/mrdoob/three.js/)
+3.  [WebVr Polyfill](https://github.com/immersive-web/webvr-polyfill)
+4.  [Google WebVr UI](https://github.com/googlevr/webvr-ui)
+
+Thus add the code below to `stage.html`
+
+```markup
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <title>WebVR Demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            color: #fff;
+            margin: 0px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Position the button on the bottom of the page. */
+
+        #ui {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-family: 'Karla', sans-serif;
+            z-index: 1;
+        }
+
+        a#magic-window {
+            display: block;
+            color: white;
+            margin-top: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="ui">
+        <div id="vr-button"></div>
+        <a id="magic-window" href="#">Try it without a headset</a>
+    </div>
+</body>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.min.js"></script>
+<script src="http://threejs.org/build/three.js"></script>
+<script src="http://threejs.org/examples/js/controls/VRControls.js"></script>
+<script src="http://threejs.org/examples/js/effects/VREffect.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/webvr-polyfill@latest/build/webvr-polyfill.js'></script>
+<script src="https://googlevr.github.io/webvr-ui/build/webvr-ui.min.js"></script>
+
+
+
+</html>
+```
+
+The code above can be be described as the boilerplate markup for WebVR projects. In the `<head>` section `meta` tags are used to set defaults that optimize and make the mobile experience responsive across supported devices.
+
+We then have some light styling for page style normalization and for styling the WebVr UI.
+
+In the page `<body>` we have the markup that holds our WebVR UI widgets.
+
+After the `<body>` tag we then include all the required libraries and polyfills.
+
+### Setting Up the 3D Scene
+
+To setup our scene, we need to setup some global variables which will represent all the elements needed in our scene that needs to be accessible globally.
+
+We also need to declare three (3) functions.
+
+1.  A function that runs immediately the page is loaded and sets up the entire scene.
+2.  A function to handle rendering of the scene and animations
+3.  A function to handle responsiveness of the application to changes in window size
+
+Below is the complete code with the variable declaration and the three functions, followed by the event handler that handles the page `load` event. Place this code right after all the library inclusions.
+
+```javascript
+<script>
+    // Last time the scene was rendered.
+    var lastRenderTime = 0;
+    // Currently active VRDisplay.
+    var vrDisplay;
+    // How big of a box to render. **Skybox: size skybox
+    var boxSize = 5;
+    // Various global THREE.Objects.
+    var scene;
+    var cube;
+    var textMesh;
+    var controls;
+    var effect;
+    var camera;
+    // EnterVRButton for rendering enter/exit UI.
+    var vrButton;
+
+    //User Profile
+    var profile = JSON.parse(localStorage.getItem("profile"));
+
+
+    function onLoad() {
+        /* Threejs Section */
+
+        // Setup three.js WebGL renderer. Note: Antialiasing is a big performance hit.
+        // Only enable it if you actually need to.
+        var renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        // Append the canvas element created by the renderer to document body element.
+        document.body.appendChild(renderer.domElement);
+
+        // Create a three.js scene.
+        scene = new THREE.Scene();
+
+        // Create a three.js camera.
+        var aspect = window.innerWidth / window.innerHeight;
+        camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 10000);
+
+        controls = new THREE.VRControls(camera);
+
+        //*Set standing to 'true' to indicate that the user is standing
+        controls.standing = true;
+        //*Set the camera vertical position to the eye level of user
+        camera.position.y = controls.userHeight;
+
+        // Apply VR stereo rendering to renderer.
+        effect = new THREE.VREffect(renderer);
+        effect.setSize(window.innerWidth, window.innerHeight);
+
+
+        //Add Skybox
+        var desertGeometry = new THREE.CubeGeometry(10000, 10000, 10000);
+        var desertMaterials = [
+            new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_front.png"), side: THREE.DoubleSide }),
+            new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_back.png"), side: THREE.DoubleSide }),
+            new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_up.png"), side: THREE.DoubleSide }),
+            new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_down.png"), side: THREE.DoubleSide }),
+            new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_right.png"), side: THREE.DoubleSide }),
+            new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_left.png"), side: THREE.DoubleSide })
+        ];
+
+        var desertMaterial = new THREE.MultiMaterial(desertMaterials);
+
+        var desert = new THREE.Mesh(desertGeometry, desertMaterial);
+
+        console.log(desert);
+
+        scene.add(desert);
+
+
+        var ambientLight = new THREE.AmbientLight(0xffffff);
+        scene.add(ambientLight);
+
+
+        /* Create 3D objects. */
+
+        //Add name text
+        var loader = new THREE.FontLoader();
+
+        loader.load('https://plugintests-e13a7.firebaseapp.com/fonts/helvetiker_regular.typeface.json', function (font) {
+
+
+            var textGeometry = new THREE.TextGeometry(profile.name, {
+                font: font,
+                size: 80,
+                height: 5,
+                curveSegments: 12,
+                bevelEnabled: true,
+                bevelThickness: 3,
+                bevelSize: 2,
+                bevelSegments: 5
+            });
+
+            var textMaterial = new THREE.MeshBasicMaterial();
+
+            textMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+            textMesh.position.set(-400, controls.userHeight, -550.5);
+
+            console.log(textMesh);
+
+            scene.add(textMesh);
+        });
+
+        /* Screen and VR Setup */
+
+        window.addEventListener('resize', onResize, true);
+        window.addEventListener('vrdisplaypresentchange', onResize, true);
+
+        // Initialize the WebVR UI.
+        var uiOptions = {
+            color: 'black',
+            background: 'white',
+            corners: 'square'
+        };
+        vrButton = new webvrui.EnterVRButton(renderer.domElement, uiOptions);
+        vrButton.on('exit', function () {
+            camera.quaternion.set(0, 0, 0, 1);
+            camera.position.set(0, controls.userHeight, 0);
+        });
+        vrButton.on('hide', function () {
+            document.getElementById('ui').style.display = 'none';
+        });
+        vrButton.on('show', function () {
+            document.getElementById('ui').style.display = 'inherit';
+        });
+        document.getElementById('vr-button').appendChild(vrButton.domElement);
+        document.getElementById('magic-window').addEventListener('click', function () {
+            vrButton.requestEnterFullscreen();
+        });
+
+        navigator.getVRDisplays().then(function (displays) {
+            if (displays.length > 0) {
+                vrDisplay = displays[0];
+                vrDisplay.requestAnimationFrame(animate);
+            }
+        });
+    }
+
+
+
+    // Request animation frame loop function
+    function animate(timestamp) {
+        var delta = Math.min(timestamp - lastRenderTime, 500);
+        lastRenderTime = timestamp;
+
+        // Apply rotation to cube mesh
+        if (cube) {
+            cube.rotation.y += delta * 0.0006;
+        }
+
+        if (textMesh) {
+            textMesh.rotation.x += delta * 0.0003;
+            textMesh.rotation.y += delta * 0.0003;
+            textMesh.rotation.z += delta * 0.0003;
+        }
+
+        // Only update controls if we're presenting.
+        if (vrButton.isPresenting()) {
+            controls.update();
+        }
+        // Render the scene.
+        effect.render(scene, camera);
+
+        vrDisplay.requestAnimationFrame(animate);
+    }
+
+    function onResize(e) {
+        effect.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+    }
+
+
+    window.addEventListener('load', onLoad);
+
+</script>
+```
+
+Lets look at these functions in more detail:
+
+#### The onLoad function
+
+```javascript
+function onLoad() {
+  /* Threejs Section */
+
+  // Setup three.js WebGL renderer. Note: Antialiasing is a big performance hit.
+  // Only enable it if you actually need to.
+  var renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+
+  // Append the canvas element created by the renderer to document body element.
+  document.body.appendChild(renderer.domElement);
+
+  // Create a three.js scene.
+  scene = new THREE.Scene();
+
+  // Create a three.js camera.
+  var aspect = window.innerWidth / window.innerHeight;
+  camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 10000);
+
+  controls = new THREE.VRControls(camera);
+
+  //*Set standing to 'true' to indicate that the user is standing
+  controls.standing = true;
+  //*Set the camera vertical position to the eye level of user
+  camera.position.y = controls.userHeight;
+
+  // Apply VR stereo rendering to renderer.
+  effect = new THREE.VREffect(renderer);
+  effect.setSize(window.innerWidth, window.innerHeight);
+
+  //Add Skybox
+  var desertGeometry = new THREE.CubeGeometry(10000, 10000, 10000);
+  var desertMaterials = [
+    new THREE.MeshBasicMaterial({
+      map: new THREE.TextureLoader().load(
+        "https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_front.png"
+      ),
+      side: THREE.DoubleSide
+    }),
+    new THREE.MeshBasicMaterial({
+      map: new THREE.TextureLoader().load(
+        "https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_back.png"
+      ),
+      side: THREE.DoubleSide
+    }),
+    new THREE.MeshBasicMaterial({
+      map: new THREE.TextureLoader().load(
+        "https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_up.png"
+      ),
+      side: THREE.DoubleSide
+    }),
+    new THREE.MeshBasicMaterial({
+      map: new THREE.TextureLoader().load(
+        "https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_down.png"
+      ),
+      side: THREE.DoubleSide
+    }),
+    new THREE.MeshBasicMaterial({
+      map: new THREE.TextureLoader().load(
+        "https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_right.png"
+      ),
+      side: THREE.DoubleSide
+    }),
+    new THREE.MeshBasicMaterial({
+      map: new THREE.TextureLoader().load(
+        "https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_left.png"
+      ),
+      side: THREE.DoubleSide
+    })
+  ];
+
+  var desertMaterial = new THREE.MultiMaterial(desertMaterials);
+
+  var desert = new THREE.Mesh(desertGeometry, desertMaterial);
+
+  console.log(desert);
+
+  scene.add(desert);
+
+  var ambientLight = new THREE.AmbientLight(0xffffff);
+  scene.add(ambientLight);
+
+  /* Create 3D objects. */
+
+  //Add name text
+  var loader = new THREE.FontLoader();
+
+  loader.load(
+    "https://plugintests-e13a7.firebaseapp.com/fonts/helvetiker_regular.typeface.json",
+    function(font) {
+      var textGeometry = new THREE.TextGeometry(profile.name, {
+        font: font,
+        size: 80,
+        height: 5,
+        curveSegments: 12,
+        bevelEnabled: true,
+        bevelThickness: 3,
+        bevelSize: 2,
+        bevelSegments: 5
+      });
+
+      var textMaterial = new THREE.MeshBasicMaterial();
+
+      textMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+      textMesh.position.set(-400, controls.userHeight, -550.5);
+
+      console.log(textMesh);
+
+      scene.add(textMesh);
+    }
+  );
+
+  /* Screen and VR Setup */
+
+  window.addEventListener("resize", onResize, true);
+  window.addEventListener("vrdisplaypresentchange", onResize, true);
+
+  // Initialize the WebVR UI.
+  var uiOptions = {
+    color: "black",
+    background: "white",
+    corners: "square"
+  };
+  vrButton = new webvrui.EnterVRButton(renderer.domElement, uiOptions);
+  vrButton.on("exit", function() {
+    camera.quaternion.set(0, 0, 0, 1);
+    camera.position.set(0, controls.userHeight, 0);
+  });
+  vrButton.on("hide", function() {
+    document.getElementById("ui").style.display = "none";
+  });
+  vrButton.on("show", function() {
+    document.getElementById("ui").style.display = "inherit";
+  });
+  document.getElementById("vr-button").appendChild(vrButton.domElement);
+  document.getElementById("magic-window").addEventListener("click", function() {
+    vrButton.requestEnterFullscreen();
+  });
+
+  navigator.getVRDisplays().then(function(displays) {
+    if (displays.length > 0) {
+      vrDisplay = displays[0];
+      vrDisplay.requestAnimationFrame(animate);
+    }
+  });
+}
+```
+
+Alot is going on in this function because its the function that setups up our 3D scene and the WebVR UI.
+We first create a WebGL renderer and attach it to the page body. Thus our scene will fill up the whole page.
+
+```javascript
+var renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+
+// Append the canvas element created by the renderer to document body element.
+document.body.appendChild(renderer.domElement);
+```
+
+We then create a Threejs scene instance into which we can add our 3D elements.
+
+```javascript
+// Create a three.js scene.
+scene = new THREE.Scene();
+```
+
+After this we create our camera, attach VR controls to it and set its y-axis to the standing position of the user.
+
+```javascript
+// Create a three.js camera.
+var aspect = window.innerWidth / window.innerHeight;
+camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 10000);
+
+controls = new THREE.VRControls(camera);
+
+//*Set standing to 'true' to indicate that the user is standing
+controls.standing = true;
+//*Set the camera vertical position to the eye level of user
+camera.position.y = controls.userHeight;
+```
+
+Next, we applly VR stereo rendering to our renderer.
+
+```javascript
+effect = new THREE.VREffect(renderer);
+effect.setSize(window.innerWidth, window.innerHeight);
+```
+
+To create the 3D world in which the user will be immersed in, we create a skybox using the Threejs BoxGeometry and mapping materials of a dessert environment around it. Finally we add it to the scene.
+
+```javascript
+//Add Skybox
+var desertGeometry = new THREE.CubeGeometry(10000, 10000, 10000);
+var desertMaterials = [
+  new THREE.MeshBasicMaterial({
+    map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_front.png"),
+    side: THREE.DoubleSide
+  }),
+  new THREE.MeshBasicMaterial({
+    map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_back.png"),
+    side: THREE.DoubleSide
+  }),
+  new THREE.MeshBasicMaterial({
+    map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_up.png"),
+    side: THREE.DoubleSide
+  }),
+  new THREE.MeshBasicMaterial({
+    map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_down.png"),
+    side: THREE.DoubleSide
+  }),
+  new THREE.MeshBasicMaterial({
+    map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_right.png"),
+    side: THREE.DoubleSide
+  }),
+  new THREE.MeshBasicMaterial({
+    map: new THREE.TextureLoader().load("https://plugintests-e13a7.firebaseapp.com/img/ame_desert/desertsky_left.png"),
+    side: THREE.DoubleSide
+  })
+];
+
+var desertMaterial = new THREE.MultiMaterial(desertMaterials);
+
+var desert = new THREE.Mesh(desertGeometry, desertMaterial);
+
+console.log(desert);
+
+scene.add(desert);
+```
+
+Next, we add lighting to our scene. For this scene all we need is the ambient light. So we create a white coloured light and add it to our scene.
+
+```javascript
+var ambientLight = new THREE.AmbientLight(0xffffff);
+scene.add(ambientLight);
+```
+
+We then add our name in space using a TextGeometry after loading our desired font and add it to the scene. We get our name from the profile data stored in localStorage.
+
+```javascript
+var loader = new THREE.FontLoader();
+
+loader.load("https://plugintests-e13a7.firebaseapp.com/fonts/helvetiker_regular.typeface.json", function(font) {
+  var textGeometry = new THREE.TextGeometry(profile.name, {
+    font: font,
+    size: 80,
+    height: 5,
+    curveSegments: 12,
+    bevelEnabled: true,
+    bevelThickness: 3,
+    bevelSize: 2,
+    bevelSegments: 5
+  });
+
+  var textMaterial = new THREE.MeshBasicMaterial();
+
+  textMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+  textMesh.position.set(-400, controls.userHeight, -550.5);
+
+  console.log(textMesh);
+
+  scene.add(textMesh);
+});
+```
+
+Next thing we do is setup our event handlers to handle window resizing and also setup our WebVr UI.
+
+```javascript
+window.addEventListener("resize", onResize, true);
+window.addEventListener("vrdisplaypresentchange", onResize, true);
+
+// Initialize the WebVR UI.
+var uiOptions = {
+  color: "black",
+  background: "white",
+  corners: "square"
+};
+vrButton = new webvrui.EnterVRButton(renderer.domElement, uiOptions);
+vrButton.on("exit", function() {
+  camera.quaternion.set(0, 0, 0, 1);
+  camera.position.set(0, controls.userHeight, 0);
+});
+vrButton.on("hide", function() {
+  document.getElementById("ui").style.display = "none";
+});
+vrButton.on("show", function() {
+  document.getElementById("ui").style.display = "inherit";
+});
+document.getElementById("vr-button").appendChild(vrButton.domElement);
+document.getElementById("magic-window").addEventListener("click", function() {
+  vrButton.requestEnterFullscreen();
+});
+```
+
+Lastly, we check for VR displays on the browser `navigator` and call our `animate` function with the display API.
+
+```javascript
+navigator.getVRDisplays().then(function(displays) {
+  if (displays.length > 0) {
+    vrDisplay = displays[0];
+    vrDisplay.requestAnimationFrame(animate);
+  }
+});
+```
+
+This function needs to be called immediately the page loads thus we setup an event handler to handle that
+
+```javascript
+window.addEventListener("load", onLoad);
+```
+
+#### The animate function
+
+```javascript
+function animate(timestamp) {
+  var delta = Math.min(timestamp - lastRenderTime, 500);
+
+  if (textMesh) {
+    textMesh.rotation.x += delta * 0.0003;
+    textMesh.rotation.y += delta * 0.0003;
+    textMesh.rotation.z += delta * 0.0003;
+  }
+
+  // Only update controls if we're presenting.
+  if (vrButton.isPresenting()) {
+    controls.update();
+  }
+  // Render the scene.
+  effect.render(scene, camera);
+
+  vrDisplay.requestAnimationFrame(animate);
+}
+```
+
+This function handles the rendering and re-rendering of the scene and also animations on the page. Anytime the page renders we update the controls, change the position properties of the Text Mesh to create an animated effect and then call our `render` function to render or re-render the scene.
+We use `requestAnimationFrame` to ensure that our animations are optimized.
+
+#### The onResize function
+
+```javascript
+function onResize(e) {
+  effect.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+}
+```
+
+This simple function simple re-calibrates the camera position settings and page dimensions anytime the display is resized.
+
+Done! That's all the code we need for the project. Now we can proceed to testing it in our browser.
+
+Find the complete code [here](https://github.com/coderonfleek/webvr/tree/master/auth0-floating-name).
+A working demo can also be found [here](https://plugintests-e13a7.firebaseapp.com)
+
+## Testing the Project
+
+Awesome! you can now test your WebVr project in the browser and a Head mounted device like Google Cardboard. Below is a demonstration of what the test should look like in your browser.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rdlaSNY4WCc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+## Conclusion
+
+The future of Virtual Reality is on the Web. The Web offers a simple and quick way for the user to easily get immersed in a Virtual Reality. As the WebVR API continues to evolve, the future is exciting for developers developing virtual experiences on the Web.
