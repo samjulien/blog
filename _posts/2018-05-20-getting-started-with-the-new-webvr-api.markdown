@@ -31,6 +31,8 @@ This article takes you through a small project built with WebVR. Although you wo
 
 You can find the whole code for this application in [this GitHub](https://github.com/auth0-blog/webvr-tutorial) repository and a live sample [over here](https://plugintests-e13a7.firebaseapp.com).
 
+{% include tweet_quote.html quote_text="Check this quick tutorial on setting up a 3D virtual reality on the web." %}
+
 ## Prerequisites
 
 Building virtual-reality (VR) experiences in the web starts with building great WebGL (Web Graphics Layer) content. [WebGL is a browser API that allows us to design 3D graphics on the web](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API).
@@ -609,6 +611,8 @@ After the authentication process, you will see a screen like this one:
 Then, if you click on the _Try it without a headset_ link, you will be able to look around by clicking and moving your mouse.
 
 Nice right?
+
+{% include tweet_quote.html quote_text="I just built a 3D world on the web with WebVR." %}
 
 ## Conclusion
 
