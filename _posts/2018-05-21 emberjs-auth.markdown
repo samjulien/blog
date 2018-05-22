@@ -70,6 +70,14 @@ For styling, we will be using [Bulma](https://bulma.io/) styling in today's app.
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
 ```
 
+## The HTML File Script Tag
+
+Also in your index.html file, you need to ensure you have script tags for your application.
+
+```html
+<script src="{{rootURL}}assets/emberJS-auth.js"></script>
+```
+
 ## EmberCLI and Setup
 
 The ember-cli is an awesome tool that allows you to do a lot of app building within the command line. We will need the ember-cli global on our machine so open up your command line and let’s type in:
