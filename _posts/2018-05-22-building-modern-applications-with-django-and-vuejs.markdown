@@ -3,7 +3,7 @@ layout: post
 title: "Building Modern Applications with Django and Vue.js"
 description: "In this article, you will create, step by step, a full-stack application with Django and Vue.js."
 longdescription: "Throughout this article, you will use Django, Django REST framework, and Vue.js to develop an application with a REST API back-end and a Vue.js front-end. The API will be consumed by the Vue.js front-end with the help of Axios (the HTTP client library) and JWT authentication will be handled by Auth0."
-date: 2018-01-23 17:28
+date: 2018-05-22 17:28
 category: Technical Guide, Python, Django
 author:
   name: "Ahmed Bouchefra"
@@ -11,8 +11,8 @@ author:
   mail: "techiediaries9@gmail.com"
   avatar: "https://twitter.com/ahmedbouchefra/profile_image?size=original"
 design:
-  bg_color: "#164E36"
-  image: https://cdn.auth0.com/blog/django-vuejs/logo.png
+  bg_color: "#092e20"
+  image: https://cdn.auth0.com/blog/building-modern-applications-with-django-and-vuejs/logo.png
 tags:
 - django
 - vue.js
@@ -26,6 +26,7 @@ tags:
 related:
 - 2017-11-09-sqlalchemy-orm-tutorial-for-python-developers
 - 2017-09-28-developing-restful-apis-with-python-and-flask
+- 2018-03-29-vuejs-kanban-board-the-development-process
 ---
 
 **TL;DR:** Throughout this article, you'll be using Django, Django REST framework, and Vue.js to develop an application with a REST API back-end and a Vue.js front-end. The API will be consumed by the Vue.js front-end with the help of Axios (the HTTP client library) and JWT authentication will be handled by Auth0.
