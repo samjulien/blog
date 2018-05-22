@@ -156,7 +156,7 @@ Here, in this newly created file, we will insert all of our logic for getting a 
 ```javascript
 import Service from '@ember/service';
 import { computed, get } from '@ember/object';
-import config from 'emberJS-auth/config/environment';
+import config from 'ember-js-auth/config/environment';
 import { isPresent } from '@ember/utils';
 
 export default Service.extend({
