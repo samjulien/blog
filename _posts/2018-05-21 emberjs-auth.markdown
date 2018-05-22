@@ -325,6 +325,23 @@ module.exports = function(defaults) {
 
 >Do not be alarmed, I know this is not how React or many other frameworks do it. Why not import it in the top of the file? In Ember, some dependies will need to be added to the build so that it can be used across the application. You can find the documentation for that here: https://guides.emberjs.com/v3.1.0/addons-and-dependencies/managing-dependencies/
 
+## The Application Route
+
+We are going to need an all encompassing route. It won't do much except be the route that is the head parent. It is there to usually handle routing for the entire application but because we have declared routing elsewhere, this will not have that logic. Although we do need to keep it. So ensure you have built your application route.
+
+```bash
+ember generate route application
+```
+
+```javascript
+import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
+import { get } from '@ember/object';
+
+export default Route.extend({
+});
+```
+
 ## Building a Functional Nav Bar
 
 Our nav-bar will have our login button. Once logged in and user has been authenticated, that login button will change to the user's name and the logout button. Let's look at our navbar code. We will need a couple of files generated in order to get it all working. Let's start with the component app-nav.
