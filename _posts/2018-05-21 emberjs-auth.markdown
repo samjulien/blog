@@ -325,6 +325,28 @@ module.exports = function(defaults) {
 
 >Do not be alarmed, I know this is not how React or many other frameworks do it. Why not import it in the top of the file? In Ember, some dependies will need to be added to the build so that it can be used across the application. You can find the documentation for that here: https://guides.emberjs.com/v3.1.0/addons-and-dependencies/managing-dependencies/
 
+## Each Route Needs to Be Declared
+
+In our `router.js` file we need to declare what routes we are going to have. We have the standard '/' route but we will need to be able to tell the application what other routes we will be using. So go to your `router.js` file and input the information as shown
+
+//emberJS-auth/app/router.js
+```javascript
+import EmberRouter from '@ember/routing/router';
+import config from './config/environment';
+
+const Router = EmberRouter.extend({
+  location: config.locationType,
+  rootURL: config.rootURL
+});
+
+Router.map(function() {
+  this.route('dashboard');
+  this.route('callback');
+});
+
+export default Router;
+```
+
 ## The Application Route
 
 We are going to need an all encompassing route. It won't do much except be the route that is the head parent. It is there to usually handle routing for the entire application but because we have declared routing elsewhere, this will not have that logic. Although we do need to keep it. So ensure you have built your application route.
