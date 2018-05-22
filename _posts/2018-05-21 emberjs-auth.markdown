@@ -70,14 +70,6 @@ For styling, we will be using [Bulma](https://bulma.io/) styling in today's app.
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
 ```
 
-## The HTML File Script Tag
-
-Also in your index.html file, you need to ensure you have script tags for your application.
-
-```html
-<script src="{{rootURL}}assets/emberJS-auth.js"></script>
-```
-
 ## EmberCLI and Setup
 
 The ember-cli is an awesome tool that allows you to do a lot of app building within the command line. We will need the ember-cli global on our machine so open up your command line and let’s type in:
@@ -158,7 +150,7 @@ In your command line type:
 ember generate service auth
 ```
 
-Here, in this newly created file, we will insert all of our logic for getting a session, logging in, logging out, and everything associated with authentication. For example, let's dive into the `getSession()`. In here, it will grab all the necessary authenticaton pieces that are required for a successful login. We will need the `access_token`, the `id_token`, and finally the `expires_at` value. With all three of these, they application will know that they are good to move on to the protected pages in the app.
+Here, in this newly created file, we will insert all of our logic for getting a session, logging in, logging out, and everything associated with authentication. For example, let's dive into the `getSession()`. In here, it will grab all the necessary authentication pieces that are required for a successful login. We will need the `access_token`, the `id_token`, and finally the `expires_at` value. With all three of these, they application will know that they are good to move on to the protected pages in the app.
 
 //emberJS-auth/app/services/auth.js
 ```javascript
@@ -298,7 +290,7 @@ auth0: computed(function () {
 
 you will want to your own credentials from your Auth0 account. That tab you still have open, yeah, let's go back to that and grab that information. In a "secret" file, you will be inputting those values and then .gitignore that file.
 
-What you can do is create a config folder within your file structure at the root source. Within that you can create an `environment.js` file that can contain your auth0 secure information. It can look something like this:
+What you can do is in the config folder within your project you can create an `auth0-variables.js` file that can contain your auth0 secure information. It can look something like this:
 
 ```javascript
 module.exports = {
@@ -306,6 +298,21 @@ module.exports = {
   domain: 'domain goes here',
   callbackUrl: 'callback url goes here'
 }
+```
+
+Then in the `config/environment.js` file, you can call for those variables. Like so
+
+//emberJS-auth/config/environment.js
+```javascript
+const AUTH_CONFIG = require('./auth0-variables');
+
+
+ENV.auth0 = {
+    clientId: AUTH_CONFIG.clientId,
+    domain: AUTH_CONFIG.domain,
+    callbackUrl: AUTH_CONFIG.callbackUrl,
+    audience: AUTH_CONFIG.apiUrl
+  }
 ```
 
 You can declare these variable however you want, just make sure it is in a file that you .gitignore so that once you push it to github, your secret keys will not be exposed to the world.
@@ -335,7 +342,7 @@ module.exports = function(defaults) {
 
 ## Each Route Needs to Be Declared
 
-In our `router.js` file we need to declare what routes we are going to have. We have the standard '/' route but we will need to be able to tell the application what other routes we will be using. So go to your `router.js` file and input the information as shown
+In our `app/router.js` file we need to declare what routes we are going to have. We have the standard '/' route but we will need to be able to tell the application what other routes we will be using. So go to your `app/router.js` file and input the information as shown
 
 //emberJS-auth/app/router.js
 ```javascript
@@ -365,8 +372,6 @@ ember generate route application
 
 ```javascript
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
-import { get } from '@ember/object';
 
 export default Route.extend({
 });
@@ -388,7 +393,6 @@ Within the file, let's add
 ```javascript
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { get, set } from '@ember/object';
 
 export default Component.extend({
   auth: service('auth'),
@@ -459,6 +463,9 @@ In there the code should be
 
 //emberJS-auth/app/controllers/application.js
 ```javascript
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
+
 export default Controller.extend({
   auth: service(),
   init() {
@@ -470,10 +477,6 @@ export default Controller.extend({
 ```
 
 Using functions from the auth service, this will allow the authentication to actually fire off. And then to match up with the controller, the application template will have code that will show what the user needs to see.
-
-```bash
-ember generate template application
-```
 
 //emberJS-auth/app/templates/application.hbs
 ```javascript
@@ -541,8 +544,6 @@ Your dashboard controller should look like so
 //emberJS-auth/app/controllers/dashboard.js
 ```javascript
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
-import { get, set } from '@ember/object';
 
 export default Controller.extend({
   // bank: service(), // get fake data
@@ -598,7 +599,6 @@ There we will put the logic so that if they try and access the dashboard without
 ```javascript
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { get, set } from '@ember/object';
 
 export default Route.extend({
   auth: service('auth'),
