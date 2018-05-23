@@ -14,7 +14,7 @@ name: "Sarah Jorgenson"
 
 Quickly learn how to build ambitious EmberJS 3 apps with authentication and feel comfortable doing it.
 
-**TL;DR:** Let’s dive into the world of **EmberJS**, a framework built so that we all can be more productive as developers. Easy to jump in to and easy to get started with, EmberJS is a great framework to know and understand. In this tutorial, we will be building an application using EmberJS 3 and then add some **trusty authentication** to it. You can find the repo [here](https://github.com/SarahJay55/emberJS-auth) to get the code from this tutorial. 
+**TL;DR:** Let’s dive into the world of **EmberJS**, a framework built so that we all can be more productive as developers. Easy to jump in to and easy to get started with, EmberJS is a great framework to know and understand. In this tutorial, we will be building an application using EmberJS 3 and then add some **trusty authentication** to it. You can find the repo [here](https://github.com/SarahJay55/ember-js-auth) to get the code from this tutorial. 
 
 ## EmberJS
 
