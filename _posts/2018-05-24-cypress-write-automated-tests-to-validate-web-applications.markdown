@@ -32,20 +32,20 @@ related:
 
 A typical test suite for your application can generally consist of three layers (you could have many more depending on the nature of the application):
 
-* Unit Tests
-* Integration Tests
-* End-to-end Tests
+* [Unit tests](http://softwaretestingfundamentals.com/unit-testing/).
+* [Integration tests](https://en.wikipedia.org/wiki/Integration_testing).
+* [End-to-end tests](https://www.techopedia.com/definition/7035/end-to-end-test).
 
-![test-pyramid](https://raw.githubusercontent.com/rcdexta/guest-writer/react-cypress/assets/cohn_test_pyramid.png)
+![The Test Pyramid and Importance of E2E tests](https://cdn.auth0.com/blog/cypress-tests/the-test-pyramid.png)
 
-Numerous tools and libraries help you write tests that offer safety net to your application at each of the layers listed above. But, when it comes to level of redundancy wrt to test coverage and which layer should assert what, the following two rules might help:
+Numerous tools and libraries help you write tests that offer safety net to your application at each of the layers listed above. But, when it comes to the level of redundancy to test coverage and which layer should assert what, the following two rules might help:
 
-1. Write tests with different granularity
-2. The more high-level you get the fewer tests you should have
+1. Write tests with different granularity.
+2. The more high-level you get the fewer tests you should have.
 
-Also, the feedback cycle for tests in each of the layers can vary. The unit tests offer the lowest latency on feedback and the latency increases as you go up the pyramid. For this post, we will focus on E2E tests and specifically User Interface tests. 
+Also, the feedback cycle for tests in each of the layers can vary. The unit tests offer the lowest latency on feedback and the latency increases as you go up the pyramid. For this post, we will focus on E2E tests and specifically on [user interface tests](https://en.wikipedia.org/wiki/Graphical_user_interface_testing).
 
-User Interface or UI tests, are tests that test the system just like a real user would interact with the application on the browser. They mimic the user’s actions in the form of a script, and it basically interacts with the app just like a regular user would.  Cypress is one of the many web automation tools available to help you write effective user interface tests.
+User Interface (UI) tests, or UI tests, are tests that use the system just like a real user would interact with the application on the browser. They use scripts to mimic users' actions and they basically interact with the app just like a regular user would. Cypress is one of the many web automation tools available to help you write effective user interface tests.
 
 ## How is Cypress different as a UI Testing Tool?
 
