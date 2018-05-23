@@ -53,57 +53,64 @@ Most browser-based automation tools are [selenium-based](https://www.seleniumhq.
 
 These architectural improvements unlock the ability to run tests much faster in browser mode as well as headless mode. You can read more about [the internal details of Cypress here](https://www.cypress.io/how-it-works/). As you start writing more Cypress tests and build the pipeline with a test suite, you will see that many aspects of writing automation tests have improved with this library. 
 
-## Writing your first Cypress test
+## Writing Your First Cypress Test
 
-We have created a sample todo app using React to better illustrate using Cypress to write automation tests. Screenshot of the application that we are going to test against can be seen below:
+To see Cypress in action, you will take advantage of an existing to-do app written with React. Don't worry if you don't have experience with React per se. Cypress can be used with any other front-end technology like Vue.js or Angular and you will use an existing React app here just to avoid having to set up too much stuff before diving into Cypress.
 
-![todo-app](https://raw.githubusercontent.com/rcdexta/guest-writer/react-cypress/assets/todoapp.png)
+Below, you can see a screenshot of the application that you are going to use while learning about Cypress.
 
+![Sample To-Do application that you will test with Cypress.](https://cdn.auth0.com/blog/cypress-tests/sample-todo-app.png)
 
+As you can see, this app has a list of to-do items that are either open or completed. A to-do item can be completed or deleted using the action icons present on item. The text field and the button can be used to add a new to-do items.
 
-It has a list of todos that are open or completed. The todo can be completed or deleted using the action icons present against each todo item. The text field and the button can be used to add a new todo item.
-
-Let's get started with installing Cypress and automating adding a todo item to the list. To get started, the code for the app is available to download and run:
+To get started, you will first clone the sample application and install its dependencies:
 
 ```bash
-$ git clone git@github.com:rcdexta/cypress-todo-example.git
-$ cd cypress-todo-example
-$ yarn install
+git clone https://github.com/auth0-blog/cypress-todo-example.git
+cd cypress-todo-example
+yarn install
 ```
+
+> **Note:** You could easily use `npm` instead of `yarn`. It is more a matter of taste here.
 
 When you are done installing all the dependencies, run `yarn start` to run the application in the browser to make sure it looks good. The same application is also available in [codesandbox](https://codesandbox.io/s/4j5m27o8ox) if you have trouble running it on your machine.
 
-Now, let's bootstrap cypress and write our first test. With the application running, open another terminal session and run the following commands inside the same folder:
+Now, you will bootstrap Cypress and write your first test. With the application running, open another terminal session and run the following commands inside the same folder (`cypress-todo-example`):
 
 ```bash
-$ yarn add --dev cypress
-$ yarn cypress open
+yarn add --dev cypress
+yarn cypress open
 ```
 
 Cypress will sense that you are running it for the first time and create a folder called `cypress` with necessary files to get you going. It would also launch the cypress test runner. Think of it as a GUI for running/debugging your automation specs.
 
-We will create a file called `todo_spec.js`  in `cypress/integration` folder. 
+After that, you will create a file called `todo_spec.js` in the `cypress/integration` directory. You might need a third terminal for this (one for running the sample, one for Cypress, and one for creating new files. Or, even better, you can use an IDE like WebStorm or Visual Studio Code for this last task.
 
-> Note: You should already see an `example_spec.js `file that contains tests for the sample [Kitchen Sink](https://example.cypress.io/)  application with plenty of documentation for various scenarios. Would recommend reading through the file at a later point in time for reference
+> **Note:** You should already see an `example_spec.js `file that contains tests for the sample [Kitchen Sink](https://example.cypress.io/) application with plenty of documentation for various scenarios. It is recommended that you read through the file at a later point in time for reference.
+
+In this new file, add the following code:
 
 ```javascript
 //cypress/integration/todo_spec.js
 
 describe('Todo App', function () {
+  it('.should() - allow adding a new todo item', function () {
+    cy.visit('http://localhost:3000');
+    cy.get('input[data-cy=newItemField]').type('Write Test');
+    cy.get('#addBtn').click();
 
-    it('.should() - allow adding a new todo item', function () {
-        cy.visit('http://localhost:3000') 
-        cy.get('input[data-cy=newItemField]').type('Write Test') 
-        cy.get('#addBtn').click() 
-
-        cy.get('tr[data-cy=todoItem]:nth-child(1)').should('contain', 'Write Test') 
-    })
-})
+    cy.get('tr[data-cy=todoItem]:nth-child(1)').should('contain', 'Write Test')
+  })
+});
 ```
 
-The test is pretty self-explanatory. `cy` is a global cypress object that drives the tests. It has various helper methods to visit web pages, interact with web elements and also to fetch data present in the DOM. 
+The test is pretty self-explanatory. It just connects to your app (`cy.visit('http://localhost:3000');`), then it types `'Write Test'` to the `input[data-cy=newItemField]` field, then it clicks on the `#addBtn` button so it can validate that the first `tr` element contains the `'Write Test'` string.
 
-Cypress has excellent [documentation](https://docs.cypress.io/guides/overview/why-cypress.html) and a [sample application](https://example.cypress.io/) that you would be frequently referring to as you add more test cases to your application. Cypress also bundles [chai](https://docs.cypress.io/api/commands/should.html#Syntax) assertion library and the should matcher you see in the test is chained to the cypress helper methods seamlessly for readability.
+The `cy` variable that you are using to interact with your application is a global Cypress object that drives the tests. It has various helper methods to visit web pages, interact with web elements, and also to fetch data present in the DOM.
+
+To learn more, you can check the [excellent documentation on Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) and [the sample application](https://example.cypress.io/) that you would be frequently referring to as you add more test cases to your application.
+
+Also, note that Cypress bundles the [`chai`](https://docs.cypress.io/api/commands/should.html#Syntax) assertion library and the matchers you see in the test is chained to the Cypress helper methods seamlessly for readability.
 
 ## Using the Cypress Test Runner
 
