@@ -3,8 +3,8 @@ layout: post
 title: "Introducing the Multi-Factor Authentication API"
 description: "Embed Multi-Factor Authentication using push notifications, SMS, or TOTP anywhere, taking full control of the experience."
 longdescription: "We have developed a new API to make use of Multi-Factor Authentication through an HTTP API, allowing developers to take full control of the experience. Push notifications, SMS, TOTP, and even multiple authenticators are supported. In this article we take a look at the API while developing a CLI application."
-date: 2018-04-10 12:30
-category: Announcements, Content
+date: 2018-05-23 08:30
+category: Announcements, Feature
 author:
   name: Sebastián Peyrott
   url: https://twitter.com/speyrott?lang=en
