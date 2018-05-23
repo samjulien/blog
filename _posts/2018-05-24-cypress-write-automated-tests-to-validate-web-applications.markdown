@@ -2,7 +2,7 @@
 layout: post
 title: "Cypress: Write Automated Tests to Validate Web Applications"
 description: "Learn how to use Cypress to write automated tests that run on browsers to validate web applications."
-longdescription: "In this tutorial, you will learn how to use Cypress to write automated tests that run on browsers to validate web applications. Although the articles uses a React application to illustrate the topic, Cypress is agnostic when it comes to what technologies you are using in your web applications."
+longdescription: "In this tutorial, you will learn how to use Cypress to write automated tests that run on browsers to validate web applications. Although the article uses a React application to illustrate the topic, Cypress is agnostic when it comes to what technologies you are using in your web applications."
 date: 2018-05-24 08:30
 category: Technical Guide, Frontend, React
 author:
@@ -42,16 +42,16 @@ A typical test suite for your application can generally consist of three layers 
 
 ![The Test Pyramid and Importance of E2E tests](https://cdn.auth0.com/blog/cypress-tests/the-test-pyramid.png)
 
-Numerous tools and libraries help you write tests that offer safety net to your application at each of the layers listed above. But, when it comes to the level of redundancy to test coverage and which layer should assert what, the following two rules might help:
+Numerous tools and libraries help you write tests that offer a safety net to your application at each of the layers listed above. But, when it comes to the level of redundancy to test coverage and which layer should assert what, the following two rules might help:
 
 1. Write tests with different granularity.
 2. The more high-level you get the fewer tests you should have.
 
 Also, the feedback cycle for tests in each of the layers can vary. The unit tests offer the lowest latency on feedback and the latency increases as you go up the pyramid. For this post, we will focus on E2E tests and specifically on [user interface tests](https://en.wikipedia.org/wiki/Graphical_user_interface_testing).
 
-User Interface (UI) tests, or UI tests, are tests that use the system just like a real user would interact with the application on the browser. They use scripts to mimic users' actions and they basically interact with the app just like a regular user would. Cypress is one of the many web automation tools available to help you write effective user interface tests.
+User Interface (UI) tests, or UI tests, are tests that use the system just like a real user would interact with the application on the browser. They use scripts to mimic users' actions and they basically interact with the app just as a regular user would. Cypress is one of the many web automation tools available to help you write effective user interface tests.
 
-## How Is Cypress Different as a Ui Testing Tool?
+## How Is Cypress Different as a UI Testing Tool?
 
 Most browser-based automation tools are [selenium-based](https://www.seleniumhq.org/), which works by implementing a web driver that remotely executes commands on the browser through the network. Whereas, Cypress runs in the same run-loop as your parent application. Also, Cypress tests are only written in JavaScript. While you can compile down to JavaScript from any other language, ultimately the test code is executed inside the browser itself.
 
@@ -65,7 +65,7 @@ Below, you can see a screenshot of the application that you are going to use whi
 
 ![Sample To-Do application that you will test with Cypress.](https://cdn.auth0.com/blog/cypress-tests/sample-todo-app.png)
 
-As you can see, this app has a list of to-do items that are either open or completed. A to-do item can be completed or deleted using the action icons present on item. The text field and the button can be used to add a new to-do items.
+As you can see, this app has a list of to-do items that are either open or completed. A to-do item can be completed or deleted using the action icons present on the item. The text field and the button can be used to add a new to-do item.
 
 To get started, you will first clone the sample application and install its dependencies:
 
