@@ -28,6 +28,8 @@ related:
 
 **TL;DR:** This post is an introduction on using [Cypress](https://www.cypress.io/) for writing browser-based automation tests for web applications. This tutorial uses a React application as an example to illustrate the testing framework, but you can apply the learnings to write integration tests for any web application.
 
+The source code for the React application and the corresponding Cypress tests are available in [this repository](https://github.com/auth0-blog/cypress-todo-example). The `master` branch contains the code needed to start this tutorial and the `cypress` branch contains the final setup with all Cypress tests.
+
 ## The Test Pyramid and Importance of E2E tests
 
 A typical test suite for your application can generally consist of three layers (you could have many more depending on the nature of the application):
@@ -128,7 +130,7 @@ The left pane is called the _Command Log_ and lists the name of the test followe
 
 One very helpful feature on the browser view is the DOM selector that is shown highlighted below the internal URL address bar (not the real one from the browser, but the one from the inner browser). It will appear when you click on the _Open Selector Playground_ icon to the left of this address bar. You can type in a selector in the textbox like you have entered `#addBtn` and Cypress will highlight the selected item for you. Or you can select an element from the screen and Cypress will try to find the optimal selector for you to use in your test.
 
-## Setting up Continuous Integration
+## Setting up Continuous Integration for Cypress
 
 The whole point of writing and maintaining browser-based automation tests is to test the application for any flows that break and give early feedback to the team. You can set up the suite of Cypress tests to run on your continuous integration (CI) server to run on every check-in or as a nightly build.
 
@@ -149,28 +151,24 @@ RUN $(npm bin)/cypress run
 
 Refer to this [page](https://docs.cypress.io/guides/guides/continuous-integration.html#) for setting up Cypress on your favorite CI server. 
 
-## Time Travel and Debugging
+## Time Travel and Debugging with Cypress
 
 Another cool feature present in the Cypress Test Runner tool is that as you hover through the command log on the left, for each step in the test, you can check the state of the application on the right. You can also click on the pin icon to freeze the runner for that particular step, open the developer console and get insights into the specific web interactions that happened, the selectors used, parameters passed and results.
 
 ![Time travel and debugging with Cypress](https://cdn.auth0.com/blog/cypress-tests/time-travel.png)
 
-## Postmortem analysis with screenshots and videos
+## Postmortem Analysis on Cypress
 
-The last thing we want with a browser automation test is false positives. By that, a test case failing because of the way the automation test was written and not because something in the actual application is broken. When that frequently happens, the test suite loses its credibility and a red build is not worth its attention anymore! 
+The last thing you want with a browser automation test is false positives. By that, a test case failing because of the way the automation test was written and not because something in the actual application is broken. When that frequently happens, the test suite loses its credibility and a red build is not worth its attention anymore!
 
-So, when a test fails on the CI we need enough trails and artifacts to understand what really went wrong. Like most automation frameworks in the market, Cypress generates screenshots and videos of the entire test runs if configured correctly. All of these settings can be tweaked using the `cypress.json` configuration file generated in the root of your project. By default, screenshots and video recording are turned on and you can see them generated inside the `cypress` folder after running the tests.
+So, when a test fails on the CI, you need enough trails and artifacts to understand what really went wrong. Like most automation frameworks in the market, Cypress generates screenshots and videos of the entire test runs if configured correctly. All of these settings can be tweaked using the `cypress.json` configuration file generated in the root of your project. By default, screenshots and video recording are turned on and you can see them generated inside the `cypress` folder after running the tests.
 
 Check out the [configuration documentation](https://docs.cypress.io/guides/references/configuration.html#Videos) for additional settings and options.
 
-## Source Code
+## Conclusion and Further Reading
 
-The source code for the react application and the corresponding cypress tests are available in the following this [repository](https://github.com/rcdexta/cypress-todo-example)
+As you could see throughout this article, Cypress is an amazing tool that facilitates end-to-end tests on web applications. If you want to learn more about Cypress, the following list will lead you to some references that you might find useful:
 
-The `master` branch should help you get started with this guide. Navigate to `cypress` branch to look at the final setup with all the tests.
-
-## Further Reading
-
-1. [Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html)
-2. [Most common Selenium challenges](https://crossbrowsertesting.com/blog/selenium/problems-selenium-webdriver/)
-3. [Cypress architecture](https://www.cypress.io/how-it-works/)
+1. [Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html).
+2. [Most common Selenium challenges](https://crossbrowsertesting.com/blog/selenium/problems-selenium-webdriver/).
+3. [Cypress architecture](https://www.cypress.io/how-it-works/).
