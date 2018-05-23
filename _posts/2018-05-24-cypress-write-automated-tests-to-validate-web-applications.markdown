@@ -114,13 +114,19 @@ Also, note that Cypress bundles the [`chai`](https://docs.cypress.io/api/command
 
 ## Using the Cypress Test Runner
 
-When you have saved the`todo_spec.js` file, it will start appearing in the Cypress test runner. When you click on todo_spec.js, a new browser instance will open up and run the test visually. You can observe cypress hop through each step that we wrote in the add todo item test. Check out a snapshot of the browser as it runs the test:
+When you have saved the`todo_spec.js` file, it will start appearing in the Cypress test runner.
 
-![cypress-gui-runner](https://raw.githubusercontent.com/rcdexta/guest-writer/react-cypress/assets/cypress_gui_runner.png)
+![New spec appearing the Cypress test runner.](https://cdn.auth0.com/blog/cypress-tests/cypress-test-runner.png)
 
-The left pane is called the `Command Log` and lists the name of the test followed by each step in sequence and its outcome. When the test runs, you can see Cypress interacting with the application on the browser webview to the right and we see that the new todo item was added to the list successfully. And the last step on the left is the assertion to verify if our new item is present in the list and voila!
+When you click on `todo_spec.js` in the test runner, a new browser instance will open up and run the test visually. You can observe Cypress hop through each step that you wrote in the `todo_spec.js` test.
 
-One very helpful feature on the browser view is the DOM selector that is shown highlighted below the URL address bar. It will appear when you click on the `Open Selector Playground` icon to the left of the address bar. You can type in a selector in the textbox like we have entered `#addBtn` and cypress will highlight the selected item for you. Or you can select an element from the screen and Cypress will try to find the optimal selector for you to use in your test. 
+If everything works properly (as it should), you will see something similar to this screen:
+
+![Automated tests running on Cypress.](https://cdn.auth0.com/blog/cypress-tests/showing-e2e-tests-written-with-cypress-in-action.png)
+
+The left pane is called the _Command Log_ and lists the name of the test followed by each step in sequence and its outcome. When the test runs, you can see Cypress interacting with the application on the browser webview to the right and you see that the new todo item is added to the list successfully. Lastly, you can see that the last step on the left is the assertion to verify if our new item is present in the list.
+
+One very helpful feature on the browser view is the DOM selector that is shown highlighted below the internal URL address bar (not the real one from the browser, but the one from the inner browser). It will appear when you click on the _Open Selector Playground_ icon to the left of this address bar. You can type in a selector in the textbox like you have entered `#addBtn` and Cypress will highlight the selected item for you. Or you can select an element from the screen and Cypress will try to find the optimal selector for you to use in your test.
 
 ## Setting up Continuous Integration
 
