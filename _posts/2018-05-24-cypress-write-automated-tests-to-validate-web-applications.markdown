@@ -165,6 +165,8 @@ So, when a test fails on the CI, you need enough trails and artifacts to underst
 
 Check out the [configuration documentation](https://docs.cypress.io/guides/references/configuration.html#Videos) for additional settings and options.
 
+{% include asides/javascript-at-auth0.markdown %}
+
 ## Conclusion and Further Reading
 
 As you could see throughout this article, Cypress is an amazing tool that facilitates end-to-end tests on web applications. If you want to learn more about Cypress, the following list will lead you to some references that you might find useful:
