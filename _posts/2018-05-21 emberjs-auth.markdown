@@ -20,7 +20,7 @@ Quickly learn how to build ambitious EmberJS 3 apps with authentication and feel
 
 But which framework should I use? Which one would be best for me and my project? We get it, there are tons to choose from.  Let’s take some time and let’s learn more about the powerful framework we like to call, EmberJS.  
 
-We have the new EmberJS 3.0 that was released February 14, 2018. There were not any functionality concepts added, instead the Ember team honed in on making the framework cleaner and more focused.  You will not have to deal with long-deprecated APIs anymore but you will see support for those legacy platforms. If you are already familiar with EmberJS 2.0, EmberJS 3.0 should be just fine.
+We have the new EmberJS 3.0 that was released February 14, 2018. There were no functionality concepts added, instead the Ember team honed in on making the framework cleaner and more focused.  You will not have to deal with long-deprecated APIs anymore but you will see support for those legacy platforms. If you are already familiar with EmberJS 2.0, EmberJS 3.0 should be just fine.
 
 **But Who Should Use It?**
 
@@ -28,7 +28,7 @@ Are you looking for a everything-included type framework? One that you do not ha
 
 ## The Five Key Concepts
 
-Who here as worked with AngularJS? ReactJS? VueJS? Well then, this might look very familiar to you! EmberJS will be very easy to understand and you’ll be making apps in no time! Do these things look familiar?
+Who here has worked with AngularJS? ReactJS? VueJS? Well then, this might look very familiar to you! EmberJS will be easy to understand and you’ll be making apps in no time! Do these things look familiar?
 
   1. Routes - Being URL based, the route allows for application browsing based on the URL.
   2. Models - Objects that equate the data that your application shows in the user's view.
@@ -38,16 +38,7 @@ Who here as worked with AngularJS? ReactJS? VueJS? Well then, this might look ve
 
 These are the five key concepts when using EmberJS. It also provides many other things, but knowing and understanding these main five, you will be off to a good start.  
 
-## Let’s Build!
-
-We are going to be building an application that uses authentication and authorization to jump into a mock bank account. Numbers won’t be real, don’t worry, we’ll use some JavaScript to generate a random number. And we need some strong authorization to keep our bank accounts safe.  
-
-What will our app do?
-
-1. User sees a nav-bar with a log-in button
-2. User logs in with their credentials via Auth0
-3. User sees their name in the nav-bar and randomly generated bank account balance (if only we could keep the balances that randomly generate to 1,000,000).
-4. Log-out button next to the name in the nav-bar
+## Ember CLI
 
 Now in EmberJS, whenever you want to generate a new file, all you need to do is type in 
 
@@ -61,14 +52,16 @@ ember generate route login
 
 That would create a routing file named `login`. Within your `app` file, you’ll see in the route folder, a new file named `login`. As we create this app, you will see those commands, EmberJS makes it easy for us to organize and create files. You will need to generate each file you need. But if you generate a component, Ember will automatically generate a component in the template file as well. If you generate a route, then Ember will automatically generate a template for that route. It is convenient for file building but be aware of it, you will not want to be adding extra files that Ember has already generated for you.
 
-### Styling
+## Let’s Build!
 
-For styling, we will be using [Bulma](https://bulma.io/) styling in today's app. Insert the bulma link tag into our index.html so we can use that styling throughout our application.
+We are going to be building an application that uses authentication and authorization to jump into a mock bank account. Numbers won’t be real, don’t worry, we’ll use some JavaScript to generate a random number. And we need some strong authorization to keep our bank account safe.  
 
-//emberJS-auth/app/index.html
-```html
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
-```
+What will our user see?
+
+1. User sees a nav-bar with a log-in button
+2. User logs in with their credentials via Auth0
+3. User sees their name in the nav-bar and randomly generated bank account balance (if only we could keep the balances that randomly generate to 1,000,000).
+4. Log-out button next to the name in the nav-bar
 
 ## EmberCLI and Setup
 
@@ -78,16 +71,16 @@ The ember-cli is an awesome tool that allows you to do a lot of app building wit
 npm install -g ember-cli
 ```
 
-Once that is done, let’s get a EmberJS app started! We will be making a login feature that takes us to a faux bank account. To get this going all you have to do is type in:
+Once that is done, let’s get a EmberJS app started! We will be making a login feature that takes us to a faux bank account. To get this going all you have to do is navigate to the folder you want this project in and type:
 
 ```bash
-ember new emberJS-auth
+ember new ember-js-auth
 ```
 
 Sit back and relax, Ember will be taking care of a lot of stuff right now. Once it has completed, let’s cd into that new directory 
 
 ```bash
-cd emberJS-auth
+cd ember-js-auth
 ```
 
 and then in that run:
@@ -101,6 +94,41 @@ to get the app started up in your browser. You can find it on http://localhost:4
 ![Imgur](https://i.imgur.com/y48FR0N.png)
 
 Your EmberJS application is ready to use!
+
+### Styling
+
+For styling, we will be using [Bulma](https://bulma.io/) styling in today's app. Insert the bulma link tag into our index.html so we can use that styling throughout our application.
+
+//ember-js-auth/app/index.html
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>EmberJsAuth</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {{content-for "head"}}
+       
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <link rel="stylesheet" href="{{rootURL}}assets/vendor.css">
+    <link rel="stylesheet" href="{{rootURL}}assets/ember-js-auth.css">
+
+    {{content-for "head-footer"}}
+  </head>
+  <body>
+    {{content-for "body"}}
+
+    <script src="{{rootURL}}assets/vendor.js"></script>
+    <script src="{{rootURL}}assets/ember-js-auth.js"></script>
+
+    {{content-for "body-footer"}}
+  </body>
+</html>
+```
+
 
 ## Setting Up Auth0
 
@@ -116,7 +144,7 @@ We will be generating a couple of things that we will need in our application un
 2. Client ID - a string of random numbers and letters
 3. Callback URL - http://localhost:4200/callback
 
-> Note! Do not forget to set your callback URL.  The callback URL is there so once the authentication goes through successfully, Auth0 will redirect the user to the proper page.
+> Note! Now that you have your Auth0 Application, go to the Settings tab and add http://localhost:4200/callback to the Allowed Callback URLs and hit the Save button. Then, leave the Settings tab open as you will need to copy some properties from it soon.
 
 ![Imgur](https://i.imgur.com/1y32iKn.png)
 
@@ -130,13 +158,11 @@ npm install --save auth0-js
 
 What this is doing is it is giving you the correct Auth0 library and putting in your dependencies list in your package.json file. 
 
-![Imgur](https://i.imgur.com/3nx0d8d.png)
-
 ### Authentication with Auth0
 
 Auth0 provides two types of authentication, Universal and Embedded. Today we will be using Universal login. It is the easiest, most secure way to have authentication within your application. Here at Auth0, we recommend using the Universal login. You will feel at ease knowing you have our highest level of security protecting your users information.
 
-But what are the differences between Universal and Embedded? Universal authentication uses a central domain when the user wants to log in. No matter where you are in the applicaton, the authentication happens in one spot, and they are always redirected to the central domain. Whereas in Embedded authentication, the user is not redirected, instead they are authroized right there, on that individual domain. There are pros and cons to both, you can learn more about these types of login [here](https://auth0.com/docs/guides/login/universal-vs-embedded).
+But what are the differences between Universal and Embedded? Universal authentication uses a central domain when the user wants to log in. No matter where you are in the application, the authentication happens in one spot, and they are always redirected to the central domain. Whereas in Embedded authentication, the user is not redirected, instead they are authorized right there, on that individual domain. There are pros and cons to both, you can learn more about these types of login [here](https://auth0.com/docs/guides/login/universal-vs-embedded).
 
 ## Services in Ember
 
@@ -152,7 +178,7 @@ ember generate service auth
 
 Here, in this newly created file, we will insert all of our logic for getting a session, logging in, logging out, and everything associated with authentication. For example, let's dive into the `getSession()`. In here, it will grab all the necessary authentication pieces that are required for a successful login. We will need the `access_token`, the `id_token`, and finally the `expires_at` value. With all three of these, they application will know that they are good to move on to the protected pages in the app.
 
-//emberJS-auth/app/services/auth.js
+//ember-js-auth/app/services/auth.js
 ```javascript
 import Service from '@ember/service';
 import { computed, get } from '@ember/object';
@@ -269,7 +295,7 @@ export default Service.extend({
     const expiresAt = this.getSession().expires_at;
     return new Date().getTime() < expiresAt;
   }
-});
+}); 
 
 ```
 
@@ -290,7 +316,7 @@ auth0: computed(function () {
 
 you will want to your own credentials from your Auth0 account. That tab you still have open, yeah, let's go back to that and grab that information. In a "secret" file, you will be inputting those values and then .gitignore that file.
 
-What you can do is in the config folder within your project you can create an `auth0-variables.js` file that can contain your auth0 secure information. It can look something like this:
+What you can do is in the config folder (app/config) within your project you can create an `auth0-variables.js` file that can contain your auth0 information. It can look something like this:
 
 ```javascript
 module.exports = {
@@ -302,17 +328,66 @@ module.exports = {
 
 Then in the `config/environment.js` file, you can call for those variables. Like so
 
-//emberJS-auth/config/environment.js
+//ember-js-auth/config/environment.js
 ```javascript
 const AUTH_CONFIG = require('./auth0-variables');
 
+module.exports = function (environment) {
+  var ENV = {
+    modulePrefix: 'ember-js-auth',
+    environment: environment,
+    rootURL: '/',
+    locationType: 'auto',
+    EmberENV: {
+      FEATURES: {
+        // Here you can enable experimental features on an ember canary build
+        // e.g. 'w ith-controller': true
+        'ds-improved-ajax': true,
+      },
+      EXTEND_PROTOTYPES: {
+        // Prevent Ember Data from overriding Date.parse.
+        Date: false
+      }
+    },
 
-ENV.auth0 = {
+    APP: {
+      // Here you can pass flags/options to your application instance
+      // when it is created
+    }
+  };
+
+  if (environment === 'development') {
+    // ENV.APP.LOG_RESOLVER = true;
+    // ENV.APP.LOG_ACTIVE_GENERATION = true;
+    // ENV.APP.LOG_TRANSITIONS = true;
+    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
+    // ENV.APP.LOG_VIEW_LOOKUPS = true;
+  }
+
+  if (environment === 'test') {
+    // Testem prefers this...
+    ENV.locationType = 'none';
+
+    // keep test console output quieter
+    ENV.APP.LOG_ACTIVE_GENERATION = false;
+    ENV.APP.LOG_VIEW_LOOKUPS = false;
+
+    ENV.APP.rootElement = '#ember-testing';
+  }
+
+  if (environment === 'production') {
+
+  }
+
+  ENV.auth0 = {
     clientId: AUTH_CONFIG.clientId,
     domain: AUTH_CONFIG.domain,
     callbackUrl: AUTH_CONFIG.callbackUrl,
     audience: AUTH_CONFIG.apiUrl
   }
+
+  return ENV;
+};
 ```
 
 You can declare these variable however you want, just make sure it is in a file that you .gitignore so that once you push it to github, your secret keys will not be exposed to the world.
@@ -321,7 +396,7 @@ You can declare these variable however you want, just make sure it is in a file 
 
 The library `auth0-js` needs to be added to a different file in the project. In your `ember-cli-build.js` you will add this line `app.import('node_modules/auth0-js/build/auth0.js');`
 
-//emberJS-auth/ember-cli-build.js
+//ember-js-auth/ember-cli-build.js
 ```javascript
 'use strict';
 
@@ -338,13 +413,13 @@ module.exports = function(defaults) {
 };
 ```
 
->Do not be alarmed, I know this is not how React or many other frameworks do it. Why not import it in the top of the file? In Ember, some dependies will need to be added to the build so that it can be used across the application. You can find the documentation for that here: https://guides.emberjs.com/v3.1.0/addons-and-dependencies/managing-dependencies/
+>Do not be alarmed, I know this is not how React or many other frameworks do it. Why not import it in the top of the file? In Ember, some dependencies will need to be added to the build so that it can be used across the application. You can find the documentation for that here: https://guides.emberjs.com/v3.1.0/addons-and-dependencies/managing-dependencies/
 
 ## Each Route Needs to Be Declared
 
 In our `app/router.js` file we need to declare what routes we are going to have. We have the standard '/' route but we will need to be able to tell the application what other routes we will be using. So go to your `app/router.js` file and input the information as shown
 
-//emberJS-auth/app/router.js
+//ember-js-auth/app/router.js
 ```javascript
 import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
@@ -369,7 +444,9 @@ We are going to need an all encompassing route. It won't do much except be the r
 ```bash
 ember generate route application
 ```
+It will send a message saying `Overwrite app/templates/application.hbs?`. That is something you will want to say yes to, so simply just type `y` and press enter when it asks again, `Yes, overwrite`.
 
+//ember-js-auth/app/routes/application.js
 ```javascript
 import Route from '@ember/routing/route';
 
@@ -387,9 +464,11 @@ ember generate component app-nav
 
 > Note! When naming components in Ember, you must have a `-` somewhere in the name. That is how Ember knows this file is a component.
 
+That command created the `component/app-nav.js` file but it also automatically created `templates/components/app-nav.hbs`. We will be using that file soon!
+
 Within the file, let's add
 
-//emberJS-auth/app/components/app-nav.js
+//ember-js-auth/app/components/app-nav.js
 ```javascript
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
@@ -415,9 +494,9 @@ export default Component.extend({
 });
 ```
 
-We have the functions from the 'auth' service, `login` and `logout` that will help those buttons do the right thing! In the template folder, we will want to create another folder called `component` and within that, create a file call `app-nav.js`. The code in there will look something like this
+We have the functions from the 'auth' service, `login` and `logout` that will help those buttons do the right thing! Now let’s dive into the other file that was generated, `templates/components/app-nav.hbs`. The code in there will look something like this
 
-//emberJS-auth/app/templates/components/app-nav.hbs
+//ember-js-auth/app/templates/components/app-nav.hbs
 ```javascript
 <nav class="navbar is-danger">
   <div class="navbar-brand">
@@ -461,7 +540,7 @@ ember generate controller application
 
 In there the code should be
 
-//emberJS-auth/app/controllers/application.js
+//ember-js-auth/app/controllers/application.js
 ```javascript
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
@@ -476,9 +555,9 @@ export default Controller.extend({
 });
 ```
 
-Using functions from the auth service, this will allow the authentication to actually fire off. And then to match up with the controller, the application template will have code that will show what the user needs to see.
+Using functions from the auth service, this will allow the authentication to actually fire off. And then to match up with the controller, the application template will have code that will show what the user needs to see. You will see that we are setting the user in the controller so that later on in the template file for application, we will be using it.
 
-//emberJS-auth/app/templates/application.hbs
+//ember-js-auth/app/templates/application.hbs
 ```javascript
 {{app-nav user=user }}
 
@@ -499,7 +578,7 @@ ember generate route callback
 
 The information inside that file
 
-//emberJS-auth/app/routes/callback.js
+//ember-js-auth/app/routes/callback.js
 ```javascript
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
@@ -513,11 +592,6 @@ export default Route.extend({
     auth
       .handleAuthentication() // stores access_token, id_token, expires_at in localStorage
       .then(() => {
-
-        // if (get(this, 'auth.isAuthenticated')) {
-        //   this.transitionTo('dashboard')
-        // }
-
         this.transitionTo('/dashboard');
       });
   },
@@ -541,7 +615,7 @@ The controller will have the logic, the template will have the view of that logi
 
 Your dashboard controller should look like so
 
-//emberJS-auth/app/controllers/dashboard.js
+//ember-js-auth/app/controllers/dashboard.js
 ```javascript
 import Controller from '@ember/controller';
 
@@ -550,15 +624,11 @@ export default Controller.extend({
   init() {
     this._super(...arguments);
 
-
     // banking data
     this.set('balance', this.bankBalance());
   },
   bankBalance() {
-    // get real data from a bank here
-    // this.get('bank').getBankBalance();
-
-    // or spoof it like this
+    // randomly generated bank account balance
     return "$" + Math.floor((Math.random() + 1) * 10000) + ".00";
   }
 });
@@ -566,7 +636,7 @@ export default Controller.extend({
 
 And the template for the dashboard should be something like this.
 
-//emberJS-auth/app/templates/dashboard.hbs
+//ember-js-auth/app/templates/dashboard.hbs
 ```javascript
 <section class="hero is-medium is-primary is-bold is-fullheight has-text-centered">
   <div class="hero-body">
@@ -576,7 +646,6 @@ And the template for the dashboard should be something like this.
       </h1>
       <h2 class="subtitle is-size-3">
         {{balance}}
-        {{model.user}}
       </h2>
     </div>
   </div>
@@ -592,10 +661,11 @@ We will need to also create a dashboard route.
 ```bash
 ember generate route dashboard
 ```
+Here you will get asked again, `Overwrite app/templates/dashboard.hbs?`. This time, say no, so type in `n` and enter when asked, `No, skip`.
 
 There we will put the logic so that if they try and access the dashboard without being authenticated, it will send them back to the home screen with the login button. Can you imagine if the user was able to type in `yoururl.com/dashboard` and see the bank account balance without having to be authenticated first? In this `route/dashboard` file, the user is checked by the application. If they are not authenticated, then they will transition to the base URL. This keeps things safe and sound.
 
-//emberJS-auth/app/routes/dashboard.js
+//ember-js-auth/app/routes/dashboard.js
 ```javascript
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
@@ -608,9 +678,6 @@ export default Route.extend({
     if (!this.auth.isAuthenticated) {
       this.transitionTo('/');
     }
-  },
-  model() {
-    user: this.get('auth').currentUser
   }
 });
 ```
@@ -623,7 +690,13 @@ If you look in your local storage, you will see a key stored in there for the cu
 
 ## The Banking Application
 
-Now that it is all set up, let's use the application. The user will come to the site, and see this navbar.
+To see the application running, simply type in 
+
+```bash
+ember serve
+```
+
+Now that it is running, let's use the application. The user will come to the site, and see this navbar.
 
 ![Imgur](https://i.imgur.com/6wseHTX.png)
 
