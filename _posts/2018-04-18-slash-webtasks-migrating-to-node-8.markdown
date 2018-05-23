@@ -25,6 +25,11 @@ related:
 - 2016-09-14-build-a-serverless-slack-bot-with-webtask
 - 2016-06-28-building-serverless-apps-with-webtask
 ---
+**Update May 23, 2018:** The Webtask.io migration to Node 8 is complete. All webtasks that were not migrated using the tools described below were automatically migrated to the new Node 8 environment.
+
+If you are receiving deprecation errors or having any issues post-migration, please visit the [Extend forum](http://bit.ly/Node4-Deprecated) for instructions on resolving this issue. 
+
+---
 
 Today we've shipped Node 8 support for Slash Webtasks! Slash Webtasks is an amazingly simple way to author custom Slack commands using Webtasks right from within Slack. The app was so popular that over 1300 teams have installed it and authored over 2500 Webtasks that can be called directly using the simple `/wt task_name` interface.
 
