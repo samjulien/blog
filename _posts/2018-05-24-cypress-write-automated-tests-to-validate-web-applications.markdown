@@ -149,11 +149,11 @@ RUN $(npm bin)/cypress run
 
 Refer to this [page](https://docs.cypress.io/guides/guides/continuous-integration.html#) for setting up Cypress on your favorite CI server. 
 
-## Time Travel and Debugging 
+## Time Travel and Debugging
 
 Another cool feature present in the Cypress Test Runner tool is that as you hover through the command log on the left, for each step in the test, you can check the state of the application on the right. You can also click on the pin icon to freeze the runner for that particular step, open the developer console and get insights into the specific web interactions that happened, the selectors used, parameters passed and results.
 
-![time-travel-gif](https://raw.githubusercontent.com/rcdexta/guest-writer/react-cypress/assets/timetravel.gif)
+![Time travel and debugging with Cypress](https://cdn.auth0.com/blog/cypress-tests/time-travel.png)
 
 ## Postmortem analysis with screenshots and videos
 
