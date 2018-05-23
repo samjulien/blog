@@ -236,9 +236,13 @@ After that, you should be able to visit the Vue.js application in your browser b
 
 JWTs are composed of three parts: a header, a payload, and a signature. The header contains information such as the algorithm used while signing the payload and the header (e.g `RS256`) and the payload holds the claims. To learn more about JWTs, [take a look at this reference](https://auth0.com/docs/jwt).
 
-## Creating an Auth0 Resource/API
+## Creating an Auth0 API
 
-Before you can use Auth0 authentication with your application, you first need to create an Auth0 account. If you haven't so yet, <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free account now</a>. After that, head over to the [API section](https://manage.auth0.com/#/apis) of the Auth0 dashboard and click on the *CREATE API* button.
+Before you can use Auth0 authentication with your application, you first need to create an Auth0 account. If you haven't so yet, <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free account now</a>. 
+
+As part of the sign up process, you'll be asked to create a ***Auth0 domain***. For example `django-vue-js.auth0.com`. If you'd like to read more about this, you can checkout our [***learn the basics*** documentation](https://auth0.com/docs/getting-started/the-basics), that has some great info on Auth0 domains and how to use them.
+
+After that, head over to the [API section](https://manage.auth0.com/#/apis) of the Auth0 dashboard and click on the *CREATE API* button.
 
 You'll be presented with a form to fill in your API details: the name, the identifier, and the signing algorithm.
 
