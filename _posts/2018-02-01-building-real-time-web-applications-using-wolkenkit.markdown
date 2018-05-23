@@ -7,9 +7,9 @@ date: 2018-02-01 09:44
 category: Technical Guide, Node.js
 author:
   name: "Golo Roden"
-  url: "goloroden"
+  url: "https://twitter.com/goloroden"
   mail: "golo.roden@thenativeweb.io"
-  avatar: "https://twitter.com/goloroden/profile_image?size=original"
+  avatar: "https://cdn.auth0.com/blog/guest-author/golo-roden.jpg"
 design:
   image: https://cdn.auth0.com/blog/wolkenkit/logo.png
   bg_color: "#2f333b"

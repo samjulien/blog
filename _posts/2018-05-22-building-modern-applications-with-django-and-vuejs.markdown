@@ -9,7 +9,7 @@ author:
   name: "Ahmed Bouchefra"
   url: "https://www.techiediaries.com"
   mail: "techiediaries9@gmail.com"
-  avatar: "https://twitter.com/ahmedbouchefra/profile_image?size=original"
+  avatar: "https://cdn.auth0.com/blog/guest-author/ahmed-bouchefra.jpg"
 design:
   bg_color: "#092e20"
   image: https://cdn.auth0.com/blog/building-modern-applications-with-django-and-vuejs/logo.png

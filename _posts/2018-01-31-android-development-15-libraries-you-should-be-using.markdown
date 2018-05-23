@@ -9,7 +9,7 @@ author:
   name: "Idorenyin Obong"
   url: "kingidee"
   mail: "idee4ril@gmail.com"
-  avatar: "https://twitter.com/kingidee/profile_image?size=original"
+  avatar: "https://cdn.auth0.com/blog/guest-author/idorenyin-obong.jpg"
 design:
   bg_color: "#2C4721"
   image: "https://cdn.auth0.com/blog/android-libraries/logo.png"
