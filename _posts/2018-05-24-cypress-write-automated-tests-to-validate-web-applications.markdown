@@ -47,7 +47,7 @@ Also, the feedback cycle for tests in each of the layers can vary. The unit test
 
 User Interface (UI) tests, or UI tests, are tests that use the system just like a real user would interact with the application on the browser. They use scripts to mimic users' actions and they basically interact with the app just like a regular user would. Cypress is one of the many web automation tools available to help you write effective user interface tests.
 
-## How is Cypress different as a UI Testing Tool?
+## How Is Cypress Different as a Ui Testing Tool?
 
 Most browser-based automation tools are [selenium-based](https://www.seleniumhq.org/), which works by implementing a web driver that remotely executes commands on the browser through the network. Whereas, Cypress runs in the same run-loop as your parent application. Also, Cypress tests are only written in JavaScript. While you can compile down to JavaScript from any other language, ultimately the test code is executed inside the browser itself.
 
