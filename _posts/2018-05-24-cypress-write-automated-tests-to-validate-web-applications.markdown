@@ -130,11 +130,13 @@ One very helpful feature on the browser view is the DOM selector that is shown h
 
 ## Setting up Continuous Integration
 
-The whole point of writing and maintaining browser-based automation tests is to test the application for any flows that break and give early feedback to the team. You can set up the suite of cypress tests to run on your continuous integration server to run on every check-in or as a nightly build. We will quickly walk through the steps to set up the build and we will keep it agnostic of any particular CI tool.
+The whole point of writing and maintaining browser-based automation tests is to test the application for any flows that break and give early feedback to the team. You can set up the suite of Cypress tests to run on your continuous integration (CI) server to run on every check-in or as a nightly build.
 
-Most CI build agents are servers and not workstations, so we cannot expect them to have a GUI or X Window system to launch a real browser UI. So, it is a common practice to run web automation tests in [headless mode](https://en.wikipedia.org/wiki/Headless_browser). To keep it simple, we would be using a virtual GUI buffer like [xvfb](http://elementalselenium.com/tips/38-headless) to fire a web browser virtually, launch the target application and run cypress tests against it.
+In this section, you will go through the steps needed to set up the build and to any particular CI tool.
 
-Assuming, you are setting up a docker agent on the CI server to run the tests, this is the specification for the`Dockerfile`
+Most CI build agents are servers and not workstations, so you cannot expect them to have a GUI or X Window system to launch a real browser UI. So, it is a common practice to run web automation tests in [headless mode](https://en.wikipedia.org/wiki/Headless_browser). To keep it simple, you will use a virtual GUI buffer like [`xvfb`](http://elementalselenium.com/tips/38-headless) to fire a web browser virtually, launch the target application, and run Cypress tests against it.
+
+Assuming, you are setting up a Docker agent on the CI server to run the tests, this is the specification for the `Dockerfile`:
 
 ```dockerfile
 FROM cypress/base
