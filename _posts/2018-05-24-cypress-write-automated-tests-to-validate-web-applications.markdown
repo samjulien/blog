@@ -28,7 +28,7 @@ related:
 
 **TL;DR:** This post is an introduction on using [Cypress](https://www.cypress.io/) for writing browser-based automation tests for web applications. This tutorial uses a React application as an example to illustrate the testing framework, but you can apply the learnings to write integration tests for any web application.
 
-The source code for the React application and the corresponding Cypress tests are available in [this repository](https://github.com/auth0-blog/cypress-todo-example). The `master` branch contains the code needed to start this tutorial and the `cypress` branch contains the final setup with all Cypress tests.
+The source code for the React application and the corresponding Cypress tests are available in [this repository](https://github.com/auth0-blog/cypress-todo-example). The `master` branch contains the code needed to start this tutorial and [the `cypress-tests` branch](https://github.com/auth0-blog/cypress-todo-example/tree/cypress-tests) contains the final setup with all Cypress tests.
 
 ## The Test Pyramid and Importance of E2E tests
 
