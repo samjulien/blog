@@ -49,7 +49,9 @@ User Interface (UI) tests, or UI tests, are tests that use the system just like 
 
 ## How is Cypress different as a UI Testing Tool?
 
-Most browser-based automation tools are [selenium-based](https://www.seleniumhq.org/), which works by implementing a web driver that remotely executes commands on the browser through the network. Whereas, Cypress runs in the same run-loop as your parent application. Also, Cypress tests are only written in JavaScript. While you can compile down to JavaScript from any other language, ultimately the test code is executed inside the browser itself. These architectural improvements unlock the ability to run tests much faster in browser mode as well as headless mode. You can read more about the internal details [here](https://www.cypress.io/how-it-works/). As you start writing more Cypress tests and build the pipeline with a test suite, you will see that many aspects of writing automation tests have improved with this library. 
+Most browser-based automation tools are [selenium-based](https://www.seleniumhq.org/), which works by implementing a web driver that remotely executes commands on the browser through the network. Whereas, Cypress runs in the same run-loop as your parent application. Also, Cypress tests are only written in JavaScript. While you can compile down to JavaScript from any other language, ultimately the test code is executed inside the browser itself.
+
+These architectural improvements unlock the ability to run tests much faster in browser mode as well as headless mode. You can read more about [the internal details of Cypress here](https://www.cypress.io/how-it-works/). As you start writing more Cypress tests and build the pipeline with a test suite, you will see that many aspects of writing automation tests have improved with this library. 
 
 ## Writing your first Cypress test
 
