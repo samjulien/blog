@@ -30,6 +30,8 @@ related:
 
 The source code for the React application and the corresponding Cypress tests are available in [this repository](https://github.com/auth0-blog/cypress-todo-example). The `master` branch contains the code needed to start this tutorial and [the `cypress-tests` branch](https://github.com/auth0-blog/cypress-todo-example/tree/cypress-tests) contains the final setup with all Cypress tests.
 
+{% include tweet_quote.html quote_text="Learn how to use Cypress to write end-to-end tests that help you validate your web application automatically." %}
+
 ## The Test Pyramid and Importance of E2E tests
 
 A typical test suite for your application can generally consist of three layers (you could have many more depending on the nature of the application):
@@ -151,11 +153,15 @@ RUN $(npm bin)/cypress run
 
 Refer to this [page](https://docs.cypress.io/guides/guides/continuous-integration.html#) for setting up Cypress on your favorite CI server. 
 
+{% include tweet_quote.html quote_text="Cypress can be easily integrated into continuous integration tools to validate your web apps on each development iteration." %}
+
 ## Time Travel and Debugging with Cypress
 
 Another cool feature present in the Cypress Test Runner tool is that as you hover through the command log on the left, for each step in the test, you can check the state of the application on the right. You can also click on the pin icon to freeze the runner for that particular step, open the developer console and get insights into the specific web interactions that happened, the selectors used, parameters passed and results.
 
 ![Time travel and debugging with Cypress](https://cdn.auth0.com/blog/cypress-tests/time-travel.png)
+
+{% include tweet_quote.html quote_text="Testing web applications with Cypress is awesome because you even get access to features like time travel." %}
 
 ## Postmortem Analysis on Cypress
 
