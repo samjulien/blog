@@ -3,7 +3,7 @@ layout: post
 title: "3 Tools to Improve Your Customer Intelligence"
 description: "Unlock more value with Social Login, Progressive Profiling, and Profile Enrichment with Auth0."
 longdescription: "Auth0 allows you to unlock more value with Social Login, Progressive Profiling, and Profile Enrichment. These can give you customer intelligence and allow you to innovate like never before. Closely observing user behavior can bring to light new ideas for your business."
-date: 2018-05-04 13:05
+date: 2018-05-25 13:05
 category: Growth, Identity, Analytics
 is_non-tech: true
 author:
@@ -12,8 +12,8 @@ author:
   avatar: https://avatars3.githubusercontent.com/u/604869?v=3&s=200
   mail: diego.poza@auth0.com
 design:
-  bg_color: "#222228"
-  image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
+  bg_color: "#10316f"
+  image: https://cdn.auth0.com/blog/three-tools-to-improve-your-customer-intelligence/logo.png
 tags:
 - customer-intelligence
 - social-login
