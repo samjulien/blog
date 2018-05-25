@@ -14,29 +14,29 @@ name: "Sarah Jorgenson"
 
 Quickly learn how to build ambitious EmberJS 3 apps with authentication and feel comfortable doing it.
 
-**TL;DR:** Let’s dive into the world of **EmberJS**, a framework built so that we all can be more productive as developers. Easy to jump in to and easy to get started with, EmberJS is a great framework to know and understand. In this tutorial, we will be building an application using EmberJS 3 and then add some **trusty authentication** to it. You can find the repo [here](https://github.com/SarahJay55/ember-js-auth) to get the code from this tutorial. 
+**TL;DR:** Let’s dive into the world of **EmberJS**, a framework built so that we all can be more productive as developers. Easy to jump in to and easy to get started with, EmberJS is a great framework to know and understand. In this tutorial, we will be building an application using EmberJS 3 and then add some **trusty authentication** to it. You can find the [GitHub repo here](https://github.com/SarahJay55/ember-js-auth) to get the code from this tutorial. 
 
 ## EmberJS
 
-But which framework should I use? Which one would be best for me and my project? We get it, there are tons to choose from.  Let’s take some time and let’s learn more about the powerful framework we like to call, EmberJS.  
+But which framework should I use? Which one would be best for me and my project? We get it, there are tons to choose from.  Let’s take some time and let’s learn more about the powerful framework we like to call EmberJS.  
 
 We have the new EmberJS 3.0 that was released February 14, 2018. There were no functionality concepts added, instead the Ember team honed in on making the framework cleaner and more focused.  You will not have to deal with long-deprecated APIs anymore but you will see support for those legacy platforms. If you are already familiar with EmberJS 2.0, EmberJS 3.0 should be just fine.
 
 **But Who Should Use It?**
 
-Are you looking for a everything-included type framework? One that you do not have to be plugging in multiple libraries to make things work? Ember might be for you then. It may save lots of time so you are not looking around, trying to make things fit just right. Let EmberJS do that work for you, you just start building those beautiful apps!
+Are you looking for an all-inclusive style framework? One that you do not have to be plugging in multiple libraries to make things work? Ember might be for you then. It may save lots of time so you are not looking around, trying to make things fit just right. Let EmberJS do that work for you, you just start building those beautiful apps!
 
 ## The Five Key Concepts
 
-Who here has worked with AngularJS? ReactJS? VueJS? Well then, this might look very familiar to you! EmberJS will be easy to understand and you’ll be making apps in no time! Do these things look familiar?
+Who here has worked with Angular? AngularJS? React? Vue? Well then, this might look very familiar to you! EmberJS will be easy to understand and you’ll be making apps in no time! Do these things look familiar?
 
-  1. Routes - Being URL based, the route allows for application browsing based on the URL.
+  1. Routes - Being URL based like many modern frameworks, this allows for easy navigation whether the user is visiting the base URL for the first time, or clicking a link on the page to be routed to another page.
   2. Models - Objects that equate the data that your application shows in the user's view.
-  3. Templates - Using Handlebar Templating, it contains the HTML for the application.
-  4. Components - A template that defines how it will look and a JavaScript source file that defines how it will behave.
-  5. Controllers - Behaves like a specialized type of Component that is rendered by the router when entering a Route.
+  3. Templates - Using Handlebar Templating (learn more about Handlebar Templates [here](https://handlebarsjs.com/)), it contains the HTML for the application.
+  4. Components - Consisting of a JavaScript file and Handlebar Templating, components capture the data into reusable information for the application.
+  5. Controllers - Behaving like a specialized type of Component that is rendered by the router when entering a Route.
 
-These are the five key concepts when using EmberJS. It also provides many other things, but knowing and understanding these main five, you will be off to a good start.  
+These are the five key concepts when using EmberJS. Ember also provides many other things, but knowing and understanding these main five, you will be off to a good start.  
 
 ## Ember CLI
 
@@ -44,24 +44,26 @@ Now in EmberJS, whenever you want to generate a new file, all you need to do is 
 
 `ember generate (what you want to do) and (what you want to call it)` 
 
-For example, say I want to create a new route, I would type in to my command line, 
+For example, say I want to create a new route, I would type into my command line, 
 
 ```bash
 ember generate route login
 ```
 
-That would create a routing file named `login`. Within your `app` file, you’ll see in the route folder, a new file named `login`. As we create this app, you will see those commands, EmberJS makes it easy for us to organize and create files. You will need to generate each file you need. But if you generate a component, Ember will automatically generate a component in the template file as well. If you generate a route, then Ember will automatically generate a template for that route. It is convenient for file building but be aware of it, you will not want to be adding extra files that Ember has already generated for you.
+That would create a routing file named `login`. Within your `app` file, you will see in the route folder, a new file named `login`. Ember's CLI does a lot behind the scenes. As you generate new files, pay attention to the other files that Ember will automatically generate. 
+
+
 
 ## Let’s Build!
 
-We are going to be building an application that uses authentication and authorization to jump into a mock bank account. Numbers won’t be real, don’t worry, we’ll use some JavaScript to generate a random number. And we need some strong authorization to keep our bank account safe.  
+We are going to be building an application that uses authentication to jump into a mock bank account. Numbers won’t be real, don’t worry, we’ll use some JavaScript to generate a random number. And we need some strong authentication to keep our bank account safe.  
 
 What will our user see?
 
-1. User sees a nav-bar with a log-in button
+1. User sees a nav-bar with a login button
 2. User logs in with their credentials via Auth0
 3. User sees their name in the nav-bar and randomly generated bank account balance (if only we could keep the balances that randomly generate to 1,000,000).
-4. Log-out button next to the name in the nav-bar
+4. Logout button next to the name in the nav-bar
 
 ## EmberCLI and Setup
 
@@ -71,7 +73,7 @@ The ember-cli is an awesome tool that allows you to do a lot of app building wit
 npm install -g ember-cli
 ```
 
-Once that is done, let’s get a EmberJS app started! We will be making a login feature that takes us to a faux bank account. To get this going all you have to do is navigate to the folder you want this project in and type:
+Once that is done, let’s get an EmberJS app started! We will be making a login feature that takes us to a faux bank account. To get this going all you have to do is navigate to the folder you want this project in and type:
 
 ```bash
 ember new ember-js-auth
@@ -91,7 +93,7 @@ ember serve
 
 to get the app started up in your browser. You can find it on http://localhost:4200 if it does not pop up right away. Once you see this home page, you are ready to go:
 
-![Imgur](https://i.imgur.com/y48FR0N.png)
+![Ember Welcome Page](https://i.imgur.com/y48FR0N.png)
 
 Your EmberJS application is ready to use!
 
@@ -99,10 +101,10 @@ Your EmberJS application is ready to use!
 
 For styling, we will be using [Bulma](https://bulma.io/) styling in today's app. Insert the bulma link tag into our index.html so we can use that styling throughout our application.
 
-//ember-js-auth/app/index.html
+Open up your index.html file and insert the bulma link into the head tag as shown:
 ```html
+<!-- ember-js-auth/app/index.html -->
 <!DOCTYPE html>
-<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -118,25 +120,16 @@ For styling, we will be using [Bulma](https://bulma.io/) styling in today's app.
 
     {{content-for "head-footer"}}
   </head>
-  <body>
-    {{content-for "body"}}
-
-    <script src="{{rootURL}}assets/vendor.js"></script>
-    <script src="{{rootURL}}assets/ember-js-auth.js"></script>
-
-    {{content-for "body-footer"}}
-  </body>
-</html>
 ```
 
 
 ## Setting Up Auth0
 
-Let's step away from our code for a second and go to Auth0.com where we will login. Once logged in, you will want to create a new single-page application so that we can have access to some very important information.  
+Let's step away from our code for a second and go to [Auth0.com](https://auth0.com/) where we will log in. Once logged in, you will want to create a new single-page application so that we can have access to some very important information.  
 
-![Imgur](https://i.imgur.com/vWKlddm.png)
+![New Application Button](https://i.imgur.com/ByUiHbF.png)
 
-![Imgur](https://i.imgur.com/6jxobLc.png)
+![Create Application Page](https://i.imgur.com/6jxobLc.png)
 
 We will be generating a couple of things that we will need in our application under Settings. We will not be needing them right this second but soon. Keep those two things close by! (aka, don't close the tab) :)
 
@@ -146,7 +139,7 @@ We will be generating a couple of things that we will need in our application un
 
 > Note! Now that you have your Auth0 Application, go to the Settings tab and add http://localhost:4200/callback to the Allowed Callback URLs and hit the Save button. Then, leave the Settings tab open as you will need to copy some properties from it soon.
 
-![Imgur](https://i.imgur.com/1y32iKn.png)
+![Allowed Callback URLs](https://i.imgur.com/1y32iKn.png)
 
 ## Auth0 Install
 
@@ -178,8 +171,11 @@ ember generate service auth
 
 Here, in this newly created file, we will insert all of our logic for getting a session, logging in, logging out, and everything associated with authentication. For example, let's dive into the `getSession()`. In here, it will grab all the necessary authentication pieces that are required for a successful login. We will need the `access_token`, the `id_token`, and finally the `expires_at` value. With all three of these, they application will know that they are good to move on to the protected pages in the app.
 
-//ember-js-auth/app/services/auth.js
+Open up the `app/services/auth.js` file and insert the following information:
+
 ```javascript
+// ember-js-auth/app/services/auth.js
+
 import Service from '@ember/service';
 import { computed, get } from '@ember/object';
 import config from 'ember-js-auth/config/environment';
@@ -326,10 +322,10 @@ module.exports = {
 }
 ```
 
-Then in the `config/environment.js` file, you can call for those variables. Like so
+Then in the `config/environment.js` file, you can call for those variables. Like shown here:
 
-//ember-js-auth/config/environment.js
 ```javascript
+//ember-js-auth/config/environment.js
 const AUTH_CONFIG = require('./auth0-variables');
 
 module.exports = function (environment) {
@@ -396,8 +392,9 @@ You can declare these variable however you want, just make sure it is in a file 
 
 The library `auth0-js` needs to be added to a different file in the project. In your `ember-cli-build.js` you will add this line `app.import('node_modules/auth0-js/build/auth0.js');`
 
-//ember-js-auth/ember-cli-build.js
+We will need to open our `ember-cli-build.js` file and add in the `app.import` line:
 ```javascript
+//ember-js-auth/ember-cli-build.js
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
@@ -417,10 +414,10 @@ module.exports = function(defaults) {
 
 ## Each Route Needs to Be Declared
 
-In our `app/router.js` file we need to declare what routes we are going to have. We have the standard '/' route but we will need to be able to tell the application what other routes we will be using. So go to your `app/router.js` file and input the information as shown
+In our `app/router.js` file we need to declare what routes we are going to have. We have the standard '/' route but we will need to be able to tell the application what other routes we will be using. So go to your `app/router.js` file and input the information as shown:
 
-//ember-js-auth/app/router.js
 ```javascript
+//ember-js-auth/app/router.js
 import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
 
@@ -444,10 +441,13 @@ We are going to need an all encompassing route. It won't do much except be the r
 ```bash
 ember generate route application
 ```
+
 It will send a message saying `Overwrite app/templates/application.hbs?`. That is something you will want to say yes to, so simply just type `y` and press enter when it asks again, `Yes, overwrite`.
 
-//ember-js-auth/app/routes/application.js
+In that newly generated file, you will see:
+
 ```javascript
+//ember-js-auth/app/routes/application.js
 import Route from '@ember/routing/route';
 
 export default Route.extend({
@@ -466,10 +466,10 @@ ember generate component app-nav
 
 That command created the `component/app-nav.js` file but it also automatically created `templates/components/app-nav.hbs`. We will be using that file soon!
 
-Within the file, let's add
+Within the file, let's add:
 
-//ember-js-auth/app/components/app-nav.js
 ```javascript
+//ember-js-auth/app/components/app-nav.js
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 
@@ -494,10 +494,10 @@ export default Component.extend({
 });
 ```
 
-We have the functions from the 'auth' service, `login` and `logout` that will help those buttons do the right thing! Now let’s dive into the other file that was generated, `templates/components/app-nav.hbs`. The code in there will look something like this
+We have the functions from the 'auth' service, `login` and `logout` that will help those buttons do the right thing! Now let’s dive into the other file that was generated, `templates/components/app-nav.hbs`. The code in there will look like this:
 
-//ember-js-auth/app/templates/components/app-nav.hbs
-```javascript
+```html
+<!-- ember-js-auth/app/templates/components/app-nav.hbs -->
 <nav class="navbar is-danger">
   <div class="navbar-brand">
     <a class="navbar-item" href="/dashboard">
@@ -538,10 +538,10 @@ We will want to add another controller titled `application`. The application con
 ember generate controller application
 ```
 
-In there the code should be
+In there the code should be:
 
-//ember-js-auth/app/controllers/application.js
 ```javascript
+//ember-js-auth/app/controllers/application.js
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 
@@ -557,8 +557,10 @@ export default Controller.extend({
 
 Using functions from the auth service, this will allow the authentication to actually fire off. And then to match up with the controller, the application template will have code that will show what the user needs to see. You will see that we are setting the user in the controller so that later on in the template file for application, we will be using it.
 
-//ember-js-auth/app/templates/application.hbs
-```javascript
+Open up the `app/templates/application.hbs` file and add the following:
+
+```html
+<!-- ember-js-auth/app/templates/application.hbs -->
 {{app-nav user=user }}
 
 <main>
@@ -576,10 +578,10 @@ Create the file
 ember generate route callback
 ```
 
-The information inside that file
+The information inside that file should be:
 
-//ember-js-auth/app/routes/callback.js
 ```javascript
+//ember-js-auth/app/routes/callback.js
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { get } from '@ember/object';
@@ -613,14 +615,13 @@ ember generate template dashboard
 
 The controller will have the logic, the template will have the view of that logic for the user.
 
-Your dashboard controller should look like so
+Your dashboard controller should look like so:
 
-//ember-js-auth/app/controllers/dashboard.js
 ```javascript
+//ember-js-auth/app/controllers/dashboard.js
 import Controller from '@ember/controller';
 
 export default Controller.extend({
-  // bank: service(), // get fake data
   init() {
     this._super(...arguments);
 
@@ -634,10 +635,10 @@ export default Controller.extend({
 });
 ```
 
-And the template for the dashboard should be something like this.
+And the template for the dashboard should be something like this:
 
-//ember-js-auth/app/templates/dashboard.hbs
-```javascript
+```html
+<!-- ember-js-auth/app/templates/dashboard.hbs -->
 <section class="hero is-medium is-primary is-bold is-fullheight has-text-centered">
   <div class="hero-body">
     <div class="container">
@@ -665,8 +666,10 @@ Here you will get asked again, `Overwrite app/templates/dashboard.hbs?`. This ti
 
 There we will put the logic so that if they try and access the dashboard without being authenticated, it will send them back to the home screen with the login button. Can you imagine if the user was able to type in `yoururl.com/dashboard` and see the bank account balance without having to be authenticated first? In this `route/dashboard` file, the user is checked by the application. If they are not authenticated, then they will transition to the base URL. This keeps things safe and sound.
 
-//ember-js-auth/app/routes/dashboard.js
+The information in the `app/routes/dashboard.js` file will look like this:
+
 ```javascript
+//ember-js-auth/app/routes/dashboard.js
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
@@ -698,15 +701,15 @@ ember serve
 
 Now that it is running, let's use the application. The user will come to the site, and see this navbar.
 
-![Imgur](https://i.imgur.com/6wseHTX.png)
+![Nav Bar](https://i.imgur.com/6wseHTX.png)
 
 Once they click on `Login`, they will get redirected to the Auth0 modal.
 
-![Imgur](https://i.imgur.com/1ErPfYG.png?1)
+![Auth0 Sign In Modal](https://i.imgur.com/1ErPfYG.png?1)
 
 If authentication goes through, they will be redirected to the dashboard showing them their name, a `Logout` button, and a randomly generated bank account balance. Once they hit logout, they will loose their authentication and be redirected back to the login screen.
 
-![Imgur](https://i.imgur.com/rH2kmO5.png)
+![Dashboard Page](https://i.imgur.com/rH2kmO5.png)
 
 
 ## Conclusion 
