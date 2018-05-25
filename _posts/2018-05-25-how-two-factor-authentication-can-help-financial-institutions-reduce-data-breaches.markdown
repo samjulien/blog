@@ -15,12 +15,12 @@ design:
   bg_color: "#222228"
   image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
 tags:
-- 2fa
-- two-factor
-- security
-- growth
-- finance
-- fintech
+  - 2fa
+  - two-factor
+  - security
+  - growth
+  - finance
+  - fintech
 related:
   - 2018-03-27-strong-identity-management-system-eases-transition-to-hybrid-cloud
   - 2018-03-09-3-reasons-your-data-integration-plan-is-important
