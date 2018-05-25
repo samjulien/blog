@@ -84,6 +84,8 @@ It can be difficult for a user without 2FA knowledge to know which option to cho
 
 For financial firms looking to gain customer trust, making the 2FA setup simple (or figuring out a way to integrate it into their app's UX in a seamless way) will go a long way toward distinguishing themselves from the pack. Customers are particularly looking for a high level of security with their financial information. If you can clearly communicate your enhanced strategy, you will gain a competitive advantage.
 
+{% include tweet_quote.html quote_text="Customer happiness and high engagement are the biggest determinants of its success." %}
+
 ### Discourage Password Use
 
 One way to help users understand the importance of 2FA is to discourage the use of passwords alone. Passwords are historically vulnerable due to human error (we're often lazy about re-creating lengthy, secure, and unique passwords and instead recycle the same or iterations of the same password for the majority of accounts) and the ease with which hackers can access this first level of authentication. Explaining that breaches of personal information happen daily — due to phishing and additional criminal tactics that get the user to unknowingly reveal their password — can prompt your customers to consider an alternative. While a [password manager](https://www.pcmag.com/article2/0,2817,2407168,00.asp) is one option, 2FA brings another dimension to the security game altogether. If one or multiple passwords are compromised, a hacker still cannot access the account without acquiring the second factor.
@@ -113,4 +115,4 @@ Whichever authenticator tool you offer your users it should reflect your brand a
 
 Figuring out how to integrate 2FA into your consumer financial apps in ways that will make your customers opt-in and enjoy the process will give them peace of mind, help ensure your firm is [compliant](https://auth0.com/gdpr), and even allow you a competitive advantage in the race to gain user support and trust.
 
-{% include tweet_quote.html quote_text="Customer happiness and high engagement are the biggest determinants of its success." %}
+{% include asides/about-auth0.markdown %}
