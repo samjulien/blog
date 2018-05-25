@@ -2,26 +2,31 @@
 layout: post
 title: How the Right IAM Tools Will Help Insurance Teams Make the Shift to Digital
 description: "To stand out from your peers, create an experience that customers ENJOY and trust."
-longdescription: <A LONG DESCRIPTION OF THE POST BETWEEN 230 AND 320 CHARACTERS>
+longdescription: "Insurers know that digital transformation is coming. To stand out from your peers, create an experience that customers ENJOY and trust."
 date: 2018-05-25 17:47
-category: <FROM HERE: https://docs.google.com/spreadsheets/d/1e_RKzi8kVwzqPG8si8kyDOWPiBk9tI-XNGh0KgRIF7Q>
-press_release: <true|false (FOR FALSE YOU COULD ALSO REMOVE THIS LINE)>
-is_non-tech: <true|false (FOR FALSE YOU COULD ALSO REMOVE THIS LINE)>
+category: Growth, Security
+is_non-tech: true
 author:
-  name: <YOUR NAME>
-  url: <YOUR URL>
-  mail: <YOUR MAIL>
-  avatar: <LINK TO PROFILE PIC>
+  name: Martin Gontovnikas
+  url: http://twitter.com/mgonto
+  mail: gonto@auth0.com
+  avatar: https://www.gravatar.com/avatar/df6c864847fba9687d962cb80b482764??s=60
 design:
-  bg_color: <A HEX BACKGROUND COLOR>
-  image: <A PATH TO A 200x200 IMAGE>
+  bg_color: "#222228"
+  image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
 tags:
-- foo
+  - digital-transformation
+  - iam
+  - insurance
 related:
-- <ADD SOME RELATED POSTS FROM AUTH0'S BLOG>
+  - 2018-03-27-strong-identity-management-system-eases-transition-to-hybrid-cloud
+  - 2018-03-09-3-reasons-your-data-integration-plan-is-important
+  - 2018-05-21-digital-success-through-customer-identity-and-access-management
 ---
 
 Insurers know that implementing digital changes have the potential to benefit them long term. A recent [McKinsey study](https://www.mckinsey.com/business-functions/digital-mckinsey/our-insights/making-digital-strategy-a-reality-in-insurance) found that insurers that digitized their processes eliminated 30 to 50 percent of the human service costs. The top quartile of those surveyed achieved 2X the growth of their peers.
+
+{% include tweet_quote.html quote_text="Insurers know that digital transformation is coming. To stand out from your peers, create an experience that customers ENJOY and trust." %}
 
 But specific obstacles in the industry have stalled progress. First, the majority of insurers don't have the in-house technical expertise and equipment to make sweeping changes without support. In addition, many are concerned, particularly in an era of [increased scrutiny around customer data](https://auth0.com/blog/cambridge-analytica-and-facebook/), that a system overhaul could threaten measures they've already taken to protect sensitive information.
 
@@ -65,6 +70,8 @@ For administrators, certain features allow for a bird's-eye view of all users in
 ![Organizing customer data in a single location allows for better reporting and analytics](https://cdn.auth0.com/blog/how-the-right-identity-and-access-management-tools-will-help-insurance-teams-make-the-shift-to-digital/organizing-customer-data-in-a-single-location-allows-for-better-reporting-and-analytics.png)
 
 Organizing customer data in a single location allows for better tracking, heightened security, and the possibility of gaining sharper insights on customer histories and current behavior. This approach will make your company more efficient at building risk profiles, communicating with customers in a more personalized way (particularly if and when they are in distress and need to make a claim), and understanding your target audience at a granular level.
+
+{% include tweet_quote.html quote_text="Organizing customer data in a single location allows for better tracking, heightened security, and the possibility of gaining sharper insights." %}
 
 ## Outsourcing IAM to the Experts
 
