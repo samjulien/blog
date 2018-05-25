@@ -87,7 +87,7 @@ navigator.credentials.create({
     challenge: base64url.decode('<%= challenge %>'),
     // relying party
     rp: {      
-      name: 'login0' // sample relying party
+      name: 'Awesome Corp' // sample relying party
     },
     user: {
       id: base64url.decode('<%= id %>'),
@@ -105,7 +105,7 @@ navigator.credentials.create({
 }).then((res) => {
   var json = publicKeyCredentialToJSON(res);
   // Send data to relying party's servers
-  post('/mf', { 
+  post('/webauthn/register', { 
     state: '<%= state %>',
     provider: '<%= provider %>',
     res: JSON.stringify(json) 
@@ -130,7 +130,7 @@ return navigator.credentials.get({
 }).then((res) => {
   var json = publicKeyCredentialToJSON(res);
   // Send data to relying party's servers
-  post('/mf', { 
+  post('/webauthn/authenticate', { 
     state: '<%= state %>',
     provider: '<%= provider %>', 
     res: JSON.stringify(json) 
@@ -147,7 +147,7 @@ But the cool thing about all of this is that you don't need to care about any of
 ## A Working Web Authentication Implementation at Auth0
 One of the cool things about our architecture is that changes in the login system can be integrated with little or no changes to client code. In other words, once our implementation of Web Authentication is released, enabling it for your apps will be a matter of making a few clicks in the [Auth0 Dashboard]().
 
-This is a proof-of-concept of how Web Authentication as a second factor may work in Auth0 in the near future:
+This is a proof-of-concept of how Web Authentication as a second factor will work in Auth0:
 
 VIDEO/GIF HERE
 <video></video>
