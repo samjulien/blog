@@ -63,9 +63,9 @@ Figuring out what to do to bring your company into compliance has never been mor
 
 Since California is a hotbed of startups, many young and medium-sized teams are flexible by nature. In contrast to industries like insurance, where many teams have processes set in stone over decades, many tech companies are more nimble and willing to adapt to changing circumstances. Already, companies are sending out updated privacy-policy emails to their customers:
 
-![Everlane changes its privacy policy making it easier to understand](/Users/olaf/Downloads/upload gdpr--everlane-changes-privacy-policy-making-it-easier-to-understand.png)
+![Everlane changes its privacy policy making it easier to understand](https://cdn.auth0.com/blog/brace-yourself-the-gdpr-ripple-effect-in-california/everlane-changes-privacy-policy-making-it-easier-to-understand.png)
 
-![Houzz updates its policies to make them more transparent](/Users/olaf/Downloads/upload gdpr--houzz-updates-policies-to-make-them-more-transparent.png)
+![Houzz updates its policies to make them more transparent](https://cdn.auth0.com/blog/brace-yourself-the-gdpr-ripple-effect-in-california/houzz-updates-policies-to-make-them-more-transparent.png)
 
 With the push to comply with the GDPR, and in anticipation of similar regulations like the CCPA, teams are quickly taking action. In addition to email, some best practices are arising on the back end, including [identity and access tools](https://auth0.com/b2e-identity-management-for-employees), specialized managed service providers, and enhanced anomaly protections for suspicious user behavior.
 
@@ -75,7 +75,7 @@ With the push to comply with the GDPR, and in anticipation of similar regulation
 
 Many companies are taking advantage of [anomaly detection](https://auth0.com/docs/anomaly-detection) tools to ensure that the users accessing consumer information are (1) who they say they are and (2) behaving appropriately. With large companies giving access to a wide swath of users both internally (IT staff, marketers, managers) and externally (third-party contractors or consultants), it can be difficult to figure out who is logging in when and from where, and who is using what device(s). Implementing identity access and management tools that incorporate anomaly detection can be essential for avoiding fraudulent practices.
 
-![Auth0 has anomaly detection to protect consumer information](/Users/olaf/Downloads/upload gdpr--auth0-has-anomaly-detection-to-protect-consumer-information.png)
+![Auth0 has anomaly detection to protect consumer information](https://cdn.auth0.com/blog/brace-yourself-the-gdpr-ripple-effect-in-california/auth0-has-anomaly-detection-to-protect-consumer-information.png)
 
 With Auth0, anomaly detection is customizable. Once enabled, you can set rules that alert administrators to any suspicious activity and block login attempts by specific users if, say, they are working with data they do not have authorization to use or they fail to enter the system with the correct password.
 
