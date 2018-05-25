@@ -26,6 +26,12 @@ related:
 - 2016-06-28-building-serverless-apps-with-webtask
 ---
 
+**Update May 23, 2018:** The Webtask.io migration to Node 8 is complete. All webtasks that were not migrated using the tools described below were automatically migrated to the new Node 8 environment.
+
+If you are receiving deprecation errors or having any issues post-migration, please visit the [Extend forum](http://bit.ly/Node4-Deprecated) for instructions on resolving this issue. 
+
+---
+
 **TL;DR:** Webtask.io is migrating to Node 8 on **May 15, 2018**! Learn how to easily migrate your projects with our new tools.
 
 ---
