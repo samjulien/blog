@@ -98,13 +98,13 @@ Passwords are inherently risky, and most cybersecurity experts recommend using a
 
 What is 2FA? The concept adds an additional step to the authentication process, requiring a one-time token that only the user has access to or a biometric, like a fingerprint, that is unique to the user.
 
-![Auth0's Guardian app is a popular choice for two-factor authentication](/Users/olaf/Downloads/upload travel--auth0-guardian-is-a-popular-choice-for-2fa.png)
+![Auth0's Guardian app is a popular choice for two-factor authentication](https://cdn.auth0.com/blog/the-best-and-worst-travel-sites-at-keeping-your-info-safe/auth0-guardian-is-a-popular-choice-for-2fa.png)
 
 To implement 2FA in your apps, you can rely on popular choices like the [Auth0 Guardian app](https://auth0.com/learn/two-factor-authentication/), Google Authenticator, or Duo Security. By default, 2FA is requested once per month; however, with most tools you can define your own rules to trigger 2FA (e.g., weekly).
 
 To enable 2FA with Auth0's Guardian app, simply navigate to the Multifactor Auth section in the Auth0 management dashboard.
 
-![Easily enable Auth0 Guardian from the Guardian dashboard](/Users/olaf/Downloads/upload travel--easily-enable-auth0-guardian-from-the-guardian-dashboard.png)
+![Easily enable Auth0 Guardian from the Guardian dashboard](https://cdn.auth0.com/blog/the-best-and-worst-travel-sites-at-keeping-your-info-safe/easily-enable-auth0-guardian-from-the-guardian-dashboard.png)
 
 From there, you can choose how users will receive their 2FA codes (e.g., push notifications, SMS, or both). Once you configure which of your Auth0 applications will use 2FA, users will immediately be prompted to set up 2FA before gaining access.
 
