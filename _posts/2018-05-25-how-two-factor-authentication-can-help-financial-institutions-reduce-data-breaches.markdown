@@ -50,7 +50,7 @@ A time-based one-time password algorithm or TOTP generates one short-lived (~30 
 The [Microsoft Authenticator](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/end-user/microsoft-authenticator-app-how-to) is a common option that generates a TOTP:
 
 <p style="text-align: center;">
-  <img src="file:///Users/olaf/Downloads/accounts.png" alt="Microsoft Authenticator generates a time-based one-time password (TOTP)">
+  <img src="https://cdn.auth0.com/blog/how-two-factor-authentication-can-help-financial-institutions-reduce-data-breaches/microsoft-authenticator-generates-a-totp.png" alt="Microsoft Authenticator generates a time-based one-time password (TOTP)">
 </p>
 
 Prior to logging into an app, users will go to Microsoft Authenticator, generate their code, and, before it expires, use it to log into the app. Other leaders in the space include the Google Authenticator, along with smaller providers like Twilio, Authy, Duo Mobile, and the LastPass Authenticator. These providers offer 2FA solutions for both mobile and desktop platforms. 
@@ -62,7 +62,7 @@ Biometrics have made big strides in recent years, including the launch of Appleâ
 Many consumer financial apps, like TD Bank's app for basic checking, savings, and transfer options, employ the thumbprint as a second authenticator: 
 
 <p style="text-align: center;">
-  <img src="file:///Users/olaf/Downloads/IMG_0989-1.jpg" alt="TD Bank employs the thumbprint as a second authenticator.">
+  <img src="https://cdn.auth0.com/blog/how-two-factor-authentication-can-help-financial-institutions-reduce-data-breaches/td-bank-employs-thumbprint-for-2fa.jpg" alt="TD Bank employs the thumbprint as a second authenticator.">
   <figcaption>
     <small>
       Source: <a href="https://www.phonearena.com/news/How-to-use-your-fingerprint-scanner-to-log-in-websites-on-a-Samsung-smartphone_id73835">phoneArena news</a>
@@ -78,7 +78,7 @@ Users are prompted to place their thumb on the home button for identification pr
 
 Despite the proven ability of 2FA to reduce the threat of a security breach along with the ease of setup (no advanced security or developer skills are [required](https://auth0.com/learn/two-factor-authentication/)), 2FA has yet to become mainstream. It can be unclear for many users how to set up 2FA. For example, with services like [PayPal](https://www.paypal.com/us/selfhelp/article/how-do-i-enable-2fa-(two-factor-authentication)-for-my-paypal-powered-by-braintree-user-faq3500), users have to log into their control panel, navigate to their account, and enable 2FA with a QR code or another supported app:
 
-![PayPal supports 2FA with mobile or security key cards](/Users/olaf/Downloads/Screen Shot 2018-05-11 at 7.05.58 AM.png)
+![PayPal supports 2FA with mobile or security key cards](https://cdn.auth0.com/blog/how-two-factor-authentication-can-help-financial-institutions-reduce-data-breaches/paypal-supports-2fa-with-mobile-or-security-keys.png)
 
 It can be difficult for a user without 2FA knowledge to know which option to choose â€” after already puzzling out how to get to this stage without clear directions in the first place. While some may opt for SMS (first option), the second option (TOTP) doesn't rely on incoming text messages and has proven to be more secure. 
 
@@ -97,7 +97,7 @@ In many cases, customer happiness with a new feature and a [high level of engage
 The Google Authenticator, for example, balances clarity, capability, and a splash of color:
 
 <p style="text-align: center;">
-  <img src="file:///Users/olaf/Downloads/Google-Authenticator.jpg" alt="Google Authenticator balances clarity, capability, and design">
+  <img src="https://cdn.auth0.com/blog/how-two-factor-authentication-can-help-financial-institutions-reduce-data-breaches/google-authenticator-balances-clarity-capability-design.jpg" alt="Google Authenticator balances clarity, capability, and design">
   <figcaption>
     <small>
       Source: <a href="https://www.geeky-gadgets.com/google-authenticator-ios-app-update-removes-user-accounts-04-09-2013/">GeekyGadgets blog</a>
