@@ -27,13 +27,20 @@ But specific obstacles in the industry have stalled progress. First, the majorit
 
 Despite these real challenges, customers increasingly expect cutting-edge solutions. Other industries, like [healthcare](https://auth0.com/healthcare/) and [financial services](https://auth0.com/financial-services), are quickly incorporating digital methods, raising the bar for everyone. Eventually, insurers will be forced to change. Early adopters will gain an edge, and those who are slow to transform will lose.
 
-While it's possible to begin a digital transformation in many ways --- from creating a new claims platform to simply delivering online quotes --- starting with an identity and access management (IAM) strategy is a clear, easy-to-implement step that allows managers to attack several core functions at once.
+While it's possible to begin a digital transformation in many ways — from creating a new claims platform to simply delivering online quotes — starting with an identity and access management (IAM) strategy is a clear, easy-to-implement step that allows managers to attack several core functions at once.
 
 ## Legacy Systems in a Changing Environment
 
 In industries such as [retail](https://auth0.com/retail), many teams are able to rely on consumer data pulled from public sources like [social media profiles](https://auth0.com/learn/social-login/) to underpin their strategies. This might include compiling current and potential customer interests, events they've attended, and pages they've liked. In insurance, it's more complicated. Agents work with higher-touch information sets, like health records and credit scores.
 
-[[Source](http://www.emr-ehrs.com/mental-health-electronic-health-records.php)]
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/how-the-right-identity-and-access-management-tools-will-help-insurance-teams-make-the-shift-to-digital/legacy-systems-struggle-to-keep-up-with-digital-transformation.jpg" alt="Legacy systems struggle to keep up with digital transformation">
+  <figcaption>
+    <small>
+      Source: <a href="http://www.emr-ehrs.com/mental-health-electronic-health-records.php">Electronic Medical Records & Electronic Health Records Software</a>
+    </small>
+  </figcaption>
+</p>
 
 This data is the foundation for building customer risk profiles, determining premiums, and completing claims. Most teams have developed processes over decades that continue to work well. Although a lot of this data exists on legacy systems and may not be intuitive for new hires to find and work with, more-seasoned agents understand the process and don't feel an urgent need to change.
 
@@ -47,18 +54,32 @@ Just because many insurance teams have succeeded with business-as-usual for deca
 
 For insurance teams facing a daunting set of changes, developing a clear [IAM](https://auth0.com/app-modernization) strategy is a concrete first step. IAM is a simple, initial fix that can form the basis for more updates down the line. It is a single solution for organizing and tracking customers, employees, and even business partners who are working with critical data in your system.
 
-IAM often begins with a portal that collects, organizes, and protects customer data at the login stage. This starts with a simple welcome screen on the front end:\
+IAM often begins with a portal that collects, organizes, and protects customer data at the login stage. This starts with a simple welcome screen on the front end:
+
+![Transforming customer aquisition starts with a basic identity management strategy](https://cdn.auth0.com/blog/how-the-right-identity-and-access-management-tools-will-help-insurance-teams-make-the-shift-to-digital/transforming-customer-acquisition-starts-with-a-basic-identity-management-strategy.png)
+
 Behind this screen, the technology tracks customer logins and platform behavior and enriches their profiles with personal details and historical records. This can be information that the insurer manually uploads or automatically pulls from public sources. Some features also include additional options, such as [progressive profiling](https://auth0.com/blog/how-profile-enrichment-and-progressive-profiling-can-boost-your-marketing/), to help build customer data over time (e.g., location, age, and gender).
 
-For administrators, certain features allow for a bird's-eye view of all users in a given system, noting growth in users over time, ratio of new to returning users, who is accessing what levels of information at any time --- even what device(s) they're using:\
+For administrators, certain features allow for a bird's-eye view of all users in a given system, noting growth in users over time, ratio of new to returning users, who is accessing what levels of information at any time– even what device(s) they're using:
+
+![Organizing customer data in a single location allows for better reporting and analytics](https://cdn.auth0.com/blog/how-the-right-identity-and-access-management-tools-will-help-insurance-teams-make-the-shift-to-digital/organizing-customer-data-in-a-single-location-allows-for-better-reporting-and-analytics.png)
+
 Organizing customer data in a single location allows for better tracking, heightened security, and the possibility of gaining sharper insights on customer histories and current behavior. This approach will make your company more efficient at building risk profiles, communicating with customers in a more personalized way (particularly if and when they are in distress and need to make a claim), and understanding your target audience at a granular level.
 
 ## Outsourcing IAM to the Experts
 
-While you can try to update your IAM system on your own, most insurers don't have the in-house capacity to do so --- at least not at the level needed to meet future needs. This would require building a portal that is a one-stop solution for all users --- yet is still flexible enough evolve alongside your business. The advantage of outsourcing IAM is having a dedicated team of experts whose entire job, 24/7, is to build and deliver these solutions --- as opposed to adding it to a pile of tasks your IT team is currently balancing.
+While you can try to update your IAM system on your own, most insurers don't have the in-house capacity to do so — at least not at the level needed to meet future needs. This would require building a portal that is a one-stop solution for all users — yet is still flexible enough evolve alongside your business. The advantage of outsourcing IAM is having a dedicated team of experts whose entire job, 24/7, is to build and deliver these solutions — as opposed to adding it to a pile of tasks your IT team is currently balancing.
 
-A provider like [Auth0](https://auth0.com/security) makes sure all of its features adhere to the highest industry standards, including LDAP, SAML, OAuth, OpenID, OpenID Connect, and JSON Web Tokens (JWTs). In addition, it is GDPR, EU-US Privacy Shield, and HIPAA compliant.\
-[[Source](https://auth0.com/security)]
+A provider like [Auth0](https://auth0.com/security) makes sure all of its features adhere to the highest industry standards, including LDAP, SAML, OAuth, OpenID, OpenID Connect, and JSON Web Tokens (JWTs). In addition, it is GDPR, EU-US Privacy Shield, and HIPAA compliant.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/how-the-right-identity-and-access-management-tools-will-help-insurance-teams-make-the-shift-to-digital/auth0-adheres-to-the-highest-industry-standards.png" alt="Auth0 adheres to the highest industry standards">
+  <figcaption>
+    <small>
+      Source: <a href="https://auth0.com/security">Auth0 Security</a>
+    </small>
+  </figcaption>
+</p>
 
 This eliminates the need for your team to do additional research to ensure any changes are up to code in your geographic area or industry.
 
