@@ -30,8 +30,6 @@ related:
 
 **TL;DR:** In this guide, you'll finish adding authentication to our simple [single page application](https://auth0.com/docs/sso/current/single-page-apps), customize Auth0 [Lock](https://auth0.com/docs/libraries/lock/v11), enable [social login](https://auth0.com/blog/social-login-on-the-rise/) with Facebook, and set up [multi-factor authentication](https://auth0.com/docs/multifactor-authentication). If none of this makes any sense, don't worry. We're going to explain that as well.
 
----
-
 Before you get started, you're going to need **NodeJS** installed on your computer. This bit of software allows you to run stuff locally, like web servers and code.
 
 > ***Note:*** This guide has been developed with a target audience that may have no exposure to development. If you're a developer, you might want to try out [one of our many other blog articles](https://www.auth0.com/blog), on a language you might be familiar with.
