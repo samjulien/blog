@@ -87,3 +87,76 @@ When you use the AOT compilation process, everything gets compiled ahead of time
 There are a bunch of other reasons that you want do this, like better security, but the bottom line is that AOT is smaller and faster than JIT, so it’s better for production. To read more about how to set up Webpack for AOT, you can [check out this article I wrote](https://medium.com/@UpgradingAJS/the-ultimate-guide-to-setting-up-aot-for-ngupgrade-without-jumping-out-a-window-998df2fdd196). I also have step-by-step videos on [this setup in my course](https://www.upgradingangularjs.com/?ref=auth0).
 
 Now that we’ve got a handle on the different parts of the upgrade process, let’s dive in to a practical example of Phase 2’s **migration process**.
+
+## The Sample Application
+
+Go ahead and [clone this updated fork of my course sample project](https://github.com/upgradingangularjs/ordersystem-evergreen) (don’t forget to run `npm install` or `yarn install` in both the `server` and the `public` folders). You can checkout the `auth0` branch and the starting commit by running these commands:
+
+```bash
+git checkout auth0
+git checkout c6b2055f831134b616452ad3319309817ab9d574
+```
+
+This basic order system application starts off as a hybrid application with AngularJS 1.6 and Angular 5 (don’t worry, nothing we cover in this tutorial is different in Angular 6). It’s not too fancy, but I’ve made it in a way that is extensible and uses some patterns that you’ve seen in the real world in AngularJS.
+
+### Current Authentication Setup
+
+The Express server is set up with Auth0 with a machine-to-machine API and client relationship. I used machine-to-machine because a user login system is an extra layer of complexity that, for this purpose, doesn’t actually matter that much. All we really care about is the ability to go get a token and add it to our outgoing requests to be able to get our data. Whether that’s specific to a user or to an application doesn’t matter. (I should also say that, while I’m using Auth0, the approach we take in this article applies to any sort of token system.) 
+
+I’ve also got two routes using authentication: the customers route and the products route. This is because the customers route is using an Angular component and service, but the products route is still using AngularJS pieces. That’ll let us see both approaches and how to upgrade.
+
+If you want to follow along, you’ll need to use Auth0 to set up your own machine-to-machine API and application, since this server is just running locally. You can do that from the Auth0 dashboard. First [create the API](https://auth0.com/docs/quickstart/backend/nodejs), then create the application as a machine-to-machine application.
+
+![Machine to machine application.](https://cdn.auth0.com/blog/ngupgrade/machine-to-machine-auth0-api.png)
+
+You’ll wire up this application to use the API you just made.
+
+Once you’re done with the Auth0 setup, you can just edit `server/auth.js` to replace my API information with yours:
+
+```js
+const checkJwt = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://samjulien.auth0.com/.well-known/jwks.json` // <-- replace
+  }),
+
+  // Validate the audience and the issuer.
+  audience: 'ordersystem-api', // <-- replace
+  issuer: `https://samjulien.auth0.com/`, // <-- replace
+  algorithms: ['RS256']
+});
+```
+
+You’ll also need to add a file called `authVariables.js` to the root of the project and export your application’s client id and client secret as variables, like this:
+
+```js
+export const CLIENT_ID = '[client id here]';
+export const CLIENT_SECRET = '[client secret here]';
+```
+
+The AngularJS AuthService will use that file to go get the token from the API.
+
+On the client side (the `public` folder), inside of our `src` folder, we have a file called `app.run.ajs.ts`. This file contains a function that calls the authentication service to check if we’re authenticated and go get the token if not:
+
+```ts
+runAuth.$inject = ['authService'];
+export function runAuth(authService) {  
+  if (!authService.isAuthenticated()) authService.getToken();
+}
+```
+
+This function gets added to our AngularJS module using `angular.module().run()` in `app.module.ajs.ts`.
+
+To add our token to outgoing requests, we have an HTTP interceptor for the AngularJS `$http` provider (`auth.interceptor.ajs.ts`). It goes and gets the token from local storage and then it adds the authorization header with the bearer token before the request goes out.
+
+The authentication service (`./shared/authService.ts`), which is also still in AngularJS, goes and gets the token from Auth0 (via the server) and then sets that token in local storage. 
+
+To see that this is working, first open a terminal and run `npm start` inside of the `server` folder. Then, open another terminal and run `npm run dev` inside of the `public` folder. Navigate to [`localhost:9000`](localhost:9000), open up Chrome developer tools, and click on the Customers tab. You can see that the token has been added as a header on the outgoing request:
+
+![The Authorization header on the customers request.](https://cdn.auth0.com/blog/ngupgrade/authorization-header.png)
+
+You can do the same thing with the Products tab, which also uses authentication for the `/products` call to the Express server.
+
+Of course, this is a very simple way of doing token authentication. We could make this more sophisticated in a number of ways, like adding error handling, but I want you to understand the basic concepts here.
