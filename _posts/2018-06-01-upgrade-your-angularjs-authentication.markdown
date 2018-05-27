@@ -63,3 +63,27 @@ The preparation phase consists of four **building blocks** to the ngUpgrade proc
 Speaking of the CLI — if you can use it right away in your legacy application, by all means, do so. In certain situations, though, you can’t really get the CLI into an upgrade project right off the bat. You might have your code structure all over the place or a very customized build process. In these cases, you‘ll need to wait until you’ve at least cleaned up your code and architecture so that your application fits better with the CLI. The CLI is highly opinionated in how it wants to organize your code, and it wants to own your build process. This is fantastic in the long run — it solves the exact problem of the early days of AngularJS — but in the short term it can be frustrating if you’re working with a big application that uses old patterns. 
 
 One last note on working through these four building blocks. It’s not necessarily a linear process. Not all of this needs to be completely perfect before you start moving on to ngUpgrade. Particularly, the architecture part can really be done slowly or at the same time as the upgrade process. It really depends on how big your application is and how much capacity you have for working through this technical debt while you’re also doing feature development and bug fixes. The only one that is really critical outside of being up to date with your dependencies is the _build process_, because we really do need a module bundler and TypeScript in order to use ngUpgrade and start moving our application over.
+
+### Phase 2: Upgrading
+
+Now let’s talk about the upgrading phase, which has three different parts. 
+
+The first one is the **install and setup**, where you’ll install all of the packages for Angular and ngUpgrade and then bootstrap both frameworks to run side by side together. (We won’t cover that in detail here, but I wrote a thorough post over on Scotch.io to help you with that.)
+
+Then the second part is the **migration process**. This is the loop of gradually moving pieces of your application over to Angular and using ngUpgrade to get your Angular and AngularJS code talking to each other. There are different approaches to this, but most people pick a route and start from the bottom or the top depending on how their application is structured. You’ll typically move from items that have the least number of dependencies to the most number of dependencies. For example, I usually start with the services in a route and then work my way up through the components.
+
+This migration process can take as long as you need. I like to get the application all set up for ngUpgrade and then draw a line in the sand that all of my new features will be in Angular. Then, as I’m adding a new feature in Angular, inevitably I’m going to touch other pieces of the code base. While I’m doing that, I can just rewrite those pieces and work my way through it so that it’s a natural process throughout my development cycle.
+
+Finally, leave your routing to the very end, since the routing is the brain of the application. Get everything rewritten to Angular, then swap out the old AngularJS router with the new Angular router.
+
+Somewhere in here you’re going to have to deploy this code to production if you want keep bringing home a paycheck. You’re going to have to **set up your code for production**. This means that you need to take advantage of Angular’s static compilation process, called Ahead of Time compiling. Angular has two modes that it can run in. It can run in a Just in Time (JIT) compilation mode or it can run in Ahead of Time (AOT) compilation mode.
+
+The compiler takes up a big chunk of the Angular library. When you’re in development and using JIT compilation, that compiler is being wrapped up in your bundle and going with you to the browser. 
+
+![The compiler takes up a big chunk of Angular.](https://cdn.auth0.com/blog/ngupgrade/compiler-chunk.png)
+
+When you use the AOT compilation process, everything gets compiled ahead of time and the compiler code itself doesn’t have to be put into your bundle.
+
+There are a bunch of other reasons that you want do this, like better security, but the bottom line is that AOT is smaller and faster than JIT, so it’s better for production. To read more about how to set up Webpack for AOT, you can [check out this article I wrote](https://medium.com/@UpgradingAJS/the-ultimate-guide-to-setting-up-aot-for-ngupgrade-without-jumping-out-a-window-998df2fdd196). I also have step-by-step videos on [this setup in my course](https://www.upgradingangularjs.com/?ref=auth0).
+
+Now that we’ve got a handle on the different parts of the upgrade process, let’s dive in to a practical example of Phase 2’s **migration process**.
