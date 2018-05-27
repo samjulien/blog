@@ -10,7 +10,7 @@ design:
   image: https://cdn.auth0.com/blog/ruby-workflow-docker/logo.png
 author:
   name: "Vijayabharathi Balasubramanian"
-  url: "vijayabharathib"
+  url: "https://www.pineboat.in/author/vijayabharathib/"
   mail: "yajiv.vijay@gmail.com"
   avatar: "https://cdn.auth0.com/blog/guest-authors/vijay.jpeg"
 tags:
