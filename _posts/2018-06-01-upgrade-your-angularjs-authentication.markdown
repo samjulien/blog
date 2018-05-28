@@ -7,7 +7,7 @@ date: 2018-05-22 17:28
 category: Technical Guide, Angular
 author:
   name: "Sam Julien"
-  url: "https://www.upgradingangularjs.com/"
+  url: "https://www.upgradingangularjs.com/?ref=auth0"
   avatar: "https://cdn.auth0.com/blog/guest-authors/sam-julien.jpeg"
 design:
   bg_color: "#012C6C"
@@ -228,3 +228,177 @@ Now you can just remove that config object from the `getCustomers` call, save ev
 You can see [the finished code for this section here](https://github.com/upgradingangularjs/ordersystem-evergreen/commit/77283ef3d8e9ebe4b5ac883430313f3268543d03/).
 
 One quick point of clarification: don’t get rid of the AngularJS interceptor until you’re done converting all of your services over to Angular. You’re not going to be able to use Angular’s HttpClient interceptor with your AngularJS services. 
+
+### Taking Advantage of Angular’s APP_INITIALIZER
+
+We’ve got our Angular services using an HttpClient interceptor. This is nice, but we do have a little bit of a problem here. There’s a delay in how the token retrieval gets set up. If you delete the token out of local storage and refresh while on the Customers route, you’ll see that the customers call is being made before the token resolves:
+
+![We’re trying to get the customers data before the token resolves!](https://cdn.auth0.com/blog/ngupgrade/wrong-flow.png)
+
+We’re trying to get the customers data before the token resolves! That's no good.
+
+We could fix this in our AngularJS code by correcting the way the promises are resolving, but there’s a better way. This is a really practical example of working through ngUpgrade and realizing when you need to just rewrite and move on, and when you need to spend more time in your AngularJS code.
+
+Most of the time, you want to start moving away from the AngularJS part and implementing things in Angular. We’re going to do this right now by replacing our AngularJS run block with something called `APP_INITIALIZER` in Angular. To do that, we need to do a couple of things. First, we’ll rewrite our authentication service to Angular. Then, we’ll downgrade and provide it to our AngularJS application so that our AngularJS authenticated routes will still work. Finally, we’ll use `APP_INITIALIZER` to call the AuthService when our application spins up.
+
+#### Rewrite to an Angular Service
+
+To get started on this part, checkout this commit:
+
+```bash
+git checkout abd3e34cbbaa8bbed004f56796d37e7ed28f73e2
+```
+
+In this commit, I’ve done a small refactor to the app run block and the authentication service. In the run function, I removed that bit that was checking for `isAuthenticated` and moved that responsibility to the authentication service.
+
+Let’s rewrite this service to Angular. Since this service is already an ES6 class, there aren’t too many steps. First, let’s rename it to `auth.service.ts` to follow better conventions. Now, at the top of the file,add these two imports:
+
+```typescript
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+```
+
+Add the `@Injectable()` decorator above the class.
+
+Next, we’ll rename all of the references to `$http` with `http` (just do a find and replace to make your life easier). In the constructor, specify that the private instance of `http` is of the type `HttpClient`:
+
+```typescript
+constructor(private http: HttpClient) { }
+```
+
+You should now see that TypeScript is griping about all of the instances of `.then`. That’s because HttpClient returns observables instead of promises. One strategy that I’ve found very helpful in ngUpgrade is not trying to tackle observables right off the bat. I love observables, but when you’re in a real world production application, it doesn’t always work to go immediately to observables. Thinking reactively is a brand new pattern for most folks, and sometimes you need to ease your way there. You can do this by converting observables to promises, making sure everything is working, and then refactoring the promises back to observables down the road. That’s what we’re going to do here, just for the sake of a practical example. 
+
+Add these imports to the top of the file:
+
+```typescript
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
+```
+
+(Again, this is the RxJS 5 import method, but feel free to use RxJS 6 and update these imports accordingly — import `Observable` from `rxjs` and `toPromise` from `rxjs/operators`.)
+
+Now, you can just add `.toPromise()` to all of the calls prior to the `.then` and make TypeScript happy again. You can also get rid of `.data` in the return, because HttpClient is good enough to just go ahead and return the data of the response body.
+
+You should have this:
+
+```typescript
+mport { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
+
+import { CLIENT_ID, CLIENT_SECRET } from '../../../authVariables';
+
+@Injectable()
+export class AuthService {
+  constructor(private http: HttpClient) {}
+
+  getToken() {
+    if (!this.hasToken() || !this.isAuthenticated()) {
+      const url = 'https://samjulien.auth0.com/oauth/token';
+      const body = `{
+        "client_id":"${CLIENT_ID}",
+        "client_secret":"${CLIENT_SECRET}",
+        "audience":"ordersystem-api",
+        "grant_type":"client_credentials"}`;
+      const options = { headers: { 'content-type': 'application/json' } };
+      return this.http
+        .post(url, body, options)
+        .toPromise()
+        .then(response => {
+          this.setSession(response);
+        });
+    }
+  }
+  
+  // unchanged
+  isAuthenticated() { ... }
+
+  // unchanged
+  hasToken() { ... }
+
+  // unchanged
+  setSession(authResult) { ... }
+}
+```
+
+Believe it or not, that’s all we have to do to rewrite this service to Angular. Even the local storage API is the same. That wasn’t that bad, was it? Now we can add it to our Angular module. Just open up `app.module.ts`, import AuthService at the top, and add AuthService to the providers array.
+
+```typescript
+// Import below the CreateOrderComponent
+import { AuthService } from './shared/auth.service';
+
+// Updated providers array
+providers: [
+    CustomerService,
+    OrderService,
+    locationServiceProvider,
+    productServiceProvider,
+    addressServiceProvider,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    AuthService
+  ]
+```
+
+But how do we make sure our AngularJS code can still access that service? That’s where ngUpgrade comes into play. We’re going to use ngUpgrade’s `downgradeInjectable` function in our AngularJS module to make this Angular service available to our legacy code. 
+
+Open up `app.module.ajs.ts`. First, fix the import up at the top since we renamed our file. Then, where we’re registering the service, we’re going to change it to a factory and use that downgrade function just like with the OrderService and CustomerService:
+
+```typescript
+// Fixed import
+import { AuthService } from './shared/auth.service';
+
+// ...other stuff in between
+angular
+  .module(MODULE_NAME, ['ngRoute'])
+// ...other registrations
+  .factory('authService', downgradeInjectable(AuthService));
+```
+
+Great. You should see the application still bundling and loading correctly, and everything should work the same way. Great work!
+
+[Here’s the finished code so far](https://github.com/upgradingangularjs/ordersystem-evergreen/commit/e4464a42734213d02c95a743a1062224a6572b8d).
+
+#### Getting the Token at Run Time
+
+Now we can do the fun part: get rid of our app run function in AngularJS and replace it with the new Angular `APP_INITIALIZER`. Let’s go back over to the Angular module. We’re going to provide a function as a factory for Angular. You can just paste this above the `NgModule` decorator:
+
+```typescript
+export function get_token(authService: AuthService) {
+  return () => authService.getToken();
+}
+```
+
+This function injects the AuthService and calls its `getToken` function. Now we can use `APP_INITIALIZER` to provide a factory that calls this function at start-up. Add this new object after the interceptor and AuthService in the `providers` array:
+
+```typescript
+{
+  provide: APP_INITIALIZER,
+  useFactory: get_token,
+  deps: [AuthService],
+  multi: true
+}
+```
+
+You’ll also need to add `APP_INITIALIZER` to the import on line where we import `NgModule`(from `core`).
+
+Let’s try this out. Go comment out the registration of our `run` function in the AngularJS module (`app.module.ajs.ts`) and make sure everything compiles and bundles. Then, hop over to the browser. Clear out your application storage using Chrome developer tools to make sure we’re really starting from scratch, and then refresh the page. You should see that this works, no matter which route we’re on. Try it on the Customers tab to see it in Angular, and then Products tab to see it in AngularJS. You’ll see that the token gets called and loaded prior to when the interceptor uses it to make a call. Nice!
+
+To finish this up, you can now remove the `run` function and its import from the AngularJS module, and delete the `app.run.ajs.ts` file. [You can see all of the finished code here](https://github.com/upgradingangularjs/ordersystem-evergreen/commit/e0fd2ec2ecac606ce59948ea86a84f5ad5cc8996).
+
+## What We’ve Covered
+
+Let’s review. We started with an app run block, which called a service to get the token and then used an interceptor to attach the token to requests. All of this was happening in AngularJS, so this didn’t work in the customer service — the Angular HttpClient couldn’t use that interceptor. To fix that, we added our own Angular interceptor.
+
+The interceptor helped, but it wasn’t quite enough, because there was a lag in our token retrieval. We needed to come up with a way that Angular could run our token at run time. To do that, we first had to rewrite our authentication service to Angular. Then, we added our `APP_INITIALIZER` function and provider.
+
+This demonstration proved a couple of things for us. First, AngularJS and Angular code don’t automatically talk to each other. They run in parallel, and we need to use ngUpgrade to bridge that gap. Second, do your best to rewrite and downgrade when you can. We could have tried to fix our token timing problem by working on AngularJS code — by fixing up the promises or making the routing more sophisticated. It turned out it was simpler to solve this problem by just rewriting to Angular. Don’t put a bunch of effort into updating your legacy code if you can help it. Try to just rewrite your AngularJS code one piece at a time.
+
+If you’re stumped on any of this, I’ve got your back. [I’ve got 200+ detailed videos, quiz questions, and more for you in my comprehensive course Upgrading AngularJS](https://www.upgradingangularjs.com/?ref=auth0). I created it for everyday, normal developers and it’s the best ngUpgrade resource on the planet. Head on over and sign up for our email list to get yourself a free Upgrade Roadmap Checklist so you don’t lose track of your upgrade prep. And, while you’re there, check out our full demo.
+
+See you next time!
