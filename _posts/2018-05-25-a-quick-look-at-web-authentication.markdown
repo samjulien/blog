@@ -149,8 +149,7 @@ One of the cool things about our architecture is that changes in the login syste
 
 This is a proof-of-concept of how Web Authentication as a second factor will work in Auth0:
 
-VIDEO/GIF HERE
-<video></video>
+<video src="https://cdn.auth0.com/blog/webauthn/Auth0-Web-Authentication-2-small.mp4" controls autoplay loop></video>
 
 What you see in this video is already working internally. We are eager to finish the implementation so you can start enabling Web Authentication in your apps.
 
