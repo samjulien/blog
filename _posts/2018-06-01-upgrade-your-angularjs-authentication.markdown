@@ -160,3 +160,71 @@ To see that this is working, first open a terminal and run `npm start` inside of
 You can do the same thing with the Products tab, which also uses authentication for the `/products` call to the Express server.
 
 Of course, this is a very simple way of doing token authentication. We could make this more sophisticated in a number of ways, like adding error handling, but I want you to understand the basic concepts here.
+
+### Adding an Angular Interceptor
+
+There’s one problem in this setup. The `getCustomers` call of the CustomerService (in `./customers/customer.service.ts`) is actually cheating: 
+
+```typescript
+getCustomers(): Observable<Customer[]> {    
+  return this.http.get<Customer[]>('/api/customers', {      
+    headers: { Authorization: `Bearer ${localStorage.access_token}` }    
+  });  
+}
+```
+
+I’m just manually adding the header here, not using the interceptor. If we were to comment this out and let Webpack re-bundle, we’d no longer be able to get our customers data, because the token would no longer be attached to the request.
+
+Why is this? AngularJS’s `$http` and Angular’s `HttpClient` don’t talk to each other. We have to bridge this gap somehow. To do this, we’ll write an interceptor for the HttpClient in Angular. 
+
+To add an interceptor, let’s create a new file at the root of our source folder called `auth.interceptor.ts`. In that file, we’ll add this new class:
+
+```typescript
+import { Injectable } from '@angular/core';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor
+} from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  constructor() {}
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    request = request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${localStorage.access_token}`
+      }
+    });
+    return next.handle(request);
+  }
+}
+```
+
+We’re importing HttpRequest, HttpHandler, and a few other things from HttpClient, and we’re importing Observable from RxJS (note: this app was created using RxJS 5, so we’re using the old import style in this article). Then, we’re implementing the `HttpInterceptor` interface by having an `intercept` function. This function is pretty similar to the one in the AngularJS interceptor. We take the request, clone it, and then set the header with the access token from local storage.
+
+To complete this step, we just need to add this as a provider to our Angular module (`app.module.ts`). We’ll need to import Angular’s `HTTP_INTERCEPTORS` and our new interceptor, and then add a special provider to the `providers` array:
+
+```typescript
+//Add to top of file
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
+
+// in Providers array
+{
+  provide: HTTP_INTERCEPTORS,
+  useClass: AuthInterceptor,
+  multi: true
+}
+```
+
+Now you can just remove that config object from the `getCustomers` call, save everything, and let Webpack re-bundle. You should see that the data is loading correctly because the correct header is still being added to the request.
+
+You can see [the finished code for this section here](https://github.com/upgradingangularjs/ordersystem-evergreen/commit/77283ef3d8e9ebe4b5ac883430313f3268543d03/).
+
+One quick point of clarification: don’t get rid of the AngularJS interceptor until you’re done converting all of your services over to Angular. You’re not going to be able to use Angular’s HttpClient interceptor with your AngularJS services. 
