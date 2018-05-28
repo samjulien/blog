@@ -2,11 +2,8 @@
 layout: post
 title: "Creating Beautiful Apps with Angular Material"
 description: "In this article, you will learn how to take advantage of Angular Material to create beautiful and modern Angular applications."
-date: 2018-05-03 8:30
+date: 2018-05-29 8:30
 category: Technical Guide, Angular, Angular2
-design: 
-  image: https://cdn.auth0.com/blog/identity-management-hybrid-cloud/logo.png
-  bg_color: "#00635D"
 author:
   name: "Oliver Mensah"
   url: "https://twitter.com/Oliver_Mensah"
@@ -14,7 +11,7 @@ author:
   avatar: "https://twitter.com/Oliver_Mensah/profile_image?size=original"
 design:
   image: https://cdn.auth0.com/blog/angular/logo3.png
-  bg_color: "#012C6C"
+  bg_color: "#072858"
 tags:
 - javascript
 - angular
@@ -23,6 +20,7 @@ tags:
 related:
 - 2017-06-28-real-world-angular-series-part-1
 - 2016-11-07-migrating-an-angular-1-app-to-angular-2-part-1
+- 2018-05-07-whats-new-in-angular6
 ---
 
 **TL;DR:** In this article, you will learn how to take advantage of Angular Material to create beautiful and modern Angular applications. You will start from scratch, installing Node.js and Angular CLI (in case you don't have them yet), then you will install and configure the dependencies needed to develop with Angular Material. You can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/angular-material).
