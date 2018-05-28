@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Upgrade Your AngularJS Authentication"
+title: "Upgrade Your AngularJS Authentication Service"
 description: "In this article, we’re going to talk about two difficult subjects: ngUpgrade and authentication."
 longdescription: "In this article, we’re going to talk about two difficult subjects: ngUpgrade and authentication. First, we’ll cover the foundations of upgrading a real application from AngularJS to Angular. Then, we’ll look at a practical example of upgrading AngularJS authentication strategies to Angular."
 date: 2018-05-22 17:28
@@ -140,7 +140,7 @@ The AngularJS AuthService will use that file to go get the token from the API.
 
 On the client side (the `public` folder), inside of our `src` folder, we have a file called `app.run.ajs.ts`. This file contains a function that calls the authentication service to check if we’re authenticated and go get the token if not:
 
-```ts
+```typescript
 runAuth.$inject = ['authService'];
 export function runAuth(authService) {  
   if (!authService.isAuthenticated()) authService.getToken();
