@@ -25,6 +25,8 @@ related:
 
 **TL;DR:** In this article, we’re going to talk about two notoriously difficult subjects very near and dear to my heart: ngUpgrade and authentication. First, we’ll cover the foundations of upgrading a real application from AngularJS to Angular. Then, we’ll look at a practical example of upgrading AngularJS authentication strategies to Angular. We’ll look at a sample app that uses machine-to-machine authentication with Auth0.
 
+{% include tweet_quote.html quote_text="Learn how to migrate from AngularJS to the new Angular framework." %}
+
 > This article is based on a talk I gave for [the Auth0 online meet up](https://www.meetup.com/Auth0-Online-Meetup/). [You can watch the recording of that talk here](https://register.gotowebinar.com/register/7495371156540204033) and [access the slides here](https://www.upgradingangularjs.com/auth0).
 
 ## ngUpgrade Foundations
@@ -390,6 +392,8 @@ You’ll also need to add `APP_INITIALIZER` to the `import` property on the line
 Let’s try this out. Go comment out the registration of our `run` function in the AngularJS module (`app.module.ajs.ts`) and make sure everything compiles and bundles. Then, hop over to the browser. Clear out your application storage using Chrome developer tools to make sure we’re really starting from scratch, and then refresh the page. You should see that this works, no matter which route we’re on. Try it on the Customers tab to see it in Angular, and then Products tab to see it in AngularJS. You’ll see that the token gets called and loaded prior to when the interceptor uses it to make a call. Nice!
 
 To finish this up, you can now remove the `run` function and its import from the AngularJS module, and delete the `app.run.ajs.ts` file. [You can see all of the finished code here](https://github.com/upgradingangularjs/ordersystem-evergreen/commit/e0fd2ec2ecac606ce59948ea86a84f5ad5cc8996).
+
+{% include tweet_quote.html quote_text="Check out this article on upgrading AngularJS apps to the new Angular framework." %}
 
 ## What We’ve Covered
 
