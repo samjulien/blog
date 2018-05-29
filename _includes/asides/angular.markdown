@@ -101,8 +101,9 @@ import { UserProfile } from './profile.model';
 @Injectable()
 export class AuthService {
   // Create Auth0 web auth instance
-  // @TODO: Update AUTH_CONFIG and remove .example extension in src/app/auth/auth0-variables.ts.example
-  private _auth0 = new auth0.WebAuth({
+  // @TODO: Update AUTH_CONFIG and remove .example extension in
+  // src/app/auth/auth0-variables.ts.example
+  private _Auth0 = new auth0.WebAuth({
     clientID: AUTH_CONFIG.CLIENT_ID,
     domain: AUTH_CONFIG.CLIENT_DOMAIN,
     responseType: 'token',
@@ -112,6 +113,7 @@ export class AuthService {
   });
   userProfile: UserProfile;
   accessToken: string;
+  expiresAt: number;
 
   // Create a stream of logged in status to communicate throughout app
   loggedIn: boolean;
@@ -131,12 +133,12 @@ export class AuthService {
 
   login() {
     // Auth0 authorize request
-    this._auth0.authorize();
+    this._Auth0.authorize();
   }
 
   handleLoginCallback() {
     // When Auth0 hash parsed, get profile
-    this._auth0.parseHash((err, authResult) => {
+    this._Auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken) {
         window.location.hash = '';
         this.getUserInfo(authResult);
@@ -148,15 +150,14 @@ export class AuthService {
 
   getUserInfo(authResult) {
     // Use access token to retrieve user's profile and set session
-    this._auth0.client.userInfo(authResult.accessToken, (err, profile) => {
+    this._Auth0.client.userInfo(authResult.accessToken, (err, profile) => {
       this._setSession(authResult, profile);
     });
   }
 
   private _setSession(authResult, profile) {
-    const expTime = authResult.expiresIn * 1000 + Date.now();
     // Save session data and update login status subject
-    localStorage.setItem('expires_at', JSON.stringify(expTime));
+    this.expiresAt = authResult.expiresIn * 1000 + Date.now();
     this.accessToken = authResult.accessToken;
     this.userProfile = profile;
     this._setLoggedIn(true);
@@ -164,17 +165,19 @@ export class AuthService {
 
   logout() {
     // Remove token and profile and update login status subject
-    localStorage.removeItem('expires_at');
+    this.expiresAt = undefined;
     this.accessToken = undefined;
     this.userProfile = undefined;
     this._setLoggedIn(false);
+    this._Auth0.logout({
+      returnTo: 'http://localhost:4200'
+    });
   }
 
   get authenticated(): boolean {
-    // Check if current date is greater than expiration
-    // and user is currently logged in
-    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    return (Date.now() < expiresAt) && this.loggedIn;
+    // Check if current date is greater than
+    // expiration and user is currently logged in
+    return (Date.now() < this.expiresAt) && this.loggedIn;
   }
 
 }
@@ -192,7 +195,9 @@ We'll receive `accessToken` and `expiresIn` in the hash from Auth0 when returnin
 
 > **Note:** The profile takes the shape of [`profile.model.ts`](https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/auth/profile.model.ts) from the [OpenID standard claims](https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims).
 
-Finally, we have a `logout()` method that clears data from and updates the `loggedIn$` subject. We also have an `authenticated` accessor to return current authentication status based on presence of a token and the token's expiration.
+Finally, we have a `logout()` method that clears data from and updates the `loggedIn$` subject. This method also calls the auth0.js `logout()` method to end the authentication session on Auth0's server.
+
+Finally, we have an `authenticated` accessor to return current authentication status based on presence of a token and the token's expiration.
 
 Once [`AuthService` is provided in `app.module.ts`](https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/app.module.ts#L32), its methods and properties can be used anywhere in our app, such as the [home component](https://github.com/auth0-blog/angular-auth0-aside/tree/master/src/app/home).
 
