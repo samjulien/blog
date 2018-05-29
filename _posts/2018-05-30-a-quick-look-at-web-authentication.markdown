@@ -3,7 +3,7 @@ layout: post
 title: "A Quick Look at Web Authentication"
 description: "Learn about Web Authentication, a new standard for secure authentication on the web."
 longdescription: "A new authentication standard aimed at the web is gaining traction. Web Authentication aims to provide a secure, passwordless authentication flow that can be used with hardware tokens, smartphones, and web browsers. Learn more about it in this article."
-date: 2018-05-25 12:30
+date: 2018-05-30 12:30
 category: Technical Guide, JWT
 author:
   name: Sebastián Peyrott
@@ -35,14 +35,14 @@ related:
 - 2018-03-08-jwt-io-and-jwt-debugger-extension-updates
 ---
 
-[Recent news]() about [Web Authentication]() reaching maturity to be enabled by default in web browsers hit the headlines recently. Web Authentication is a fairly recent W3C standard backed by major players like Google, Paypal, Mozilla, Microsoft and Qualcomm. It aims at defining a web-browser API for the creation and use of strong authentication credentials based on public key cryptography. The driving force behind the proposal is to increase security for the authentication process by removing or complementing password-based authentication, while remaining convenient for end-users. Although implementations are still in their early days, and the standard has not been finalized, the strong push from major players, and the fact that both Firefox and Chrome are enabling their implementations by default, is a strong indicator that this may cause a significant impact in the authentication space. Let's check it out!
+[Recent news](https://www.engadget.com/2018/05/09/mozilla-firefox-passwords-web-authentication-support/) about [Web Authentication](https://www.w3.org/TR/webauthn/) reaching maturity to be enabled by default in web browsers hit the headlines recently. Web Authentication is a fairly recent W3C standard backed by major players like Google, Paypal, Mozilla, Microsoft and Qualcomm. It aims at defining a web-browser API for the creation and use of strong authentication credentials based on public key cryptography. The driving force behind the proposal is to increase security for the authentication process by removing or complementing password-based authentication, while remaining convenient for end-users. Although implementations are still in their early days, and the standard has not been finalized, the strong push from major players, and the fact that both Firefox and Chrome are enabling their implementations by default, is a strong indicator that this may cause a significant impact in the authentication space. Let's check it out!
 
 {% include tweet_quote.html quote_text="Web Authentication is backed by major players in the industry, let's find out what it's all about!" %}
 
 ---
 
 ## Introduction
-The traditional username/password scheme for user authentication has been in use for decades. Even in the face of modern approaches like social logins and FaceID, username and passwords remain the most popular and widely used mechanism for authentication. Stronger authentication mechanisms such as certificates and hardware tokens have been supported for a long time for specific applications and use cases, but they remain unusual for end users.
+The traditional username/password scheme for user authentication has been in use for decades. Even in the face of modern approaches like social logins and [Face ID](https://en.wikipedia.org/wiki/Face_ID), username and passwords remain the most popular and widely used mechanism for authentication. Stronger authentication mechanisms such as certificates and hardware tokens have been supported for a long time for specific applications and use cases, but they remain unusual for end users.
 
 Most of the authentication flows performed by end users are done through web browsers. In a sense, web browsers have become the nexus between credentials and applications on the two major platforms: desktop and mobile. It is natural, then, that changes to authentication flows require support from browsers. The web, however, is built on consensus. This means that changes to the platform need to be implemented by several players. For this reason, the W3C WebAuthn Working Group was formed: to produce a new specification that can be implemented by all parties and that remains interoperable.
 
@@ -74,7 +74,7 @@ Both processes work with the help of public-key cryptography and digital signatu
 Let's take a quick look at the actual API.
 
 ### API
-The Web Authentication API has two main calls: [navigator.credentials.create](), and [navigator.credentials.get](). There is also an [accessory API to list authenticators]().
+The Web Authentication API has two main calls: [navigator.credentials.create](https://www.w3.org/TR/webauthn/#createCredential), and [navigator.credentials.get](https://www.w3.org/TR/webauthn/#getAssertion). There is also an [accessory API to list authenticators](https://www.w3.org/TR/webauthn/#isUserVerifyingPlatformAuthenticatorAvailable).
 
 `create` can be used to perform the registration step. `get` can be used to perform the authentication step.
 
@@ -116,7 +116,7 @@ navigator.credentials.create({
 Here is a sample call of the `get` function in an EJS template:
 
 ```javascript
-return navigator.credentials.get({
+navigator.credentials.get({
   publicKey: {
     // random, cryptographically secure, at least 16 bytes
     challenge: base64url.decode('<%= challenge %>'),
@@ -145,7 +145,7 @@ But the cool thing about all of this is that you don't need to care about any of
 {% include tweet_quote.html quote_text="Web Authentication at Auth0 will work with the flip of a switch!" %}
 
 ## A Working Web Authentication Implementation at Auth0
-One of the cool things about our architecture is that changes in the login system can be integrated with little or no changes to client code. In other words, once our implementation of Web Authentication is released, enabling it for your apps will be a matter of making a few clicks in the [Auth0 Dashboard]().
+One of the cool things about our architecture is that changes in the login system can be integrated with little or no changes to client code. In other words, once our implementation of Web Authentication is released, enabling it for your apps will be a matter of making a few clicks in the [Auth0 Dashboard](https://manage.auth0.com/).
 
 This is a proof-of-concept of how Web Authentication as a second factor will work in Auth0:
 
@@ -153,7 +153,7 @@ This is a proof-of-concept of how Web Authentication as a second factor will wor
 
 What you see in this video is already working internally. We are eager to finish the implementation so you can start enabling Web Authentication in your apps.
 
-Of course, there is more to Web Authentication than just using it as a second factor. We are also planning to enable Web Authentication as a **primary login solution**, that is, as a **passwordless login** mechanism. If you are not familiar with passwordless login and how it works, [take a look at our docs](). Can you imagine login in to your bank with just a push of your USB authenticator's button?
+Of course, there is more to Web Authentication than just using it as a second factor. We are also planning to enable Web Authentication as a **primary login solution**, that is, as a **passwordless login** mechanism. If you are not familiar with passwordless login and how it works, [take a look at our introduction](https://auth0.com/passwordless). Can you imagine login in to your bank with just a push of your USB authenticator's button?
 
 ## Conclusion
-Web Authentication brings a stronger authentication mechanism to the masses by defining an API that both authenticators and web browsers can implement. With the release of [Firefox 60]() and [Chrome 67](), Web Authentication has become available to a big number of users. Authenticators, such as Yubikeys, already support the necessary protocols and work with current implementations. At Auth0 we care about providing the necessary building blocks for your identity infrastructure, and Web Authentication could eventually become a major improvement in security and user experience. If you would like to use Web Authentication with Auth0 for your product, let us know in the comments, or [contact us through our contact form](). Stay tuned to learn more about Web Authentication in Auth0 the next few months.
+Web Authentication brings a stronger authentication mechanism to the masses by defining an API that both authenticators and web browsers can implement. With the release of [Firefox 60](https://www.mozilla.org/en-US/firefox/60.0/releasenotes/) and [Chrome 67](https://www.chromium.org/developers/calendar), Web Authentication has become available to a big number of users. Authenticators, such as [Yubikeys](https://www.yubico.com/), already support the necessary protocols and work with current implementations. At Auth0 we care about providing the necessary building blocks for your identity infrastructure, and Web Authentication could eventually become a major improvement in security and user experience. If you would like to use Web Authentication with Auth0 for your product, let us know in the comments, or [contact us through our "Talk to Sales" contact form](https://auth0.com/). Stay tuned to learn more about Web Authentication in Auth0 the next few months.
