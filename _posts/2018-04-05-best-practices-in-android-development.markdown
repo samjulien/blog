@@ -9,7 +9,7 @@ author:
   name: "Idorenyin Obong"
   url: "https://twitter.com/kingidee"
   mail: "idee4ril@gmail.com"
-  avatar: "https://twitter.com/kingidee/profile_image?size=original"
+  avatar: "https://cdn.auth0.com/blog/guest-author/idorenyin-obong.jpg"
 design:
   bg_color: "#2C4721"
   image: "https://cdn.auth0.com/blog/android-libraries/logo.png"
@@ -46,15 +46,15 @@ In this article, we will look at some best practices in Android development to h
 
 ## Design Patterns
 
-[Design patterns](https://en.wikipedia.org/wiki/Software_design_pattern) are general, reusable solutions to commonly occurring problems within a given context in software design. It is more like a template towards a solution. Apart from just being a potential solution to a problem, it helps communication among developers as it becomes easier to work in teams when you all are familiar with agreed patterns to follow. Design patterns didn’t just jump out of the bag, they existed since. According to Javamann on StackOverflow: "[We used design patterns in the 80's, we just didn't know they were design patterns.](https://stackoverflow.com/a/978527/6538897)" 
+[Design patterns](https://en.wikipedia.org/wiki/Software_design_pattern) are general, reusable solutions to commonly occurring problems within a given context in software design. It is more like a template towards a solution. Apart from just being a potential solution to a problem, it helps communication among developers as it becomes easier to work in teams when you all are familiar with agreed patterns to follow. Design patterns didn’t just jump out of the bag, they existed since. According to Javamann on StackOverflow: "[We used design patterns in the 80's, we just didn't know they were design patterns.](https://stackoverflow.com/a/978527/6538897)"
 
 Some patterns practiced while developing Android apps include [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection), the [singleton pattern](https://en.wikipedia.org/wiki/Singleton_pattern), the [separation of concerns pattern](https://en.wikipedia.org/wiki/Separation_of_concerns) among others. We will briefly look at two of them.
 
 ### Dependency Injection
 
-[Dependency injection (DI)](https://en.wikipedia.org/wiki/Dependency_injection) is a concept where an object does not need to configure its own dependencies (objects). Instead, dependencies are passed in by another object. DI suggests that objects be initialized somewhere else and given to the requesting object. There are various forms of injections: 
+[Dependency injection (DI)](https://en.wikipedia.org/wiki/Dependency_injection) is a concept where an object does not need to configure its own dependencies (objects). Instead, dependencies are passed in by another object. DI suggests that objects be initialized somewhere else and given to the requesting object. There are various forms of injections:
 
-- Constructor injection - where the dependencies are passed through the constructor. 
+- Constructor injection - where the dependencies are passed through the constructor.
 - Field injection - where dependencies are sent to the class fields directly, etc.
 
 The last one is quite difficult to implement by self, and so, the use of a DI library [Dagger2](https://github.com/google/dagger) is advised. Below is a quick snippet to showing an instance of dependency injection:
@@ -93,7 +93,7 @@ While using an architecture, be sure to maintain that structure throughout the a
 
 ### Excellent UI
 
-A lovely feel and experience of an app starts with a good design. Be sure to get one that matches the Google [material design principles](https://material.io/guidelines/material-design/introduction.html). Some of these principles include: 
+A lovely feel and experience of an app starts with a good design. Be sure to get one that matches the Google [material design principles](https://material.io/guidelines/material-design/introduction.html). Some of these principles include:
 
 - Providing an Up navigation button.
 - Consistency in color combinations.
@@ -101,7 +101,7 @@ A lovely feel and experience of an app starts with a good design. Be sure to get
 
 ### Handling Configuration Changes
 
-Configuration changes seem to be a pain in the flesh of most Android developers. When you rotate your device and the screen changes orientation, Android usually destroys your application’s existing Activities and Fragments and recreates them. This is done so that the application can reload resources based on the new configuration and this is basically like starting afresh. Improper handling of this scenario is an instance of bad user experience. This could make you loose out on a whole lot of users. 
+Configuration changes seem to be a pain in the flesh of most Android developers. When you rotate your device and the screen changes orientation, Android usually destroys your application’s existing Activities and Fragments and recreates them. This is done so that the application can reload resources based on the new configuration and this is basically like starting afresh. Improper handling of this scenario is an instance of bad user experience. This could make you loose out on a whole lot of users.
 
 One solution to this is not far off. With the [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel.html) as part of the [architecture components](https://developer.android.com/topic/libraries/architecture/index.html) released by Google in 2017, you can be comfortable about the orientation change of your app without losing data in it. The ViewModel is designed to store and manage UI-related data in a lifecycle conscious way. With it, your data can survive configuration changes. To use it, you require dependencies:
 Add this to your project `build.gradle` file:
@@ -125,16 +125,16 @@ Thereafter, create a class that extends ViewModel:
 
 ```kotlin
 class MoviesViewModel : ViewModel() {
-    
+
     private val moviesRepository: MoviesRepository
-    
+
     val popularMoviesLiveData: LiveData<MoviesResponse>
         get() = moviesRepository.RxGetPopularMovies()
-    
+
     init {
         this.moviesRepository = MoviesRepository()
     }
-    
+
 }
 ```
 
@@ -151,7 +151,7 @@ Another solution to consider is persisting your data in the database after it ha
 Another bad user experience is in irregular freezing of an app. Irregular in the sense that it is, as a result, one carelessness or the other. This could be as a result of performing tasks on the wrong thread. This brings us to one of my favorite phrases - “Respect the UI Thread”. Operations that take a long time to finish usually freeze our app and as such need to be handled outside of the main thread. A typical example of a background task is a database operation. A snippet for handling this in the background can be this:
 
 ```kotlin
-Executors.newSingleThreadExecutor().execute { 
+Executors.newSingleThreadExecutor().execute {
     // long running tasks
 }
 ```
@@ -177,22 +177,22 @@ class SampleIntentService : IntentService("SampleIntentService") {
 ```
 
 {% include tweet_quote.html quote_text="Respect the UI thread! Always move your long running tasks to the background thread." %}   
-   
+
 ## Compatibility
 
-In Android, the word compatibility points to two options: app and device compatibility. As Android developers, we just have to worry about the first - app compatibility. Talking about device compatibility, only devices that are Android compatible include Google Play Store which in turn accepts our app. So as app developers, we have no role to play here at least for now. 
+In Android, the word compatibility points to two options: app and device compatibility. As Android developers, we just have to worry about the first - app compatibility. Talking about device compatibility, only devices that are Android compatible include Google Play Store which in turn accepts our app. So as app developers, we have no role to play here at least for now.
 
 ### Create alternative resources
 
-This aspect focuses on a UI that scales (i.e a UI that adapts irrespective of device screen). There are many devices with different screen sizes and densities. Depending on our target market, we should make adequate provision for a variety of resources (images & layouts), thereby, giving our app the much-needed flexibility. No one would be happy to download an app that is skewed on his/her device. There are principles to be applied to achieve this feat. 
+This aspect focuses on a UI that scales (i.e a UI that adapts irrespective of device screen). There are many devices with different screen sizes and densities. Depending on our target market, we should make adequate provision for a variety of resources (images & layouts), thereby, giving our app the much-needed flexibility. No one would be happy to download an app that is skewed on his/her device. There are principles to be applied to achieve this feat.
 
-Android provides a framework in which we can provide configuration-specific [app resources](https://developer.android.com/guide/topics/resources/overview.html) such as different XML layouts for different screen sizes. Android then loads the appropriate resources based on the current device configuration. 
+Android provides a framework in which we can provide configuration-specific [app resources](https://developer.android.com/guide/topics/resources/overview.html) such as different XML layouts for different screen sizes. Android then loads the appropriate resources based on the current device configuration.
 
 If you have intentions of supporting a tablet, you should consider creating an alternative layout. You can create alternative layouts by right-clicking on any folder in the directory → New → Android resource file. In our own case here, we chose the smallest width qualifier and set the smallest screen width to `600dp`.
 
 ![Create alternative resources](https://cdn.auth0.com/blog/android-best-practices/constraint-layout.png)
 
-This means that only screens with a minimum width of `600dp` can use this alternative layout. This layout is definitely for tablets. You can create layouts based on heights, orientation, and general sizes. Creating alternative layouts can be minimized if you use a very flexible layout as ConstraintLayout, and you reduce hard coding of view sizes. When assigning a width and height to a view, using a direct size, say `20dp` might have a negative design effect on contrasting devices. Remember the device you use for preview is not the only device that exists! You should instead opt for `wrap_content` or `match_parent` when assigning the widths and heights of views. This is because these two properties automatically adapt to your device size -  `wrap_content` takes the size of the view while `match_parent` takes the size of the layout housing the view. 
+This means that only screens with a minimum width of `600dp` can use this alternative layout. This layout is definitely for tablets. You can create layouts based on heights, orientation, and general sizes. Creating alternative layouts can be minimized if you use a very flexible layout as ConstraintLayout, and you reduce hard coding of view sizes. When assigning a width and height to a view, using a direct size, say `20dp` might have a negative design effect on contrasting devices. Remember the device you use for preview is not the only device that exists! You should instead opt for `wrap_content` or `match_parent` when assigning the widths and heights of views. This is because these two properties automatically adapt to your device size -  `wrap_content` takes the size of the view while `match_parent` takes the size of the layout housing the view.
 
 Just as we create alternative layouts, we also need to create alternative drawable (image) files if you are going for the traditional `.png` or `.jpg` files. But using vector drawables are recommended because of scalability. To use them, make sure there are enabled in your app `build.gradle` file:
 
@@ -217,7 +217,7 @@ Then, you store your vector file usually ending with `.xml` in the drawables fol
 
 ### Prepare for multi-language support
 
-Another aspect you should take note of is potential support for multiple languages. To achieve this, you have to store all your strings in the `strings.xml` file. This gives room for easy translation at any point in time. Even if you don’t plan to support other languages, storing all strings in the `strings.xml` file is a standard practice. 
+Another aspect you should take note of is potential support for multiple languages. To achieve this, you have to store all your strings in the `strings.xml` file. This gives room for easy translation at any point in time. Even if you don’t plan to support other languages, storing all strings in the `strings.xml` file is a standard practice.
 
 ## Security & Privacy
 
@@ -228,11 +228,11 @@ Security could easily be one of the most neglected areas when building apps beca
 - reCAPTCHA for Android: to ensure an app is not automated i.e handled by a robot.
 - Encryption from Android M to protect user data, etc.
 
-However, some security vulnerabilities are outside their control at least at the moment. There is still some work to be done. 
+However, some security vulnerabilities are outside their control at least at the moment. There is still some work to be done.
 
 ### Communicate Securely with a Server
 
-Most times, our apps need to communicate with APIs and backend services to fetch data or send data. This should be done in a secure manner. For this reason, The [network security configuration](https://developer.android.com/training/articles/security-config.html) was introduced to ensure adequate validation of the servers our apps intend to communicate with. 
+Most times, our apps need to communicate with APIs and backend services to fetch data or send data. This should be done in a secure manner. For this reason, The [network security configuration](https://developer.android.com/training/articles/security-config.html) was introduced to ensure adequate validation of the servers our apps intend to communicate with.
 
 When we talk about secure backend services, we won't go too far because have such services readily available at your beck and call, thanks to Auth0. Auth0 is a company that provides identity management solutions for our apps. If you are building a social app or anything related that requires authentication and user management, you could use the service provided to us by Auth0 to manage our identities while you focus on other functionalities. Auth0 makes use of secure protocols such as [OAuth2.0](https://auth0.com/docs/protocols/oauth2). The OAuth2.0 protocol is used for mainly authorization. It is a protocol that gives a user access to resources on a server without exposing the identity. Below is a generic workflow of the protocol.
 
@@ -261,7 +261,7 @@ This is the latest Android Lock library released recently with some bug fixes. U
     package="com.auth0.samples">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-        
+
     // ...
 </manifest>
 ```
@@ -278,7 +278,7 @@ demo://YOUR_AUTH0_DOMAIN/android/YOUR_APP_PACKAGE_NAME/callback
 
 This is a sample callback `URL` which contains:
 
-- The scheme:  since this is a demo, you can opt for the `demo` against the `https` and `http`. 
+- The scheme:  since this is a demo, you can opt for the `demo` against the `https` and `http`.
 - Our Auth0 domain name: usually something like `xxx.auth0.com`
 - The android directory -`/android`
 - Our app package name: you can get this from your `AndroidManifest.xml` file.
@@ -303,7 +303,7 @@ defaultConfig {
     minSdkVersion 19
     targetSdkVersion 27
     //...
-    
+
     //---> Add the next line
     manifestPlaceholders = [auth0Domain: "@string/com_auth0_domain", auth0Scheme: "demo"]
     //<---
@@ -331,11 +331,11 @@ WebAuthProvider.init(auth0)
         }
     })
 ```
- 
+
 Here we initialized the `Auth0` object with the app context. This is because we have already provided the details in the `AndroidManifest.xml` file. We also set it to be [ODI comformant](https://auth0.com/docs/api-auth/intro). And we used the same scheme as we used in our callback URL and manifest holders. The schemes should always match.
 
-We have been able to integrate a secure backend service for our apps.  You can go further than this to [add more identity providers](https://auth0.com/learn/social-login/) for your Auth0 application or even decide to go [passwordless](https://auth0.com/docs/connections/passwordless). 
- 
+We have been able to integrate a secure backend service for our apps.  You can go further than this to [add more identity providers](https://auth0.com/learn/social-login/) for your Auth0 application or even decide to go [passwordless](https://auth0.com/docs/connections/passwordless).
+
 ### Permissions
 
 Already, since the Marshmallow release, Android ensures adequate privacy by making sure that the app requests some permissions at the point of use - what we call run-time permissions. Similarly, accessing features without requesting  the necessary permissions in the `AndroidManifest.xml` file results in a security exception. Your app should request only the minimum number of permissions necessary to function properly. Whenever possible, don't add a permission to your app to complete an action that could be completed in another app. Instead, use an intent to defer the request to a different app that already has the necessary permission.
@@ -347,7 +347,7 @@ Our apps always have the need to store data. Data is supposed to be stored in a 
 ```kotlin  
 val pref = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE)
 ```
- 
+
 The official Android [docs](https://developer.android.com/topic/security/best-practices.html) provides other relevant practices app developers should take note of.
 
 ## Performance
@@ -389,7 +389,7 @@ Create an Application class:
 
 ```kotlin
 class ExampleApplication : Application() {
-    
+
     override fun onCreate() {
         super.onCreate()
         if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -403,11 +403,11 @@ class ExampleApplication : Application() {
 }
 ```
 
-With this, LeakCanary monitors your app and sends you a notification when there is a memory leak. 
+With this, LeakCanary monitors your app and sends you a notification when there is a memory leak.
 
 ### Layout Performance
 
-Next thing in discussing our app performance concerns our layout performance. Deep nested layout are slow to draw on the UI, therefore, producing a lag in performance in our app. The layout performance of our app can be improved by flattening the layout— make the layout shallow and wide, rather than narrow and deep (deep-nested). This is where the [ConstraintLayout](https://developer.android.com/training/constraint-layout/index.html) comes in. The ConstraintLayout is a pretty new layout released in May 2017. It supports API 9 upwards. It allows you to create large and complex layouts with a flat view hierarchy (no nested view groups). It is a replacement for the relative layout. 
+Next thing in discussing our app performance concerns our layout performance. Deep nested layout are slow to draw on the UI, therefore, producing a lag in performance in our app. The layout performance of our app can be improved by flattening the layout— make the layout shallow and wide, rather than narrow and deep (deep-nested). This is where the [ConstraintLayout](https://developer.android.com/training/constraint-layout/index.html) comes in. The ConstraintLayout is a pretty new layout released in May 2017. It supports API 9 upwards. It allows you to create large and complex layouts with a flat view hierarchy (no nested view groups). It is a replacement for the relative layout.
 
 A typical RelativeLayout looks like this:
 
@@ -435,13 +435,13 @@ And a ConstraintLayout looks like this:
 </android.support.constraint.ConstraintLayout>
 ```
 
-ConstraintLayout gives us a performance advantage because the layout is easier to draw, and therefore, it takes less time to display on the UI. Recently, in Android Studio, projects are created with the ConstraintLayout by default. You can get acquainted with this awesome layout using the official [docs](https://developer.android.com/training/constraint-layout/index.html). 
+ConstraintLayout gives us a performance advantage because the layout is easier to draw, and therefore, it takes less time to display on the UI. Recently, in Android Studio, projects are created with the ConstraintLayout by default. You can get acquainted with this awesome layout using the official [docs](https://developer.android.com/training/constraint-layout/index.html).
 
-{% include tweet_quote.html quote_text="ConstraintLayout helps us to create large complex layouts while improving the performance of our layout in the process." %} 
+{% include tweet_quote.html quote_text="ConstraintLayout helps us to create large complex layouts while improving the performance of our layout in the process." %}
 
 ### Keep the Long Running Tasks Away
 
-As stated earlier in this post, respect the UI thread. Use a background thread for all long running tasks. Doing this counts for a better performance and better user experience in the long run. 
+As stated earlier in this post, respect the UI thread. Use a background thread for all long running tasks. Doing this counts for a better performance and better user experience in the long run.
 
 Finally, as an Android developer, evaluating performance should be a watchword. Android Studio provides us with the profiler to check the performance of our app while still in development. The profiler helps us gauge the device’s resource usage of our app during execution. It is usually located at the bottom of your screen and only shows up when the app is running.
 

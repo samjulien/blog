@@ -163,7 +163,8 @@ Finally, we have a `logout()` method that clears data from local storage.
 
 The [callback component](https://github.com/auth0-blog/vue-auth0-aside/tree/master/src/components/Callback.vue) is where the app is redirected after authentication. This component simply shows a loading message until the login process is completed. It executes the `handleAuthentication()` method to parse the hash and extract authentication information.
 
-```js
+{% highlight html %}
+{% raw %}
 // src/components/Callback.vue
 <template>
   <div>
@@ -185,7 +186,8 @@ export default {
   },
 };
 </script>
-```
+{% endraw %}
+{% endhighlight %}
 
 ### Making Authenticated API Requests
 
