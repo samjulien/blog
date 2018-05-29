@@ -10,7 +10,7 @@ design:
   image: https://cdn.auth0.com/blog/ruby-workflow-docker/logo.png
 author:
   name: "Vijayabharathi Balasubramanian"
-  url: "https://twitter.com/vijayabharathib"
+  url: "https://www.pineboat.in/author/vijayabharathib/"
   mail: "yajiv.vijay@gmail.com"
   avatar: "https://cdn.auth0.com/blog/guest-authors/vijay.jpeg"
 tags:
@@ -25,6 +25,7 @@ tags:
 - continuous-delivery
 - auth0
 related:
+- 2018-05-24-ruby-on-rails-killer-workflow-with-docker-part-2
 - 2017-05-22-load-balancing-nodejs-applications-with-nginx-and-docker
 - 2017-01-03-rails-5-with-auth0
 ---
