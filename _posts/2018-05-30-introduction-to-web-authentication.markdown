@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A Quick Look at Web Authentication"
+title: "Introduction to Web Authentication: The New W3C Spec"
 description: "Learn about Web Authentication, a new standard for secure authentication on the web."
 longdescription: "A new authentication standard aimed at the web is gaining traction. Web Authentication aims to provide a secure, passwordless authentication flow that can be used with hardware tokens, smartphones, and web browsers. Learn more about it in this article."
 date: 2018-05-30 12:30
