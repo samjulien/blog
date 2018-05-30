@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "Introduction to Web Authentication: The New W3C Spec"
-description: "Learn about Web Authentication, a new standard for secure authentication on the web."
-longdescription: "A new authentication standard aimed at the web is gaining traction. Web Authentication aims to provide a secure, passwordless authentication flow that can be used with hardware tokens, smartphones, and web browsers. Learn more about it in this article."
+description: "Learn about WebAuthn, a new standard for secure authentication on the web."
+longdescription: "A new authentication standard aimed at the web is gaining traction. WebAuthn aims to provide a secure, passwordless authentication flow that can be used with hardware tokens, smartphones, and web browsers. Learn more about it in this article."
 date: 2018-05-30 12:30
 category: Technical Guide, JWT
 author:
@@ -37,7 +37,7 @@ related:
 
 [News](https://www.engadget.com/2018/05/09/mozilla-firefox-passwords-web-authentication-support/) about [Web Authentication](https://www.w3.org/TR/webauthn/), or WebAuthn for short, reaching maturity and being enabled by default in web browsers hit the headlines recently. Web Authentication is a fairly recent W3C standard backed by major players like Google, Paypal, Mozilla, Microsoft, and Qualcomm. It aims at defining a web-browser API for the creation and use of strong authentication credentials based on public key cryptography. The driving force behind the proposal is to increase security for the authentication process by removing or complementing password-based authentication while remaining convenient for end-users. Although implementations are still in their early days, and the standard has not been finalized, the strong push from major players, and the fact that both Firefox and Chrome are enabling their implementations by default, are strong indicators that this may cause a significant impact in the authentication space. Let's check it out!
 
-{% include tweet_quote.html quote_text="Web Authentication is backed by major players in the industry, let's find out what it's all about!" %}
+{% include tweet_quote.html quote_text="Web Authentication (a.k.a. WebAuthn) is backed by major players in the industry, let's find out what it's all about!" %}
 
 ---
 
@@ -55,7 +55,7 @@ The draft specification says:
 To better understand Web Authentication, let's go through a quick overview.
 
 ## Web Authentication In a Nutshell
-Let's take a look at the entities involved in Web Authentication:
+Let's take a look at the entities involved in WebAuthn:
 
 ![Web Authentication Entities](https://cdn.auth0.com/blog/webauthn/1-Web-Authentication-Entities.png)
 
@@ -147,13 +147,13 @@ But the cool thing about all of this is that you don't need to care about any of
 ## A Working Web Authentication Implementation at Auth0
 One of the cool things about our architecture is that changes in the login system can be integrated with little or no changes to client code. In other words, once our implementation of Web Authentication is released, enabling it for your apps will be a matter of making a few clicks in the [Auth0 Dashboard](https://manage.auth0.com/).
 
-This is a proof-of-concept of how Web Authentication as a second factor will work in Auth0:
+This is a proof-of-concept of how WebAuthn as a second factor will work in Auth0:
 
 <video src="https://cdn.auth0.com/blog/webauthn/Auth0-Web-Authentication-2-small.mp4" controls autoplay loop></video>
 
 What you see in this video is already working internally. We are eager to finish the implementation so you can start enabling Web Authentication in your apps.
 
-Of course, there is more to Web Authentication than just using it as a second factor. We are also planning to enable Web Authentication as a **primary login solution**, that is, as a **passwordless login** mechanism. If you are not familiar with passwordless login and how it works, [take a look at our introduction](https://auth0.com/passwordless). Can you imagine logging in to your bank with just a push of your USB authenticator's button? <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">Sign up for an Auth0 account</a> and start improving your logins today. When Web Authentication integration is ready, enabling it for your apps will be a breeze.
+Of course, there is more to Web Authentication than just using it as a second factor. We are also planning to enable Web Authentication as a **primary login solution**, that is, as a **passwordless login** mechanism. If you are not familiar with passwordless login and how it works, [take a look at our introduction](https://auth0.com/passwordless). Can you imagine logging in to your bank with just a push of your USB authenticator's button? <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">Sign up for an Auth0 account</a> and start improving your logins today. When WebAuthn integration is ready, enabling it for your apps will be a breeze.
 
 ## Conclusion
 Web Authentication brings a stronger authentication mechanism to the masses by defining an API that both authenticators and web browsers can implement. With the release of [Firefox 60](https://www.mozilla.org/en-US/firefox/60.0/releasenotes/) and [Chrome 67](https://www.chromium.org/developers/calendar), Web Authentication has become available to a big number of users. Authenticators, such as [Yubikeys](https://www.yubico.com/), already support the necessary protocols and work with current implementations. At Auth0 we care about providing the necessary building blocks for your identity infrastructure, and Web Authentication could eventually become a major improvement in security and user experience. If you would like to use Web Authentication with Auth0 for your product, let us know in the comments, or [contact us through our "Talk to Sales" contact form](https://auth0.com/). Stay tuned to learn more about Web Authentication in Auth0 the next few months.
