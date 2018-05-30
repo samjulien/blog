@@ -3,7 +3,7 @@ layout: post
 title: "Hashing in Action: Understanding bcrypt"
 description: "The bcrypt hashing function allows us to build a password security platform that scales with computation power and always hashes every password with a salt."
 longdescription: "The bcrypt hashing function allows us to build a password security platform that can scale with computation power. It provides us with hashing and salting mechanisms that can be tuned to run slower as our servers, or the computers available to attackers, get faster."
-date: 2018-04-20 8:30
+date: 2018-05-30 8:30
 category: Technical Guide, Security
 design: 
   bg_color: "#4B673E"
