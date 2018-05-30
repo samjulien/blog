@@ -197,7 +197,9 @@ We'll receive `accessToken` and `expiresIn` in the hash from Auth0 when returnin
 
 > **Note:** The profile takes the shape of [`profile.model.ts`](https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/auth/profile.model.ts) from the [OpenID standard claims](https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims).
 
-Finally, we have a `logout()` method that clears data from and updates the `loggedIn$` subject. We also have an `authenticated` accessor to return current authentication status based on presence of a token and the token's expiration.
+Finally, we have a `logout()` method that clears data, and updates the `loggedIn$` subject, and logs out of the authentication session on Auth0's server. 
+
+We also have an `authenticated` accessor to return current authentication status based on presence of a token and the token's expiration.
 
 Once [`AuthService` is provided in `app.module.ts`](https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/app.module.ts#L32), its methods and properties can be used anywhere in our app, such as the [home component](https://github.com/auth0-blog/angular-auth0-aside/tree/master/src/app/home).
 
