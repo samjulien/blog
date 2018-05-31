@@ -11,8 +11,8 @@ author:
   avatar: https://avatars1.githubusercontent.com/u/956290?s=200
   mail: luke.oliff@auth0.com
 design:
-  bg_color: "#2B1743"
-  image: https://cdn.auth0.com/blog/gatsby-react-webtask/logo.png
+  bg_color: "#222228"
+  image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
 tags:
 - helloworld
 - hello-world
@@ -50,7 +50,7 @@ Go to [nodejs.org](https://nodejs.org/en/) where you're looking to download a ve
 
 Double-click on your downloaded **NodeJS** package and install it.
 
-![Install NodeJS](/Users/olaf/Desktop/Screen Shot 2018-05-22 at 11.16.07.png)
+![Install NodeJS](https://cdn.auth0.com/blog/helloworld-with-auth0/nodejs-install.png)
 
 ### What is Terminal?
 
@@ -58,7 +58,7 @@ Nothing to install this time. But, take a look at what Terminal looks like.
 
 Press **Command+Space** together. This opens *Spotlight Search*, where you can type ***Terminal*** and press enter. This opens up ***Terminal*** for you.
 
-![Use Spotlight to open Terminal](/Users/olaf/Desktop/Screen Shot 2018-05-22 at 11.37.23.png)
+![Use Spotlight to open Terminal](https://cdn.auth0.com/blog/helloworld-with-auth0/use-spotlight-to-open-terminal.png)
 
 Being in ***Terminal*** is like being in a folder that you can tell what to do, without using your mouse.
 
@@ -68,7 +68,7 @@ You should be able to issue a command like this, to change to your ***Downloads*
 cd ~/Downloads/
 ```
 
-![Change directory to Downloads](/Users/olaf/Desktop/Screen Shot 2018-05-29 at 14.34.10.png)
+![Change directory to Downloads](https://cdn.auth0.com/blog/helloworld-with-auth0/change-directory-to-downloads.png)
 
 Remember what you did here, because you'll need to get to use ***Terminal*** to access a directory in this guide.
 
@@ -80,7 +80,9 @@ Remember what you did here, because you'll need to get to use ***Terminal*** to 
 
 You can use an existing account, or an existing tenant, but I would recommend a nice clean place to start by signing up a fresh and creating a new tenant from there.
 
-![Sign up to Auth0 and create a new tenant](/Users/olaf/Desktop/Screen Shot 2018-05-23 at 10.40.43.png)
+![Sign up to Auth0 and create a new tenant](https://cdn.auth0.com/blog/helloworld-with-auth0/sign-up-to-auth0-and-create-a-tenant.png)
+
+![Tell us more about you](https://cdn.auth0.com/blog/helloworld-with-auth0/tell-us-more-about-you.png)
 
 ## Lab 2 - Create and run an application
 
@@ -88,36 +90,36 @@ You can use an existing account, or an existing tenant, but I would recommend a 
 
 2. Name your new application and give it the type "Single Page Web Applications", and click the "Create" button.
 
-   ![Create new Single Page Web Application](/Users/olaf/Desktop/Screen Shot 2018-05-23 at 10.46.26.png)
+   ![Create a new Single Page Application](https://cdn.auth0.com/blog/helloworld-with-auth0/create-a-new-spa.png)
 
 3. As your technology, select Javascript (JS). You can also search for it in the search box.
 
-   ![Select JS as our preferred technology](/Users/olaf/Desktop/Screen Shot 2018-05-29 at 14.25.11.png)
+   ![Select JS as our preferred technology](https://cdn.auth0.com/blog/helloworld-with-auth0/select-js-as-our-preferred-technology.png)
 
 4. Download the **sample project** by clicking ***DOWNLOAD***, it will be named ***01-login.zip***.
 
-   ![Download the Sample Project](/Users/olaf/Desktop/Screen Shot 2018-05-29 at 14.25.22.png)
+   ![Download the Sample Project](https://cdn.auth0.com/blog/helloworld-with-auth0/download-the-sample-project.png)
 
-5. Using Finder (Mac's standard file browser), find the **sample project** zip file ***01-login.zip*** in your ***Downloads*** directory, and double click it to extract it.
+5. Using **Finder** (Mac's standard file browser), find the **sample project** zip file ***01-login.zip*** in your ***Downloads*** directory, and double click it to extract it.
 
-   ![Unzip the Sample Project](/Users/olaf/Desktop/Screen Shot 2018-05-29 at 15.13.46.png)
+   ![Unzip the Sample Project](https://cdn.auth0.com/blog/helloworld-with-auth0/unzip-the-sample-project.png)
 
 > ***Tip:*** If you see text `styled like this` in the guide, it may valuable to know you can copy and paste it to make life easier. Copy and paste is a developers best friend, as it reduces the time of repetitive entry, and it reduces the regularity of typos in what you might be copying (unless you copy a typo!!)
 
 6. Open ***Terminal*** and change to the **sample project** directory by typing `cd ~/Downloads/01-login` into terminal and pressing enter.
 
-   ![Change to the Sample Project in Terminal](/Users/olaf/Desktop/Screen Shot 2018-05-29 at 15.40.32.png)
+   ![Change to the Sample Project in Terminal](https://cdn.auth0.com/blog/helloworld-with-auth0/change-to-the-sample-project-in-terminal.png)
 
 7. Run these two commands in your ***Terminal*** window.
 
    - `npm install`
    - `npm start`
 
-   ![Install and run the Sample Project](/Users/olaf/Desktop/Screen Shot 2018-05-29 at 15.55.23.png)
+   ![Install and run the Sample Project](https://cdn.auth0.com/blog/helloworld-with-auth0/install-and-run-the-sample-project.png)
    
 8. Run the **sample project** in your favourite web browser by going to this url: `http://localhost:3000`
 
-   ![Visit the Sample Project in the browser](/Users/olaf/Desktop/Screen Shot 2018-05-29 at 15.57.08.png)
+   ![Visit the Sample Project in the browser](https://cdn.auth0.com/blog/helloworld-with-auth0/visit-the-sample-project-in-the-browser.png)
    
 > ***Note:*** If you try and log in on the **sample project**, you'll get an error.
 
@@ -131,7 +133,7 @@ The Log In button is broken you need to fix it.
 
 1. Go to your [**Auth0 Dashboard**](https://manage.auth0.com/#/) and open up **Hosted Pages** from the main menu.
 
-   ![Open Hosted Pages](/Users/olaf/Desktop/Screen Shot 2018-05-30 at 14.10.59.png)
+   ![Open Hosted Pages](https://cdn.auth0.com/blog/helloworld-with-auth0/open-hosted-pages.png)
 
 2. Enable ***Custom Login Page***.
 
@@ -153,7 +155,7 @@ Click save once you've made your changes.
 
 Test your **sample project**'s login. It should look something like this.
 
-![Customized Auth0 Lock](/Users/olaf/Desktop/Screen Shot 2018-05-30 at 16.24.39.png)
+![Customized Auth0 Lock](https://cdn.auth0.com/blog/helloworld-with-auth0/customized-auth0-lock.png)
 
 ## Lab 4 - Enable Facebook login
 
@@ -165,7 +167,7 @@ Now enable **Facebook** login.
 
 Test your **sample project**'s login. It should look something like this.
 
-![Enabled Facebook social login](/Users/olaf/Desktop/Screen Shot 2018-05-31 at 10.49.31.png)
+![Enabled Facebook social login](https://cdn.auth0.com/blog/helloworld-with-auth0/enabled-facebook-social-login.png)
 
 ## Lab 5 - Enable Multifactor Auth with Guardian
 
@@ -177,7 +179,7 @@ Test your **sample project**'s login. It should look something like this.
 
 Instead of just logging in, sign up using a username and password on your **sample project**. You should spot multifactor is working when you come across this.
 
-![Enabled multifactor authentication](/Users/olaf/Desktop/Screen Shot 2018-05-31 at 10.54.51.png)
+![Enabled multifactor authentication](https://cdn.auth0.com/blog/helloworld-with-auth0/enabled-multifactor-authentication.png)
 
 ## Lab 6 - Restrict sign up to your domain
 
