@@ -1,6 +1,6 @@
 ---
 layout: post
-title: HelloWorld: with Auth0
+title: "HelloWorld: with Auth0"
 description: "Add authentication to our a SPA, customize Auth0 Lock, enable social login, and set up multi-factor authentication."
 longdescription: "In this guide, you'll finish adding authentication to our simple single page application, customize Auth0 Lock, enable social login with Facebook and set up multi-factor authentication. If none of this makes any sense, don't worry. We're going to explain that as well."
 date: 2018-05-19 15:58
@@ -55,6 +55,8 @@ Double-click on your downloaded **NodeJS** package and install it.
 ### What is Terminal?
 
 Nothing to install this time. But, take a look at what Terminal looks like.
+
+{% include tweet_quote.html quote_text="This guide is designed for non-devs and will show you a sample project and help you finish setting up authentication. Exciting!" %}
 
 Press **Command+Space** together. This opens *Spotlight Search*, where you can type ***Terminal*** and press enter. This opens up ***Terminal*** for you.
 
@@ -199,6 +201,8 @@ Try and sign up with an email address not inside the domain you just limited it 
 
 By now you should be a pro! Right?
 
+{% include tweet_quote.html quote_text="Become a pro! Or, not? Maybe just see how quickly even non-devs can setup Auth0 as an identity and access management provider." %}
+
 If you've got this far and you've skipped some labs, or struggled to even get started; don't be disheartened or dismayed. This is a programming guide for people who are not programmers. Use our comments section below to get in touch with any questions you might have.
 
 The Auth0 features and products we've covered are:
@@ -214,8 +218,6 @@ Auth0's Universal Login is the most secure way to easily authenticate users for 
 We used [Auth0's Customizable Hosted Pages](https://auth0.com/docs/hosted-pages#customize-your-hosted-page) to brand our login and sign up form.
 
 Auth0 offers you the ability to display customized pages containing Auth0-related functionality and to which Auth0 redirects your users during the authorization process.
-
-{% include asides/about-auth0.markdown %}
 
 ### Identity Providers
 
@@ -238,6 +240,10 @@ MFA is a method of verifying a user's identity by requiring them to present more
 We've used an [Auth0 Rule](https://auth0.com/docs/rules/current) to restrict sign up to users only from the same domain as you.
 
 Rules are functions written in JavaScript that are executed when a user authenticates to your application. They run once the authentication process is complete and you can use them to customize and extend Auth0's capabilities. They can be chained together for modular coding and can be turned on and off individually.
+
+{% include asides/about-auth0.markdown %}
+
+<div style="margin: 1000px 0; display: block; text-transform: uppercase; text-align: center;">~ Keep scrolling for answers ~</div>
 
 ## Lab Answers
 
@@ -296,3 +302,5 @@ Replace it with this code:
 ```js
     var whitelist = ['gmail.com']; //authorized domains
 ```
+
+<div style="margin: 20px 0; display: block; text-transform: uppercase; text-align: center;">~ EOF ~</div>
