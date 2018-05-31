@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "HelloWorld: with Auth0"
-description: "Add authentication to our a SPA, customize Auth0 Lock, enable social login, and set up multi-factor authentication."
-longdescription: "In this guide, you'll finish adding authentication to our simple single page application, customize Auth0 Lock, enable social login with Facebook and set up multi-factor authentication. If none of this makes any sense, don't worry. We're going to explain that as well."
+title: "HelloWorld: With Auth0"
+description: "This guide is designed for non-devs and will show you a sample project and help you finish setting up authentication. Exciting!"
+longdescription: "This guide is designed for non-devs and will show you a sample project and help you finish setting up authentication. Exciting! You'll also get to customize Auth0 Lock, enable Facebook login and set up multi-factor authentication. If none of this makes any sense, don't worry. We're going to explain it all!"
 date: 2018-05-19 15:58
 category: Technical Guide, Identity
 author:
