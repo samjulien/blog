@@ -126,22 +126,34 @@ $user->save();
 
 ## Cross-Site Scripting Protection on Laravel
 
-Laravel's {{}} syntax will escape any HTML objects that are the part of a view variable. It’s a big-deal, considering that a malevolent user can authorize the subsequent string into a comment or user profile:
+Laravel's `@{{}}` syntax will escape any HTML objects that are the part of a view variable. It’s a big-deal, considering that a malevolent user can authorize the subsequent string into a comment or user profile:
 
-```html
+{% highlight html %}
+{% raw %}
 My list <script>alert("spam spam spam!")</script>
-```
+{% endraw %}
+{% endhighlight %}
 
-Without cross-site scripting protection, a view variable like the one above would be presented in a web page in the form of an annoying alert window,, causing this form of attack called cross-site scripting. This may sound like a minor exasperation associated with more erudite attacks which might hasten the user to supply some bank information via a JavaScript model which was afterward sent to a 3rd website.
+![Avoiding cross-site scripting attacks on Laravel applications.](https://cdn.auth0.com/blog/laravel-mission-critical/xss.png)
 
-Fortunately, when a variable is rendered within the `@{{}}` escape tags, Laravel would in its place render the string like so, thus averting the likelihood of cross-site scripting:
+Without [cross-site scripting](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)) protection, a view variable like the one above would be presented in a web page in the form of an annoying alert window, causing this form of attack called cross-site scripting. This may sound like a minor exasperation associated with more erudite attacks which might hasten the user to supply some bank information via a JavaScript model which are afterward sent to third-party websites.
 
-```html
+Fortunately, when a variable is rendered within the `@{{}}` escape tags, Laravel will render in its place a string as the following one:
+
+{% highlight html %}
+{% raw %}
 My list &lt;script&gt;alert("spam spam spam!")&lt;/script&gt;
-```
+{% endraw %}
+{% endhighlight %}
+
+This makes Laravel applications immune to this type of attack.
+
+![Laravel applications are immune to cross-site scripting attacks.](https://cdn.auth0.com/blog/laravel-mission-critical/no-xss.png)
 
 ## Conclusion
 
-Of course, there are many other things you must do to protect your Laravel application make it apt for mission critical application, such as disabling web browser-based error reporting to stop sensitive application details being visible to a possibly malevolent party. Regardless, Laravel ensures a much more secure application by disregarding these five everyday attack vectors.
+As you may know, there are many other things you must do to protect your Laravel applications to make them apt for mission-critical scenarios (such as disabling web browser-based error reporting to stop sensitive application details being visible to a possibly malevolent party). Nevertheless, Laravel ensures a much more secure application by disregarding these five everyday-attack vectors.
 
-Indeed, Laravel is the reason behind renewed interest of developer community in PHP development. A free, open-source PHP web framework, created by Taylor Otwell and intended for the development of web applications following the model–view–controller (MVC) architectural pattern and based on Symfony, Laravel took over Zend, CakePHP, Yii and CodeIgniter in terms of popularity within a few years of its introduction. A major reason is this that it is much securer than other frameworks and apt for mission-article applications.
+Indeed, Laravel is the reason behind renewed interest of developer community in PHP development. As a free, open-source PHP web framework, created by Taylor Otwell and intended for the development of web applications following the model–view–controller (MVC) architectural pattern and based on Symfony, Laravel took over Zend, CakePHP, Yii and CodeIgniter in terms of popularity within a few years of its introduction.
+
+A major reason is this that it is much securer than other frameworks and more apt for mission-article applications.
