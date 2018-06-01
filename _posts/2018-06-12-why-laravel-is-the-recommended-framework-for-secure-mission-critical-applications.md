@@ -28,3 +28,109 @@ related:
 - 2016-06-23-creating-your-first-laravel-app-and-adding-authentication
 - 2018-02-21-laravel-5-6-release-what-is-new
 ---
+
+There are many things that you can do to secure your application. Laravel makes your apps more secure by default, which makes it the recommended PHP framework for mission-critical applications.
+
+For a mission-critical application, there are two levels of security that matters: application security and server security. Laravel is a development framework and, as such, it won't make your server more secure, just your application.
+
+Laravel features allow you to use everything securely. All the data is sanitized where needed unless you're using Laravel with raw queries. Then, you're on your own basically. The point is, Laravel gives you security for common vulnerabilities.
+
+In this article, you will learn about the most important security features of Laravel.
+
+## Protecting Laravel Applications from SQL Injection
+
+Laravel protects you from SQL injection as long as you're using the Fluent Query Builder or Eloquent. Laravel does this by making prepared statements which are going to escape any user input that may come in through your forms. If hackers add a new input to a form, they may try to insert a quote and then run their own custom SQL query to damage or read your application database. However, this won't work since you are using Eloquent. Eloquent is going to escape this SQL command and the invalid query will just be saved as text into the database.
+
+The take away is: if you're using the Fluent Query Builder or Eloquent, your application is safe from SQL injections.
+
+## Protecting Cookies on Laravel Applications
+
+Laravel will also protect your cookies. For that, you will need to generate a new Application Key. If it’s a new project, use the PHP artisan `key:generate` command. 
+
+For existing projects running on Laravel 3, you need to switch to a text editor, then go to your application's config folder and open the `application.php` file. You will find the key under Application Key section.
+
+On Laravel 5 and above, ‘Application Key’ is called ‘Encryption Key’. You can find this key in the app.php file that resides in the Config folder.
+
+The Application Key or Encryption Key uses encryption and cookie classes to generate secure encrypted strings and hashes. It is extremely important that this key remain secret and should not be shared with anyone. Make it about 32 characters of random gibberish so that nobody could guess it as Laravel uses this key to validate the cookie. As mentioned above, Laravel auto-generates the Application Key; however,if required, you can edit it from the `application.php` file.
+
+The cookie class uses the Application key to generate secure encrypted strings and hashes. Laravel will protect your cookies by using a hash and making sure that no one tampers with them.
+
+## Cross-Site Request Forgery (CSRF) Protection on Laravel
+
+To protect us from a CSRF attack, Laravel uses the Form Classes Token method, which creates a unique token in a form. So, if you look at the source code of target form, you will see a hidden form field called CSRF token.
+
+```html
+<form name="test">
+{!! csrf_field() !!}
+<!-- Other inputs can come here-->
+</form>
+```
+
+The token makes sure that the request is coming from our application and not from somewhere else. With that token, you need to make sure that it's checking for a forged request. Laravel has CSRF-protection enabled by default. 
+
+Laravel adds a pre-defined CSRF filter in your app that looks like this:
+
+```php
+<?php
+Route::filter('csrf', function() {
+   if (Session::token() != Input::get('_token')) {
+       throw new Illuminate\Session\TokenMismatchException;
+   }
+});
+```
+
+CSRF filter allows you to check for a forged request and if it has been forged, it's going to return a 500 error. We can use Form Classes Token method and CSRF filter together to protect our application routes.
+
+## Mass Assignment Vulnerabilities on Laravel
+
+ORMs has the ability to mass-assign properties directly into the database , which is a security vulnerability. The same applies to Laravel’s ORM--Eloquent. 
+
+For those don’t know, Laravel’s  ORM (Eloquent) offer a simple Active-Record implementation for working with your database. Each database table has a corresponding “Model_Class” that interacts with that table. 
+
+Mass assignment let you set a bunch of fields on the model in a single go, rather than sequentially, something like:
+
+```php
+$user = new User(Input::all());
+```
+
+> The command above sets all value at the same time, in one go.
+
+There is a user table and it has a value a user_type field. It can have values of user/admin.
+Of course, the field is something you don’t want your users to update. However, the above line of code could allow someone to inject a new user_type field. After that, they can switch their account to ‘admin’.
+
+By adding to the code:
+
+```php
+$fillable = array('name', 'password', 'email');
+```
+
+You make sure only the above values are updatable with mass assignment.
+
+To be able to update the user_type value, you need to explicitly set it on the model and save it, like this:
+
+```php
+$user->user_type = 'admin';
+$user->save();
+```
+
+## Cross-Site Scripting Protection on Laravel
+
+Laravel's {{}} syntax will escape any HTML objects that are the part of a view variable. It’s a big-deal, considering that a malevolent user can authorize the subsequent string into a comment or user profile:
+
+```html
+My list <script>alert("spam spam spam!")</script>
+```
+
+Without cross-site scripting protection, a view variable like the one above would be presented in a web page in the form of an annoying alert window,, causing this form of attack called cross-site scripting. This may sound like a minor exasperation associated with more erudite attacks which might hasten the user to supply some bank information via a JavaScript model which was afterward sent to a 3rd website.
+
+Fortunately, when a variable is rendered within the `@{{}}` escape tags, Laravel would in its place render the string like so, thus averting the likelihood of cross-site scripting:
+
+```html
+My list &lt;script&gt;alert("spam spam spam!")&lt;/script&gt;
+```
+
+## Conclusion
+
+Of course, there are many other things you must do to protect your Laravel application make it apt for mission critical application, such as disabling web browser-based error reporting to stop sensitive application details being visible to a possibly malevolent party. Regardless, Laravel ensures a much more secure application by disregarding these five everyday attack vectors.
+
+Indeed, Laravel is the reason behind renewed interest of developer community in PHP development. A free, open-source PHP web framework, created by Taylor Otwell and intended for the development of web applications following the model–view–controller (MVC) architectural pattern and based on Symfony, Laravel took over Zend, CakePHP, Yii and CodeIgniter in terms of popularity within a few years of its introduction. A major reason is this that it is much securer than other frameworks and apt for mission-article applications.
