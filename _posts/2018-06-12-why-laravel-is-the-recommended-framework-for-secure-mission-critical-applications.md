@@ -29,13 +29,15 @@ related:
 - 2018-02-21-laravel-5-6-release-what-is-new
 ---
 
-There are many things that you can do to secure your application. Laravel makes your apps more secure by default, which makes it the recommended PHP framework for mission-critical applications.
+**TL;DR:** Laravel makes your applications more secure by default, which makes it the recommended PHP framework for mission-critical applications. In this article, we will briefly address how Laravel can help you create mission-critical, production-ready applications.
+
+## Introduction
 
 For a mission-critical application, there are two levels of security that matters: application security and server security. Laravel is a development framework and, as such, it won't make your server more secure, just your application.
 
 Laravel features allow you to use everything securely. All the data is sanitized where needed unless you're using Laravel with raw queries. Then, you're on your own basically. The point is, Laravel gives you security for common vulnerabilities.
 
-In this article, you will learn about the most important security features of Laravel.
+So, in this article, you will learn about the most important security features of Laravel.
 
 ## Protecting Laravel Applications from SQL Injection
 
