@@ -93,9 +93,9 @@ The CSRF filter allows you to check for a forged request and if it has been forg
 
 ## Mass Assignment Vulnerabilities on Laravel
 
-ORMs has the ability to mass-assign properties directly into the database , which is a security vulnerability. The same applies to Laravel’s ORM--Eloquent. 
+[Object-relational mapping tools](https://en.wikipedia.org/wiki/Object-relational_mapping) (like Eloquent) have the ability to mass-assign properties directly into the database, which is a security vulnerability.
 
-For those don’t know, Laravel’s  ORM (Eloquent) offer a simple Active-Record implementation for working with your database. Each database table has a corresponding “Model_Class” that interacts with that table. 
+For those who don’t know, Laravel’s ORM (Eloquent) offer a simple Active-Record implementation for working with your database. Each database table has a corresponding `Model_Class` that interacts with that table.
 
 Mass assignment let you set a bunch of fields on the model in a single go, rather than sequentially, something like:
 
@@ -105,8 +105,9 @@ $user = new User(Input::all());
 
 > The command above sets all value at the same time, in one go.
 
-There is a user table and it has a value a user_type field. It can have values of user/admin.
-Of course, the field is something you don’t want your users to update. However, the above line of code could allow someone to inject a new user_type field. After that, they can switch their account to ‘admin’.
+For example, your application can have a user table and with a user_type field. This field can have values of: `user` or `admin`.
+
+In this case, you don’t want your users to update this field manually. However, the above code could allow someone to inject a new `user_type` field. After that, they can switch their account to `admin`.
 
 By adding to the code:
 
@@ -116,7 +117,7 @@ $fillable = array('name', 'password', 'email');
 
 You make sure only the above values are updatable with mass assignment.
 
-To be able to update the user_type value, you need to explicitly set it on the model and save it, like this:
+To be able to update the `user_type` value, you need to explicitly set it on the model and save it, as shown here:
 
 ```php
 $user->user_type = 'admin';
