@@ -150,6 +150,8 @@ This makes Laravel applications immune to this type of attack.
 
 ![Laravel applications are immune to cross-site scripting attacks.](https://cdn.auth0.com/blog/laravel-mission-critical/no-xss.png)
 
+{% include asides/laravel-backend.markdown %}
+
 ## Conclusion
 
 As you may know, there are many other things you must do to protect your Laravel applications to make them apt for mission-critical scenarios (such as disabling web browser-based error reporting to stop sensitive application details being visible to a possibly malevolent party). Nevertheless, Laravel ensures a much more secure application by disregarding these five everyday-attack vectors.
