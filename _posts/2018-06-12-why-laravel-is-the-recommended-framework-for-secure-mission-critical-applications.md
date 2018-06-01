@@ -39,6 +39,8 @@ Laravel features allow you to use everything securely. All the data is sanitized
 
 So, in this article, you will learn about the most important security features of Laravel.
 
+{% include tweet_quote.html quote_text="Learn why Laravel is the best PHP framework for mission-critical, production-ready applications." %}
+
 ## Protecting Laravel Applications from SQL Injection
 
 Laravel protects you from [SQL injection](https://www.w3schools.com/sql/sql_injection.asp) as long as you're using the [Fluent Query Builder](https://laravel.com/docs/5.6/queries) or [Eloquent](https://laravel.com/docs/5.6/eloquent).
@@ -149,6 +151,8 @@ My list &lt;script&gt;alert("spam spam spam!")&lt;/script&gt;
 This makes Laravel applications immune to this type of attack.
 
 ![Laravel applications are immune to cross-site scripting attacks.](https://cdn.auth0.com/blog/laravel-mission-critical/no-xss.png)
+
+{% include tweet_quote.html quote_text="With Laravel you can rest assured that the most common attacks will be handled by default." %}
 
 {% include asides/laravel-backend.markdown %}
 
