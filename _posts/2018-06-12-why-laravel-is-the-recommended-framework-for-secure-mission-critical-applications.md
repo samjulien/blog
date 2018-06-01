@@ -59,7 +59,7 @@ For existing projects running on Laravel 3, you will need to switch to a text ed
 
 On Laravel 5 and above, _Application Key_ is called _Encryption Key_. You can find this key in the `app.php` file that resides in the `config` folder.
 
-The Application Key or Encryption Key uses encryption and cookie classes to generate secure encrypted strings and hashes. It is extremely important that this key remain secret and should not be shared with anyone. Also, make it about 32 characters of random gibberish so that nobody can guess it as Laravel uses this key to validate the cookie.
+The Application Key or Encryption Key uses encryption and cookie classes to generate secure encrypted strings and hashes. It is extremely important that this key remains secret and should not be shared with anyone. Also, make it about 32 characters of random gibberish so that nobody can guess it as Laravel uses this key to validate the cookie.
 
 As mentioned above, Laravel auto-generates the Application Key; however, if required, you can edit it from the `application.php` file.
 
@@ -160,6 +160,6 @@ This makes Laravel applications immune to this type of attack.
 
 As you may know, there are many other things you must do to protect your Laravel applications to make them apt for mission-critical scenarios (such as disabling web browser-based error reporting to stop sensitive application details being visible to a possibly malevolent party). Nevertheless, Laravel ensures a much more secure application by disregarding these five everyday-attack vectors.
 
-Indeed, Laravel is the reason behind renewed interest of developer community in PHP development. As a free, open-source PHP web framework, created by Taylor Otwell and intended for the development of web applications following the model–view–controller (MVC) architectural pattern and based on Symfony, Laravel took over Zend, CakePHP, Yii and CodeIgniter in terms of popularity within a few years of its introduction.
+Indeed, Laravel is the reason behind the renewed interest of developer community in PHP development. As a free, open-source PHP web framework, created by Taylor Otwell and intended for the development of web applications following the model–view–controller (MVC) architectural pattern and based on Symfony, Laravel took over Zend, CakePHP, Yii and CodeIgniter in terms of popularity within a few years of its introduction.
 
 A major reason is this that it is much securer than other frameworks and more apt for mission-article applications.
