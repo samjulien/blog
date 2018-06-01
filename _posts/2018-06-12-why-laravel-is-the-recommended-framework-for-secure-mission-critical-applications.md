@@ -33,7 +33,7 @@ related:
 
 ## Introduction
 
-For a mission-critical application, there are two levels of security that matters: application security and server security. Laravel is a development framework and, as such, it won't make your server more secure, just your application.
+For a mission-critical application, there are two levels of security that matters: application security and server security. [Laravel](https://laravel.com/) is a development framework and, as such, it won't make your server more secure, just your application.
 
 Laravel features allow you to use everything securely. All the data is sanitized where needed unless you're using Laravel with raw queries. Then, you're on your own basically. The point is, Laravel gives you security for common vulnerabilities.
 
@@ -41,9 +41,13 @@ So, in this article, you will learn about the most important security features o
 
 ## Protecting Laravel Applications from SQL Injection
 
-Laravel protects you from SQL injection as long as you're using the Fluent Query Builder or Eloquent. Laravel does this by making prepared statements which are going to escape any user input that may come in through your forms. If hackers add a new input to a form, they may try to insert a quote and then run their own custom SQL query to damage or read your application database. However, this won't work since you are using Eloquent. Eloquent is going to escape this SQL command and the invalid query will just be saved as text into the database.
+Laravel protects you from [SQL injection](https://www.w3schools.com/sql/sql_injection.asp) as long as you're using the [Fluent Query Builder](https://laravel.com/docs/5.6/queries) or [Eloquent](https://laravel.com/docs/5.6/eloquent).
+
+Laravel does this by making prepared statements which are going to escape any user input that may come in through your forms. If hackers add a new input to a form, they may try to insert a quote and then run their own custom SQL query to damage or read your application database. However, this won't work since you are using Eloquent. Eloquent is going to escape this SQL command and the invalid query will just be saved as text into the database.
 
 The take away is: if you're using the Fluent Query Builder or Eloquent, your application is safe from SQL injections.
+
+> [To learn more about SQL injection protection on Laravel check out this article](https://www.easylaravelbook.com/blog/how-laravel-5-prevents-sql-injection-cross-site-request-forgery-and-cross-site-scripting/).
 
 ## Protecting Cookies on Laravel Applications
 
