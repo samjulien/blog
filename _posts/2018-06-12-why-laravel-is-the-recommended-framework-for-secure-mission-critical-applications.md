@@ -51,13 +51,15 @@ The take away is: if you're using the Fluent Query Builder or Eloquent, your app
 
 ## Protecting Cookies on Laravel Applications
 
-Laravel will also protect your cookies. For that, you will need to generate a new Application Key. If it’s a new project, use the PHP artisan `key:generate` command. 
+Laravel will also protect your cookies. For that, you will need to [generate a new Application Key](http://laravel-recipes.com/recipes/283/generating-a-new-application-key). If it’s a new project, use the PHP artisan `key:generate` command.
 
-For existing projects running on Laravel 3, you need to switch to a text editor, then go to your application's config folder and open the `application.php` file. You will find the key under Application Key section.
+For existing projects running on Laravel 3, you will need to switch to a text editor, then go to your application's `config` directory and open the `application.php` file. There, you will find the key under the _Application Key_ section.
 
-On Laravel 5 and above, ‘Application Key’ is called ‘Encryption Key’. You can find this key in the app.php file that resides in the Config folder.
+On Laravel 5 and above, _Application Key_ is called _Encryption Key_. You can find this key in the `app.php` file that resides in the `config` folder.
 
-The Application Key or Encryption Key uses encryption and cookie classes to generate secure encrypted strings and hashes. It is extremely important that this key remain secret and should not be shared with anyone. Make it about 32 characters of random gibberish so that nobody could guess it as Laravel uses this key to validate the cookie. As mentioned above, Laravel auto-generates the Application Key; however,if required, you can edit it from the `application.php` file.
+The Application Key or Encryption Key uses encryption and cookie classes to generate secure encrypted strings and hashes. It is extremely important that this key remain secret and should not be shared with anyone. Also, make it about 32 characters of random gibberish so that nobody can guess it as Laravel uses this key to validate the cookie.
+
+As mentioned above, Laravel auto-generates the Application Key; however, if required, you can edit it from the `application.php` file.
 
 The cookie class uses the Application key to generate secure encrypted strings and hashes. Laravel will protect your cookies by using a hash and making sure that no one tampers with them.
 
