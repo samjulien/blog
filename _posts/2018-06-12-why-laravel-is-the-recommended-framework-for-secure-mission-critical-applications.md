@@ -3,7 +3,7 @@ layout: post
 title: "Why Laravel is the recommended framework for secure, mission-critical applications?"
 description: "Out of the box, Laravel ships with many features that make your applications ready for prime time. In this article, you will learn about these features."
 longdescription: "Out of the box, Laravel ships with many features that make your applications ready for prime time. In this article, you will learn about what these features are and how they can help you produce high-quality, production-ready applications."
-date: 2018-05-24 08:30
+date: 2018-06-12 08:30
 category: Technical Guide, PHP, Laravel
 author:
   name: "Shahid Mansuri"
@@ -126,7 +126,7 @@ $user->save();
 
 ## Cross-Site Scripting Protection on Laravel
 
-Laravel's `@{{}}` syntax will escape any HTML objects that are the part of a view variable. It’s a big-deal, considering that a malevolent user can authorize the subsequent string into a comment or user profile:
+Laravel's `{% raw %}@{{}}{% endraw %}` syntax will escape any HTML objects that are the part of a view variable. It’s a big-deal, considering that a malevolent user can authorize the subsequent string into a comment or user profile:
 
 {% highlight html %}
 {% raw %}
@@ -138,7 +138,7 @@ My list <script>alert("spam spam spam!")</script>
 
 Without [cross-site scripting](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)) protection, a view variable like the one above would be presented in a web page in the form of an annoying alert window, causing this form of attack called cross-site scripting. This may sound like a minor exasperation associated with more erudite attacks which might hasten the user to supply some bank information via a JavaScript model which are afterward sent to third-party websites.
 
-Fortunately, when a variable is rendered within the `@{{}}` escape tags, Laravel will render in its place a string as the following one:
+Fortunately, when a variable is rendered within the `{% raw %}@{{}}{% endraw %}` escape tags, Laravel will render in its place a string as the following one:
 
 {% highlight html %}
 {% raw %}
