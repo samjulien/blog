@@ -64,8 +64,8 @@ What will our user see?
 
 1. User sees a navbar with a login button
 2. User logs in with their credentials via Auth0
-3. User sees their name in the navbar and randomly generated bank account balance (if only we could keep the balances that randomly generate to 1,000,000).
-4. Logout button next to the name in the navbar
+3. User sees their name/username in the navbar and randomly generated bank account balance (if only we could keep the balances that randomly generate to 1,000,000).
+4. Logout button and Dashboard button next to the name in the navbar
 
 ## EmberCLI and Setup
 
@@ -81,7 +81,7 @@ Once that is done, let’s get an EmberJS app started! We will be making a login
 ember new ember-js-auth
 ```
 
-Sit back and relax, Ember will be taking care of a lot of stuff right now. Once it has completed, let’s cd into that new directory 
+Sit back and relax, Ember will be taking care of a lot of stuff right now. Once it has completed, let’s cd into that new directory by typing in:
 
 ```bash
 cd ember-js-auth
@@ -172,56 +172,51 @@ In your command line type:
 ember generate service auth
 ```
 
-Here, in this newly created file, we will insert all of our logic for getting a session, logging in, logging out, and everything associated with authentication. For example, let's dive into the `getSession()`. In here, it will grab all the necessary authentication pieces that are required for a successful login. We will need the `access_token` and the `expires_at` value. With all three of these, they application will know that they are good to move on to the protected pages in the app.
+Here, in this newly created file, we will insert all of our logic for getting a session, logging in, logging out, and everything associated with authentication.
 
 Open up the `app/services/auth.js` file and insert the following information:
 
 ```javascript
 // ember-js-auth/app/services/auth.js
-
 import Service from '@ember/service';
-import { computed, get } from '@ember/object';
+import { computed } from '@ember/object';
 import config from 'ember-js-auth/config/environment';
-import { isPresent } from '@ember/utils';
 
 export default Service.extend({
-
+  
   /**
    * Configure our auth0 instance
    */
   auth0: computed(function () {
-  return new auth0.WebAuth({
-    // setting up the config file will be covered below
-    domain: config.auth0.domain, // domain from auth0
-    clientID: config.auth0.clientId, // clientId from auth0
-    redirectUri: 'http://localhost:4200/callback',
-    audience: `https://${config.auth0.domain}/userinfo`,
-    responseType: 'token',
-    scope: 'openid profile' // adding profile because we want username, given_name, etc
-  });
-}),
+    return new auth0.WebAuth({
+      // setting up the config file will be covered below
+      domain: config.auth0.domain, // domain from auth0
+      clientID: config.auth0.clientId, // clientId from auth0
+      redirectUri: 'http://localhost:4200/callback',
+      audience: `https://${config.auth0.domain}/userinfo`,
+      responseType: 'token',
+      scope: 'openid profile' // adding profile because we want username, given_name, etc
+    });
+  }),
 
   /**
    * Send a user over to the hosted auth0 login page
    */
   login() {
-    get(this, 'auth0').authorize();
-
+    this.get('auth0').authorize();
   },
 
   /**
    * When a user lands back on our application
-   * Parse the hash and store access_token and expires_at in sessionStorage
+   * Parse the hash and store user info
    */
   handleAuthentication() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.get('auth0').parseHash((err, authResult) => {
+        if (err) return false;
+        
         if (authResult && authResult.accessToken) {
-
-          // store magic stuff into sessionStorage
-          this.setSession(authResult);
-        } else if (err) {
-          return reject(err);
+          this.setUser(authResult.accessToken);
         }
 
         return resolve();
@@ -230,81 +225,50 @@ export default Service.extend({
   },
 
   /**
-   * Use our access_token to hit the auth0 API to get a user's information
-   * If you want more information, add to the scopes when configuring auth.WebAuth({ })
-   */
-  getUserInfo() {
-    return new Promise((resolve, reject) => {
-      const accessToken = sessionStorage.getItem('access_token');
-      if (!accessToken) return reject();
-
-      return this
-        .get('auth0')
-        .client
-        .userInfo(accessToken, (err, profile) => resolve(profile))
-    });
-  },
-
-  /**
    * Computed to tell if a user is logged in or not
-   * 
-   * Computed properties let you declare functions as properties
-   * Ember will automatically call for the computed function when asked
-   *
-   * isPresent is from the Ember package, @ember/utils. 
-   * If a value is present, it will return true. Else, it will return false.
+   * @return boolean
    */
-  isAuthenticated: computed(function() {
-    return isPresent(this.getSession().access_token) && this.isNotExpired();
-  })
+  isAuthenticated: computed(function() {    
+    return this.get('checkLogin');
+  }), 
 
   /**
-   * Returns all necessary authentication parts
+   * Use the token to set our user
    */
-  getSession() {
-    return {
-      access_token: sessionStorage.getItem('access_token'),
-      expires_at: sessionStorage.getItem('expires_at')
-    };
+  setUser(token) {
+    // once we have a token, we are able to go get the users information
+    this.get('auth0')
+      .client
+      .userInfo(token, (err, profile) => this.set('user', profile))
   },
 
   /**
-   * Store everything we need in sessionStorage to authenticate this user
+   * Check if we are authenticated using the auth0 library's checkSession
    */
-  setSession(authResult) {
-    if (authResult && authResult.accessToken) {
-      // Set the time that the access token will expire at
-      let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-      sessionStorage.setItem('access_token', authResult.accessToken);
-      sessionStorage.setItem('expires_at', expiresAt);
-      window.location.replace('/dashboard')
-    }
-  },
+  checkLogin() {
+    // check to see if a user is authenticated, we'll get a token back
+    this.get('auth0')
+      .checkSession({}, (err, authResult) => {
+        // if we are wrong, stop everything now
+        if (err) return err;
+        this.setUser(authResult.accessToken);
+      });
+  }, 
 
   /**
    * Get rid of everything in sessionStorage that identifies this user
    */
   logout() {
-    sessionStorage.removeItem('access_token');
-    sessionStorage.removeItem('expires_at');
-    window.location.replace('/')
-  },
-
-  /**
-   * Check whether the current time is past the access token's expiry time
-   */
-  isNotExpired() {
-    const expiresAt = this.getSession().expires_at;
-    return new Date().getTime() < expiresAt;
+    this.set('user', null);
+    return Promise.resolve(true);
   }
-}); 
-
+});
 ```
 
 In the section that looks like this:
 
 ```javascript
- auth0: computed(function () {
+  auth0: computed(function () {
     return new auth0.WebAuth({
       // setting up the config file will be covered below
       domain: config.auth0.domain, // domain from auth0
@@ -329,7 +293,7 @@ module.exports = {
 }
 ```
 
-Then in the `config/environment.js` file, you can call for those variables. Like shown here:
+Then in the `config/environment.js` file, you can call for those variables. Like shown here: (towards the bottom of the file)
 
 ```javascript
 //ember-js-auth/config/environment.js
@@ -418,11 +382,11 @@ module.exports = function(defaults) {
 };
 ```
 
->Do not be alarmed, I know this is not how React or many other frameworks do it. Why not import it in the top of the file? In Ember, some dependencies will need to be added to the build so that it can be used across the application. You can find the documentation for that [here](https://guides.emberjs.com/v3.1.0/addons-and-dependencies/managing-dependencies/).
+> Do not be alarmed, I know this is not how React or many other frameworks do it. Why not import it in the top of the file? In Ember, some dependencies will need to be added to the build so that it can be used across the application. You can find the documentation for that [here](https://guides.emberjs.com/v3.1.0/addons-and-dependencies/managing-dependencies/).
 
 ## Each Route Needs to Be Declared
 
-In our `app/router.js` file we need to declare what routes we are going to have. We have the standard '/' route and we will need to be able to tell the application what other routes we will be using. Go to your `app/router.js` file and input the information as shown:
+In our `app/router.js` file we need to declare what routes we are going to have. We have the standard '/' route and we will need to be able to tell the application what other routes we will be using. Go to your `app/router.js` file and ensure the information is as shown:
 
 ```javascript
 //ember-js-auth/app/router.js
@@ -435,8 +399,11 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
+  // Ember will populate this information for you
+  // When a route is created, it will automatically include it in this list
   this.route('dashboard');
   this.route('callback');
+  this.route('home');
 });
 
 export default Router;
@@ -444,7 +411,7 @@ export default Router;
 
 ## The Application Route
 
-We are going to need an all encompassing route. It will not do much except be the route that is the head parent. It is there to usually handle routing for the entire application but because we have declared routing elsewhere, this will not have that logic. However, we do need to keep it so ensure you have built your application route.
+We are going to need an all encompassing route. It is the route that is over the application as a whole. It is there to usually handle routing for the entire application but because we have declared routing elsewhere, this will not have that logic. However, we do need to keep it to ensure that the user stays logged in. This route will do so by utilizing `checkLogin`.
 
 ```bash
 ember generate route application
@@ -457,14 +424,19 @@ In that newly generated file, you will see:
 ```javascript
 //ember-js-auth/app/routes/application.js
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default Route.extend({
+  auth: service(),
+  beforeModel() {
+    this.auth.checkLogin();
+  }
 });
 ```
 
 ## Building a Functional Nav Bar
 
-Our navbar will have our login button. Once the user has logged in, that login button will change to the user's name and the logout button. Let's look at our navbar code. We will need a couple of files generated in order to get it all working. Let's start with the component app-nav.
+Our navbar will have our login button. Once the user has logged in, that login button will change to the user's name, dashboard button, and the logout button with a `Bank Home` button on the opposite side of the navbar. Let's look at our navbar code. We will need a couple of files generated in order to get it all working. Let's start with the component app-nav.
 
 ```bash
 ember generate component app-nav
@@ -482,6 +454,7 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 
 export default Component.extend({
+  router: service(),
   auth: service('auth'),
   actions: {
   
@@ -491,41 +464,58 @@ export default Component.extend({
     login() {
       this.get('auth').login();
     },
+
+    goHome() {
+      this.get('router').transitionTo('home');
+    },
+
+    goDashboard() {
+      this.get('router').transitionTo('dashboard');
+    },
     
     /**
-   * From service/auth, removing all the save tokens from the session.
+   * From service/auth, removing the saved token from the session.
    */
     logout() {
-      this.get('auth').logout();
+      this
+        .get('auth')
+        .logout()  
+        .then(() => this.get('router').transitionTo('home'));
     }
   }
 });
 ```
 
-We have the functions from the 'auth' service, `login` and `logout` that will help those buttons do the right thing! Now let’s dive into the other file that was generated, `templates/components/app-nav.hbs`. The code in there will look like this:
+We have nurmerous functions here that we will be using throughout our application. This will also help with the routing. Notice the `transitionTo` being called and holding a value? When that function is called, it will route the user to whichever route we have assigned it to. Now let’s dive into the other file that was generated, `templates/components/app-nav.hbs`. The code in there will look like this:
 
 ```html
 <!-- ember-js-auth/app/templates/components/app-nav.hbs -->
 <nav class="navbar is-danger">
   <div class="navbar-brand">
-    <a class="navbar-item" href="/dashboard">
+    <a class="navbar-item" {{ action "goHome" }}>
       <p width="112" height="28">Bank Home</p>
     </a>
   </div>
 
   <div class="navbar-menu">
     <div class="navbar-start">
+        
     </div>
 
     <div class="navbar-end">
-      {{#if user}}
-      <a class="navbar-item">{{user.given_name}} {{isAuthenticated}}</a>
-      <button {{ action "logout" }} class="button is-primary">Log out</button>
+      {{#if auth.user}}
+        <a class="navbar-item">{{ auth.user.name }}</a>
+
+        <a class="navbar-item" {{ action "goDashboard" }}>
+          Dashboard
+        </a>
+
+        <button {{ action "logout" }} class="button is-primary">Log out</button>
       {{ else }}
 
       <p class="control">
         <a class="button is-primary" href="#" {{action "login"}}>
-          Log In
+          Login
         </a>
       </p>
       {{/if}}
@@ -534,13 +524,13 @@ We have the functions from the 'auth' service, `login` and `logout` that will he
 </nav>
 ```
 
-You will see that when the user first visits the page, the navbar displays a `Bank Home` title and a `Login` button. Once logged in, it changes to their name and `Logout` button, a clean toggle between the two.
+You will see that when the user first visits the page, the navbar displays a `Bank Home` title and a `Login` button. Once logged in, it changes to their name, `Dashboard` button, and `Logout` button, a clean toggle between them.
 
 Now that we have the buttons ready for us, let's set up our authentication so those buttons know, "Hey, they are authenticated, let's let them pass to the dashboard!"
 
 ## Building Our All-Encompassing App
 
-We will want to add another controller titled `application`. The application controller will be using the auth service file to keep our user logged in and authenticated. Imagine it is the parent component to the dashboard. It is wrapping itself around the entire application. While the user is in the dashboard, logged in, the application controller will ensure they keep that authenticated status.
+We will want to add another controller titled `application`. The application controller, imagine it is the parent component to the dashboard. It is wrapping itself around the entire application. While the user is in the dashboard, logged in, the application controller will ensure they keep that authenticated status.
 
 ```bash
 ember generate controller application
@@ -556,15 +546,12 @@ import { inject as service } from '@ember/service';
 export default Controller.extend({
   auth: service(),
   init() {
-    // always call this._super() when overriding any of the lifecycle hooks. If you don't, a parent class might not be able to set up important information before this is initialized.
     this._super(...arguments);
-    this.set('isAuthenticated', this.get('auth').isAuthenticated);
-    this.get('auth').getUserInfo().then(user => this.set('user', user));
   }
 });
 ```
 
-Using functions from the auth service, this will allow the authentication to actually fire off. Next, to match up with the controller, the application template will have code that will show what the user needs to see. You will see that we are setting the user in the controller so that later on in the template file for the application, we will be using it.
+Next, to match up with the controller, the application template will have code that will show what the user needs to see.
 
 Open up the `app/templates/application.hbs` file and add the following:
 
@@ -576,6 +563,45 @@ Open up the `app/templates/application.hbs` file and add the following:
   {{outlet}}
 </main>
 ```
+
+## The Home Route Setup
+
+We have our navbar ready for us, but let's give those buttons a purpose. The button we will have on the left of the navbar will be our `Bank Home` button. This will take us to the home screen whether you are authenticated or not. We will need to add the `home` route, so on your command line type:
+
+```bash
+ember generate route home
+```
+
+This will create two files, the `routes/home` and the `templates/home`. Let's start first with the `routes/home`.
+
+That file in particular will not change from the setup that Ember gave us, but it is necessary for the `templates` part of it. In that file you will see the following:
+
+```javascript
+//ember-js-auth/app/routes/home
+import Route from '@ember/routing/route';
+
+export default Route.extend({
+});
+```
+
+Now onto the `templates/home` file. In there we will add in the following code: 
+
+```javascript
+//ember-js-auth/app/templates/home
+{{outlet}}
+
+<section class="hero is-info is-fullheight is-bold">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+
+      <h2 class="title">HELLO I AM HOME</h2>
+
+    </div>
+  </div>
+</section>
+```
+
+We are telling the application that whenever the user is on the `home page`, to display just a simple header saying `HELLO I AM HOME` with some Bulma styling.
 
 ## Handling Authentication
 
@@ -600,20 +626,19 @@ import { get } from '@ember/object';
 export default Route.extend({
   auth: service('auth'),
   beforeModel() {
-    const auth = get(this, 'auth');
-
-    auth
-      .handleAuthentication() // stores access_token and expires_at in sessionStorage
-      .then(() => {
-        this.transitionTo('/dashboard');
-      });
+    // check if we are authenticated
+    // parse the url hash that comes back from auth0
+    // if authenticated on login, redirect to the dashboard
+    get(this, 'auth')
+      .handleAuthentication()
+      .then(() => this.transitionTo('/dashboard'));
   },
 });
 ```
 
 ## Adding an Authenticated Dashboard
 
-The user, once authenticated, needs to be redirected to the dashboard. In our dashboard we will see the `login` button change to the user's name and the `logout` button and also a randomly-generated number that shows their faux bank account balance. We want that number safe and secure, right?
+The user, once authenticated, needs to be redirected to the dashboard. In our dashboard we will see the `login` button change to the user's name, the `logout` button, the `dashboard` button, and also a randomly-generated number that shows their faux bank account balance. We want that number secure, right?
 
 Create a controller for the dashboard and also a template. 
 
@@ -633,6 +658,7 @@ Your dashboard controller should look like so:
 import Controller from '@ember/controller';
 
 export default Controller.extend({
+  // bank: service(), // get fake data
   init() {
     this._super(...arguments);
 
@@ -640,7 +666,9 @@ export default Controller.extend({
     this.set('balance', this.bankBalance());
   },
   bankBalance() {
-    // randomly generated bank account balance
+    // randomly generate bank account balance
+    // were only doing this for demo purposes
+    // normally you would get this from a service/api
     return "$" + Math.floor((Math.random() + 1) * 10000) + ".00";
   }
 });
@@ -673,9 +701,9 @@ We will need to also create a dashboard route.
 ```bash
 ember generate route dashboard
 ```
-Here you will get asked again, `Overwrite app/templates/dashboard.hbs?`. This time, say no, so type in `n` and enter when asked, `No, skip`.
+> Here you will get asked again, `Overwrite app/templates/dashboard.hbs?`. This time, say no, so type in `n` and press enter when asked, `No, skip`.
 
-Inside the `routes/dashboard`, we will put the logic so that if they try and access the dashboard without being authenticated, it will send them back to the home screen with the login button. Can you imagine if the user was able to type in `yoururl.com/dashboard` and see the bank account balance without having to be authenticated first? In this `route/dashboard` file, the user is checked by the application. If the user is not authenticated, then they will transition to the base URL. This keeps things safe and sound.
+Inside the `routes/dashboard`, we will put the logic so that if they try and access the dashboard without being authenticated, it will send them back to the home screen with the login button. Can you imagine if the user was able to type in `yoururl.com/dashboard` and see the bank account balance without having to be authenticated first? In this `route/dashboard` file, the user is checked by the application. If the user is not authenticated, then they will transition to the base URL and see only the `Home Page`. This keeps things safe and sound.
 
 The information in the `app/routes/dashboard.js` file will look like this:
 
@@ -700,23 +728,23 @@ Now the user is logged in and authenticated and will see a large, randomly gener
 
 ## The Banking Application
 
-To see the application running, simply type in 
+To see the application running, simply type into your command line:
 
 ```bash
 ember serve
 ```
 
-Now that it is running, let's use the application. The user will come to the site, and see this navbar.
+Now that it is running, let's use the application. The user will come to the site, and see this:
 
-![Nav Bar](https://i.imgur.com/6wseHTX.png)
+![Home page](https://i.imgur.com/OQMYdJH.png)
 
 Once they click on `Login`, they will then see the Auth0 modal.
 
 ![Auth0 Sign In Modal](https://i.imgur.com/1ErPfYG.png?1)
 
-If authentication goes through, they will be redirected to the dashboard showing them their name, a `Log Out` button, and a randomly generated bank account balance. Once they hit logout, they will be unauthenticated and be redirected back to the login screen.
+If authentication goes through, they will be redirected to the dashboard showing them their profile name, a `Dashboard` button, a `Log Out` button, and a randomly generated bank account balance. Once they hit logout, they will be unauthenticated and be redirected back to the login screen.
 
-![Dashboard Page](https://i.imgur.com/rH2kmO5.png)
+![Dashboard Page](https://i.imgur.com/HVNwjbi.png)
 
 
 ## Conclusion 
