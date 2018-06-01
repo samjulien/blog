@@ -65,16 +65,18 @@ The cookie class uses the Application key to generate secure encrypted strings a
 
 ## Cross-Site Request Forgery (CSRF) Protection on Laravel
 
-To protect us from a CSRF attack, Laravel uses the Form Classes Token method, which creates a unique token in a form. So, if you look at the source code of target form, you will see a hidden form field called CSRF token.
+To protect your application from a [CSRF attack](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)), Laravel uses the Form Classes Token method, which creates a unique token in a form. So, if you look at the source code of a target form, you will see a hidden form field called CSRF token.
 
-```html
+{% highlight html %}
+{% raw %}
 <form name="test">
 {!! csrf_field() !!}
 <!-- Other inputs can come here-->
 </form>
-```
+{% endraw %}
+{% endhighlight %}
 
-The token makes sure that the request is coming from our application and not from somewhere else. With that token, you need to make sure that it's checking for a forged request. Laravel has CSRF-protection enabled by default. 
+The token makes sure that the request is coming from your application and not from somewhere else. With that token, you need to make sure that it's checking for a forged request. Laravel has CSRF-protection enabled by default. 
 
 Laravel adds a pre-defined CSRF filter in your app that looks like this:
 
@@ -87,7 +89,7 @@ Route::filter('csrf', function() {
 });
 ```
 
-CSRF filter allows you to check for a forged request and if it has been forged, it's going to return a 500 error. We can use Form Classes Token method and CSRF filter together to protect our application routes.
+The CSRF filter allows you to check for a forged request and if it has been forged, it's going to return an HTTP 500 error. You can use Form Classes Token method and CSRF filter together to protect your application routes.
 
 ## Mass Assignment Vulnerabilities on Laravel
 
