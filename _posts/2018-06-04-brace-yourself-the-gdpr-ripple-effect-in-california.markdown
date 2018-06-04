@@ -2,7 +2,7 @@
 layout: post
 title: "Brace Yourself: The GDPR Ripple Effect in California"
 description: "Use public support for the initiative to your advantage. Roll out new privacy features that build your brand's integrity."
-longdescription: "While the GDPR is EU-centric, several countries and states in the U.S. Use public support for the initiative to your advantage. Roll out new privacy features that build your brand's integrity."
+longdescription: "While the GDPR is EU-centric, several countries and states in the U.S. have followed suit with similar privacy initiatives. Use public support for the initiative to your advantage. Roll out new privacy features that build your brand's integrity."
 date: 2018-06-04 19:30
 category: Growth, Security
 is_non-tech: true
@@ -12,8 +12,8 @@ author:
   mail: gonto@auth0.com
   avatar: https://www.gravatar.com/avatar/df6c864847fba9687d962cb80b482764??s=60
 design:
+  image: https://cdn2.auth0.com/blog/get-ready-for-gdpr/logo.png
   bg_color: "#222228"
-  image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
 tags:
   - digital-transformation
   - iam
@@ -33,7 +33,7 @@ related:
 
 While the [GDPR](https://auth0.com/blog/get-ready-for-gdpr/) is EU-centric, several countries and states in the U.S. have followed suit with similar privacy initiatives. The [CCPA](https://www.caprivacy.org/) (California Consumer Privacy Act) is a ballot measure set for November 2018, backed by a small team, including a local real estate developer, a former financial executive, and a former Central Intelligence Agency analyst. While several major major tech companies initially opposed the measure, Facebook recently [withdrew](http://variety.com/2018/digital/news/facebook-california-privacy-legislation-1202751054/) from the fight. Recent Cambridge Analytica [data leaks](https://auth0.com/blog/cambridge-analytica-and-facebook/) have added a poignancy to Facebook's role in protecting user data.
 
-{% include tweet_quote.html quote_text="While the GDPR is EU-centric, several countries and states in the U.S. Use public support for the initiative to your advantage." %}
+{% include tweet_quote.html quote_text="Several countries and states in the U.S. have followed GDPR with similar privacy initiatives. Use public support for the initiative to your advantage." %}
 
 The CCPA has strong momentum to pass. If it does not, swelling popularity for the legislation is still a call for California companies to clean up their data policies and protect their customers.
 
