@@ -30,6 +30,8 @@ related:
 
 **TL;DR:** In this guide, you'll finish adding authentication to our simple [single page application](https://auth0.com/docs/sso/current/single-page-apps), customize Auth0 [Lock](https://auth0.com/docs/libraries/lock/v11), enable [social login](https://auth0.com/blog/social-login-on-the-rise/) with Facebook, and set up [multi-factor authentication](https://auth0.com/docs/multifactor-authentication). If none of this makes any sense, don't worry. We're going to explain that as well.
 
+> ***Note:*** This guide assumes you're on a Mac. Drop us a comment below and we can provide updated instructions for a Windows machine or Ubuntu machine.
+
 Before you get started, you're going to need **NodeJS** installed on your computer. This bit of software allows you to run stuff locally, like web servers and code.
 
 > ***Note:*** This guide has been developed with a target audience that may have no exposure to development. If you're a developer, you might want to try out [one of our many other blog articles](https://www.auth0.com/blog), on a language you might be familiar with.
@@ -46,7 +48,7 @@ If you do not have **NodeJS** installed on your computer, install that now. If y
 
 Go to [nodejs.org](https://nodejs.org/en/) where you're looking to download a version labelled **LTS**, or *long-term support*. 
 
-> ***Note:*** **LTS** is the version most likely to be supported for the next few months. *Long-term support* versions usually are the most robust, tested and adopted versions which are only subject to smaller updates, that try not to introduce changes that could break your software.
+> ***Note:*** **LTS** is the version most likely to be supported for the next few months. *Long-term support* versions usually are the most robust, tested and adopted versions which are only subject to smaller updates that try not to introduce changes that could break your software.
 
 Double-click on your downloaded **NodeJS** package and install it.
 
@@ -74,8 +76,6 @@ cd ~/Downloads/
 
 Remember what you did here, because you'll need to get to use ***Terminal*** to access a directory in this guide.
 
-> ***Note:*** This guide assumes you're on a Mac. Drop us a comment below and we can provide updated instructions for a Windows machine or Ubuntu machine.
-
 ## Lab 1 - Sign up for Auth0
 
 <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">Sign up for an Auth0 account</a>.
@@ -94,7 +94,7 @@ You can use an existing account, or an existing tenant, but I would recommend a 
 
    ![Create a new Single Page Application](https://cdn.auth0.com/blog/helloworld-with-auth0/create-a-new-spa.png)
 
-3. As your technology, select Javascript (JS). You can also search for it in the search box.
+3. As your technology, select JavaScript (JS). You can also search for it in the search box.
 
    ![Select JS as our preferred technology](https://cdn.auth0.com/blog/helloworld-with-auth0/select-js-as-our-preferred-technology.png)
 
@@ -114,8 +114,8 @@ You can use an existing account, or an existing tenant, but I would recommend a 
 
 7. Run these two commands in your ***Terminal*** window.
 
-   - `npm install`
-   - `npm start`
+   - Type `npm install` and press enter. It will install some stuff, be patient!
+   - Type `npm start` and press enter. This will now "run" our **sample project**.
 
    ![Install and run the Sample Project](https://cdn.auth0.com/blog/helloworld-with-auth0/install-and-run-the-sample-project.png)
    
@@ -145,7 +145,7 @@ The Log In button is broken you need to fix it.
 
 Once you've enabled ***Custom Login Page***, you'll see the code editor become available below. Don't be afraid! In this section, you'll find some code that can be ***uncommented*** out. 
 
-> ***Tip:*** Commented out code begins with `//` and it will be grey in appearance compared to the colourful highlighting of the rest of the code.
+> ***Tip:*** Commented out code is ignored when the code is run on the server. It begins with `//` and it will be grey in appearance compared to the colourful highlighting of the rest of the code.
 
 You need to find, uncomment (enable) and edit the `theme`'s `logo` and `primaryColor`.
 
@@ -249,7 +249,7 @@ Rules are functions written in JavaScript that are executed when a user authenti
 
 ### Lab 2
 
-The callback url is missing from your application config. Head to the settings tab of the `Hello World Demo` application we created on the Auth0 dashboard. Look for somewhere to set a callback URL to `http://localhost:3000`. 
+The callback url is missing from your application config. Head to the settings tab of the `Hello World Demo` application we created on the Auth0 dashboard. Look for somewhere to set a callback URL to `http://localhost:3000` and click save when you're done.
 
 > ***Note:*** A callback URL is a URL in your application where Auth0 redirects the user after they have authenticated. The callback page is usually prepared to read and validate your authentication on your return.
 
