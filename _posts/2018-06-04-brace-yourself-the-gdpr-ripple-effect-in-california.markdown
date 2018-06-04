@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Brace Yourself: The GDPR Ripple Effect in California
+title: "Brace Yourself: The GDPR Ripple Effect in California"
 description: "Use public support for the initiative to your advantage. Roll out new privacy features that build your brand's integrity."
 longdescription: "While the GDPR is EU-centric, several countries and states in the U.S. Use public support for the initiative to your advantage. Roll out new privacy features that build your brand's integrity."
-date: 2018-05-25 19:30
+date: 2018-06-04 19:30
 category: Growth, Security
 is_non-tech: true
 author:
@@ -20,9 +20,16 @@ tags:
   - gdpr
 related:
   - 2018-03-27-strong-identity-management-system-eases-transition-to-hybrid-cloud
-  - 2018-03-09-3-reasons-your-data-integration-plan-is-important
-  - 2018-05-21-digital-success-through-customer-identity-and-access-management
+  - 2018-05-25-data-privacy-doesnt-stop-at-the-eu-border
+  - 2018-03-12-gdpr-effect
 ---
+
+<div class="alert alert-info alert-icon">
+  <i class="icon-budicon-500"></i>
+  <strong>GDPR has arrived. Are you Ready? Take our GDPR Readiness Assessment to find out. <a href="https://auth0.com/gdpr-assessment/tool-1">Start the survey</a>.</strong>
+</div>
+
+--- 
 
 While the [GDPR](https://auth0.com/blog/get-ready-for-gdpr/) is EU-centric, several countries and states in the U.S. have followed suit with similar privacy initiatives. The [CCPA](https://www.caprivacy.org/) (California Consumer Privacy Act) is a ballot measure set for November 2018, backed by a small team, including a local real estate developer, a former financial executive, and a former Central Intelligence Agency analyst. While several major major tech companies initially opposed the measure, Facebook recently [withdrew](http://variety.com/2018/digital/news/facebook-california-privacy-legislation-1202751054/) from the fight. Recent Cambridge Analytica [data leaks](https://auth0.com/blog/cambridge-analytica-and-facebook/) have added a poignancy to Facebook's role in protecting user data.
 
