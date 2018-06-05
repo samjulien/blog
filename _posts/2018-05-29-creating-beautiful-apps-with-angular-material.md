@@ -1045,7 +1045,7 @@ Now, to enable users to create new blog posts, you will create a new component c
 ng g c post-dialog --module app.module
 ```
 
-Then, open the `post-dialog-component.html` file and put the following HTML code inside it:
+Then, open the `post-dialog.component.html` file and put the following HTML code inside it:
 
 {% highlight html %}
 {% raw %}
@@ -1120,7 +1120,7 @@ import {FormsModule} from '@angular/forms';
 export class AppModule {}
 ```
 
-Also, to make your dialog look nice, you can insert the following rules in the `post-dialog-component.css` file:
+Also, to make your dialog look nice, you can insert the following rules in the `post-dialog.component.css` file:
 
 ```css 
 .example-form {
@@ -1137,7 +1137,7 @@ Also, to make your dialog look nice, you can insert the following rules in the `
 }
 ```
 
-Then, you can open the `post-dialog-component.ts` file and replace its code with the following; 
+Then, you can open the `post-dialog.component.ts` file and replace its code with the following; 
 
 ```ts 
 import {Component, EventEmitter, Inject} from '@angular/core';
@@ -1190,7 +1190,7 @@ To make a button open up this dialog box, you need to tell it to do so by bindin
 </div>
 ```
 
-Then, in the TypeScript file of the `dashboard.component`, you will have update the code as:
+Then, in the TypeScript file of the `dashboard.component.ts`, you will have update the code as:
 
 ```ts 
 // ... other import statements ...
