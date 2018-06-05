@@ -8,7 +8,7 @@ author:
   name: "Oliver Mensah"
   url: "https://twitter.com/Oliver_Mensah"
   mail: "olivermensah96@gmail.com"
-  avatar: "https://twitter.com/Oliver_Mensah/profile_image?size=original"
+  avatar: "https://cdn.auth0.com/blog/guest-authors/oliver-mensah.jpeg"
 design:
   image: https://cdn.auth0.com/blog/angular/logo3.png
   bg_color: "#072858"
