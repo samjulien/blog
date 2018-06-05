@@ -523,8 +523,8 @@ export interface Post {
   title: string;
   category: string;
   date_posted: Date;
-  position: number,
-  body: string
+  position: number;
+  body: string;
 }
 ```
 
@@ -585,6 +585,20 @@ export class DataService {
 ```
 
 In your data service, you have two different arrays: one for storing categories of posts and the other one for storing blog posts.
+
+You will also have to guarantee that the `app.module.ts` file includes your new `DataService` class in its `providers` property:
+
+```ts
+// ... other imports ...
+import {DataService} from './data/data.service';
+
+@NgModule({
+  // ... declarations and imports ...
+  providers: [DataService],
+  // ... bootstrap ...
+})
+export class AppModule { }
+```
 
 Now, you can update your dashboard to make use of the data service to render some data. So, open the `dashboard.component.ts` file and replace its code with this:
 
