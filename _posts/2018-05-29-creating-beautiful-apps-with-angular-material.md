@@ -773,6 +773,10 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import * as auth0 from 'auth0-js';
 
+// why do you need defining window as any?
+// check this: https://github.com/aws/aws-amplify/issues/678#issuecomment-389106098
+(window as any).global = window;
+
 @Injectable()
 export class AuthService {
 
@@ -834,10 +838,11 @@ The code in this service, although lengthy, is quite simple. You are just defini
 
 > **Important!** You will need to replace `<APPLICATION_CLIENT_ID>` and `<YOUR_AUTH0_DOMAIN>` in the code with the values from your Auth0 application. For example, the client id will look like `lU4PgkBaogkZP13Mv1gSkHK6VIH6xIkq` and the domain will look like `bk-tmp.auth0.com`.
 
-Also, before proceeding, you will have to install [the `auth0-js` library](https://github.com/auth0/auth0.js):
+Also, before proceeding, you will have to install [the `auth0-js` library](https://github.com/auth0/auth0.js) and its types definition (`@types/auth0-js`):
 
 ```bash
 npm install auth0-js
+npm i -D @types/auth0-js
 ```
 
 Now, you can update the `app.component.html` to integrate it with your new service:
