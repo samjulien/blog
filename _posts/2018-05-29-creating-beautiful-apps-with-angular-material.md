@@ -3,6 +3,7 @@ layout: post
 title: "Creating Beautiful Apps with Angular Material"
 description: "In this article, you will learn how to take advantage of Angular Material to create beautiful and modern Angular applications."
 date: 2018-05-29 8:30
+updated: 2018-06-05 14:30
 category: Technical Guide, Angular, Angular2
 author:
   name: "Oliver Mensah"
