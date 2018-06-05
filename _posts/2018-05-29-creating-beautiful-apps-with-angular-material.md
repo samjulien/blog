@@ -149,6 +149,7 @@ The idea of creating a new Angular module (`@NgModule`) is to centralize what yo
 
 ```typescript
 // ... other import statements ...
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from './material.module';
 
 @NgModule({
@@ -167,7 +168,7 @@ export class AppModule {}
 
 ### Angular Material Sidenav
 
-After defining a centralized place to import Angular Material components, you can focus on adding a navigation bar to your app. For this, you will update the `./src/app/app.module.ts` to look like this:
+After defining a centralized place to import Angular Material components, you can focus on adding a navigation bar to your app. For this, you will update the `./src/app/material.module.ts` to look like this:
 
 ```typescript
 import {NgModule} from '@angular/core';
@@ -278,8 +279,10 @@ To make your life easier when defining the layout of your Angular application, y
 To use it, install the Flex layout package with the following command:
 
 ```bash
-npm install @angular/flex-layout
+npm install @angular/flex-layout rxjs-compat
 ```
+
+> Note that after the major upgrade to Angular 6, you will need to install `rxjs-compat` alongside with `@angular/flex-layout`. The command above already include this library. So, it is just a matter of copying and pasting the command in your terminal (while being in the `@ROOT_DIR` set above, of course).
 
 Then, import and configure it into `src/app.module.ts` as shown here:
 
