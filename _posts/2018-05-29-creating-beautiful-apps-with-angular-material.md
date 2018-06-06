@@ -645,7 +645,7 @@ Then, open the `dashboard.component.html` file and replace everything with:
   <br>
     <div class="container">
         <div class="container">
-          <div  fxLayout="column" fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row"  fxLayoutAlign="space-around center" class="content">
+          <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row"  fxLayoutAlign="space-around center" class="content">
               <div class="blocks" >
                   <button button="submit" mat-raised-button color="primary">
                       <mat-icon>add</mat-icon> Add Post
@@ -750,7 +750,7 @@ a {
 }
 ```
 
-Now, running your app (`ng serve`) and heading to [`http://localhost:4200/bashboard`](http://localhost:4200/bashboard), you will see the following screen:
+Now, running your app (`ng serve`) and heading to [`http://localhost:4200/dashboard`](http://localhost:4200/bashboard), you will see the following screen:
 
 ![Angular Material dashboard](https://cdn.auth0.com/blog/angular-material/dashboard.png)
 
