@@ -1183,13 +1183,15 @@ export class PostDialogComponent {
 
 To make a button open up this dialog box, you need to tell it to do so by binding a click event to the button. So, open the `dashboard.component.html` and modify the button you created before to look like this:
 
-```ts
+{% highlight html %}
+{% raw %}
 <div class="blocks" *ngIf="auth.isAuthenticated()">
   <button button="submit" mat-raised-button color="primary" (click)="openDialog()">
     <mat-icon>add</mat-icon> Add Post
   </button>
 </div>
-```
+{% endraw %}
+{% endhighlight %}
 
 Then, in the TypeScript file of the `dashboard.component.ts`, you will have update the code as:
 
