@@ -142,9 +142,11 @@ We will be generating a couple of things that we will need in our application un
 2. Client ID - a string of random numbers and letters
 3. Callback URL - http://localhost:4200/callback
 
-> Note! Now that you have your Auth0 Application, go to the Settings tab and add http://localhost:4200/callback to the Allowed Callback URLs and hit the Save button. Then, leave the Settings tab open as you will need to copy some properties from it soon.
+> Note! Now that you have your Auth0 Application, go to the Settings tab and add http://localhost:4200/callback to the Allowed Callback URLs and in the Allowed Logout URLs add http://localhost:4200 and hit the Save button. Then, leave the Settings tab open as you will need to copy some properties from it soon.
 
 ![Allowed Callback URLs](https://i.imgur.com/1y32iKn.png)
+
+![Allowed Logout URLs](https://i.imgur.com/lxShywS.png)
 
 ## Auth0 Install
 
@@ -192,7 +194,7 @@ export default Service.extend({
       // setting up the config file will be covered below
       domain: config.auth0.domain, // domain from auth0
       clientID: config.auth0.clientId, // clientId from auth0
-      redirectUri: 'http://localhost:4200/callback',
+      redirectUri: config.auth0.callbackUrl,
       audience: `https://${config.auth0.domain}/userinfo`,
       responseType: 'token',
       scope: 'openid profile' // adding profile because we want username, given_name, etc
@@ -259,8 +261,10 @@ export default Service.extend({
    * Get rid of everything in sessionStorage that identifies this user
    */
   logout() {
-    this.set('user', null);
-    return Promise.resolve(true);
+    this.get('auth0').logout({
+      clientID: config.auth0.clientId,
+      returnTo: 'http://localhost:4200'
+    });
   }
 });
 ```
@@ -349,8 +353,7 @@ module.exports = function (environment) {
   ENV.auth0 = {
     clientId: AUTH_CONFIG.clientId,
     domain: AUTH_CONFIG.domain,
-    callbackUrl: AUTH_CONFIG.callbackUrl,
-    audience: AUTH_CONFIG.apiUrl
+    callbackUrl: AUTH_CONFIG.callbackUrl
   }
 
   return ENV;
@@ -383,6 +386,56 @@ module.exports = function(defaults) {
 ```
 
 > Do not be alarmed, I know this is not how React or many other frameworks do it. Why not import it in the top of the file? In Ember, some dependencies will need to be added to the build so that it can be used across the application. You can find the documentation for that [here](https://guides.emberjs.com/v3.1.0/addons-and-dependencies/managing-dependencies/).
+
+To complete the global import, we will need to add the `auth0` logic as a global in our `eslintrc.js` file. Go to the `eslintrc.js` file and insert the couple of lines shown here in the file: 
+
+```javascript
+//ember-js-auth/eslintrc.js
+module.exports = {
+  root: true,
+  parserOptions: {
+    ecmaVersion: 2017,
+    sourceType: 'module'
+  },
+  plugins: [
+    'ember'
+  ],
+  extends: [
+    'eslint:recommended',
+    'plugin:ember/recommended'
+  ],
+  env: {
+    browser: true
+  },
+
+  // These are the new lines we need to add. 
+  globals: {
+    'auth0': false
+  },
+
+  rules: {
+  },
+  overrides: [
+    // node files
+    {
+      files: [
+        'ember-cli-build.js',
+        'testem.js',
+        'config/**/*.js',
+        'lib/*/index.js'
+      ],
+      parserOptions: {
+        sourceType: 'script',
+        ecmaVersion: 2015
+      },
+      env: {
+        browser: false,
+        node: true
+      }
+    }
+  ]
+};
+```
 
 ## Each Route Needs to Be Declared
 
@@ -480,7 +533,6 @@ export default Component.extend({
       this
         .get('auth')
         .logout()  
-        .then(() => this.get('router').transitionTo('home'));
     }
   }
 });
@@ -515,7 +567,7 @@ We have nurmerous functions here that we will be using throughout our applicatio
 
       <p class="control">
         <a class="button is-primary" href="#" {{action "login"}}>
-          Login
+          Log In
         </a>
       </p>
       {{/if}}
