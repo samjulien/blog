@@ -3,18 +3,16 @@ layout: post
 title: "Introduction to Web Authentication: The New W3C Spec"
 description: "Learn about WebAuthn, a new standard for secure authentication on the web."
 longdescription: "A new authentication standard aimed at the web is gaining traction. WebAuthn aims to provide a secure, passwordless authentication flow that can be used with hardware tokens, smartphones, and web browsers. Learn more about it in this article."
-date: 2018-05-30 12:30
-category: Technical Guide, JWT
+date: 2018-06-06 12:30
+category: Technical Guide, Identity
 author:
   name: Sebastián Peyrott
   url: https://twitter.com/speyrott?lang=en
   mail: speyrott@auth0.com
   avatar: https://en.gravatar.com/userimage/92476393/001c9ddc5ceb9829b6aaf24f5d28502a.png?size=200
 design:
-  bg_color: "#222228"
-  image: https://cdn.auth0.com/blog/jwtalgos/logo.png
-  image_size: "100%"
-  image_bg_color: "#222228"
+  bg_color: "#0F3454"
+  image: https://cdn.auth0.com/blog/webauthn/logo.png
 tags:
 - auth
 - authentication
