@@ -2,7 +2,8 @@
 layout: post
 title: "Developing Well-Organized APIs with Node.js, Joi, and Mongo"
 description: "In this article, you will learn how to create well-organized APIs with Node.js, Restify, Joi, and MongoDB."
-date: 2018-06-01 08:30
+longdescription: "Structuring Node.js APIs has been a pain most beginner Node.js developers have been through. In this article, you will learn how to properly structure and organize a RESTful Node.js API with some cool tools like Restify, Joi, and MongoDB."
+date: 2018-06-07 08:30
 category: Technical Guide, Backend, NodeJS
 author:
   name: "Biodun Chris"
@@ -26,6 +27,7 @@ tags:
 related:
 - 2018-05-02-nodejs-10-new-changes-deprecations
 - 2018-03-29-vuejs-kanban-board-the-development-process
+- 2016-11-21-building-and-authenticating-nodejs-apps
 ---
 
 **TL;DR:** In this article, you will learn how to build well-organized APIs with [Node.js](https://nodejs.org/), [Restify](https://restify.com), [Joi](https://github.com/hapijs/joi), and [MongoDB](https://mongodb.org). You will also have a chance to learn how to use dependency injection on this stack. If needed, [you can find the code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/nodejs-restify).
