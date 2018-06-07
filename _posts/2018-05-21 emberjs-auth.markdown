@@ -45,7 +45,7 @@ Who here has worked with Angular? AngularJS? React? Vue? Well then, this might l
 
   1. Routes - Being URL based like many modern frameworks, this allows for easy navigation whether the user is visiting the base URL for the first time, or clicking a link on the page to be routed to another page.
   2. Models - Objects that equate the data that your application shows in the user's view.
-  3. Templates - Using Handlebar Templating (learn more about Handlebar Templates [here](https://handlebarsjs.com/)), it contains the HTML for the application.
+  3. Templates - Using Handlebar Templating (learn more about [Handlebar Templates here](https://handlebarsjs.com/)), it contains the HTML for the application.
   4. Components - Consisting of a JavaScript file and Handlebar Templating, components capture the data into reusable information for the application.
   5. Controllers - Behaving like a specialized type of Component that is rendered by the router when entering a Route.
 
@@ -303,9 +303,9 @@ In the section that looks like this:
   }),
  ```
 
-you will want to your own credentials from your Auth0 account. That tab you still have open, yeah, let's go back to that and grab that information. In a "secret" file, you will be inputting those values and then `.gitignore` that file.
+You will want to your own credentials from your Auth0 account. That tab you still have open, yeah, let's go back to that and grab that information. In a "secret" file, you will be inputting those values and then `.gitignore` that file.
 
-What you can do is in the config folder (app/config) within your project you can create an `auth0-variables.js` file that can contain your auth0 information. It can look something like this:
+What you can do is in the config folder (`/config`) within your project you can create an `auth0-variables.js` file that can contain your auth0 information. It can look something like this:
 
 ```javascript
 module.exports = {
@@ -382,7 +382,11 @@ You can declare these variable however you want, just make sure it is in a file 
 
 ### Adding a Global Dependency
 
-The library `auth0-js` needs to be added to a different file in the project. In your `ember-cli-build.js` you will add this line `app.import('node_modules/auth0-js/build/auth0.js');`
+The [`auth0.js` library](https://github.com/auth0/auth0.js) needs to be added to a different file in the project. In your `ember-cli-build.js` you will add this line: 
+
+```js
+app.import('node_modules/auth0-js/build/auth0.js');
+```
 
 We will need to open our `ember-cli-build.js` file and add in the `app.import` line:
 
@@ -404,7 +408,7 @@ module.exports = function(defaults) {
 };
 ```
 
-> Do not be alarmed, I know this is not how React or many other frameworks do it. Why not import it in the top of the file? In Ember, some dependencies will need to be added to the build so that it can be used across the application. You can find the documentation for that [here](https://guides.emberjs.com/v3.1.0/addons-and-dependencies/managing-dependencies/).
+> Do not be alarmed, I know this is not how React or many other frameworks do it. Why not import it in the top of the file? In Ember, some dependencies will need to be added to the build so that it can be used across the application. You can find the [Ember documentation for dependencies here](https://guides.emberjs.com/v3.1.0/addons-and-dependencies/managing-dependencies/).
 
 To complete the global import, we will need to add the `auth0` logic as a global in our `eslintrc.js` file. Go to the `eslintrc.js` file and insert the couple of lines shown here in the file: 
 
@@ -514,7 +518,7 @@ Our navbar will have our login button. Once the user has logged in, that login b
 ember generate component app-nav
 ```
 
-> Note! When naming components in Ember, you must have a `-` somewhere in the name. That is how Ember knows this file is a component. In the [Ember JS Docs](https://guides.emberjs.com/release/components/defining-a-component/) you will find that it prevents things like avoiding name duplication with HTML element names or helps Ember automatically know that it is a component. 
+> Note! When naming components in Ember, you must have a `-` somewhere in the name. That is how Ember knows this file is a component. In the [Ember JS Docs](https://guides.emberjs.com/release/components/defining-a-component/) you will find that it prevents things like name duplication with HTML element names or helps Ember automatically know that it is a component. 
 
 That command created the `component/app-nav.js` file and it also automatically created `templates/components/app-nav.hbs`. We will be using that file soon!
 
@@ -661,8 +665,9 @@ export default Route.extend({
 
 Now onto the `templates/home` file. In there we will add in the following code: 
 
-```javascript
-//ember-js-auth/app/templates/home
+{% highlight html %}
+{% raw %}
+<!-- ember-js-auth/app/templates/home -->
 {{outlet}}
 
 <section class="hero is-info is-fullheight is-bold">
@@ -674,7 +679,8 @@ Now onto the `templates/home` file. In there we will add in the following code:
     </div>
   </div>
 </section>
-```
+{% endraw %}
+{% endhighlight %}
 
 We are telling the application that whenever the user is on the `home page`, to display just a simple header saying `HELLO I AM HOME` with some Bulma styling.
 
@@ -682,7 +688,7 @@ We are telling the application that whenever the user is on the `home page`, to 
 
 We are going to help the application know what to do once the authentication process takes place. If we look at our `handleAuthentication` function in our auth services file, you'll see that we will take in the `accessToken` to then set the session. If these things are not passed through and we cannot properly handle the authentication, then this function being called will reject with an error. Here in our callback route, we will be using that function to allow for this to all take place.
 
-Create the file
+Create the file:
 
 ```bash
 ember generate route callback
@@ -816,7 +822,7 @@ Now that it is running, let's use the application. The user will come to the sit
 
 Once they click on `Log In`, they will then see the Auth0 login page.
 
-<p class="style: text-align: center"><img src="https://i.imgur.com/1ErPfYG.png?1" alt="Auth0 sign in"></p>
+<p align="center"><img src="https://i.imgur.com/1ErPfYG.png?1" alt="Auth0 sign in"></p>
 
 If authentication goes through, they will be redirected to the dashboard showing them their profile name, a `Dashboard` button, a `Log Out` button, and a randomly generated bank account balance. Once they hit logout, they will be unauthenticated and be redirected back to the login screen.
 
@@ -828,6 +834,6 @@ This application tutorial was to get you started with authentication in EmberJS.
 
 > Try visiting the site incognito and you will see there that you will not be able to visit the dashboard page without first being authenticated! Because remember, you cannot visit the dashboard view until you pass in your credentials. That page is a protected page. 
 
-#### Auth0
+### Auth0
 
 Using [Auth0](https://auth0.com) allows for worry-free authentication. You, as a developer, can rest assured that your users and your application are backed by a powerful authentication and identity solution.
