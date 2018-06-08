@@ -26,7 +26,7 @@ related:
 - 2017-11-03-how-to-protect-yourself-from-security-oversights
 ---
 
-A security researcher working for another company recently published a blog post stating that they could potentially perpetrate a phishing attack targeting users of a website that uses Auth0 authentication. Let’s explore the mechanism behind this theoretical phishing attack, the prevalence of social engineering scams in today’s tech industry, and what companies and their users can do to better protect themselves.
+A security researcher working for another company recently published a blog post stating that they could potentially perpetrate a phishing attack targeting users of a website that uses Auth0 authentication. Note that phishing is not the same as hacking a code vulnerability, and therefore, no software patches can be applied because no flaw exists in Auth0's system. Let’s explore the mechanism behind this theoretical phishing attack, the prevalence of social engineering scams in today’s tech industry, and what companies and their users can do to better protect themselves.
 
 ## What is Phishing?
 
