@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "Nonprofit MiVoz Hopes to Upgrade Democracy with Auth0"
-description: "MiVoz will use  Auth0's Universal Identity Management platform to securely authenticate voters as they sign on to access its decentralized democracy platform."
-date: 2018-06-07 8:30
+description: "Auth0's Universal Identity Management platform will securely authenticate voters as they log in MiVoz’s decentralized platform"
+date: 2018-06-08 8:30
 category: Announcements, Press
 is_non-tech: true
 banner:
@@ -13,8 +13,8 @@ author:
   mail: "jennifer.obrien@auth0.com"
   avatar: "https://cdn.auth0.com/blog/avatars/jenny-obrien.png"
 design:
-  image: "TBD"
-  bg_color: "#TBD"
+  image: "https://cdn.auth0.com/blog/mivoz-auth0/logo.png"
+  bg_color: "#222222"
 tags:
 - open-source
 - democracy
@@ -47,7 +47,7 @@ As a nonprofit, MiVoz needed the most efficient and low-cost method of securely 
 
 “We really want to let people know that they can use the tool that we're providing because it's really safe, because one vote needs to correspond to one person. Auth0 was really a blessing from my perspective because it's really the best way to go,” says Giovanetti.
 
-While MiVoz is still exploring fully digital means of uploading and validating voter credentials, currently, government-issued identification will be used to validate each voter in person via various locations throughout Uruguay. After that initial effort, Auth0 will securely authenticate voters as they sign on to access MiVoz’s platform.
+While MiVoz is still exploring fully digital means of uploading and validating voter credentials, currently, government-issued identification will be used to validate each voter in person via various locations throughout Uruguay. After that initial effort, Auth0 will securely authenticate voters as they sign in to access MiVoz’s platform.
 
 ## Encouraging Participation through Collaboration and Delegation
 
