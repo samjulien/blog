@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Phishing Attacks with Auth0? Facts First"
-description: "A security researcher claimed that an attacker could perpetrate a phishing scam  that could target a company using the Auth0 platform based on domain. Learn about this attack, the prevalence of phishing in the industry, and how to mitigate these scams."
+description: "A security researcher claimed that an attacker could perpetrate a phishing scam that could target a company using the Auth0 platform based on domain. Learn about this attack, the prevalence of phishing in the industry, and how to mitigate these scams."
 date: 2018-06-08 9:00
 category: Security
 is_non-tech: true
@@ -45,7 +45,7 @@ This is just one possible example of a phishing scam flow. The attacker could ju
 
 ## Phishing with Auth0 Subdomains
 
-The specific idea behind the security researcher’s phishing scam was a way to target a website that uses Auth0 authentication. Auth0 supports regional subdomains: `auth0.com`, `eu.auth0.com`, and `au.auth0.com`. A bad actor could potentially attempt to scam users of an website or application that uses one of the subdomains by registering any of the other regional subdomains while using the same name. The attacker could then set up a custom page on their subdomain and, _assuming that they had access to the email addresses of users_, send them a link and attempt to solicit secure information from them.
+The specific idea behind the security researcher’s phishing scam was a way to target a website that uses Auth0 authentication. Auth0 supports regional subdomains: `auth0.com`, `eu.auth0.com`, and `au.auth0.com`. A bad actor could potentially attempt to scam users of a website or application that uses one of the subdomains by registering any of the other regional subdomains while using the same name. The attacker could then set up a custom page on their subdomain and, _assuming that they had access to the email addresses of users_, send them a link and attempt to solicit secure information from them.
 
 > It is important to understand that similar scams could be attempted using _any_ domain that users could mistake for a legitimate one.
 
