@@ -45,15 +45,17 @@ This is just one possible example of a phishing scam flow. The attacker could ju
 
 ## Phishing with Auth0 Subdomains
 
-The specific idea behind the security researcher’s phishing scam was a way to target a website that uses Auth0 authentication. Auth0 supports regional subdomains: `auth0.com`, `eu.auth0.com`, and `au.auth0.com`. A bad actor could potentially attempt to scam users of a website or application that uses one of the subdomains by registering any of the other regional subdomains while using the same name. The attacker could then set up a custom page on their subdomain and, _assuming that they had access to the email addresses of users_, send them a link and attempt to solicit secure information from them.
-
-> It is important to understand that similar scams could be attempted using _any_ domain that users could mistake for a legitimate one.
+The specific idea behind the security researcher’s phishing scam was a way to target a website that uses Auth0 authentication. Auth0 supports regional subdomains: `auth0.com`, `eu.auth0.com`, and `au.auth0.com`. A bad actor could potentially attempt to scam users of a website or application that uses one of the subdomains by registering any of the other regional subdomains while using the same name. The attacker could then set up a custom page on their subdomain and, _assuming that they had access to the email addresses of users_, send them a link and attempt to solicit secure information from them. Similar scams could be attempted using _any_ domain that users could mistake for a legitimate one.
 
 <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">Cross-Site Scripting, or XSS</a>, was not used in the exploration of a phishing attack that could use Auth0 regional subdomains to trick users. [XSS describes the injection of malicious scripts into a vulnerable web application](https://www.incapsula.com/web-application-security/cross-site-scripting-xss-attacks.html). This exploration relied on using a custom Auth0 page in a subdomain in another region, but [no malicious cross-site code could be injected](https://auth0.com/docs/hosted-pages#why-use-hosted-pages). The ability to include JavaScript in custom pages is a feature available to Auth0 customers to enable necessary flexibility. However, _cross-site code_ cannot be executed from these pages.
 
 ## This Attack is Not New and Not Unique
 
 As stated previously, phishing attacks have been around for decades: almost thirty years, in fact. They have become more sophisticated and insidious in their execution, but they rely on tricking people into divulging confidential information: these kinds of attacks are referred to as <a href="https://en.wikipedia.org/wiki/Social_engineering_(security)">social engineering</a>. In these scams, it is common for malicious actors to use domains that look very similar to the target domain to make their phishing attempt more convincing. This is still true now, as well as historically.
+
+> "It's unclear why the researcher used Auth0 as a common example of phishing targeting Auth0. There are no vulnerabilities here and their research doesn't show anything new. It is simply another example of possible phishing. The same could be done with the `anycompany.com` website by using a look alike domain and then setting up a login page same as this one `https://www.anycompamy.com/Login`."
+>
+> –Cesar Cerrudo, globally recognized security expert and CTO at [IOActive Labs](https://ioactive.com/)
 
 **No company that has users with email addresses is impervious to phishing scams.** There are thousands of ways to perpetrate the [same kind of phishing attempt](https://auth0.com/blog/all-you-need-to-know-about-the-google-docs-phishing-attack/) [on any company](https://www.justice.gov/usao-sdny/pr/lithuanian-man-arrested-theft-over-100-million-fraudulent-email-compromise-scheme), aside from Auth0, [making the attacks quite prevalent](https://www.tripwire.com/state-of-security/security-data-protection/three-quarters-organizations-experienced-phishing-attacks-2017-report-uncovers/) in the tech industry.
 
