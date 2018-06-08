@@ -13,7 +13,7 @@ author:
   mail: "jennifer.obrien@auth0.com"
   avatar: "https://cdn.auth0.com/blog/avatars/jenny-obrien.png"
 design:
-  image: "https://cdn.auth0.com/blog/mivoz-auth0/logo.png"
+  image: "https://cdn.auth0.com/blog/mivoz-auth0-02/logo.png"
   bg_color: "#222222"
 tags:
 - open-source
