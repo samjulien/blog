@@ -61,7 +61,6 @@ As stated previously, phishing attacks have been around for decades: almost thir
 
 However, it is important to remember that **phishing scams are quite common and easy to execute if an attacker already has your users’ email addresses**. Although using an Auth0 Custom Domain or registering all regional Auth0 subdomains eliminates the attack avenue described in this specific case, an attacker could still register any other Top Level Domain name that is similar to yours and attempt to deceive your users. For example, if your company’s login domain is `login.real-company.com`, a phishing attack could be perpetrated from a similar domain, such as `login.rea1-company.com`. In addition, a bad actor could just as easily send a malicious email attachment to your users instead.
 
-
 > "It's unclear why the researcher used Auth0 as a common example of phishing targeting Auth0. There are no vulnerabilities here and their research doesn't show anything new. It is simply another example of possible phishing. The same could be done with the `anycompany.com` website by using a look alike domain and then setting up a login page same as this one `https://www.anycompamy.com/Login`."
 >
 > –Cesar Cerrudo, globally recognized security expert and CTO at [IOActive Labs](https://ioactive.com/)
