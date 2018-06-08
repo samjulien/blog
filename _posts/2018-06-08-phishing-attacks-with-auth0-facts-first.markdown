@@ -2,7 +2,7 @@
 layout: post
 title: "Phishing Attacks with Auth0? Facts First"
 description: "A security researcher claimed that an attacker could perpetrate a phishing scam  that could target a company using the Auth0 platform based on domain. Learn about this attack, the prevalence of phishing in the industry, and how to mitigate these scams."
-date: 2018-06-08 8:30
+date: 2018-06-08 9:00
 category: Security
 is_non-tech: true
 banner:
