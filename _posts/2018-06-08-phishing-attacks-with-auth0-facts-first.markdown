@@ -53,10 +53,6 @@ The specific idea behind the security researcher’s phishing scam was a way to 
 
 As stated previously, phishing attacks have been around for decades: almost thirty years, in fact. They have become more sophisticated and insidious in their execution, but they rely on tricking people into divulging confidential information: these kinds of attacks are referred to as <a href="https://en.wikipedia.org/wiki/Social_engineering_(security)">social engineering</a>. In these scams, it is common for malicious actors to use domains that look very similar to the target domain to make their phishing attempt more convincing. This is still true now, as well as historically.
 
-> "It's unclear why the researcher used Auth0 as a common example of phishing targeting Auth0. There are no vulnerabilities here and their research doesn't show anything new. It is simply another example of possible phishing. The same could be done with the `anycompany.com` website by using a look alike domain and then setting up a login page same as this one `https://www.anycompamy.com/Login`."
->
-> –Cesar Cerrudo, globally recognized security expert and CTO at [IOActive Labs](https://ioactive.com/)
-
 **No company that has users with email addresses is impervious to phishing scams.** There are thousands of ways to perpetrate the [same kind of phishing attempt](https://auth0.com/blog/all-you-need-to-know-about-the-google-docs-phishing-attack/) [on any company](https://www.justice.gov/usao-sdny/pr/lithuanian-man-arrested-theft-over-100-million-fraudulent-email-compromise-scheme), aside from Auth0, [making the attacks quite prevalent](https://www.tripwire.com/state-of-security/security-data-protection/three-quarters-organizations-experienced-phishing-attacks-2017-report-uncovers/) in the tech industry.
 
 ## Phishing Relies on Tricking Users
@@ -64,6 +60,11 @@ As stated previously, phishing attacks have been around for decades: almost thir
 [Phishing is not the same as hacking a code vulnerability](https://blog.varonis.com/whats-difference-hacking-phishing/), and therefore, no software patches can be applied because no flaw exists in Auth0’s system. The particular phishing attack described by the security researcher is not being actively used. Auth0 provides security measures to help prevent credential harvesting via phishing, such as [Single Sign-On](https://auth0.com/docs/sso/current), [Multifactor Authentication](https://auth0.com/learn/get-started-with-mfa/), and [Passwordless](https://auth0.com/passwordless). In addition, [Breached Password Protection](https://auth0.com/breached-passwords), [Brute Force Protection](https://auth0.com/docs/anomaly-detection#brute-force-protection), and [Anomaly Detection](https://auth0.com/docs/anomaly-detection) can help mitigate the potential outcomes of phishing attacks. Auth0 also supports the use of [Custom Domains](https://auth0.com/docs/custom-domains), which removes `auth0.com` (or regional `auth0.com` subdomains) from your application and replaces with a domain of your choosing, which completely eliminates the ability of an attacker to perform this scam using Auth0 subdomains.
 
 However, it is important to remember that **phishing scams are quite common and easy to execute if an attacker already has your users’ email addresses**. Although using an Auth0 Custom Domain or registering all regional Auth0 subdomains eliminates the attack avenue described in this specific case, an attacker could still register any other Top Level Domain name that is similar to yours and attempt to deceive your users. For example, if your company’s login domain is `login.real-company.com`, a phishing attack could be perpetrated from a similar domain, such as `login.rea1-company.com`. In addition, a bad actor could just as easily send a malicious email attachment to your users instead.
+
+
+> "It's unclear why the researcher used Auth0 as a common example of phishing targeting Auth0. There are no vulnerabilities here and their research doesn't show anything new. It is simply another example of possible phishing. The same could be done with the `anycompany.com` website by using a look alike domain and then setting up a login page same as this one `https://www.anycompamy.com/Login`."
+>
+> –Cesar Cerrudo, globally recognized security expert and CTO at [IOActive Labs](https://ioactive.com/)
 
 ## Protecting Your Company and Users
 
