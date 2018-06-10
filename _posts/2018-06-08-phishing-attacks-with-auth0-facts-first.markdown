@@ -53,7 +53,7 @@ The specific idea behind the security researcher’s phishing scam was a way to 
 
 As stated previously, phishing attacks have been around for decades: almost thirty years, in fact. They have become more sophisticated and insidious in their execution, but they rely on tricking people into divulging confidential information: these kinds of attacks are referred to as <a href="https://en.wikipedia.org/wiki/Social_engineering_(security)">social engineering</a>. In these scams, it is common for malicious actors to use domains that look very similar to the target domain to make their phishing attempt more convincing. This is still true now, as well as historically.
 
-> "It's unclear why the researcher used Auth0 as a common example of phishing targeting Auth0. There are no vulnerabilities here and their research doesn't show anything new. It is simply another example of possible phishing. The same could be done with the `anycompany.com` website by using a look alike domain and then setting up a login page same as this one `https://www.anycompany.com/Login`."
+> "It's unclear why the researcher used Auth0 as a common example of phishing targeting Auth0. There are no vulnerabilities here and their research doesn't show anything new. It is simply another example of possible phishing. The same could be done with the `anycompany.com` website by using a look alike domain and then setting up a login page same as this one `https://www.anycompamy.com/Login`."
 >
 > –Cesar Cerrudo, globally recognized security expert and CTO at [IOActive Labs](https://ioactive.com/)
 
