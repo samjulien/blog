@@ -42,7 +42,7 @@ Many times, a secure, authorized communication channel between different parts o
 ## Machine-to-Machine Communications
 There are many parts of a system where machine-to-machine communications make sense: service to service, daemon to backend, CLI client to internal service, [IoT](https://auth0.com/blog/javascript-for-microcontrollers-and-iot-part-1/) tools. The key aspect of these communications lies on the fact that the element to establish trust in the system is the _client_. What does this mean? In contrast to usual systems where an authorization process attempts to establish trust by authorizing _a user_, in this case what must be authorized and trusted is the client. In other words, there is no need for a user to interact with the system to authenticate, rather the system must authenticate and authorize the _client_. To be clear, in this case, the client is simply an application, process or even an autonomous system. For these scenarios, typical authentication schemes like username + password, social logins, etc. don't make sense.
 
-The [client credentials grant] from OAuth 2.0 attempts to fulfill the need for these scenarios. In the client credentials grant, the client holds two pieces of information: the client ID and the client secret. With this information the client can request an access token for a protected resource.
+The [client credentials grant] from OAuth 2.0 attempts to fulfill the need for these scenarios. In the client credentials grant, the client holds two pieces of information: the client ID and the client secret. With this information, the client can request an access token for a protected resource.
 
 ![Client Credentials Grant](https://cdn.auth0.com/docs/media/articles/api-auth/client-credentials-grant.png)
 
@@ -50,7 +50,7 @@ The [client credentials grant] from OAuth 2.0 attempts to fulfill the need for t
 2. The authorization server validates the request, and, if successful, sends a response with an access token.
 3. The client can now use the access token to request the protected resource from the resource server.
 
-Since the client must always hold the client secret, this grant is only meant to be used in _trusted_ clients. In other words, clients that hold the _client secret_ must always be used in places where these is no risk of that secret being misused. For example, while it may be a good idea to use the client credentials grant in an internal daemon that sends reports across the web to a different part of your system, it cannot be used for a public tool that any external user can download from GitHub.
+Since the client must always hold the client secret, this grant is only meant to be used in _trusted_ clients. In other words, clients that hold the _client secret_ must always be used in places where there is no risk of that secret being misused. For example, while it may be a good idea to use the client credentials grant in an internal daemon that sends reports across the web to a different part of your system, it cannot be used for a public tool that any external user can download from GitHub.
 
 ## Client Credentials Grant
 The client credentials grant is very simple to use. The following are HTTP requests:
@@ -85,7 +85,7 @@ In Auth0, to use the client credentials grant, you must first enable the grant t
 
 This toggle is located in `Applications` -> `<Your App Name>` -> `Settings` -> `Advanced Settings` -> `Grant Types`.
 
-The `audience` claim is related to the API you are requesting access to. You can create audiences for your APIs and protected resources in the [API](https://manage.auth0.com/#/apis) section of the Auth0 Dasboard.
+The `audience` claim is related to the API you are requesting access to. You can create audiences for your APIs and protected resources in the [API](https://manage.auth0.com/#/apis) section of the Auth0 Dashboard.
 
 ### Scopes and Granular Permissions in Auth0
 Thanks to the use of [rules in Auth0](https://auth0.com/docs/rules/current), it is very easy to have granular permissions for machine-to-machine communications. When a client uses the client credentials grant, a rule can be run to check for any data in the request, including `scopes` or `roles`. With this information, you can choose to either grant or deny the request.
@@ -123,7 +123,7 @@ The rise of [Internet-of-Things devices](https://auth0.com/blog/javascript-for-m
 When systems become big, automation starts to make more and more sense. Many tasks that are repetitive, but that still require an administrator to supervise them, start to become scripts. These scripts are run when administrators need to run them. Since these scripts interact with sensitive parts of a company's architecture, they usually have some sort of protection. In these cases, administrators may choose to create CLI apps that have the necessary rights to perform the actions, but that are only available in certain computers, like their own, or in mainframes. In these cases, the client credentials grant also makes sense. These CLI apps are trusted, but they also need access to sensitive parts of a system. Protecting access to sensitive parts of the system by requiring the client ID and client secret can be a solution.
 
 ## Code Example: Gift Deliveries App
-If you are interested in seeing code that can apply to a real world scenario, we have a sample app just for that purpose. The [Gift Deliveries app](https://github.com/auth0-samples/auth0-api-auth-samples/tree/master/machine-to-machine) shows how two backend services from the same company can interact securely with the use of the client credentials grant.
+If you are interested in seeing code that can apply to a real-world scenario, we have a sample app just for that purpose. The [Gift Deliveries app](https://github.com/auth0-samples/auth0-api-auth-samples/tree/master/machine-to-machine) shows how two backend services from the same company can interact securely with the use of the client credentials grant.
 
 In this app, one service, the [World Mappers API](https://github.com/auth0-samples/auth0-api-auth-samples/tree/master/machine-to-machine/worldmappers-api-nodejs) exposes an API that can be used to find coordinates, addresses, and directions; while another service, the [Gift Deliveries Service](https://github.com/auth0-samples/auth0-api-auth-samples/tree/master/machine-to-machine/giftdeliveries-nodejs), uses the `World Mappers API` to get directions from one point to the destination address (to send a gift).
 
