@@ -167,7 +167,7 @@ var getAccessToken = function(callback) {
 }
 ```
 
-If you want to run this app, clone the [repository](https://github.com/auth0-samples/auth0-api-auth-samples) and follow the [README](https://github.com/auth0-samples/auth0-api-auth-samples/blob/master/machine-to-machine/README.md).
+If you want to run this app, <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account</a>, clone the [repository](https://github.com/auth0-samples/auth0-api-auth-samples) and follow the [README](https://github.com/auth0-samples/auth0-api-auth-samples/blob/master/machine-to-machine/README.md).
 
 ## Conclusion
 Machine-to-machine communications are part of almost any modern architecture. OAuth 2.0 and Auth0 provide the necessary building blocks to make its use in your architectures a breeze. From backend-to-backend, services, daemons, IoT devices, and even CLI tools, the client credentials grant remains a simple yet useful approach to the problem of authorization between autonomous and semi-autonomous system. This grant, augmented with the power of rules, can cover all common use cases while remaining flexible for more granular security needs in the future. If you are using, or interested in using, machine-to-machine communications in your products, leave us a comment below. If you are unsure how any of this can apply to your architecture, [hit the "talk to sales" button in our homepage](https://auth0.com/), we can help you out!
