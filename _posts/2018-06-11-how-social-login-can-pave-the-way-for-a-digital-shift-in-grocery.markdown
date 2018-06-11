@@ -11,9 +11,8 @@ author:
   mail: gonto@auth0.com
   avatar: https://www.gravatar.com/avatar/df6c864847fba9687d962cb80b482764??s=60
 design:
-  image: https://cdn.auth0.com/blog/idaas-in-2018/logo.png
-  bg_color: "#222228"
-  image_size: "70%"
+  image: https://cdn.auth0.com/blog/how-social-login-can-pave-the-way-for-a-digital-shift-in-grocery/logo.png
+  bg_color: "#2E598C"
 tags:
 - social-login
 - social
@@ -22,9 +21,9 @@ tags:
 - transformation
 - grocery
 related:
-- 2018-01-26-security-predictions-for-2018-that-go-beyond-gdpr-compliance
+- 2017-12-18-retail-analytics-past-present-and-future
 - 2018-02-02-3-ways-to-get-an-iam-budget-in-2018
-- 2017-12-08-how-poor-identity-access-management-equals-security-breaches
+- 2017-11-27-how-data-analytics-can-transform-your-business
 ---
 
 With its 2017 acquisition of [Whole Foods](https://auth0.com/blog/why-amazon-and-whole-foods-will-change-how-you-shop/), Amazon is changing the competitive landscape in grocery. Now backed by the latest technology, Whole Foods recently announced an overhaul of [90%](https://diginomica.com/2016/06/24/whole-foods-is-replacing-up-to-90-of-its-systems-strong-focus-on-cloud-and-data/) of its operations, replacing legacy systems with digital ones. In order to remain competitive, other grocers must follow suit.
