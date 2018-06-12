@@ -3,7 +3,8 @@ layout: post
 title: "Real-Time Charts using Angular, D3, and Socket.IO"
 description: "Learn how to use Angular, D3, and Socket.IO to build an application that provides real-time charts to its users."
 longdescription: "In this article, you will learn how to use Angular, D3, and Socket.IO to build an application that provides real-time charts to its users. You will start from scratch so you get the opportunity to grasp the whole process."
-date: "2018-06-02 08:30"
+date: "2018-06-12 08:30"
+category: Technical Guide, Angular
 author:
   name: "Ravi Kiran"
   url: "sravi_kiran"
@@ -21,7 +22,8 @@ tags:
 - guest-author
 related:
 - 2018-05-07-whats-new-in-angular6
-- 2018-04-30-whats-new-in-rxjs-6
+- 2018-03-13-using-python-flask-and-angular-to-build-modern-apps-part-1
+- 2016-09-29-angular-2-authentication
 ---
 
 **TL;DR:** Charts create some of the most catchy sections on any business applications. A chart that updates in real time is even more catchy/useful and adds huge value for users. Here, you will see how to create real-time charts using [Angular](https://angular.io/), [D3](https://d3js.org/), and [Socket.IO](https://socket.io/). You can find the final code produced throughout this article in [this GitHub repository](https://github.com/auth0-blog/angular-d3-socketio).
