@@ -3,7 +3,7 @@ layout: post
 title: How Two-Factor Authentication (2FA) Can Help Financial Institutions Reduce Data Breaches
 description: "Getting customers to opt in is key."
 longdescription: "Despite the proven ability of 2FA to reduce the threat of a security breach, getting customers to opt in is key."
-date: 2018-05-25 14:50
+date: 2018-06-18 14:50
 category: Growth, Security
 is_non-tech: true
 author:
@@ -12,8 +12,8 @@ author:
   mail: gonto@auth0.com
   avatar: https://www.gravatar.com/avatar/df6c864847fba9687d962cb80b482764??s=60
 design:
-  bg_color: "#222228"
-  image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
+  bg_color: "#003a95"
+  image: https://cdn.auth0.com/blog/how-two-factor-authentication-can-help-financial-institutions-reduce-data-breaches/logo.png
 tags:
   - 2fa
   - two-factor
