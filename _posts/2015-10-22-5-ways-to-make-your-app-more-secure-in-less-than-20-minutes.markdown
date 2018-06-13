@@ -121,7 +121,7 @@ function (user, context, callback) {
 
     if (!userDirectAccess) {
       context.multifactor = {
-        ignoreCookie: true,
+        allowRememberBrowser: false,
         provider: 'duo'
       };
     }
