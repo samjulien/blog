@@ -3,16 +3,16 @@ layout: post
 title: "Vue.js and AWS Lambda: Developing Production-Ready Apps (Part 1)"
 description: "In this series, you will learn how to develop production-ready applications with Vue.js and AWS Lambda."
 longdescription: "In this series, you will learn how to develop production-ready applications with Vue.js and AWS Lambda. Alongside with these technologies, you will use Express to define the endpoints that you will deploy on AWS Lambda and you will use MongoDB to persist data."
-date: 2018-04-24 08:30
-category: Technical Guide, Vue.js
+date: 2018-06-13 08:30
+category: Technical Guide, Frontend, VueJS
 author:
   name: "Bruno Krebs"
   url: "https://twitter.com/brunoskrebs"
   mail: "bruno.krebs@gmail.com"
   avatar: "https://twitter.com/brunoskrebs/profile_image?size=original"
 design:
-  bg_color: "#4A4A4A"
-  image: https://cdn.auth0.com/blog/python-flask-angular/logo.png
+  bg_color: "#213040"
+  image: https://cdn.auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps/logo.png
 tags:
 - vue.js
 - aws-lambda
@@ -23,6 +23,7 @@ tags:
 related:
 - 2018-03-29-vuejs-kanban-board-the-development-process
 - 2017-04-18-vuejs2-authentication-tutorial
+- 2018-05-22-building-modern-applications-with-django-and-vuejs
 ---
 
 **TL;DR:** In this series, you will use modern technologies like Vue.js, AWS Lambda, Express, MongoDB, and Auth0 to create a production-ready application that acts like a micro-blog engine. The first part of the series (this one) will focus on the setup of the Vue.js client that users will interact with and on the definition of the Express backend app. [You can find the final code developed in this part in this GitHub repository](https://github.com/auth0-blog/vue-js-lambda-part-1).
