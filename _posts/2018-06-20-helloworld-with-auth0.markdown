@@ -3,7 +3,7 @@ layout: post
 title: "HelloWorld: With Auth0"
 description: "This guide is designed for non-devs and will show you a sample project and help you finish setting up authentication. Exciting!"
 longdescription: "This guide is designed for non-devs and will show you a sample project and help you finish setting up authentication. Exciting! You'll also get to customize Auth0 Lock, enable Facebook login and set up multi-factor authentication. If none of this makes any sense, don't worry. We're going to explain it all!"
-date: 2018-05-19 15:58
+date: 2018-06-20 08:30
 category: Technical Guide, Identity
 author:
   name: Luke Oliff
@@ -11,8 +11,8 @@ author:
   avatar: https://avatars1.githubusercontent.com/u/956290?s=200
   mail: luke.oliff@auth0.com
 design:
-  bg_color: "#222228"
-  image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
+  bg_color: "#5F381E"
+  image: https://cdn.auth0.com/blog/helloworld-with-auth0/logo.png
 tags:
 - helloworld
 - hello-world
@@ -26,6 +26,8 @@ tags:
 - rules
 related:
 - 2018-02-07-oauth2-the-complete-guide
+- 2018-03-28-security-vs-convenience
+- 2017-11-29-5-massive-benefits-of-identity-as-a-service-for-developers
 ---
 
 **TL;DR:** In this guide, you'll finish adding authentication to our simple [single page application](https://auth0.com/docs/sso/current/single-page-apps), customize Auth0 [Lock](https://auth0.com/docs/libraries/lock/v11), enable [social login](https://auth0.com/blog/social-login-on-the-rise/) with Facebook, and set up [multi-factor authentication](https://auth0.com/docs/multifactor-authentication). If none of this makes any sense, don't worry. We're going to explain that as well.
