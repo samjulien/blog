@@ -109,6 +109,27 @@ What’s especially powerful about the Rule is that you can easily configure MFA
 
 And to do that, all you need to do is write a bit of extra conditional logic in JavaScript for your Rule. This helps you tailor how onerous the MFA burden is. You can have MFA triggered every time the user logs in, or only under abnormal conditions.
 
+In the following example, we only trigger MFA when the user is login in from a non-whitelisted IP:
+
+```javascript
+function (user, context, callback) {
+    var whitelist = ['1.2.3.4', '2.3.4.5']; //authorized IPs
+    var userDirectAccess = whitelist.some(
+      function (ip) {
+        return context.request.ip === ip;
+      });
+
+    if (!userDirectAccess) {
+      context.multifactor = {
+        ignoreCookie: true,
+        provider: 'duo'
+      };
+    }
+
+    return callback(null, user, context);
+}
+```
+
 ### 2. SMS when there’s a log in from a different IP
 
 ```
