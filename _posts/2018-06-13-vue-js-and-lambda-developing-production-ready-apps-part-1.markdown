@@ -9,7 +9,7 @@ author:
   name: "Bruno Krebs"
   url: "https://twitter.com/brunoskrebs"
   mail: "bruno.krebs@gmail.com"
-  avatar: "https://twitter.com/brunoskrebs/profile_image?size=original"
+  avatar: "https://cdn.auth0.com/blog/profile-picture/bruno-krebs.png"
 design:
   bg_color: "#213040"
   image: https://cdn.auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps/logo.png
