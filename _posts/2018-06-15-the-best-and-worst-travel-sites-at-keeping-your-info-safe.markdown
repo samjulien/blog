@@ -3,17 +3,17 @@ layout: post
 title: The Best and Worst Travel Sites At Keeping Your Info Safe
 description: "Guidelines for customers, along with strategies for managers at travel companies to increase their security measures."
 longdescription: "A recent study by Dashlane unveiled that 89% of travel sites have unsafe password practices. Read guidelines for customers, along with strategies for managers at travel companies to increase their security measures."
-date: 2018-05-25 19:55
+date: 2018-06-15 08:30
 category: Growth, Security
 is_non-tech: true
 author:
-  name: Martin Gontovnikas
-  url: http://twitter.com/mgonto
-  mail: gonto@auth0.com
-  avatar: https://www.gravatar.com/avatar/df6c864847fba9687d962cb80b482764??s=60
+  name: Diego Poza
+  url: https://twitter.com/diegopoza
+  avatar: https://avatars3.githubusercontent.com/u/604869?v=3&s=200
+  mail: diego.poza@auth0.com
 design:
-  bg_color: "#222228"
-  image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
+  bg_color: "#3f3442"
+  image: https://cdn.auth0.com/blog/the-best-and-worst-travel-sites-at-keeping-your-info-safe/logo.png
 tags:
   - digital-transformation
   - travel
