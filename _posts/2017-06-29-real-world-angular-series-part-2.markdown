@@ -62,13 +62,12 @@ The second installment in the series covers authentication, authorization, featu
 
 ## <span id="angular-auth"></span>Angular: Authentication
 
-Let's pick up right where we left off [last time](https://auth0.com/blog/real-world-angular-series-part-1). We've built the main layout for our app. Now it's time to add an authentication feature. Our app's basic authentication should include:
+Let's pick up right where [we left off last time](https://auth0.com/blog/real-world-angular-series-part-1). We've built the main layout for our app. Now it's time to add an authentication feature. Our app's basic authentication should include:
 
 * Login and logout
-* User profile storage
-* Access token storage
+* User profile and token management
 * Session persistence
-* Factory to authorize HTTP requests with access token
+* Authorization of HTTP requests with access token
 
 ### Install Auth0.js
 
@@ -162,23 +161,18 @@ export class AuthService {
     audience: AUTH_CONFIG.AUDIENCE,
     scope: AUTH_CONFIG.SCOPE
   });
+  accessToken: string;
   userProfile: any;
+  expiresAt: number;
   // Create a stream of logged in status to communicate throughout app
   loggedIn: boolean;
   loggedIn$ = new BehaviorSubject<boolean>(this.loggedIn);
+  loggingIn: boolean;
 
   constructor(private router: Router) {
-    // If authenticated, set local profile property
-    // and update login status subject.
-    // If not authenticated but there are still items
-    // in localStorage, log out.
-    const lsProfile = localStorage.getItem('profile');
-
-    if (this.tokenValid) {
-      this.userProfile = JSON.parse(lsProfile);
-      this.setLoggedIn(true);
-    } else if (!this.tokenValid && lsProfile) {
-      this.logout();
+    // If app auth token is not expired, request new token
+    if (JSON.parse(localStorage.getItem('expires_at')) > Date.now()) {
+      this.renewToken();
     }
   }
 
@@ -195,7 +189,7 @@ export class AuthService {
 
   handleAuth() {
     // When Auth0 hash parsed, get profile
-    this._auth0.parseHash((err, authResult) => {
+    this._auth0.parseHash(window.location.href, (err, authResult) => {
       if (authResult && authResult.accessToken) {
         window.location.hash = '';
         this._getProfile(authResult);
@@ -207,45 +201,57 @@ export class AuthService {
   }
 
   private _getProfile(authResult) {
+    this.loggingIn = true;
     // Use access token to retrieve user's profile and set session
     this._auth0.client.userInfo(authResult.accessToken, (err, profile) => {
       if (profile) {
         this._setSession(authResult, profile);
       } else if (err) {
-        console.error(`Error authenticating: ${err.error}`);
+        console.warn(`Error retrieving profile: ${err.error}`);
       }
     });
   }
-
-  private _setSession(authResult, profile) {
-    // Save session data and update login status subject
-    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + Date.now());
-    // Set tokens and expiration in localStorage and props
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('expires_at', expiresAt);
-    localStorage.setItem('profile', JSON.stringify(profile));
+  
+  private _setSession(authResult, profile?) {
+    this.expiresAt = (authResult.expiresIn * 1000) + Date.now();
+    // Store expiration in local storage to access in constructor
+    localStorage.setItem('expires_at', JSON.stringify(this.expiresAt));
+    this.accessToken = authResult.accessToken;
     this.userProfile = profile;
     // Update login status in loggedIn$ stream
     this.setLoggedIn(true);
+    this.loggingIn = false;
   }
-
-  logout() {
-    // Ensure all auth items removed from localStorage
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('profile');
+  
+  private _clearExpiration() {
+    // Remove token expiration from localStorage
     localStorage.removeItem('expires_at');
-    localStorage.removeItem('authRedirect');
-    // Reset local properties, update loggedIn$ stream
-    this.userProfile = undefined;
-    this.setLoggedIn(false);
-    // Return to homepage
-    this.router.navigate(['/']);
+  }
+  
+  logout() {
+    // Remove data from localStorage
+    this._clearExpiration();
+    // End Auth0 authentication session
+    this._auth0.logout({
+      clientId: AUTH_CONFIG.CLIENT_ID,
+      returnTo: ENV.BASE_URI
+    });
   }
 
   get tokenValid(): boolean {
     // Check if current time is past access token's expiration
-    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    return Date.now() < expiresAt;
+    return Date.now() < JSON.parse(localStorage.getItem('expires_at'));
+  }
+  
+  renewToken() {
+    // Check for valid Auth0 session
+    this._auth0.checkSession({}, (err, authResult) => {
+      if (authResult && authResult.accessToken) {
+        this._getProfile(authResult);
+      } else {
+        this._clearExpiration();
+      }
+    });
   }
 
 }
@@ -255,15 +261,23 @@ This service uses the config variables from `auth.config.ts` to instantiate an [
 
 An [RxJS `BehaviorSubject`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/subjects/behaviorsubject.md) is used to provide a stream of authentication status events that we can subscribe to anywhere in the app.
 
-The constructor checks the current authentication status upon app initialization. If the user is still logged in from a previous session and their token has not expired, the local properties are set using data from local storage and the `loggedIn` property and `loggedIn$` subject are updated. If the token is expired but the user has not logged themselves out, the `logout()` method is executed to clear any expired session data.
+The constructor checks the app authentication status upon initialization. If the user has not logged out of our Angular app from a previous session (their token has not expired), we'll call a method called `renewToken()` to verify that their _Auth0 session on the authentication server_ is _also_ still valid. If it is, we'll receive a fresh access token.
 
-The `login()` method authorizes the authentication request with Auth0 using the auth config variables. An Auth0 hosted Lock instance will be shown to the user and they can then log in.
+> **Note:** The Angular app's authentication lifespan is not the same thing as the authentication session on the server. We manage the Angular app authentication with the expiration of the JWT access token, and the persistence or removal of this tells us whether or not to ask the server if the user's Auth0 authentication session is still valid when initializing the app.
+
+The `login()` method authorizes the authentication request with Auth0 using the auth config variables. The Auth0 login page will be shown to the user and they can then log in.
 
 > **Note:** If it's the user's first visit to our app _and_ our callback is on localhost, they'll also be presented with a consent screen where they can grant access to our API. A first party client on a non-localhost domain would be highly trusted, so the consent dialog would not be presented in this case. You can modify this by editing your [Auth0 Dashboard API](https://manage.auth0.com/#/apis) **Settings**. Look for the "Allow Skipping User Consent" toggle.
 
 We'll receive an an `access_token` and a time until token expiration (`expiresIn`) from Auth0 when returning to our app. The `handleAuth()` method uses Auth0's `parseHash()` method callback to get the user's profile (`_getProfile()`) and set the session (`_setSession()`) by saving the tokens, expiration, and profile to local storage and calling `setLoggedIn()` so that any components in the app are informed that the user is now authenticated.
 
-Finally, we'll define a `logout()` method that clears data from local storage and updates `setLoggedIn()`. We also have a `tokenValid()` accessor to check whether the current datetime is less than the token expiration datetime.
+Next we'll create a little helper method to easily clear the expiration from local storage, since we will need to do this in multiple places.
+
+We'll define a `logout()` method that clears expiration and then calls the [Auth0 `logout()` method](https://auth0.com/docs/libraries/auth0js/v9#logout) to officially end the user's Auth0 authentication session. This performs a redirect back to the URL we specify (in this case, our app's public homepage). 
+
+We also have a `tokenValid()` accessor to check whether the current datetime is less than the token expiration datetime.
+
+Finally, we'll implement the `renewToken()` method, which uses the [Auth0 `checkSession()` method](https://auth0.com/docs/libraries/auth0js/v9#using-checksession-to-acquire-new-tokens) to request a fresh access token from Auth0 if the user's authentication session is still active. If there is no session active, we won't take any action. We don't want to produce any errors or logs here because having no session does not mean anything _went wrong_, it just tells us the user should not be automatically and silently logged back into the Angular app.
 
 ### Provide AuthService in App Module
 
@@ -285,24 +299,9 @@ import { AuthService } from './auth/auth.service';
 ...
 ```
 
-### Handle Authentication in App Component
-
-The authentication service's `handleAuth()` method must be called in the `app.component.ts` constructor so it will run on initialization of our app:
-
-```js
-// src/app/app.component.ts
-import { AuthService } from './auth/auth.service';
-...
-  constructor(private auth: AuthService) {
-    // Check for authentication and handle if hash present
-    auth.handleAuth();
-  }
-...
-```
-
 ### Create a Callback Component
 
-Next we'll create a Callback component. This is where the app is redirected after authentication. This component simply shows a loading message until hash parsing is completed and the Angular app redirects back to the home page.
+Next we'll create a Callback component. This is where the app is redirected after authentication. This component handles the authentication information and then shows a loading message until hash parsing is completed and the Angular app redirects back to the home page.
 
 > **Note:** Recall that we already added `http://localhost:4200/callback` and `http://localhost:8083/callback` to our [Auth0 Client](https://manage.auth0.com/#/clients) **Allowed Callback URLs** setting.
 
@@ -312,7 +311,20 @@ Let's generate this component with the Angular CLI:
 $ ng g component pages/callback
 ```
 
-For now, all we need to do in this component is change the text in `callback.component.html` to `Loading...`, like so:
+The authentication service's `handleAuth()` method must be called in the `callback.component.ts` constructor so it will run on initialization of our app:
+
+```js
+// src/app/pages/callback/callback.component.ts
+import { AuthService } from './auth/auth.service';
+...
+  constructor(private auth: AuthService) {
+    // Check for authentication and handle if hash present
+    auth.handleAuth();
+  }
+...
+```
+
+All we need to do in this component's template is change the text in `callback.component.html` to `Loading...`, like so:
 
 {% highlight html %}
 <!-- src/app/pages/callback/callback.component.html -->
