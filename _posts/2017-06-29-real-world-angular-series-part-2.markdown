@@ -383,19 +383,21 @@ Now let's add login, logout, and a user greeting to the `header.component.html` 
   <div class="header-page bg-primary">
     ...
     <div class="header-page-authStatus">
-      <a *ngIf="!auth.loggedIn" (click)="auth.login()">Log In</a>
-      <span *ngIf="auth.loggedIn">
-        {{auth.userProfile?.name}} <span class="opacity-half">|</span> <a (click)="auth.logout()">Log Out</a>
-      </span>
+      <span *ngIf="auth.loggingIn">Logging in...</span>
+      <ng-template [ngIf]="!auth.loggingIn">
+        <a *ngIf="!auth.loggedIn" (click)="auth.login()">Log In</a>
+        <span *ngIf="auth.loggedIn && auth.userProfile">
+          {{ auth.userProfile.name }}
+          <span class="divider">|</span>
+          <a (click)="auth.logout()">Log Out</a>
+        </span>
+      </ng-template>
     </div>
-  </div>
   ...
 {% endraw %}
 {% endhighlight %}
 
-We've added a `<div class="header-page-authStatus>` element. We'll use the [ngIf directive](https://angular.io/api/common/NgIf) with the `loggedIn` property from our authentication service to determine if the user is logged in to show or hide the appropriate markup. If the user is not logged in, we'll show a "Log In" link. If they're already authenticated, we'll show their name and a link to log out.
-
-> **Note:** Notice the `auth.userProfile?.name` binding. The `?.` is the [safe navigation operator](https://angular.io/guide/template-syntax#the-safe-navigation-operator----and-null-property-paths). This operator protects against `null` and `undefined` values in property paths. If the object is not yet defined, the safe navigation operator prevents an error from occurring and waits to render until the data is available.
+We've added a `<div class="header-page-authStatus>` element. In order to prevent a flash of content while our service is busy processing a new login, we'll use the [ngIf directive](https://angular.io/api/common/NgIf) to show "Logging in..." if our `auth.loggingIn` property is `true`. We'll then use ngIf again with the `loggedIn` property to determine if the user is logged in to show or hide the appropriate markup. If the user is not logged in, we'll show a "Log In" link. If they're already authenticated, we'll show their name and a link to log out.
 
 Now let's add a little bit of CSS to style our new authentication status elements. Open the `header.component.scss` file:
 
@@ -415,11 +417,16 @@ Now let's add a little bit of CSS to style our new authentication status element
     a:hover {
       text-decoration: underline;
     }
+    .divider {
+      display: inline-block;
+      opacity: .5;
+      padding: 0 4px;
+    }
   }
 }
 ```
 
-We can now log into our app! Try it out in the browser.
+We can now log into our app! Try it out in the browser by clicking the "Log In" link and authenticating. You should see the Auth0 login page like so:
 
 ![Auth0 hosted login screen](https://cdn2.auth0.com/blog/angular-aside/angular-aside-login.jpg)
 
@@ -427,7 +434,7 @@ Once logged in, you should see your name and a link to log out in the upper righ
 
 ![Auth0 logged into Angular app](https://cdn.auth0.com/blog/mean-series/logged-in.jpg)
 
-You should also be able to close the browser and reopen it to find your session has persisted (unless enough time has passed for the token to expire).
+You should also be able to close the browser and reopen it to find your login status has persisted (unless enough time has passed for the token to expire, or you clicked the "Log Out" link).
 
 ## <span id="admin-authorization"></span>Admin Authorization
 
@@ -435,7 +442,7 @@ For our RSVP app, only users with `admin` privileges should be able to create, e
 
 First, let's take a look at the steps involved:
 
-1. Use [Auth0 Rules](https://auth0.com/docs/rules) to establish user roles and then add them to the ID (client) and access (API) tokens.
+1. Use [Auth0 Rules](https://auth0.com/docs/rules) to establish user roles and then add them to the ID (client user info) and access (API) tokens.
 2. Implement middleware in our Node.js API to ensure only `admin` users can access certain API routes.
 3. Use the role information in the Angular app to restrict access to certain routes and features.
 
@@ -490,11 +497,11 @@ function (user, context, callback) {
 
 Replace `[MY_FULL_GOOGLE_ACCOUNT_EMAIL]` with your own credentials. We're replacing `indexOf()` with a strict equality expression `===` because we want to match a full email address rather than just a domain as in the example rule template.
 
-> **Note:** If you want to use a non-Google account, make sure you identify the account by an appropriate property. Not all properties are returned by all connection types. You can also be more explicit regarding the details of the account if you want _all_ accounts with that email to be set as administrators, or if you want only a Google account versus a username/password account to match the check. You can check your [Auth0 Users](https://manage.auth0.com/#/users) or test your [Auth0 Social Connections](https://manage.auth0.com/#/connections/social) to see what kind of data is returned and stored from logins from different identity providers.
+> **Note:** If you want to use a non-Google IdP account, make sure you identify the account by an appropriate property. Not all properties are returned by all connection types. You can also be more explicit regarding the details of the account if you want _all_ accounts with that email to be set as administrators, or if you want only a Google account versus a username/password account to match the check. You can check your [Auth0 Users](https://manage.auth0.com/#/users) or test your [Auth0 Social Connections](https://manage.auth0.com/#/connections/social) to see what kind of data is returned and stored from logins from different identity providers.
 
-We added `app_metadata` with a `roles` array to our users, but since this isn't part of the [OpenID standard claims](http://openid.net/specs/openid-connect-core-1_0.html#StandardClaims), we need to add [_custom_ claims](https://auth0.com/docs/scopes/current#custom-claims) in order to include roles data in the ID and access tokens when the `updateAppMetadata()` promise is resolved.
+We added `app_metadata` with a `roles` array to our users, but since this isn't included in the [OpenID standard claims](http://openid.net/specs/openid-connect-core-1_0.html#StandardClaims), we need to add [_custom_ claims](https://auth0.com/docs/scopes/current#custom-claims) in order to include roles data in the ID and access tokens when the `updateAppMetadata()` promise is resolved.
 
-The `namespace` identifier can be any non-Auth0 HTTP or HTTPS URL and does not have to point to an actual resource. Auth0 enforces this [recommendation from OIDC regarding additional claims](https://openid.net/specs/openid-connect-core-1_0.html#AdditionalClaims) and will _silently exclude_ any claims that do not have a namespace. You can read more about [implementing custom claims with Auth0 here](https://auth0.com/docs/scopes/current#custom-claims).
+The `namespace` identifier can be any non-Auth0 HTTP or HTTPS URL and _does not_ have to point to an actual resource. Auth0 enforces this [recommendation from OIDC regarding additional claims](https://openid.net/specs/openid-connect-core-1_0.html#AdditionalClaims) and will _silently exclude_ any claims that do not have a namespace. You can read more about [implementing custom claims with Auth0 here](https://auth0.com/docs/scopes/current#custom-claims).
 
 The key for our custom claim will be `http://myapp.com/roles`. This is how we'll retrieve the `roles` array from the ID and access tokens in our Angular app and Node API. Our rule assigns the Auth0 user's `app_metadata.roles` to this property.
 
@@ -502,7 +509,7 @@ When finished, click the "Save" button to save this rule.
 
 ### Sign In with Admin Account
 
-The next thing we need to do is _sign in_ with our intended admin user. This will trigger the rules to execute and the app metadata will be added to our targeted account. Then the roles data will also be available in the tokens whenever the user logs in.
+The next thing we need to do is _sign in_ with our intended admin user. This will trigger the rule to execute and the app metadata will be added to our targeted account. Then the roles data will also be available in the tokens whenever the user logs in.
 
 Since we've implemented login in our Angular app already, all we need to do is sign in with the account we specified in our `Set roles to a user` rule. Visit your Angular app in the browser at [http://localhost:4200](http://localhost:4200) and click the "Log In" link we added in the header.
 
@@ -592,26 +599,18 @@ Now that we have the namespace stored, let's add support for storing admin statu
 export class AuthService {
   ...
   isAdmin: boolean;
-  ...
-  constructor(private router: Router) {
-    // If authenticated, set local profile property,
-    // admin status, and update login status subject.
-    // If token is expired but user data still in localStorage, log out
-    if (this.tokenValid) {
-      this.userProfile = JSON.parse(localStorage.getItem('profile'));
-      this.isAdmin = localStorage.getItem('isAdmin') === 'true';
-      this.setLoggedIn(true);
-    }
-  }
 
   ...
 
   private _setSession(authResult, profile) {
-    // Save session data and update login status subject
     ...
-    this.isAdmin = this._checkAdmin(profile);
-    localStorage.setItem('isAdmin', this.isAdmin.toString());
-    this.setLoggedIn(true);
+    // If initial login, set profile and admin information
+    if (profile) {
+      ...
+      this.isAdmin = this._checkAdmin(profile);
+    }
+    // Update login status in loggedIn$ stream
+    ...
   }
 
   private _checkAdmin(profile) {
@@ -620,32 +619,16 @@ export class AuthService {
     return roles.indexOf('admin') > -1;
   }
 
-  logout() {
-    // Ensure all auth items removed from localStorage
-    ...
-    localStorage.removeItem('isAdmin');
-    // Reset local properties, update loggedIn$ stream
-    this.userProfile = undefined;
-    this.isAdmin = undefined;
-    this.setLoggedIn(false);
-  }
-
   ...
 ```
 
 First we'll add a new property called `isAdmin: boolean`. This will store the user's admin status so we can use it in the front end.
 
-In the constructor, if the user is authenticated, we'll look for an `isAdmin` key in local storage. Local storage stores values as strings, so we'll _cast_ it as a boolean.
-
 Next we'll update the `_setSession()` function. After setting the local `userProfile` property, we'll use a private `_checkAdmin()` method to determine whether the user has `admin` in their roles.
-
-> **Note:** We have to cast `isAdmin` to a string because its type is `boolean`, but local storage expects strings.
-
-Finally, we'll remove `isAdmin` data from local storage and the service in the `logout()` method.
 
 We now have the ability to check whether or not a user has admin privileges on the client side.
 
-> **Security Note:** This should never be done on the client-side _alone_. Always ensure that API routes are protected as well, as we've done in the API middleware section above.
+> **Security Note:** This should _never_ be done on the client-side _alone_. Always ensure that API routes are protected as well, as we've done in the API middleware section above.
 
 We now have admin authorization set up on both our API and in our Angular app. We'll do a lot more with this as we develop our application!
 
@@ -709,7 +692,7 @@ Let's consider our RSVP app's intended features at a high level, then we'll extr
 
 We now have an idea about what features our events and RSVPs need to support. Let's create both the server and client-side models necessary to support our application.
 
-### Create Schema
+### Create Mongoose Schema
 
 First we'll create the necessary schema to leverage our database. Create a new folder in the `server` directory called `models`. In this folder, add a file called `Event.js` and a file called `Rsvp.js`. These will contain our Event and Rsvp models. We're using [mongoose](http://mongoosejs.com/index.html) for MongoDB object modeling. Each [mongoose schema](http://mongoosejs.com/docs/guide.html) maps to a MongoDB collection and defines the shape of the documents within that collection.
 
@@ -810,7 +793,7 @@ export class EventModel {
 }
 ```
 
-We're naming the models `EventModel` (and `RsvpModel`) to avoid conflicts with existing `Event` constructors if your editor or IDE uses [intelligent code completion](https://en.wikipedia.org/wiki/Intelligent_code_completion). Optional members must be listed after required members. The `_id` property is optional because it only exists if retrieving data from the database, but not if we're creating _new_ records.
+We're naming the models `EventModel` (and `RsvpModel`) to avoid conflicts with existing `Event` constructors if your editor or IDE uses [intelligent code completion](https://en.wikipedia.org/wiki/Intelligent_code_completion). Optional members must be listed after required members. The `_id` property is optional because it only exists if we're _retrieving_ data from the database, but not if we're creating _new_ records.
 
 Now add the RSVP model in `rsvp.model.ts`:
 
@@ -848,27 +831,27 @@ db.events.insert([{
   "title": "Test Event Past",
   "location": "Home",
   "description": "This event took place in the past.",
-  "startDatetime": ISODate("2017-05-04T18:00:00.000-04:00"),
-  "endDatetime": ISODate("2017-05-04T20:00:00.000-04:00"),
+  "startDatetime": ISODate("2018-05-04T18:00:00.000-04:00"),
+  "endDatetime": ISODate("2018-05-04T20:00:00.000-04:00"),
   "viewPublic": true
 }, {
   "title": "MongoBooster Test",
   "location": "Seattle, WA",
   "description": "I entered this seed event into the database using Mongo shell.",
-  "startDatetime": ISODate("2017-08-12T20:00:00.000-04:00"),
-  "endDatetime": ISODate("2017-08-13T10:00:00.000-04:00"),
+  "startDatetime": ISODate("2019-08-12T20:00:00.000-04:00"),
+  "endDatetime": ISODate("2019-08-13T10:00:00.000-04:00"),
   "viewPublic": true
 }, {
   "title": "Bob's Private Event",
   "location": "Bob's House",
   "description": "An event at Bob's house.",
-  "startDatetime": ISODate("2017-10-05T12:30:00.000-04:00"),
-  "endDatetime": ISODate("2017-10-05T14:30:00.000-04:00"),
+  "startDatetime": ISODate("2019-10-05T12:30:00.000-04:00"),
+  "endDatetime": ISODate("2019-10-05T14:30:00.000-04:00"),
   "viewPublic": false
 }])
 ```
 
-> **Note:** Make sure you update the seed data dates so that most of them are in the future and at least one is in the past. You may need to make changes depending on the _current_ date versus the publication date of this tutorial. You'll also want at least one to have a `viewPublic` value of `false`.
+> **Important Note:** Make sure you update the seed data dates so that most of them are in the future and at least one is in the past. You may need to make changes depending on the _current_ date versus the publication date of this tutorial. You'll also want at least one to have a `viewPublic` value of `false`.
 
 When finished, click "Run" in the top bar. A console tab and a result tab should appear. You can then double-click on the `events` collection again to see your new documents listed. They should each have an `_id` property containing the automatically-generated [object ID](https://docs.mongodb.com/manual/reference/method/ObjectId/) and should look something like this:
 
