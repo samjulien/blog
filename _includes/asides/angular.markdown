@@ -25,8 +25,9 @@ You'll need an [Auth0](https://auth0.com) account to manage authentication. You 
 
 1. Go to your [**Auth0 Dashboard**](https://manage.auth0.com/#/) and click the "[create a new application](https://manage.auth0.com/#/applications/create)" button.
 2. Name your new app and select "Single Page Web Applications".
-3. In the **Settings** for your new Auth0 app, add `http://localhost:4200/callback` to the **Allowed Callback URLs**. Click the "Save Changes" button.
-4. If you'd like, you can [set up some social connections](https://manage.auth0.com/#/connections/social). You can then enable them for your app in the **Application** options under the **Connections** tab. The example shown in the screenshot above utilizes username/password database, Facebook, Google, and Twitter. For production, make sure you set up your own social keys and do not leave social connections set to use Auth0 dev keys.
+3. In the **Settings** for your new Auth0 app, add `http://localhost:4200/callback` to the **Allowed Callback URLs**.
+4. Add `http://localhost:4200` to the **Allowed Logout URLs**. Click the "Save Changes" button.
+5. If you'd like, you can [set up some social connections](https://manage.auth0.com/#/connections/social). You can then enable them for your app in the **Application** options under the **Connections** tab. The example shown in the screenshot above utilizes username/password database, Facebook, Google, and Twitter. For production, make sure you set up your own social keys and do not leave social connections set to use Auth0 dev keys.
 
 > **Note:** Under the **OAuth** tab of **Advanced Settings** (at the bottom of the **Settings** section) you should see that the **JsonWebToken Signature Algorithm** is set to `RS256`. This is  the default for new applications. If it is set to `HS256`, please change it to `RS256`. You can [read more about RS256 vs. HS256 JWT signing algorithms here](https://community.auth0.com/questions/6942/jwt-signing-algorithms-rs256-vs-hs256).
 
@@ -166,10 +167,9 @@ export class AuthService {
   logout() {
     // Remove token and profile, update login status subject,
     // and log out of Auth0 authentication session
-    this.expiresAt = undefined;
-    this.accessToken = undefined;
-    this.userProfile = undefined;
-    this._setLoggedIn(false);
+    // This does a refresh and redirects back to homepage
+    // Make sure you have the returnTo URL in your Auth0
+    // Dashboard Application settings in Allowed Logout URLs
     this._Auth0.logout({
       returnTo: 'http://localhost:4200',
       clientID: AUTH_CONFIG.CLIENT_ID
@@ -197,7 +197,7 @@ We'll receive `accessToken` and `expiresIn` in the hash from Auth0 when returnin
 
 > **Note:** The profile takes the shape of [`profile.model.ts`](https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/auth/profile.model.ts) from the [OpenID standard claims](https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims).
 
-Finally, we have a `logout()` method that clears data, and updates the `loggedIn$` subject, and logs out of the authentication session on Auth0's server. 
+Finally, we have a `logout()` method that logs out of the authentication session on Auth0's server and then redirects back to our app's homepage. 
 
 We also have an `authenticated` accessor to return current authentication status based on presence of a token and the token's expiration.
 
