@@ -28,11 +28,6 @@ related:
 
 ---
 
-<div class="alert alert-danger alert-icon">
-  <i class="icon-budicon-487"></i>
-  <strong>WARNING: This series of articles uses Angular 5 and RxJS 5.</strong> Please be aware that code changes are necessary to use Angular 6 and RxJS 6 with this tutorial. We are in the process of upgrading the series to latest versions. In the meantime, you can <a href="https://update.angular.io/">follow the update instructions here</a> for more information. Thank you for your patience!
-</div>
-
 **TL;DR:** This 8-part tutorial series covers building and deploying a full-stack JavaScript application from the ground up with hosted [MongoDB](https://www.mongodb.com/), [Express](https://expressjs.com/), [Angular (v2+)](https://angular.io), and [Node.js](https://nodejs.org) (MEAN stack). The completed code is available in the [mean-rsvp-auth0 GitHub repo](https://github.com/auth0-blog/mean-rsvp-auth0/) and a deployed sample app is available at [https://rsvp.kmaida.net](https://rsvp.kmaida.net).  **Part 5 of the tutorial series covers simple animation and using a template-driven form to add and update data.**
 
 ---
@@ -69,7 +64,7 @@ The fifth installment in the series covers simple animation and using a template
 
 ## <span id="angular-rsvp"></span>Angular: RSVP Component
 
-Let's pick up right where we left off [last time](https://auth0.com/blog/real-world-angular-series-part-4). We'll add some basic functionality to our RSVP component to display existing RSVPs. Shortly, we'll create the RSVP form, which will be responsible for adding and updating RSVPs. At that time, we'll add quite a bit more logic to this component.
+Let's pick up right where [we left off last time](https://auth0.com/blog/real-world-angular-series-part-4). We'll add some basic functionality to our RSVP component to display existing RSVPs. Shortly, we'll create the RSVP form, which will be responsible for adding and updating RSVPs. At that time, we'll add quite a bit more logic to this component.
 
 ### Add Display Utilities to Service
 
@@ -180,7 +175,7 @@ import { ApiService } from './../../../core/api.service';
 import { UtilsService } from './../../../core/utils.service';
 import { FilterSortService } from './../../../core/filter-sort.service';
 import { RsvpModel } from './../../../core/models/rsvp.model';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-rsvp',
@@ -204,7 +199,8 @@ export class RsvpComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     private api: ApiService,
     public utils: UtilsService,
-    public fs: FilterSortService) { }
+    public fs: FilterSortService
+  ) { }
 
   ngOnInit() {
     this.footerTense = !this.eventPast ? 'plan to attend this event.' : 'attended this event.';
@@ -291,31 +287,33 @@ Let's write the markup for our RSVP component. Open `rsvp.component.html`:
 {% highlight html %}
 {% raw %}
 <!-- src/app/pages/event/rsvp/rsvp.component.html -->
-<div class="card-block">
-  <h2 class="card-title text-center">RSVP</h2>
+<div class="card-body pb-0">
+  <h2 class="card-title text-center mb-0">RSVP</h2>
   <app-loading *ngIf="loading"></app-loading>
 </div>
 
 <ng-template [ngIf]="utils.isLoaded(loading)">
   <!-- Event is over -->
-  <p *ngIf="eventPast" class="card-block lead">
-    You cannot RSVP to an event that has already ended.
-  </p>
+  <div *ngIf="eventPast" class="card-body">
+    <p class="lead card-text">You cannot RSVP to an event that has already ended.</p>
+  </div>
 
   <ng-template [ngIf]="!eventPast && rsvps">
     <!-- User has RSVPed -->
     <ng-template [ngIf]="userRsvp">
-      <p class="card-block lead">You responded to this event with the following information:</p>
+      <div class="card-body">
+        <p class="lead card-text">You responded to this event with the following information:</p>
+      </div>
 
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
-          <strong>Name:</strong>{{userRsvp.name}}
+          <strong>Name:</strong>{{ userRsvp.name }}
         </li>
         <li class="list-group-item">
-          <strong>Attending:</strong>{{utils.booleanToText(userRsvp.attending)}}
+          <strong>Attending:</strong>{{ utils.booleanToText(userRsvp.attending) }}
         </li>
         <li *ngIf="userRsvp.attending && userRsvp.guests" class="list-group-item">
-          <strong>Additional Guests:</strong>{{userRsvp.guests}}
+          <strong>Additional Guests:</strong>{{ userRsvp.guests }}
         </li>
         <li *ngIf="userRsvp.comments" class="list-group-item">
           <strong>Comments:</strong><span [innerHTML]="userRsvp.comments"></span>
@@ -325,44 +323,44 @@ Let's write the markup for our RSVP component. Open `rsvp.component.html`:
     </ng-template>
 
     <!-- No RSVP yet -->
-    <div *ngIf="!userRsvp" class="card-block">
+    <div *ngIf="!userRsvp" class="card-body">
       <p class="lead">Fill out the form below to respond:</p>
       <!-- @TODO: RSVP form (add new RSVP) will go here -->
     </div>
   </ng-template>
 
   <!-- All RSVPs -->
-  <div class="card-block text-right">
-    <button (click)="toggleShowRsvps()" class="btn btn-link btn-sm">{{showRsvpsText}}</button>
+  <div class="card-body text-right">
+    <button (click)="toggleShowRsvps()" class="btn btn-link btn-sm">{{ showRsvpsText }}</button>
   </div>
 
   <section class="allRsvps" *ngIf="showAllRsvps">
-    <div class="card-block">
+    <div class="card-body">
       <h3 class="card-title text-center">All RSVPs</h3>
-      <p *ngIf="!rsvps.length" class="lead">There are currently no RSVPs for this event.</p>
+      <p *ngIf="!rsvps.length" class="lead card-text">There are currently no RSVPs for this event.</p>
     </div>
 
     <ul *ngIf="rsvps.length" class="list-group list-group-flush">
       <li class="list-group-item list-group-item-success justify-content-between">
         <strong>Attending</strong>
-        <span class="badge badge-success badge-pill">{{totalAttending}}</span>
+        <span class="badge badge-success badge-pill">{{ totalAttending }}</span>
       </li>
       <li
         *ngFor="let rsvp of fs.filter(rsvps, 'attending', true)"
         class="list-group-item small">
-        {{rsvp.name}} {{utils.showPlusOnes(rsvp.guests)}}
+        {{ rsvp.name }} {{ utils.showPlusOnes(rsvp.guests) }}
         <p *ngIf="auth.isAdmin && rsvp.comments" class="d-flex w-100">
           <em [innerHTML]="rsvp.comments"></em>
         </p>
       </li>
       <li class="list-group-item list-group-item-danger justify-content-between">
         <strong>Not Attending</strong>
-        <span class="badge badge-danger badge-pill">{{fs.filter(rsvps, 'attending', false).length}}</span>
+        <span class="badge badge-danger badge-pill">{{ fs.filter(rsvps, 'attending', false).length }}</span>
       </li>
       <li
         *ngFor="let rsvp of fs.filter(rsvps, 'attending', false)"
         class="list-group-item small">
-        {{rsvp.name}}
+        {{ rsvp.name }}
         <p *ngIf="auth.isAdmin && rsvp.comments" class="d-flex w-100">
           <em [innerHTML]="rsvp.comments"></em>
         </p>
@@ -371,7 +369,7 @@ Let's write the markup for our RSVP component. Open `rsvp.component.html`:
   </section>
 
   <!-- Error loading RSVPs -->
-  <div *ngIf="error" class="card-block">
+  <div *ngIf="error" class="card-body">
     <p class="alert alert-danger">
       <strong>Oops!</strong> There was an error retrieving RSVPs for this event.
     </p>
@@ -404,12 +402,9 @@ Now open the `rsvp.component.scss` file and we'll add just a few styles to clean
 .list-group-item p:last-child {
   margin-bottom: 0;
 }
-.card-block.lead {
-  margin-bottom: 0;
-}
 ```
 
-Our RSVP tab component should now look like this in the browser:
+Our RSVP tab component should now look something like this in the browser:
 
 ![Angular MEAN app RSVP component](https://cdn.auth0.com/blog/mean-series/event-rsvp-noForm.jpg)
 
@@ -419,15 +414,9 @@ Our RSVP tab component should now look like this in the browser:
 
 This is looking pretty good, but our list of all RSVPs shows and hides quite abruptly. What if we want to animate that section so that it opens and closes more elegantly?
 
-### Install Dependencies
+### Set Up Dependencies
 
-Let's implement a simple animation. We'll start by adding the [Angular animations](https://angular.io/guide/animations) package in the root of our project folder:
-
-```bash
-$ npm install @angular/animations --save
-```
-
-We need to include the `BrowserAnimationsModule` in our `app.module.ts` file like so:
+Let's implement a simple animation. We'll take advantage of [Angular animations](https://angular.io/guide/animations) to do this. We need to include the `BrowserAnimationsModule` in our `app.module.ts` file like so:
 
 ```typescript
 // src/app/app.module.ts
@@ -447,21 +436,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 Import the module and then add it to the `imports` array in the NgModule.
 
-Angular animations use the native [Web Animations API](https://w3c.github.io/web-animations/). To accommodate [browsers that don't support this API yet](http://caniuse.com/#feat=web-animation), we'll also want the [web animations polyfill](https://github.com/web-animations/web-animations-js).
-
-> **Note:** You can test your browser's support for the WAAPI by visiting [this Codepen link](http://codepen.io/danwilson/pen/xGBKVq).
-
-Let's add this to our project via CDN in the `index.html` file like so:
-
-{% highlight html %}
-<!-- src/index.html -->
-...
-<head>
-  ...
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.2.5/web-animations.min.js"></script>
-</head>
-...
-{% endhighlight %}
+> **Note:** Angular animations use the native [Web Animations API](https://w3c.github.io/web-animations/), or as of Angular 6, fall back to CSS keyframes if the Web Animations API is not supported in the user's browser.
 
 Now we're ready to use Angular animations in our app!
 
@@ -524,8 +499,8 @@ Let's talk briefly about the purpose of each of these methods:
 * `trigger()`: accepts a name for the animation _trigger_ and an array of state and transition methods to configure the animation
 * `state()`: accepts the name of the _state_ of the animation, such as `'active'` or `'inactive'`, and styles that should be applied conditionally when in that state
 * `style()`: sets CSS styles and can be passed in to configure a state, transition, or animation
-* `transition()`: accepts a string explaining which states are being transitioned and which direction the transition is going (i.e., `'active => inactive'`), and any styles or animations to configure the transition
-* `animate()`: accepts a numeric duration in milliseconds, _or_ a CSS string specifying both the duration and easing (i.e., `250` or `'250ms ease-in'`)
+* `transition()`: accepts a string explaining which states are being transitioned and which direction the transition is going (e.g., `'active => inactive'`), and any styles or animations to configure the transition
+* `animate()`: accepts a numeric duration in milliseconds, _or_ a CSS string specifying both the duration and easing (e.g., `250` or `'250ms ease-in'`)
 
 > **Note:** Style, transition, and animation methods passed as arguments can be singular or grouped in an array.
 
@@ -544,13 +519,13 @@ When animating structural directives (such as NgIf), Angular provides the state 
 * Transition `void => *`: element is being added (alias: `:enter`)
 * Transition `* => void`: element is being removed (alias: `:leave`)
 
-Angular animation also now supports [automatic property calculation](https://angular.io/guide/animations#automatic-property-calculation)! Because Angular animations are now backed by JavaScript with the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API), we no longer have to animate to an arbitrary `max-height` to accomodate animation of elements with dynamic dimensions. If an asterisk is used as a CSS property value, the value is _computed at runtime_ and plugged into the animation automatically.
+Angular animation also supports [automatic property calculation](https://angular.io/guide/animations#automatic-property-calculation)! Because Angular animations are now backed by JavaScript with the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API), we no longer have to animate to an arbitrary `max-height` to accomodate animation of elements with dynamic dimensions. If an asterisk is used as a CSS property value, the value is _computed at runtime_ and plugged into the animation automatically.
 
 ### Notes on Animation
 
 I personally prefer Option 1 for animations because I find it easier to read the two complete states that are being transitioned. However, Option 2 allows you to see exactly _which_ CSS properties are changing between states and what they're transitioning to and from. Pick an approach that makes the most sense to _you_.
 
-In both approaches, note that `overflow-y: 'hidden'` is included in both states. This style is needed by the animation, so it's included in the animation JS rather than in CSS. Needing to remember to apply it with CSS whenever we add the animation somewhere would prove cumbersome and not very future-proof. It's safer to include all animation-supporting styles with the animation itself.
+In both approaches, note that `overflow-y: 'hidden'` is included in both states. This style is needed by the _animation_ specifically, so it's included in the animation JS rather than in CSS. Needing to remember to apply it with CSS whenever we add the animation somewhere would prove cumbersome and not very future-proof. It's safer to include all animation-supporting styles with the animation itself.
 
 {% include tweet_quote.html quote_text="Animations in Angular are powerful and provide devs with authorship flexibility." %}
 
