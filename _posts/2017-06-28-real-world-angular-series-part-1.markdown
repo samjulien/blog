@@ -353,7 +353,7 @@ We now need to add a user in order to connect to our database. Click on the data
 
 Now we're ready to use our MongoDB database.
 
-> **Note:** If you prefer, you can host MongoDB locally. [Follow these instructions](https://docs.mongodb.com/manual/installation/) to install MongoDB on your operating system.
+> **Note:** If you prefer, you can host MongoDB locally. [Follow these instructions to install MongoDB](https://docs.mongodb.com/manual/installation/) on your operating system.
 
 ### Set Up MongoBooster
 
@@ -392,20 +392,22 @@ Our Angular application and Node API will use the IDaaS (Identity-as-a-Service) 
 
 ### Sign Up for a Free Auth0 Account
 
-You'll need an [Auth0](https://auth0.com) account to manage authentication. You can sign up for a <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">free account here</a>. Next, set up an Auth0 client app and API so Auth0 can interface with an Angular app and Node API.
+You'll need an [Auth0](https://auth0.com) account to manage authentication. You can sign up for a <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">free account here</a>. Next, set up an Auth0 application and API so Auth0 can interface with an Angular app and Node API.
 
 > Auth0 provides the simplest and easiest to use [user interface tools to help administrators manage user identities](https://auth0.com/user-management) including password resets, creating and provisioning, blocking and deleting users. [A generous **free tier**](https://auth0.com/pricing) is offered so you can get started with modern authentication.
 
-### Set Up a Client App
+### Set Up an Application
 
-1. Go to your [**Auth0 Dashboard**](https://manage.auth0.com/#/) and click the "[create a new client](https://manage.auth0.com/#/clients/create)" button.
+1. Go to your [**Auth0 Dashboard**](https://manage.auth0.com/#/) and click the "[create a new application](https://manage.auth0.com/#/applications/create)" button.
 2. Give your new app a name (for example: `RSVP MEAN App`) and select "Single Page Web Applications".
-3. In the **Settings** for your new Auth0 client app, add `http://localhost:8083/callback` and `http://localhost:4200/callback` to the **Allowed Callback URLs**.
+3. In the **Settings** for your new Auth0 application, add `http://localhost:8083/callback` and `http://localhost:4200/callback` to the **Allowed Callback URLs**.
 4. In **Allowed Web Origins**, add `http://localhost:8083` and `http://localhost:4200`.
-5. Scroll down to the bottom of the **Settings** section and click "Show Advanced Settings". Choose the **OAuth** tab and make sure the **JsonWebToken Signature Algorithm** is set to "RS256".
-6. If you'd like, you can [set up some social connections](https://manage.auth0.com/#/connections/social). You can then enable them for your app in the **Client** options under the **Connections** tab. The example shown in the screenshot above utilizes username/password database, Facebook, Google, and Twitter.
+5. In **Allowed Logout URLs**, add `http://localhost:4200`.
+6. Make sure the **Use Auth0 instead of the IdP to do Single Sign On** toggle is enabled.
+7. Scroll down to the bottom of the **Settings** section and click "Show Advanced Settings". Choose the **OAuth** tab and make sure the **JsonWebToken Signature Algorithm** is set to "RS256".
+8. If you'd like, you can [set up some social connections](https://manage.auth0.com/#/connections/social). You can then enable them for your app in the **Connections** settings tab for your `RSVP Mean App` application. The example shown in the screenshot above utilizes username/password database, Facebook, Google, and Twitter.
 
-We added two ports to the callback URLs and allowed web origins because we'll be running and testing the app from both during development. Port `4200` is the port the Angular CLI serves the Angular app from. Port `8083` is the port our Node API and server uses: this will be necessary in order to test the production build. When we launch to a production URL, we can either create a new production Auth0 Client or add our production URL to the client as well.
+We added two ports to the callback URLs and allowed web origins because we'll be running and testing the app from both during development. Port `4200` is the port the Angular CLI serves the Angular app from. Port `8083` is the port our Node API and server uses: this will be necessary in order to test the production build. When we launch to a production URL, we can either create a new production Auth0 Application or add our production URL to the app as well.
 
 > **Note:** If you set up social connections, enter App/Client IDs as per the instructions for each connection instead of leaving those fields blank and using Auth0 dev keys. This will be important for token renewal and deployment later.
 
@@ -454,7 +456,7 @@ Open the `server/config.js` file and add the following to it:
 module.exports = {
   AUTH0_DOMAIN: '[YOUR_AUTH0_DOMAIN]', // e.g., kmaida.auth0.com
   AUTH0_API_AUDIENCE: '[YOUR_AUTH0_API_NAME]', // e.g., 'http://localhost:8083/api/'
-  MONGO_URI: process.env.MONGO_URI || 'mongodb://[USER]:[PASSWORD]@[DS######].mlab.com:[PORT]/[DB_NAME]'
+  MONGO_URI: 'mongodb://[USER]:[PASSWORD]@[DS######].mlab.com:[PORT]/[DB_NAME]'
 };
 ```
 
@@ -547,7 +549,7 @@ if (process.env.NODE_ENV !== 'dev') {
 app.listen(port, () => console.log(`Server running on localhost:${port}`));
 ```
 
-Notice that there are a few sections that are environment-dependent. For development, we want to be able to take advantage of the Angular CLI's ability to serve and watch files with [JIT](https://auth0.com/blog/glossary-of-modern-javascript-concepts-part-2#jit) without requiring an entire project build each time we want to check our work. In order to facilitate this, we'll start by separating our Node.js server from our Angular front end in development.
+Notice that there are a few sections that are environment-dependent. For development, we want to be able to take advantage of the Angular CLI's ability to serve and watch files without requiring an entire project build each time we want to check our work. In order to facilitate this, we'll start by separating our Node.js server from our Angular front end in development.
 
 This way, we can run the Node API on [localhost:8083](http://localhost:8083) while the Angular app runs on [localhost:4200](http://localhost:4200). For _production_, we want the Node server to run the API _and_ use a static path to serve the front end. Our MEAN stack should pass routing to the compiled Angular app for deployment.
 
@@ -614,7 +616,7 @@ $ npm install nodemon -g
 
 We should now be able to access both the Angular application and the API in the browser on `localhost`. We can do so by running each of the following commands from the root of our project in separate terminal windows ([VS Code is great at this](https://code.visualstudio.com/docs/editor/integrated-terminal#_managing-multiple-terminals)).
 
-> **Note:** We'll be using separate terminal windows a lot so we can keep watching the app and API while adding components with the Angular CLI.
+> **Note:** We'll be using separate terminal windows a lot so we can keep watching the app and API while adding components with the Angular CLI. Alternatively, you could install [`concurrently`](https://www.npmjs.com/package/concurrently) to simultaneously run commands in the same window using an npm script. For this tutorial, we won't do this since we will need to restart `ng serve` periodically while generating new files, and this is more easily done if we have the CLI command running _separately_ from our Node server.
 
 We can use this command to serve the Angular app:
 
@@ -631,8 +633,6 @@ $ nodemon server
 # OR Mac:
 $ NODE_ENV=dev nodemon server
 ```
-
-> **Note:** On Mac, these commands can be combined: `NODE_ENV=dev nodemon server`.
 
 If we've done everything correctly, the Angular app will compile and show a success message in its terminal. We should also see a message in the Node server terminal confirming that the server is running and that we've successfully connected to MongoDB.
 
@@ -709,7 +709,7 @@ Open `home.component.html` and add:
 {% highlight html %}
 {% raw %}
 <!-- src/app/pages/home/home.component.html -->
-<h1 class="text-center">{{pageTitle}}</h1>
+<h1 class="text-center">{{ pageTitle }}</h1>
 {% endraw %}
 {% endhighlight %}
 
@@ -1027,7 +1027,7 @@ Open the `app.component.html` file and add:
 <div class="layout-overflow">
   <div
     class="layout-canvas"
-    [ngClass]="{'nav-open': navOpen, 'nav-closed': !navOpen}"
+    [ngClass]="{ 'nav-open': navOpen, 'nav-closed': !navOpen }"
     [style.min-height]="minHeight">
 
     <!-- HEADER -->
