@@ -46,7 +46,7 @@ The [client credentials grant] from OAuth 2.0 attempts to fulfill the need for t
 
 ![Client Credentials Grant](https://cdn.auth0.com/docs/media/articles/api-auth/client-credentials-grant.png)
 
-1. The client makes a request to the authorization server sending the `client ID`, the `client secret`, along with the `audience` and `scopes` claims.
+1. The client makes a request to the authorization server sending the `client ID`, the `client secret`, along with the `audience` and other claims claims.
 2. The authorization server validates the request, and, if successful, sends a response with an access token.
 3. The client can now use the access token to request the protected resource from the resource server.
 
@@ -62,8 +62,7 @@ Content-Type: application/json
   "audience": "<API_IDENTIFIER>",
   "grant_type": "client_credentials",
   "client_id": "<YOUR_CLIENT_ID>",
-  "client_secret": "<YOUR_CLIENT_SECRET>",
-  "scope": "write:logs" // Optional
+  "client_secret": "<YOUR_CLIENT_SECRET>"
 }
 ```
 
@@ -87,7 +86,7 @@ This toggle is located in `Applications` -> `<Your App Name>` -> `Settings` -> `
 
 The `audience` claim is related to the API you are requesting access to. You can create audiences for your APIs and protected resources in the [API](https://manage.auth0.com/#/apis) section of the Auth0 Dashboard.
 
-### Scopes and Granular Permissions in Auth0
+### Granular Permissions in Auth0
 Thanks to the use of [rules in Auth0](https://auth0.com/docs/rules/current), it is very easy to have granular permissions for machine-to-machine communications. When a client uses the client credentials grant, a rule can be run to check for any data in the request, including `scopes` or `roles`. With this information, you can choose to either grant or deny the request.
 
 {% include tweet_quote.html quote_text="With Auth0 Rules, you can have powerful granular permissions even for machine-to-machine authorization!" %}
@@ -105,6 +104,8 @@ function (user, context, callback) {
 ```
 
 In this rule, access to a specific client ID has been denied. Since rules are JavaScript code, any complex logic for permissions or authorization can be added to your apps.
+
+If you don't need the flexibility of rules, you can still achieve a level of granularity with scopes. These can be enabled on a per API and per application/client basis.
 
 ## Common Use Cases for M2M Communications
 In this section, ee will take a look at common scenarios where M2M communications might make sense.
