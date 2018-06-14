@@ -144,14 +144,12 @@ Now open the `src/index.html` file and add a link to the [Bootstrap](https://v4-
   ...
   <link
     rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
-    integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous">
 </head>
 ...
 {% endhighlight %}
-
-> **Note:** At the time of writing, we're using the v4 alpha version of Bootstrap to take advantage of newer features such as the flex grid. As with any pre-release tool, there may be bugs. If a later release is available, please upgrade. If you choose to downgrade to v3, be aware that many of the classes in the provided HTML templates _will not work_ and will need to be replaced.
 
 ### Global SCSS
 
@@ -159,7 +157,7 @@ We'll now add some SCSS to manage global styling for our application. This will 
 
 First, open your `src/assets` folder and create a new `scss` folder. Now find the `src/styles.scss` file and move it into `src/assets/scss`.
 
-Next, open the `.angular-cli.json` file. Find the `styles` property and change it to the following:
+Next, open the `angular-cli.json` file. Find the `styles` property and change it to the following:
 
 ```js
 ...
@@ -171,7 +169,7 @@ Next, open the `.angular-cli.json` file. Find the `styles` property and change i
 
 Now our project will look for this file in the `assets` folder rather than in the root.
 
-> **Note:** If you have the Angular CLI server running, you'll need to stop and restart it after making changes to the `.angular-cli.json` configuration file.
+> **Note:** If you have the Angular CLI server running, you'll need to stop and restart it after making changes to the `angular-cli.json` configuration file.
 
 Next, let's create a few SCSS files.
 
@@ -249,9 +247,6 @@ input:-ms-input-placeholder { /* IE 10+ */
 
 /*-- Helpers --*/
 
-.opacity-half {
-  opacity: .5;
-}
 .list-group-item > strong {
   padding-right: 5px;
 }
