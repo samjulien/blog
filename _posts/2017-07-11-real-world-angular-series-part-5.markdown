@@ -672,7 +672,7 @@ Open the `api.service.ts` file and add these two methods:
   // POST new RSVP (login required)
   postRsvp$(rsvp: RsvpModel): Observable<RsvpModel> {
     return this.http
-      .post(`${ENV.BASE_API}rsvp/new`, rsvp, {
+      .post<RsvpModel>(`${ENV.BASE_API}rsvp/new`, rsvp, {
         headers: new HttpHeaders().set('Authorization', this._authHeader)
       })
       .pipe(
@@ -689,6 +689,7 @@ Open the `api.service.ts` file and add these two methods:
       .pipe(
         catchError((error) => this._handleError(error))
       );
+  }
 
   ...
 ```
@@ -729,7 +730,7 @@ export class RsvpComponent implements OnInit, OnDestroy {
 
   toggleEditForm(setVal?: boolean) {
     this.showEditForm = setVal !== undefined ? setVal : !this.showEditForm;
-    this.editBtnText = this.showEditForm ? 'Cancel Edit' : 'Edit RSVP';
+    this.editBtnText = this.showEditForm ? 'Cancel Edit' : 'Edit My RSVP';
   }
 
   onSubmitRsvp(e) {
@@ -762,11 +763,11 @@ Next, open the `rsvp.component.html` file:
         ...
       </ul>
 
-      <div class="card-block">
+      <div class="card-body">
         <button
           class="btn btn-info"
-          [ngClass]="{'btn-info': !showEditForm, 'btn-warning': showEditForm}"
-          (click)="toggleEditForm()">{{editBtnText}}</button>
+          [ngClass]="{ 'btn-info': !showEditForm, 'btn-warning': showEditForm }"
+          (click)="toggleEditForm()">{{ editBtnText }}</button>
 
         <app-rsvp-form
           *ngIf="showEditForm"
@@ -777,7 +778,7 @@ Next, open the `rsvp.component.html` file:
     </ng-template>
 
     <!-- No RSVP yet -->
-    <div *ngIf="!userRsvp" class="card-block">
+    <div *ngIf="!userRsvp" class="card-body">
       ...
       <app-rsvp-form
         [eventId]="eventId"
@@ -789,7 +790,7 @@ Next, open the `rsvp.component.html` file:
 {% endraw %}
 {% endhighlight %}
 
-If the user has an existing RSVP, we'll display a new `.card-block` element containing a button to toggle the RSVP form in edit mode. This form will be shown if the `showEditForm` property is `true`. It needs the `eventId` and user's `rsvp` data passed to it as inputs. It also will respond to a `(submitRsvp)` event that the form will emit, using the `onSubmitRsvp($event)` handler method we just created.
+If the user has an existing RSVP, we'll display a new `.card-body` element containing a button to toggle the RSVP form in edit mode. This form will be shown if the `showEditForm` property is `true`. It needs the `eventId` and user's `rsvp` data passed to it as inputs. It also will respond to a `(submitRsvp)` event that the form will emit, using the `onSubmitRsvp($event)` handler method we just created.
 
 If the user does not have an existing RSVP yet, they will be shown the form to create a response. In this case, the only data we need to pass is the event ID. We'll respond to the `(submitRsvp)` event the same way as above.
 
@@ -874,7 +875,7 @@ Now let's add some logic to the `rsvp-form.component.ts` file:
 // src/app/pages/event/rsvp/rsvp-form/rsvp-form.component.ts
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { AuthService } from './../../../../auth/auth.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ApiService } from './../../../../core/api.service';
 import { RsvpModel } from './../../../../core/models/rsvp.model';
 import { GUESTS_REGEX } from './../../../../core/forms/formUtils.factory';
@@ -897,7 +898,8 @@ export class RsvpFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private auth: AuthService,
-    private api: ApiService) { }
+    private api: ApiService
+  ) { }
 
   ngOnInit() {
     this.isEdit = !!this.rsvp;
@@ -1176,19 +1178,12 @@ export class RsvpComponent implements OnInit, OnDestroy {
   ...
   showEditForm: boolean;
   editBtnText: string;
-
+  
   ...
 
   ngOnInit() {
     ...
     this.toggleEditForm(false);
-  }
-
-  ...
-
-  toggleEditForm(setVal?: boolean) {
-    this.showEditForm = setVal !== undefined ? setVal : !this.showEditForm;
-    this.editBtnText = this.showEditForm ? 'Cancel Edit' : 'Edit My RSVP';
   }
 
   ...
@@ -1242,7 +1237,7 @@ export class RsvpComponent implements OnInit, OnDestroy {
 ...
 ```
 
-First, we'll add `showEditForm` and `editBtnText` properties to toggle the edit form when a user has an existing RSVP. We'll create a `toggleEditForm()` method to update these properties and call it in `ngOnInit()` to begin with the form closed.
+We'll now type annotate our `showEditForm` and `editBtnText` properties. Then we'll call the `toggleEditForm()` method in `ngOnInit()` to begin with the edit form closed and populate these properties dynamically on initial load.
 
 Next we'll add a handler for the `submitRsvp` event that the RSVP form component emits. Our `_onSubmitRsvp()` method checks the event object for an `rsvp` property containing the updated RSVP. It sets the `userRsvp` property to the new RSVP. It then calls the `_updateRsvpState()` method, passing a new `changed` parameter that we'll add shortly. It also closes the edit form.
 
@@ -1267,11 +1262,11 @@ Open the `rsvp.component.html` template:
     <!-- User has RSVPed -->
     <ng-template [ngIf]="userRsvp">
       ...
-      <div class="card-block">
+      <div class="card-body">
         <button
           class="btn btn-info"
-          [ngClass]="{'btn-info': !showEditForm, 'btn-warning': showEditForm}"
-          (click)="toggleEditForm()">{{editBtnText}}</button>
+          [ngClass]="{ 'btn-info': !showEditForm, 'btn-warning': showEditForm }"
+          (click)="toggleEditForm()">{{ editBtnText }}</button>
 
         <app-rsvp-form
           *ngIf="showEditForm"
@@ -1282,7 +1277,7 @@ Open the `rsvp.component.html` template:
     </ng-template>
 
     <!-- No RSVP yet -->
-    <div *ngIf="!userRsvp" class="card-block">
+    <div *ngIf="!userRsvp" class="card-body">
       ...
       <app-rsvp-form
         [eventId]="eventId"
@@ -1293,7 +1288,7 @@ Open the `rsvp.component.html` template:
 {% endraw %}
 {% endhighlight %}
 
-First we'll add a new `<div class="card-block">` to contain our editing RSVP form component and toggle. We'll pass the `[eventId]` and user `[rsvp]` and handle the `(submitRsvp)` event that the form component emits on submission.
+First we'll add a new `<div class="card-body">` to contain our editing RSVP form component and toggle. We'll pass the `[eventId]` and user `[rsvp]` and handle the `(submitRsvp)` event that the form component emits on submission.
 
 If the user hasn't RSVPed yet, we'll show the RSVP form component and pass the `[eventId]` and handle the `(submitRsvp)` event. In this case, we don't have an existing RSVP to pass in.
 
