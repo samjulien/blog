@@ -3,7 +3,8 @@ layout: post
 title: "Real-World Angular Series - Part 5: Animation and Template-Driven Forms"
 description: "Build and deploy a real-world app with MongoDB, Express, Angular, and Node (MEAN): animation and template-driven forms."
 date: 2017-07-11 8:30
-category: Technical guide, Angular, Angular 4
+updated: 2018-07-15 8:30
+category: Technical guide, Angular, Angular 6
 banner:
   text: "Auth0 makes it easy to add authentication to your Angular application."
 author:
@@ -27,6 +28,11 @@ related:
 - 2017-07-06-real-world-angular-series-part-4
 
 ---
+
+<div class="alert alert-info alert-icon">
+  <i class="icon-budicon-487"></i>
+  <strong>This article was updated June 15, 2018.</strong> This series and associated repository use Angular 6, CLI 6, RxJS 6, and revised recommendations regarding the storage of sensitive data.
+</div>
 
 **TL;DR:** This 8-part tutorial series covers building and deploying a full-stack JavaScript application from the ground up with hosted [MongoDB](https://www.mongodb.com/), [Express](https://expressjs.com/), [Angular](https://angular.io), and [Node.js](https://nodejs.org) (MEAN stack). The completed code is available in the [mean-rsvp-auth0 GitHub repo](https://github.com/auth0-blog/mean-rsvp-auth0/) and a deployed sample app is available at [https://rsvp.kmaida.net](https://rsvp.kmaida.net).  **Part 5 of the tutorial series covers simple animation and using a template-driven form to add and update data.**
 
