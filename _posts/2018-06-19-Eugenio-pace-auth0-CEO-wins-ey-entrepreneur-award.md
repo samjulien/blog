@@ -65,10 +65,7 @@ In the Pacific Northwest Region, sponsors also include Woodruff Sawyer.
 
 Entrepreneur Of The Year®, founded by EY, is the world’s most prestigious business awards program for entrepreneurs, chosen from an independent panel of judges including entrepreneurs and prominent leaders from business, finance, and the local community. The program makes a difference through the way it encourages entrepreneurial activity among those with potential and recognizes the contribution of people who inspire others with their vision, leadership, and achievement. As the first and only truly global awards program of its kind, Entrepreneur Of The Year celebrates those who are building and leading successful, growing and dynamic businesses, recognizing them through regional, national and global awards programs in more than 145 cities in more than 60 countries. ey.com/eoy
 
-## About Auth0
-
-Auth0, a global leader in Identity-as-a-Service (IDaaS), provides thousands of enterprise customers with a Universal Identity Platform for their web, mobile, IoT, and internal applications. Its extensible platform seamlessly authenticates and secures more than 1.5B logins per month, making it loved by developers and trusted by global enterprises. The company’s U.S. headquarters in Bellevue, WA, and additional offices in Buenos Aires, London, Tokyo, and Sydney, support its customers that are located in 70+ countries.
-For more information, visit [_https://auth0.com_](https://auth0.com/) or follow [_@auth0 on Twitter_](https://twitter.com/auth0).
+{% include asides/about-auth0.markdown %}
 
 ### Media Contact
 
