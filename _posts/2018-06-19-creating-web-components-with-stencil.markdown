@@ -25,7 +25,7 @@ related:
 - 2016-10-05-build-your-first-app-with-polymer-and-web-components
 ---
 
-**TL;DR:** This article will show you how to create Web Components with Stencil, a tool that allows you to use a high-level syntax to define components and that generates them based on vanilla JavaScript. Throughout the article, you will build a simple rating component and then you will integrate it with React and Angular. [You can find the final code of this component in this GitHub repository](https://github.com/auth0-blog/stencial-rating-component).
+**TL;DR:** This article will show you how to create Web Components with Stencil, a tool that allows you to use a high-level syntax to define components and that generates them based on vanilla JavaScript. Throughout the article, you will build a simple rating component and then you will integrate it with React and Angular. [You can find the final code of this component in this GitHub repository](https://github.com/auth0-blog/rating-stencil-component).
 
 ---
 
@@ -795,4 +795,4 @@ The `CUSTOM_ELEMENTS_SCHEMA` allows Angular to ignore unknown tags, since they a
 
 In this post, we explored how Stencil allows us to create Web Component without too much effort. We used Stencil's syntax to incrementally define a rating component: from the definition of its appearance to the management of interactivity. In the end, we compiled the component for using in production and analyzed a few scenarios of integration.
 
-The final code of the project developed throughout the post can be downloaded from this [GitHub repository](https://github.com/auth0-blog/stencial-rating-component).
+The final code of the project developed throughout the post can be downloaded from this [GitHub repository](https://github.com/auth0-blog/rating-stencil-component).
