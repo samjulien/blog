@@ -29,9 +29,9 @@ related:
 
 ## What Is Nest.Js and Why Use It with Angular?
 
-[Nest.js](https://docs.nestjs.com/) is a framework for building Node.js web applications. What makes it special is that it addresses a problem that no other framework does: the architecture of a Node.js project. If you have ever tried to build a project using Node.js, you may have realized that you can do a lot with one module (for example, an Express middleware can do everything from authentication to validation) which can lead to unorganized and hard-to-support projects. As you will see through this article, Nest.js helps developers keeping their code organized by providing different classes that specialize on different problems.
+[Nest.js](https://docs.nestjs.com/) is a framework for building Node.js web applications. What makes it special is that it addresses a problem that no other framework does: the architecture of a Node.js project. If you have ever tried to build a project using Node.js, you may have realized that you can do a lot with one module (for example, an Express middleware can do everything from authentication to validation) which can lead to unorganized and hard-to-support projects. As you will see through this article, Nest.js helps developers keeping their code organized by providing different classes that specialize in different problems.
 
-Besides that, what makes combining Nest.js and [Angular](https://angular.io/) a good idea is that Nest.js is heavily inspired by Angular. For example, you will find that both frameworks use guards to allow or prevent access to some parts of your apps and that both frameworks provide the `CanActivate` interface to implement these guards. Nevertheless, it is important to notice that, although sharing some similar concepts, both frameworks are independent from each other. That is, in this article, you will build a front-end-agnostic API. So, after building the API, you will be able to use it with other frameworks and libraries like React, Vue.js, and so on.
+Besides that, what makes combining Nest.js and [Angular](https://angular.io/) a good idea is that Nest.js is heavily inspired by Angular. For example, you will find that both frameworks use guards to allow or prevent access to some parts of your apps and that both frameworks provide the `CanActivate` interface to implement these guards. Nevertheless, it is important to notice that, although sharing some similar concepts, both frameworks are independent of each other. That is, in this article, you will build a front-end-agnostic API. So, after building the API, you will be able to use it with other frameworks and libraries like React, Vue.js, and so on.
 
 ## The App You Will Build
 
@@ -101,10 +101,10 @@ Then, if you head to [`localhost:3000`](localhost:3000) in your browser, you wil
 
 ![Nest.js showing the hello world webpage.](https://cdn.auth0.com/blog/fullstack-typescript/hello-nest.png)
 
-To avoid adding more complexity, this article is not going to teach you how to write automated tests for your API (though you should write them for any production-ready app). As such, you can go ahead and delete the `test` directory and the `src/app.controller.spec.ts` file (which is test relate). After that,the remaining files inside the `src` directory will be:
+To avoid adding more complexity, this article is not going to teach you how to write automated tests for your API (though you should write them for any production-ready app). As such, you can go ahead and delete the `test` directory and the `src/app.controller.spec.ts` file (which is test relate). After that, the remaining files inside the `src` directory will be:
 
 * `app.controller.ts` and `app.service.ts`: those files are responsible for generating the message _Hello world_ when the endpoint `/` is accessed through the browser. Because this endpoint is not important to this application you may delete these files as well. Soon you are going to learn in more details what **controllers** and **services** are.
-* `app.module.ts`: this is a class of the type **module** that is responsible for declaring imports,exports, controllers, and providers to a Nest.js application. Every application has at least one module but you may create more than one module for more complex applications (more details on [Nest.js documentation](https://docs.nestjs.com/modules)). The application of this tutorial will have only one module. 
+* `app.module.ts`: this is a class of the type **module** that is responsible for declaring imports, exports, controllers, and providers to a Nest.js application. Every application has at least one module but you may create more than one module for more complex applications (more details on [Nest.js documentation](https://docs.nestjs.com/modules)). The application of this tutorial will have only one module. 
 * `main.ts`: this is the file responsible for starting the server.
 * `main.hrm.ts`: is a [Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/) file that installs modules during the server execution and it is useful to speed up the development process.
 
@@ -162,9 +162,9 @@ Now, you can head to [http://localhost:3000/items](http://localhost:3000/items) 
 
 ### Adding a Nest.js Service
 
-For now, the array returned by the `/items` endpoint is just an static array that is recreated for every request and that cannot be changed. As the handling of structures that persist data should not be addressed by controllers, you will create a service to do that.
+For now, the array returned by the `/items` endpoint is just a static array that is recreated for every request and that cannot be changed. As the handling of structures that persist data should not be addressed by controllers, you will create a service to do that.
 
-Services, in Nest.js, are classes marked with the `@Injectable` decorator. As the name states, adding this decorator to classes make them injectable in other components, like controllers.
+Services, in Nest.js, are classes marked with the `@Injectable` decorator. As the name states, adding this decorator to classes makes them injectable in other components, like controllers.
 
 So, to create this service, you can create a new file called `items.service.ts` in the `./src/items` directory, and add the following code:
 
@@ -213,7 +213,7 @@ constructor(private readonly itemsService: ItemsService) {}
 }
 ```
 
-In the new version of your controller you are defining a parameter decorated with `@Body()` in the `create` method. This parameter is used to automatically map data sent through `req.body['item']` to the parameter itself (`item` in this case).
+In the new version of your controller, you are defining a parameter decorated with `@Body()` in the `create` method. This parameter is used to automatically map data sent through `req.body['item']` to the parameter itself (`item` in this case).
 
 Also, your controller now gets an instance of the `ItemsService` class injected through the `constructor`. The `private readonly` that accompanies the `ItemsService` declaration makes this instance unchangeable and only visible inside this class.
 
@@ -351,7 +351,7 @@ export class ItemsController {
 
 ### Adding Validation on Nest.js with DTOs and Pipes
 
-Even though you created an interface to define the structure of items, the application won't return an error status if you post any type of data other than the one defined in the interface. For example, the following request should return a 400 (bad request) status, but instead it returns a 200 (all good) status:
+Even though you created an interface to define the structure of items, the application won't return an error status if you post any type of data other than the one defined in the interface. For example, the following request should return a 400 (bad request) status, but instead, it returns a 200 (all good) status:
 
 ```bash
 curl -H 'Content-Type: application/json' -d '{
@@ -372,7 +372,7 @@ export class CreateItemDto {
 }
 ```
 
-[Pipes](https://docs.nestjs.com/pipes) are Nest.js components that are useful for validation. For your API, you are going to create a pipe that verifies if the data sent to a method matches its DTO. As pipes can be used by several controllers, you will create a directory called `common` inside `src` and a file called `validation.pipe.ts` inside it that looks like this:
+[Pipes](https://docs.nestjs.com/pipes) are Nest.js components that are used for validation. For your API, you are going to create a pipe that verifies if the data sent to a method matches its DTO. As pipes can be used by several controllers, you will create a directory called `common` inside `src` and a file called `validation.pipe.ts` inside it that looks like this:
 
 ```typescript
 import { BadRequestException } from '@nestjs/common';
@@ -462,13 +462,13 @@ One of the requirements for this project is that only identified users could add
 
 First, you have to create a <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">free Auth0 account</a> if you don't have one yet.
 
-After creating your account, login to it, head to [the APIs section in your Auth0 dashboard](https://manage.auth0.com/#/apis), and hit the _Create API_ button. Then, in the form that Auth0 shows, add a name to your API (something like _Menu API_), set its identifier to `http://localhost:3000`, and hit the _Create_ button.
+After creating your account, log in to it, head to [the APIs section in your Auth0 dashboard](https://manage.auth0.com/#/apis), and hit the _Create API_ button. Then, in the form that Auth0 shows, add a name to your API (something like _Menu API_), set its identifier to `http://localhost:3000`, and hit the _Create_ button.
 
 > Don't change the signing algorithm (leave it as `RS256`) as it is the best option from the security point of view.
 
 ![Creating an Auth0 API configuration.](https://cdn.auth0.com/blog/fullstack-typescript/create-auth0-api.png)
 
-Then you should visit the [_Applications_ section](https://manage.auth0.com/#/applications) of your Auth0 management dashboard, and click on the application with the same name of the API you just created. 
+Then you should visit the [_Applications_ section](https://manage.auth0.com/#/applications) of your Auth0 management dashboard, and click on the application with the same name as the API you just created. 
 
 In this page, go to the _Settings_ section. There, you can change the _Application Type_ to `Single Page Application`, add `http://localhost:8080/login` (you are going to use it in the next article) to the _Allowed Callback URLs_ field, and save the changes (you can also remove `(Test Application)` from the application name). Then, leave this page open as you will need to copy _Domain_, _Client ID_, and _Client Secret_ to configure your API.
 
@@ -555,7 +555,7 @@ export class AuthenticationMiddleware implements NestMiddleware {
 }
 ```
 
-Then , you will need to change the `${DOMAIN}` placeholder with the domain found in your Auth0 Application's settings.
+Then, you will need to change the `${DOMAIN}` placeholder with the domain found in your Auth0 Application's settings.
 
 Also, you will have to install the `express-jwt` and `jwks-rsa` libraries. To do so, type `npm install express-jwt jwks-rsa`) and restart the development server (`npm run start:dev`).
 
@@ -601,11 +601,11 @@ curl -X POST -H 'authorization: Bearer '$TOKEN http://localhost:3000/shopping-ca
 
 Currently, in your API, any user that has a verified token can post an item. However, as described before, you want to restrict this operation to admin users only. To implement this feature, [you are going to use Auth0 rules](https://auth0.com/docs/rules/current).
 
-So, go to your Auth0 dashboard, navigate to [the rules section](https://manage.auth0.com/#/rules), hit the button to create a new rule, and select "set a new role to an user" as the rule model:
+So, go to your Auth0 dashboard, navigate to [the rules section](https://manage.auth0.com/#/rules), hit the button to create a new rule, and select "set a new role to a user" as the rule model:
 
 ![Creating an Auth0 rule.](https://cdn.auth0.com/blog/fullstack-typescript/creating-an-auth0-rule.png)
 
-By doing that, you will get a JavaScript file with a rule template that adds the admin role to any user who have an email provided by some domain. You should change a few details in this template to get a functional example. For your app, you may choose to give admin access only to your own email address. You also will need to change where the information about the admin status is saved.
+By doing that, you will get a JavaScript file with a rule template that adds the admin role to any user who has an email provided by some domain. You should change a few details in this template to get a functional example. For your app, you may choose to give admin access only to your own email address. You also will need to change where the information about the admin status is saved.
 
 For now, this information is saved in an identification token (used to provide information about the user) but, to access resources in an API, you should use an access token. The code after the changes should look like the following one:
 
@@ -656,7 +656,7 @@ export class AdminGuard implements CanActivate {
 }
 ```
 
-Now, if you go through the login process described before and use the email address defined in the rule, you will get an `access_token` with a new claim. To check the contents of this `access_token`, copy it, and use in the [`https://jwt.io/`](https://jwt.io/) website. If you paste this token there, you will see that the payload section of this token contains an the following array:
+Now, if you go through the login process described before and use the email address defined in the rule, you will get an `access_token` with a new claim. To check the contents of this `access_token`, copy it, and use in the [`https://jwt.io/`](https://jwt.io/) website. If you paste this token there, you will see that the payload section of this token contains the following array:
 
 ```json
 "http://localhost:3000/roles": [
@@ -718,4 +718,4 @@ curl -X POST -H 'Content-Type: application/json' \
 
 Congratulations! You just finished building your Nest.js API and can now focus on the development of the frontend app!
 
-To recapitulate, in this article, you had the chance to use Nest.js/TypeScript features like: _modules_, _controllers_, _services_, _interfaces_, _pipes_, _middleware_, and _guard_ to build an API. Hopefully, you had a great experience and are ready to keep evolving your application. If you have any doubts, a good resource to rely on is [the official Nest.js documentation](https://docs.nestjs.com).
+To recapitulate, in this article, you had the chance to use Nest.js/TypeScript features like _modules_, _controllers_, _services_, _interfaces_, _pipes_, _middleware_, and _guard_ to build an API. Hopefully, you had a great experience and are ready to keep evolving your application. If you have any doubts, a good resource to rely on is [the official Nest.js documentation](https://docs.nestjs.com).
