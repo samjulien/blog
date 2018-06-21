@@ -475,10 +475,13 @@ In this page, go to the _Settings_ section. There, you can change the _Applicati
 Now, you can generate an access token with Auth0 (you will use this token soon, after securing your API). To do this, head to the following address in your browser:
 
 ```bash
-https://${YOUR_DOMAIN}/authorize?audience=http://localhost:3000&scope=SCOPE&response_type=code&client_id=${YOUR_CLIENT_ID}&redirect_uri=http://localhost:8080/login&state=STATE?prompt=none
+AUTH0_DOMAIN=${AUTH0_DOMAIN}
+AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID}
+
+open https://$AUTH0_DOMAIN/authorize?audience=http://localhost:3000&scope=SCOPE&response_type=code&client_id=$AUTH0_CLIENT_ID&redirect_uri=http://localhost:8080/login&state=STATE?prompt=none
 ```
 
-> **Note:** You will need to replace `${YOUR_DOMAIN}` and `${YOUR_CLIENT_ID}` in the URL above with the values retrieved from your Auth0 Application.
+> **Note:** You will need to replace `${AUTH0_DOMAIN}` and `${AUTH0_CLIENT_ID}` in the URL above with the values retrieved from your Auth0 Application.
 
 If everything is correct, you should get the following page:
 
@@ -493,16 +496,21 @@ http://localhost:8080/login?code=${CODE}&state=${SOME_STATE}
 You will get a white page. From there, copy the value returned in the place of `${CODE}` and run the following in a terminal:
 
 ```bash
+AUTH0_DOMAIN=${AUTH0_DOMAIN}
+AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID}
+AUTH0_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
+CODE=${CODE}
+
 curl -X POST -H 'content-type: application/json' -d '{
-  "grant_type":"authorization_code",
-  "client_id": "yUuUTDiYnJhxO1FD9ZT2WOLa6qluRYDn",
-  "client_secret": "v9Rs-Bj55mYPAKh-tQIjijgSNhMnvAPrKkYK5H8sivCSw1hywCPvbDwTJv9P0vcs",
-  "code": "w46s89nCv3lDwGF_",
+  "grant_type": "authorization_code",
+  "client_id": "'$AUTH0_CLIENT_ID'",
+  "client_secret": "'$AUTH0_CLIENT_SECRET'",
+  "code": "'$CODE'",
   "redirect_uri": "http://localhost:8080"
-}' https://bk-tmp.auth0.com/oauth/token
+}' https://$AUTH0_DOMAIN/oauth/token
 ```
 
-> **Note:** You will need to replace `${AUTH0_DOMAIN}`, `${YOUR_CLIENT_ID}`, `${YOUR_CLIENT_SECRET}`, and `${CODE}` in the snippet above.
+> **Note:** You will need to replace `${AUTH0_DOMAIN}`, `${AUTH0_CLIENT_ID}`, `${AUTH0_CLIENT_SECRET}`, and `${CODE}` in the snippet above.
 
 You will get back a JSON object containing the token, the expiration (`86400` seconds), and the token type (bearer). Keep this token around as you are going to use it soon.
 
@@ -589,15 +597,17 @@ curl -X POST -H 'authorization: Bearer '$TOKEN http://localhost:3000/shopping-ca
 
 > **Note:** you have to define `TOKEN` with your own access token retrieved previously.
 
-## Managing roles with Auth0
+### Managing Roles with Auth0
 
-In your API, any user that has a verified token can post an item, but only identified users should be able to do so. For solving this problem, you are going to use the functionality `roles` of auth0. 
+Currently, in your API, any user that has a verified token can post an item. However, as described before, you want to restrict this operation to admin users only. To implement this feature, [you are going to use Auth0 rules](https://auth0.com/docs/rules/current).
 
-Go to your Auth0 dashboard, navigate to [the rules section](https://manage.auth0.com/#/rules), hit the button to create a new rule and select "set a new role to an user" as the rule model:
+So, go to your Auth0 dashboard, navigate to [the rules section](https://manage.auth0.com/#/rules), hit the button to create a new rule, and select "set a new role to an user" as the rule model:
 
-![rule page](https://cdn.auth0.com/blog/mean-series/rule-new.jpg "rule page")
+![Creating an Auth0 rule.](https://cdn.auth0.com/blog/fullstack-typescript/creating-an-auth0-rule.png)
 
-By doing that, you will get a javascript file with a rule template that adds role admin to any user who have an email provided by some domain. You should change a few details in this template to get a functional example, for this example, you may choose to make only your email as admin. You also will need to change were the information about the admin status is being saved, for now it is saved in an identification token (used to provide information about the user) but to access resources in an API, you should use an access token. The code after the changes is the following one:
+By doing that, you will get a JavaScript file with a rule template that adds the admin role to any user who have an email provided by some domain. You should change a few details in this template to get a functional example. For your app, you may choose to give admin access only to your own email address. You also will need to change where the information about the admin status is saved.
+
+For now, this information is saved in an identification token (used to provide information about the user) but, to access resources in an API, you should use an access token. The code after the changes should look like the following one:
 
 ```javascript
 function (user, context, callback) {
@@ -630,7 +640,9 @@ function (user, context, callback) {
 }
 ```
 
-For checking if the token passed to your API has an Admin tag, you should create a Nest.js [guard](https://docs.nestjs.com/guards) inside of the directory `common` (as it can be used by multiple controllers). The code you should place inside the file `admin.guard.ts` is the following one:
+> **Note:** You will have to replace `${YOUR_EMAIL}` with your own email address.
+
+To check if the token passed to your API has an admin role, you will have to create a Nest.js guard. To do so, create a file called `admin.guard.ts` inside the `src/common` directory and add the following code to it:
 
 ```typescript
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
@@ -639,19 +651,20 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 export class AdminGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const user = context.args[0].user['http://localhost:3000/roles'];
-    if (user.indexOf('admin') > -1) {
-      return true;
-    } else {
-      return false;
-    }
+    return user.indexOf('admin') > -1;
   }
 }
 ```
-You can redo the login process described in the last topic and if everything went well, you can check if the appropriate role was added to your user account in the [Users section](https://manage.auth0.com/#/users) of your Auth0 dashboard. Find the user you just logged in with and click the name to view details. This user's Metadata section should now look like this:
 
-![user role admin](https://cdn.auth0.com/blog/mean-series/user-metadata.png "user role admin")
+Now, if you go through the login process described before and use the email address defined in the rule, you will get an `access_token` with a new claim. To check the contents of this `access_token`, copy it, and use in the [`https://jwt.io/`](https://jwt.io/) website. If you paste this token there, you will see that the payload section of this token contains an the following array:
 
-Finally you should change the `items.controller.ts` to use this new guard, by marking the method post with the decorator `@guard`:
+```json
+"http://localhost:3000/roles": [
+  "admin"
+]
+```
+
+If your token does include this claim, you can go ahead and wrap up the integration with Auth0. So, open the `items.controller.ts` file to use this new guard:
 
 ```typescript
 import {
@@ -683,19 +696,26 @@ export class ItemsController {
   @UsePipes(new ValidationPipe())
   async create(@Body() createItemDto: CreateItemDto) {
     this.itemsService.create(createItemDto);
+  }
 }
 ```
 
-Recreate a token for the admin user and try to post an item right now, only admin users can do that:
+Now, with your new token, you should be able to add new items to your backend API:
 
 ```bash
-curl \
--H 'Content-Type: application/json' \
--H 'authorization: Bearer ${TOKEN}'\
--d '{
+# run the development server
+npm run start:dev
+
+# issue the POST request
+curl -X POST -H 'Content-Type: application/json' \
+-H 'authorization: Bearer '$TOKEN -d '{
   "name": "Salad",
   "price": 3
 }' http://localhost:3000/items
 ```
 
-Congratulations: now you have basic knowledges of Nest.js! You learned here what is a _module_, _controller_, _service_, _interface_, _pipe_, _middleware_ and _guard_! Now you can move on to the next article of the series or read more about Nest.js on its [documentation](https://docs.nestjs.com).
+## Conclusion
+
+Congratulations! You just finished building your Nest.js API and can now focus on the development of the frontend app!
+
+To recapitulate, in this article, you had the chance to use Nest.js/TypeScript features like: _modules_, _controllers_, _services_, _interfaces_, _pipes_, _middleware_, and _guard_ to build an API. Hopefully, you had a great experience and are ready to keep evolving your application. If you have any doubts, a good resource to rely on is [the official Nest.js documentation](https://docs.nestjs.com).
