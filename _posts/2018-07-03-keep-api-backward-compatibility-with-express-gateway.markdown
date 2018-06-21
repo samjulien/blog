@@ -35,23 +35,22 @@ related:
 
 ---
 
-## Introduction
+## Why Do I Need Backward-Compatible APIs?
 
-Systems evolve continously, and so do their WebAPIs. As they represent the interface for external clients to interact with your system, they're the first line **reflecting changes** in your organisation.
+Systems evolve continuously, and so do their WebAPIs. As they represent the interface for external clients to interact with your system, they're the first line **reflecting changes** in your organisation.
 
-Such API changes can happen for a number of reasons. Technological advancements, change in the line of business, important bug fixes and so on.
+Such API changes can happen for a number of reasons. Technological advancements, change in the line of business, important bug fixes, and so on.
 
-Chances are you could introduce **breaking** changes in your WebAPI, which in turns means **breaking your clients** that, in order to be operational again, will need to make code changes in their applications and redeploy them so they can use the new API and get back to business.
+Chances are these needs can end up introducing **breaking** changes in your WebAPI, which in turn means **breaking your clients**. Usually, to make these clients operational again, you will need to make changes to their source code and you will need to release new versions of them.
 
-Some times, changes are **inevitable** and you need to deal with it in a way or in another. However, there's an entire class of problems that can be handled in a different way rather than breaking your API.
+Some times, changes are **inevitable** and you need to deal with them in a way or in another. However, there's an entire class of problems that can be handled in a different way rather than breaking your API.
 
-Among the possible solutions, we need to cite:
+Among the possible solutions, you can:
 
-1. An [Hypermedia API](https://medium.com/unexpected-token/how-your-api-could-benefit-from-hypermedia-b62780771ccb) that, with the forewords of putting the understanding in the runtime instead of sharing it ahead of the time, is prepared by definition to handle changes. Clients, if correctly coded, can handle such intrisinc changes in a non-breaking way and adjusting the user experience accordingly.
+1. Use a [Hypermedia API](https://medium.com/unexpected-token/how-your-api-could-benefit-from-hypermedia-b62780771ccb) that, with the forewords of putting the understanding in the runtime instead of sharing it ahead of the time, is prepared by definition to handle changes. Clients, if correctly coded, can handle such intrisinc changes in a non-breaking way and adjusting the user experience accordingly.
+2. Employ an [API Gateway][express-gateway] to retain the old compatibility while rolling out the new changes. This is a simple, yet effective, way to mask the internal changes of your services while keeping the same interface. In such way, you can extend the runaway of your API while evolving your services. Think about it as the WebAPI version of the [adapter pattern](https://en.wikipedia.org/wiki/Adapter_pattern).
 
-2. Employ an [API Gateway][express-gateway] to retain the old compatibility while rolling out the new changes. This is a simple yet effetive way to mask the internal changes of your services while keeping the same interface. In such way, you can extend the runaway of your API while evolving your services. You can think about it as the WebAPI version of the [adapter pattern](https://en.wikipedia.org/wiki/Adapter_pattern)
-
-In this article, we're going to explore the second approach. However, Hypermedia APIs are a thing and big companies have been employing such approach for ages.
+In this article, you're going to explore the second approach. However, keep in mind that Hypermedia APIs are a good solution and that big companies have been employing such approach for ages.
 
 ## Express Gateway to help
 
