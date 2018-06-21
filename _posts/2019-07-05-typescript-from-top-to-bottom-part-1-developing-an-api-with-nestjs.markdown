@@ -110,9 +110,11 @@ To avoid adding more complexity, this article is not going to teach you how to w
 
 > **Note:** after removing `app.controller.ts` and `app.service.ts` you won't be able to start your app. Don't worry, you will fix this soon.
 
-## Creating endpoints
+## Creating Nest.js Endpoints
 
-The most important endpoint of this app will be `/items` because, from there, users will be able to retrieve the items available and admins will be able to manage items. So, this is the first endpoint that you are going to implement. First, you will have to create a directory called `items` inside `src`. You will store all files related to the /items endpoint in this new directory.
+The most important endpoint of this app will be `/items` because, from there, users will be able to retrieve the items available and admins will be able to manage these items. So, this is the first endpoint that you are going to implement.
+
+To do so, you will have to create a directory called `items` inside `src`. You will store all files related to the `/items` endpoint in this new directory.
 
 ### Creating a controller
 
