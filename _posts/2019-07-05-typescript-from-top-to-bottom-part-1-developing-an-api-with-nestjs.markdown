@@ -25,7 +25,7 @@ related:
 - 2017-10-31-typescript-practical-introduction.markdown
 ---
 
-**TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. In this first part, you are going to learn how to build a simple API with Nest.js. The second part is going to be about the frontend application using Angular.
+**TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. In this first part, you are going to learn how to build a simple API with Nest.js. The second part is going to be about the frontend application using Angular. [You can find the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/nest-restaurant-api).
 
 {% include tweet_quote.html quote_text="Learn how to develop fullstack @typescriptlang applications with @nestframework and @angular." %}
 
