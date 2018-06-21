@@ -207,13 +207,13 @@ constructor(private readonly itemsService: ItemsService) {}
   }
 
   @Post()
-  async create(@Body('item') item: string) {
+  async create(@Body() item: string) {
     this.itemsService.create(item);
   }
 }
 ```
 
-In the new version of your controller you are defining a parameter decorated with `@Body('item')` in the `create` method. This parameter is used to automatically map data sent through `req.body['item']` to the parameter itself (`item` in this case).
+In the new version of your controller you are defining a parameter decorated with `@Body()` in the `create` method. This parameter is used to automatically map data sent through `req.body['item']` to the parameter itself (`item` in this case).
 
 Also, your controller now gets an instance of the `ItemsService` class injected through the `constructor`. The `private readonly` that accompanies the `ItemsService` declaration makes this instance unchangeable and only visible inside this class.
 
@@ -343,27 +343,24 @@ export class ItemsController {
     }
   
     @Post()
-    async create(@Body('item') item: Item) {
+    async create(@Body() item: Item) {
       this.itemsService.create(item);
     }
 }
 ```
 
-## Adding validation with DTO and Pipes
+## Adding Validation on Nest.js with DTOs and Pipes
 
-Even though you created an interface to define the structure of items, the application won't return an error status if you post any type of data other than the one defined in the interface to /item. For example, the following request should return a 400 (bad request) status, but instead it returns a 200 (all good) status:
+Even though you created an interface to define the structure of items, the application won't return an error status if you post any type of data other than the one defined in the interface. For example, the following request should return a 400 (bad request) status, but instead it returns a 200 (all good) status:
 
 ```bash
-curl \
--H 'Content-Type: application/json' \
--H 'authorization: Bearer ${TOKEN}'\
--d '{
+curl -H 'Content-Type: application/json' -d '{
   "name": 3,
   "price": "any"
 }' http://localhost:3000/items
 ```
 
-To solve this problem, we are going to create a [DTO (Data Transfer Object)](https://en.wikipedia.org/wiki/Data_transfer_object) together a Pipe. A DTO, as the name states, is an object that defines how data must be transferred among processes. To create a DTO to your items, add a new file called `create-item.dto.ts` in the `./src/items` directory and add the following code to it:
+To solve this problem, you are going to create a [DTO (Data Transfer Object)](https://en.wikipedia.org/wiki/Data_transfer_object) together with a Pipe. A DTO, as the name states, is an object that defines how data must be transferred among processes. To create a DTO to your items, add a new file called `create-item.dto.ts` in the `src/items` directory and add the following code to it:
 
 ```typescript
 import { IsString, IsInt } from 'class-validator';
@@ -375,7 +372,7 @@ export class CreateItemDto {
 }
 ```
 
-[Pipe](https://docs.nestjs.com/pipes) are Nest.js components that are useful for validation. For your API, you are going to create a pipe that verifies if the data sent to a method matches its DTO. As pipes can be used by several controllers, you will create a directory called `common` inside `src` and a file called `validation.pipe.ts` that looks like this:
+[Pipes](https://docs.nestjs.com/pipes) are Nest.js components that are useful for validation. For your API, you are going to create a pipe that verifies if the data sent to a method matches its DTO. As pipes can be used by several controllers, you will create a directory called `common` inside `src` and a file called `validation.pipe.ts` inside it that looks like this:
 
 ```typescript
 import { BadRequestException } from '@nestjs/common';
@@ -409,9 +406,9 @@ export class ValidationPipe implements PipeTransform<any> {
   }
 }
 ``` 
-**Note**: You may have to install `class-validator` and `class-transformer` modules, just type `npm install class-validator class-transformer` on the terminal, inside your project's directory and restar the server.
+**Note**: You will have to install `class-validator` and `class-transformer` modules. To do so, just type `npm install class-validator class-transformer` on the terminal inside your project's directory and restart the server.
 
-Now you will have to adapt the  `items.controller.ts` file to use this new pipe and the DTO. After doing that, this is how the code of the controller should like:
+Now, you will have to adapt the  `items.controller.ts` file to use this new pipe and the DTO. After doing that, this is how the code of the controller should like:
 
 ```typescript
 import {
@@ -428,6 +425,7 @@ import { ValidationPipe } from '../common/validation.pipe';
 
 @Controller('items')
 export class ItemsController {
+
   constructor(private readonly itemsService: ItemsService) {}
 
   @Get()
@@ -446,12 +444,16 @@ export class ItemsController {
 Now, running your code again, the `/item` endpoint will only accept data as defined in the DTO, such as in the following example:
 
 ```bash
-curl \
--H 'Content-Type: application/json' \
--d '{
+curl -H 'Content-Type: application/json' -d '{
   "name": "Salad",
   "price": 3
 }' http://localhost:3000/items
+```
+
+Inserting invalid data (data that does not pass the checks on the `ValidationPipe`) will result in the following response:
+
+```bash
+{"statusCode":400,"error":"Bad Request","message":"Validation failed"}
 ```
 
 ## Managing Identity with Auth0
