@@ -246,11 +246,11 @@ After that, you will be able to see this new item in your menu by issuing the fo
 curl localhost:3000/items
 ```
 
-### Creating a simple route for shop cart
+### Creating a Nest.js Route for the Shop Cart
 
-Now that you have the first version of your `/items` endpoint, you can start creating the shopping cart feature. As you will see, the process would be similar to the process of creating for `/items`. As such, to keep things shorter, this feature will only acknowledge with an OK status when triggered.
+Now that you have the first version of your `/items` endpoint, you can start creating the shopping cart feature. As you will see, the process will be similar to the process of creating the `/items` endpoint. Therefore, to keep the article easier to grasp, this feature will only acknowledge with an OK status when triggered.
 
-So, first, create a directory called `shopping-cart` alongside with the items directory. Then, create a new file called `shopping-cart.controller.ts` inside it and add the following code:
+So, first, create a directory called `shopping-cart` alongside with the `items` directory. Then, create a new file called `shopping-cart.controller.ts` inside it and add the following code:
 
 ```typescript
 import {
@@ -259,32 +259,31 @@ import {
 } from '@nestjs/common';
 
 @Controller('shopping-cart')
-export class ShopcartController {
+export class ShoppingCartController {
   @Post()
   async addItem() {
-    return "This is a fake service :D";
+    return 'This is a fake service :D';
   }
 }
 ```
 
-Then, add this controller to your module (`app.modules.ts`):
+Then, add this controller to your module (`app.module.ts`):
 
 ```typescript
 import { Module } from '@nestjs/common';
 import { ItemsController } from './items/items.controller';
-import { ShopcartController } from './shopping-cart/shopping-cart.controller';
+import { ShoppingCartController } from './shopping-cart/shopping-cart.controller';
 import { ItemsService } from './items/items.service';
 
 @Module({
   imports: [],
-  controllers: [ItemsController, ShopcartController],
+  controllers: [ItemsController, ShoppingCartController],
   providers: [ItemsService],
 })
 export class AppModule {}
 ```
 
-Test this endpoint with the following Curl command: 
-
+To test this endpoint, make sure your app is running, and issue the following command: 
 
 ```bash
 curl -X POST localhost:3000/shopping-cart
