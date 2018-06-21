@@ -349,7 +349,7 @@ export class ItemsController {
 }
 ```
 
-## Adding Validation on Nest.js with DTOs and Pipes
+### Adding Validation on Nest.js with DTOs and Pipes
 
 Even though you created an interface to define the structure of items, the application won't return an error status if you post any type of data other than the one defined in the interface. For example, the following request should return a 400 (bad request) status, but instead it returns a 200 (all good) status:
 
@@ -458,47 +458,53 @@ Inserting invalid data (data that does not pass the checks on the `ValidationPip
 
 ## Managing Identity with Auth0
 
-One of the requirements of this project is that only identified users could add something to the shopping carts and only admin users could add a new product. To easily and securely achieve that, you are going to use Auth0
+One of the requirements for this project is that only identified users could add something to the shopping carts and only admin users could add a new product. To easily and securely achieve that, you are going to use Auth0.
 
-First you have to create a [free Auth0 account](https://auth0.com/signup) if you don't have one yet. Login to your account and head to [the APIs section in your Auth0 dashboard](https://manage.auth0.com/#/apis) and hit the Create API button. Then, in the form that Auth0 shows, add a name to your API (something like Menu), set its identifier to `http://localhost:3000` and hit the Create button. Don't change the signing algorithm (leave it as `RS256`) as it is the best option from the security point of view.
+First, you have to create a <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">free Auth0 account</a> if you don't have one yet.
 
-![API configuration](https://i.imgur.com/kl2IpiD.png "API configuration")
+After creating your account, login to it, head to [the APIs section in your Auth0 dashboard](https://manage.auth0.com/#/apis), and hit the _Create API_ button. Then, in the form that Auth0 shows, add a name to your API (something like _Menu API_), set its identifier to `http://localhost:3000`, and hit the _Create_ button.
 
-Then you should visit the [Applications section](https://manage.auth0.com/#/applications) of your auth0 manager dashboard, and click on the application with the same name of the API you just created.  In this page, go to the Settings section and change the Application Type to `Single Page Application` and add `http://localhost:8080/login` (you are going to use it in the next article) to Allowed Callback URLs. Then, leave this page opened as you will need to copy your _Domain_, _Client ID_, and _Client Secret_ to configure your API.
+> Don't change the signing algorithm (leave it as `RS256`) as it is the best option from the security point of view.
 
-![Application configuration](https://screenshotscdn.firefoxusercontent.com/images/b15bfdea-b630-4594-8976-968fce721a9b.png "Application configuration")
+![Creating an Auth0 API configuration.](https://cdn.auth0.com/blog/fullstack-typescript/create-auth0-api.png)
 
-Now, you can generate an access token with Auth0. You will use this token soon, after securing your API. To do that, first visit the following address with your browser:
+Then you should visit the [_Applications_ section](https://manage.auth0.com/#/applications) of your Auth0 management dashboard, and click on the application with the same name of the API you just created. 
+
+In this page, go to the _Settings_ section. There, you can change the _Application Type_ to `Single Page Application`, add `http://localhost:8080/login` (you are going to use it in the next article) to the _Allowed Callback URLs_ field, and save the changes (you can also remove `(Test Application)` from the application name). Then, leave this page open as you will need to copy _Domain_, _Client ID_, and _Client Secret_ to configure your API.
+
+Now, you can generate an access token with Auth0 (you will use this token soon, after securing your API). To do this, head to the following address in your browser:
 
 ```bash
 https://${YOUR_DOMAIN}/authorize?audience=http://localhost:3000&scope=SCOPE&response_type=code&client_id=${YOUR_CLIENT_ID}&redirect_uri=http://localhost:8080/login&state=STATE?prompt=none
 ```
-Just don't forget to change your domain and your client id to those retrieved in the past steps. If everything is correct, you should get the following page:
 
-![Auth0 login page](https://screenshotscdn.firefoxusercontent.com/images/c1fcca54-b321-4c1a-9b36-02ff88ee275f.png "Auth0 login page")
+> **Note:** You will need to replace `${YOUR_DOMAIN}` and `${YOUR_CLIENT_ID}` in the URL above with the values retrieved from your Auth0 Application.
 
-Proceed to login as you would do in any Auth0 application (you may create a new account or use your google account, and then you must give your permission to the application to access your account) and then the page will return to the following address: 
+If everything is correct, you should get the following page:
+
+![Auth0 login page](https://cdn.auth0.com/blog/fullstack-typescript/log-in-with-auth0.png)
+
+Then, you can proceed to login as you would do in any application secured with Auth0 (you may create a new account or use your Google Account) and then the page will return to the following address: 
 
 ```bash 
 http://localhost:8080/login?code=${CODE}&state=${SOME_STATE}
 ```
 
-You will get a white page. From there, copy the value returned in the place of `${CODE}` and do the following in a terminal:
+You will get a white page. From there, copy the value returned in the place of `${CODE}` and run the following in a terminal:
 
 ```bash
-curl --request POST \
-  --url 'https://anaribeiro.auth0.com/oauth/token' \
-  -H 'content-type: application/json' \
-  -d '{
-    "grant_type":"authorization_code",
-    "client_id": "${YOUR_CLIENT_ID}",
-    "client_secret": "${YOUR_CLIENT_SECRET}",
-    "code": "${CODE}",
-    "redirect_uri": "http://localhost:8080"
-    }'
+curl -X POST -H 'content-type: application/json' -d '{
+  "grant_type":"authorization_code",
+  "client_id": "yUuUTDiYnJhxO1FD9ZT2WOLa6qluRYDn",
+  "client_secret": "v9Rs-Bj55mYPAKh-tQIjijgSNhMnvAPrKkYK5H8sivCSw1hywCPvbDwTJv9P0vcs",
+  "code": "w46s89nCv3lDwGF_",
+  "redirect_uri": "http://localhost:8080"
+}' https://bk-tmp.auth0.com/oauth/token
 ```
 
-You will get as the answer of this request a JSON object containing the token, the expiration (86400 seconds or 24 hours) and the token type (bearer). Keep this token as soon you are going to create the code to validate it.
+> **Note:** You will need to replace `${AUTH0_DOMAIN}`, `${YOUR_CLIENT_ID}`, `${YOUR_CLIENT_SECRET}`, and `${CODE}` in the snippet above.
+
+You will get back a JSON object containing the token, the expiration (`86400` seconds), and the token type (bearer). Keep this token around as you are going to use it soon.
 
 ### Express/Nest.js Middleware
 
