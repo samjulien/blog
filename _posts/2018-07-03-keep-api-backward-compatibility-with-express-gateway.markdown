@@ -2,7 +2,7 @@
 layout: post
 title: "Keep API Backward Compatibility with Express Gateway"
 description: "Express Gateway is an API gateway that sits at the heart of any microservices architecture and that can help you keep your APIs backward compatible."
-date: 2018-08-01 10:00
+date: 2018-07-03 08:30
 category: Technical Guide, Backend, NodeJS
 author:
   name: "Vincenzo Chianese"
@@ -43,14 +43,16 @@ Such API changes can happen for a number of reasons. Technological advancements,
 
 Chances are these needs can end up introducing **breaking** changes in your WebAPI, which in turn means **breaking your clients**. Usually, to make these clients operational again, you will need to make changes to their source code and you will need to release new versions of them.
 
-Some times, changes are **inevitable** and you need to deal with them in a way or in another. However, there's an entire class of problems that can be handled in a different way rather than breaking your API.
+Sometimes, changes are **inevitable** and you need to deal with them in a way or in another. However, there's an entire class of problems that can be handled in a different way rather than breaking your API.
 
 Among the possible solutions, you can:
 
-1. Use a [Hypermedia API](https://medium.com/unexpected-token/how-your-api-could-benefit-from-hypermedia-b62780771ccb) that, with the forewords of putting the understanding in the runtime instead of sharing it ahead of the time, is prepared by definition to handle changes. Clients, if correctly coded, can handle such intrisinc changes in a non-breaking way and adjusting the user experience accordingly.
+1. Use a [Hypermedia API](https://medium.com/unexpected-token/how-your-api-could-benefit-from-hypermedia-b62780771ccb) that, with the forewords of putting the understanding in the runtime instead of sharing it ahead of the time, is prepared by definition to handle changes. Clients, if correctly coded, can handle such intrinsic changes in a non-breaking way and adjust the user experience accordingly.
 2. Employ an [API Gateway][express-gateway] to retain the old compatibility while rolling out the new changes. This is a simple, yet effective, way to mask the internal changes of your services while keeping the same interface. In such way, you can extend the runaway of your API while evolving your services. Think about it as the WebAPI version of the [adapter pattern](https://en.wikipedia.org/wiki/Adapter_pattern).
 
 In this article, you're going to explore the second approach. However, keep in mind that Hypermedia APIs are a good solution and that big companies have been employing such approach for ages.
+
+![How an Express gateway works.](https://cdn.auth0.com/blog/api-backward-compatibility/express-gateway.png)
 
 ## Express Gateway to the Help
 
@@ -93,7 +95,7 @@ Suppose now that, given your business is growing, you decide that it makes sense
 
 Most likely, the offered API, as well as the provided features, will differ in multiple parts. For example, the URL space is going to be different as well as the accepted and returned payloads.
 
-In this example, suppose the new service has an endpoint on `/v1/cust` (instead of `/customers`) and, instead of accepting a `name` and `surname` properties, it requires an unique `fullname` property. Also, as it's an external service, it does not include any `createdBy` property, as it's a property that exists exclusively in your system.
+In this example, suppose the new service has an endpoint on `/v1/cust` (instead of `/customers`) and, instead of accepting a `name` and `surname` properties, it requires a unique `fullname` property. Also, as it's an external service, it does not include any `createdBy` property, as it's a property that exists exclusively in your system.
 
 While these changes most likely make sense for your internal clients (due to business requirements for example), your existing third-party clients do not care that much about this change. So, while willing to migrate at a certain point in the future, flipping directly the switch would not be an option.
 
@@ -170,11 +172,11 @@ curl -X POST http://localhost:9876/customers/ -H "Content-Type: application/json
 
 The system, despite the code changes in the internal service, would still be working (and, more importantly, responding) in the same way it did before.
 
+{% include asides/express-gateway.markdown %}
+
 ## Conclusions
 
-This approach is keeping the whole object in memory and taking the burden of parsing it. In case of huge payloads (several MBs), a more efficient way would be to parse the content as a stream, using [JSONStream](https://github.com/dominictarr/JSONStream) for example. We'll not explore this approach here, but it should be the way to go in case you're expecting huge JSON objects. For small payloads the JSON parsing, although sync, does not take more than 1ms.
-
-{% include asides/express-gateway.markdown %}
+It is important to note that this approach would keep the whole object in memory and would be taking the burden of parsing it. In case of huge payloads (several MBs), a more efficient way would be to parse the content as a stream, using [JSONStream](https://github.com/dominictarr/JSONStream) for example. This article won't explore this solution, but it should be the way to go in case you're expecting huge JSON objects. For small payloads the JSON parsing, although sync, the default solution wouldn't take more than 1ms.
 
 [express-gateway]: https://express-gateway.io
 [proxy]: https://express-gateway.io/docs/policies/proxy
