@@ -33,13 +33,13 @@ related:
 
 Besides that, what makes combining Nest.js and [Angular](https://angular.io/) a good idea is that Nest.js is heavily inspired by Angular. For example, you will find that both frameworks use guards to allow or prevent access to some parts of your apps and that both frameworks provide the `CanActivate` interface to implement these guards. Nevertheless, it is important to notice that, although sharing some similar concepts, both frameworks are independent from each other. That is, in this article, you will build a front-end-agnostic API. So, after building the API, you will be able to use it with other frameworks and libraries like React, Vue.js, and so on.
 
-## The app we are building
+## The App You Will Build
 
 The app that you are going to create in this tutorial is a simple app for restaurants where users will be able to order items online. There are some business rules for this app:
 
- * Any user can see the items of this menu;
- * Only identified users may add items to a shop cart (order food online); 
- * Only an Admin user may add new items to the menu.  
+ * any user can see the items of this menu;
+ * only identified users may add items to a shop cart (order food online); 
+ * and only admin users may add new items to the menu.  
 
 To keep things simple, you are not going to interact with any external database, nor implement the shop cart functionality.
 
