@@ -27,11 +27,15 @@ related:
 
 **TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. In this first part, you are going to learn how to build a simple API with Nest.js. The second part is going to be about the frontend application using Angular.
 
+{% include tweet_quote.html quote_text="Learn how to develop fullstack @typescriptlang applications with @nestframework and @angular." %}
+
 ## What Is Nest.Js and Why Use It with Angular?
 
 [Nest.js](https://docs.nestjs.com/) is a framework for building Node.js web applications. What makes it special is that it addresses a problem that no other framework does: the architecture of a Node.js project. If you have ever tried to build a project using Node.js, you may have realized that you can do a lot with one module (for example, an Express middleware can do everything from authentication to validation) which can lead to unorganized and hard-to-support projects. As you will see through this article, Nest.js helps developers keeping their code organized by providing different classes that specialize in different problems.
 
 Besides that, what makes combining Nest.js and [Angular](https://angular.io/) a good idea is that Nest.js is heavily inspired by Angular. For example, you will find that both frameworks use guards to allow or prevent access to some parts of your apps and that both frameworks provide the `CanActivate` interface to implement these guards. Nevertheless, it is important to notice that, although sharing some similar concepts, both frameworks are independent of each other. That is, in this article, you will build a front-end-agnostic API. So, after building the API, you will be able to use it with other frameworks and libraries like React, Vue.js, and so on.
+
+{% include tweet_quote.html quote_text="As @nestframework is heavily inspired by @angular, using both together is very easy!" %}
 
 ## The App You Will Build
 
@@ -713,6 +717,8 @@ curl -X POST -H 'Content-Type: application/json' \
   "price": 3
 }' http://localhost:3000/items
 ```
+
+{% include tweet_quote.html quote_text="I just built a fullstack @typescriptlang application with @nestframework and @angular!" %}
 
 ## Conclusion
 
