@@ -289,11 +289,11 @@ To test this endpoint, make sure your app is running, and issue the following co
 curl -X POST localhost:3000/shopping-cart
 ```
 
-## Adding a typescript interface for items
+### Adding a Typescript Interface for Items
 
 Back to the items service, imagine that you want to keep more than just the name of the items (for instance, its prices too). Do you agree that an array of strings may not be the most ideal structure to handle this data?
 
-To solve this problem, you could create an array of objects, but it would be hard to keep all items coherent (i.e. with similar structures). As such, the best approach is to create a TypeScript interface to define the structure of your items. To do this, create a new file called item.interface.ts inside the `./src/items` directory and add the following code to it:
+To solve this problem, you could create an array of objects, but it would be hard to keep all items coherent (i.e. with similar structures). As such, the best approach is to create a TypeScript interface to define the structure of your items. To do this, create a new file called `item.interface.ts` inside the `src/items` directory and add the following code to it:
 
 ```typescript
 export class Item {
