@@ -2,7 +2,7 @@
 layout: post
 title: "TypeScript from Top to Bottom - Part 1: Developing an API with Nest.js"
 description: "Learn how to use TypeScript to create a full-stack web application with Angular and Nest.js"
-date: "2018-06-07 08:30"
+date: "2018-07-05 08:30"
 category: Technical Guide, Node.js, Nest.js
 author:
   name: "Ana Ribeiro"
