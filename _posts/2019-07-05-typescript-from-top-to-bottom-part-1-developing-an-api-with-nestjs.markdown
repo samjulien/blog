@@ -25,7 +25,7 @@ related:
 - 2017-10-31-typescript-practical-introduction.markdown
 ---
 
-**TL;DR:** This is a small series on on how to build a full-stack TypeScript application using Angular 6 and Nest. In part 1, you are going to learn how to build a simple API with Nest.js. Part 2 is going to be about the front end application using Angular.
+**TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. In this first part, you are going to learn how to build a simple API with Nest.js. The second part is going to be about the frontend application using Angular.
 
 ## What is Nest.js and why use it with Angular?
 
