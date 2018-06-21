@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep API backward compatibility with Express Gateway"
+title: "Keep API Backward Compatibility with Express Gateway"
 description: "Express Gateway is an API gateway that sits at the heart of any microservices architecture, securing your microservices and exposing them through APIs."
 longdescription: "Express Gateway is an API gateway that sits at the heart of any microservices architecture (regardless of what language or platform is being used), securing microservices and exposing them through APIs. In this tutorial, I'll show you how an API gateway help you keeping backward compatibility with your old API while evolginv into a new one"
 date: 2018-08-01 10:00
