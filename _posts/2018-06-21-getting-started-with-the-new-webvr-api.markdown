@@ -3,7 +3,7 @@ layout: post
 title: "Getting Started with the New WebVR API"
 description: "Learn how to create virtual reality experiences on the web using the Threejs WebGL library and the WebVR UI library."
 longdescription: "In this article, you will learn how to create virtual reality experiences on the web using the Threejs WebGL library and the WebVR UI library. You will also use Auth0 to fetch users' name to show in the WebVR environment that you will create."
-date: 2018-06-14 18:50
+date: 2018-06-21 18:50
 category: Technical Guide, Frontend
 author:
   name: "Fikayo Adepoju"
