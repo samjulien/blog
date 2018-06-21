@@ -2,7 +2,6 @@
 layout: post
 title: "Keep API Backward Compatibility with Express Gateway"
 description: "Express Gateway is an API gateway that sits at the heart of any microservices architecture and that can help you keep your APIs backward compatible."
-longdescription: "Express Gateway is an API gateway that sits at the heart of any microservices architecture (regardless of what language or platform is being used), securing microservices and exposing them through APIs. In this tutorial, I'll show you how an API gateway help you keeping backward compatibility with your old API while evolginv into a new one"
 date: 2018-08-01 10:00
 category: Technical Guide, Backend, NodeJS
 author:
@@ -32,7 +31,7 @@ related:
 
 ---
 
-**TL;DR:** In this article, I'll show you how an API gateway can help you retaining API Compatibility with **old** clients while _evoling_ the product according to the new needs of your business [the code example in this GitHub repository](https://github.com/XVincentX/apigateway-playground/tree/gateway-request-response-modification).
+**TL;DR:** In this article, you will learn how an API gateway can help you retaining API compatibility with **old** clients while _evolving_ the product according to the new needs of your business. If needed, you can find [the code shown here in this GitHub repository](https://github.com/XVincentX/apigateway-playground/tree/gateway-request-response-modification).
 
 ---
 
