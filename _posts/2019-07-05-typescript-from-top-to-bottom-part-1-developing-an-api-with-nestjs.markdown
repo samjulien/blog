@@ -43,25 +43,25 @@ The app that you are going to create in this tutorial is a simple app for restau
 
 To keep things simple, you are not going to interact with any external database, nor implement the shop cart functionality.
 
-## Getting started with Nest
+## Getting Started with Nest.js
 
-To install Nest, first you will need to install Node.js (v.8.9.0 +) and NPM, go to [Node.js download](https://nodejs.org/en/download/) website and follow the instructions to download and install Node.js to your operating system (NPM comes with node). When it's done, you can check if everything went well by running the following commands:
+To install Nest.js, first you will need to install Node.js (`v.8.9.x` or newer) and NPM. So, go to [the Node.js download website](https://nodejs.org/en/download/) and follow the instructions to download and install Node.js to your operating system (NPM comes with Node.js). When done, you can check if everything went well by running the following commands:
 
 ```bash
 node -v # v.8.9.0
 npm -v # 5.6.0
 ```
 
-There are a few ways to start a Nest.js project, you may check all of them in [Nest.js documentation](https://docs.nestjs.com/first-steps), here we are going to use `nest-cli` to do so. To install nest, run the following command:
+There are a few ways to start a Nest.js project, you may check all of them in [the Nest.js documentation](https://docs.nestjs.com/first-steps). Here, you are going to use `nest-cli` to do so. To install this tool, run the following command:
 
 ```bash
-npm i -g @nestjs/cli # it will install nest-cli
+npm i -g @nestjs/cli # it will install the nest command
 ```
 
-Then create a new project by running the following command, which will trigger some questions about the project, such as version and project name (for this example, you may stick with default options).
+Then, you can create a new project by running a single command. This command will trigger some questions about the project, such as version and project name, but you can stick with default options:
 
 ```bash
-Nest.js new nest-api # it will create a project called nest-api
+nest new nest-restaurant-api # nest-restaurant-api
 ```
 
 If everything went well, you will get by the end of this process a directory called `nest-api` with the following structure:
@@ -90,19 +90,25 @@ nest-api
 Now, you can navigate to this directory and type the following command to start the API:
 
 ```bash
+# move into the project
+cd nest-restaurant-api
+
+# start the development server
 npm run start:dev
 ```
 
-Then, if you head to localhost:3000 in your browser, you will see a page like the following one:
+Then, if you head to [`localhost:3000`](localhost:3000) in your browser, you will see a page like the following one:
 
-![Hello world webpage](https://i.imgur.com/RZEZJVw.png "Hello World Webpage")
+![Nest.js showing the hello world webpage.](https://cdn.auth0.com/blog/fullstack-typescript/hello-nest.png)
 
-To avoid adding more complexity, this article is not going to teach you how to write automated tests for your API (although you should write for any production-ready app). As such, you can go ahead and delete the `test` directory and the `src/app.controller.spec.ts` file (which is test relate). After that, the remaining files inside the src directory are:
+To avoid adding more complexity, this article is not going to teach you how to write automated tests for your API (though you should write them for any production-ready app). As such, you can go ahead and delete the `test` directory and the `src/app.controller.spec.ts` file (which is test relate). After that,the remaining files inside the `src` directory will be:
 
-  * `app.controller.ts` and `app.service.ts`: those files are responsible for generating the message _Hello world_ when the endpoint `/` is accessed through the browser. Because this endpoint is not important to this application you may delete those files as well. Soon you are going to learn in more details what **controllers** and **services** are.
-  * `app.module.ts`: this is a class of the type **module**, it is responsible for declaring imports,exports, controllers and providers to an application. Every application has at least one module but you may create more than one module for more complex applications (more details on [Nest.js documentation](https://docs.nestjs.com/modules)). The application of this tutorial will have only one main module. 
-  * `main.ts`: is responsible for starting the server.
-  * `main.hrm.ts`: is a[Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/) file that installs modules during the server execution and it is useful for a quicker development.
+* `app.controller.ts` and `app.service.ts`: those files are responsible for generating the message _Hello world_ when the endpoint `/` is accessed through the browser. Because this endpoint is not important to this application you may delete these files as well. Soon you are going to learn in more details what **controllers** and **services** are.
+* `app.module.ts`: this is a class of the type **module** that is responsible for declaring imports,exports, controllers, and providers to a Nest.js application. Every application has at least one module but you may create more than one module for more complex applications (more details on [Nest.js documentation](https://docs.nestjs.com/modules)). The application of this tutorial will have only one module. 
+* `main.ts`: this is the file responsible for starting the server.
+* `main.hrm.ts`: is a [Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/) file that installs modules during the server execution and it is useful to speed up the development process.
+
+> **Note:** after removing `app.controller.ts` and `app.service.ts` you won't be able to start your app. Don't worry, you will fix this soon.
 
 ## Creating endpoints
 
