@@ -506,18 +506,14 @@ curl -X POST -H 'content-type: application/json' -d '{
 
 You will get back a JSON object containing the token, the expiration (`86400` seconds), and the token type (bearer). Keep this token around as you are going to use it soon.
 
-### Express/Nest.js Middleware
+### Defining a Nest.js Middleware
 
-According to [Auth0 quick start guide page](https://auth0.com/docs/quickstart/backend/nodejs#configure-the-middleware), the recommended way to verify a JWT token issued by Auth0 is through a [express Middleware](http://expressjs.com/pt-br/guide/using-middleware.html) because there is the module `express-jwt` which automates a huge part of the work. 
+According to [Auth0 quick start guide page](https://auth0.com/docs/quickstart/backend/nodejs#configure-the-middleware), the recommended way to verify a JWT token issued by Auth0 is through an [Express middleware](http://expressjs.com/pt-br/guide/using-middleware.html) provided by `express-jwt`. This middleware will automate a huge part of the work. 
 
-Nest.js used to give full support to express Middleware until the [v.5 release](https://github.com/nestjs/nest/releases/tag/v5.0.0), when they drop part of the support to express Middleware to find "a middle-ground between portability and express compatibility.". According to Nest.js documentation, the most indicated way to create code to validate a JWT is through guards, but verifying tokens encrypted with `RS256` technology can be tough, there is a  [a tutorial](https://auth0.com/blog/navigating-rs256-and-jwks/) only on that (you may try to create a Nest.js strategy based on that tutorial). 
-
-But taking into consideration that the code into `express-jwt` is a tested piece of code, the best way to verify an Auth0 issued token using Nest.js is still through an express middleware. You should use express code directly inside of Nest. 
-
-First you will need to create a file named `authentication.middleware.ts` inside the directory `common`, then paste the following code inside of it:
+To do this, you will need to create a file named `authentication.middleware.ts` inside the `src/common` directory with the following code:
 
 ```typescript
-import { Injectable, NestMiddleware, MiddlewareFunction } from '@nestjs/common';
+import { Injectable, MiddlewareFunction, NestMiddleware } from '@nestjs/common';
 import * as jwt from 'express-jwt';
 import { expressJwtSecret } from 'jwks-rsa';
 
@@ -550,7 +546,12 @@ export class AuthenticationMiddleware implements NestMiddleware {
   }
 }
 ```
-Don't forget to change `${domain}` to the domain found in the app's settings page. You may will have to install `express-jwt` and `jwks-rsa` (type `Node.js install npm install express-jwt jwks-rsa`), restart the server after doing that. 
+
+Then , you will need to change the `${DOMAIN}` placeholder with the domain found in your Auth0 Application's settings.
+
+Also, you will have to install the `express-jwt` and `jwks-rsa` libraries. To do so, type `npm install express-jwt jwks-rsa`) and restart the development server (`npm run start:dev`).
+
+After that, you will have to replace the code inside the `src/main.ts` file with this:
 
 ```typescript
 import { NestFactory } from '@nestjs/core';
@@ -571,14 +572,22 @@ async function bootstrap() {
 bootstrap();
 ```
 
-Now method post of the routes `/items` and `/shopping-cart` are protected by an Express middleware that verifies if there is a valid Auth0 token together with the call. You may try to do a call like the following:
+With this code in place, both POST methods of the `/items` and `/shopping-cart` routes will be protected by the Express middleware that verifies if requests include an access token.
+
+To test this, you can try calling your Nest.js API with this:
 
 ```bash
-curl \
--H 'authorization: Bearer ${TOKEN}'\
--X POST \
-http://localhost:3000/shopping-cart
+# this will not work
+curl -X POST http://localhost:3000/shopping-cart
+
+# so you have to define a variable to your access token
+TOKEN="eyJ0eXAiO...Mh0dpeNpg"
+
+# and issue a POST request with it
+curl -X POST -H 'authorization: Bearer '$TOKEN http://localhost:3000/shopping-cart
 ```
+
+> **Note:** you have to define `TOKEN` with your own access token retrieved previously.
 
 ## Managing roles with Auth0
 
