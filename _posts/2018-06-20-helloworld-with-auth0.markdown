@@ -12,7 +12,7 @@ author:
   mail: luke.oliff@auth0.com
 design:
   bg_color: "#5F381E"
-  image: https://cdn.auth0.com/blog/helloworld-with-auth0/logo.png
+  image: https://cdn.auth0.com/blog/helloworld-with-auth0-02/logo.png
 tags:
 - helloworld
 - hello-world
