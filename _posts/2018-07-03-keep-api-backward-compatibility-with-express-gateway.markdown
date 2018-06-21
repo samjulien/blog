@@ -33,6 +33,8 @@ related:
 
 **TL;DR:** In this article, you will learn how an API gateway can help you retaining API compatibility with **old** clients while _evolving_ the product according to the new needs of your business. If needed, you can find [the code shown here in this GitHub repository](https://github.com/XVincentX/apigateway-playground/tree/gateway-request-response-modification).
 
+{% include tweet_quote.html quote_text="Learn how to keep your APIs backward compatible while being able to implement new features, fix bugs, and so on." %}
+
 ---
 
 ## Why Do I Need Backward-Compatible APIs?
@@ -177,6 +179,8 @@ The system, despite the code changes in the internal service, would still be wor
 ## Conclusions
 
 It is important to note that this approach would keep the whole object in memory and would be taking the burden of parsing it. In case of huge payloads (several MBs), a more efficient way would be to parse the content as a stream, using [JSONStream](https://github.com/dominictarr/JSONStream) for example. This article won't explore this solution, but it should be the way to go in case you're expecting huge JSON objects. For small payloads the JSON parsing, although sync, the default solution wouldn't take more than 1ms.
+
+{% include tweet_quote.html quote_text="Tools like Express Gateway can be life savers when developing apps based on the microservice approach." %}
 
 [express-gateway]: https://express-gateway.io
 [proxy]: https://express-gateway.io/docs/policies/proxy
