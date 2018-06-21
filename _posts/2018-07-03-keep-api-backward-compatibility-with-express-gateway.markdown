@@ -97,24 +97,26 @@ In this example, suppose the new service has an endpoint on `/v1/cust` (instead 
 
 While these changes most likely make sense for your internal clients (due to business requirements for example), your existing third-party clients do not care that much about this change. So, while willing to migrate at a certain point in the future, flipping directly the switch would not be an option.
 
-### Keeping the legacy API intact using Express Gateway
+### Keeping the Legacy API Intact Using Express Gateway
 
-It turns out that an [API Gateway][express-gateway] can solve this problem. Being an intermediate layer between the public interface **AND** the internal services it can manipulate the requests and the responses during their journey.
+It turns out that an [API Gateway][express-gateway] can solve this problem for you. Being an intermediate layer between the public interface **AND** the internal services, an Express Gateway can manipulate the requests and the responses during their journey.
 
-Here's what we're going to do:
+Here's what you would need to do to set up a gateway:
 
-- Configure the [proxy][proxy] policy so that the request to the old endpoint get routed to the new, correct internal services
-- Configure the [bodyModifier][bodyModifier] policy to modify the request's body so that the new Customer service will be able to consume it. In the same way, we'll use the same policy this time to modify the response object to make sure the `createdBy` property is correctly added.
+- You would need to configure the [`proxy`][proxy] policy so that the request to the old endpoint get routed to the new, correct internal services.
+- You would need to configure the [`bodyModifier`][bodyModifier] policy to modify the request's body so that the new customer service can consume it. In the same way, you would use the same policy this time to modify the response object to make sure the `createdBy` property is correctly added.
 
 ### Installing Express Gateway
 
-For the sake of this article, we'll install and use a different Express Gateway version. This version will most likely land in the master (thus as an official version) soon; as we're still in the process of discussing some internal requirements, we haven't been able to make it happen officially yet.
+To solve these problems with Express Gateway, you would install and use a beta version of the framework. This version will most likely land in the `master`branch (thus as an official version) soon (the team supporting Express Gateway is still in the process of discussing some internal requirements, so they weren't able to make it happen officially yet).
 
-`npm install expressgateway/express-gateway#feat/proxy-events`
+```bash
+npm install expressgateway/express-gateway#feat/proxy-events
+```
 
-### Set up two pipelines to proxy the objects back to the new service
+### Set up Pipelines to Proxy Objects Back and Forth
 
-The first thing we're going to do is to set up two pipelines that will proxy the requests to the new `/cust/v1` endpoint:
+Then, after installing this beta version, you would set up two pipelines that would proxy the requests to the new `/cust/v1` endpoint:
 
 ```yaml
 apiEndpoints:
@@ -136,9 +138,9 @@ pipelines:
             serviceEndpoint: v1Cust
 ```
 
-### Using Express Gateway to change the request and respone body
+### Using Express Gateway to Change the Request and Response Body
 
-We can now use the `bodyModifier` policy to modify request/response payloads so they conforms to the new service API.
+After that, you would use the `bodyModifier` policy to modify request/response payloads so they conform to the new service API.
 
 ```yaml
       - bodyModifier:
@@ -156,15 +158,17 @@ We can now use the `bodyModifier` policy to modify request/response payloads so 
                   value: "req.user.id"
 ```
 
-It shuold be easy to understand what's going on here: We're concatenating the `name` and `surname` properties from the current request body and forming a new `fullname` property out of it. Once that's done, we're removing these properties as they're not required by the new service.
+It should be easy to understand what's going on in the configuration above. This is concatenating the `name` and `surname` properties from the current request body and forming a new `fullname` property out of it. Once that's done, it removes these properties as they're not required by the new service.
 
-Then we're doing king od the same thing for the response, where we're readding back the `createdBy` property grabbing it from the current user registered in the gateway.
+Then, this configuration is performing a similar task for the response. That is, it is adding back the `createdBy` property based on the current user registered in the gateway.
 
-Let's now put our system under test with a couple of http requests to test the system is working correctly:
+If you put your system up now, you would be able to test the new features with the following command:
 
-`curl -X POST http://localhost:9876/customers/ -H "Content-Type: application/json" -d '{"name":"Clark", "surname": "Kent"}'`
+```bash
+curl -X POST http://localhost:9876/customers/ -H "Content-Type: application/json" -d '{"name":"Clark", "surname": "Kent"}'
+```
 
-The system, despite the code changes in the internal service, should still be working and more importantly responding in the same way it did before.
+The system, despite the code changes in the internal service, would still be working (and, more importantly, responding) in the same way it did before.
 
 ## Conclusions
 
