@@ -52,19 +52,16 @@ Among the possible solutions, you can:
 
 In this article, you're going to explore the second approach. However, keep in mind that Hypermedia APIs are a good solution and that big companies have been employing such approach for ages.
 
-## Express Gateway to help
+## Express Gateway to the Help
 
-It turns out [Express Gateway][express-gateway] is a **perfect** candidate for such task. In this example, we're going to show how we can change the shape of a request's body coming into a service as well as modyfing the response body to keep the same interface exposed to the clients.
+It turns out [Express Gateway][express-gateway] is a **perfect** candidate for such task. In this example, you will learn two important things:
 
-### Set up our scenario
+- how you can change the shape of a request's body coming into a service;
+- and how you can modify the response body to keep the same interface exposed to the clients.
 
-Let's imagine a simple use case where keeping API Compatibility with the clients is important.
-In case you're interested and you want to try this out on your own, the source code of this example is [on Github](https://github.com/XVincentX/apigateway-playground/tree/gateway-request-response-modification)
+### Depicting the Problem
 
-
-Suppose you have a service, coded by your internal development team, exposing an API that's able to return a customer by its ID through a `GET` request:
-
-### `GET /customers`
+Imagine a simple use case where keeping an API compatibility with the clients is important (probably any note-worthy app needs this). Suppose you have a service, coded by your internal development team, that exposes an API able to return a customer by its ID on HTTP GET requests. The response would be similar to this:
 
 ```json
 {
@@ -74,9 +71,7 @@ Suppose you have a service, coded by your internal development team, exposing an
 }
 ```
 
-…and create a new customer with a `POST` request using the following payload:
-
-### `POST /customers`
+Also, your API would accept new customers with a `POST` request using the following payload:
 
 ```json
 {
@@ -85,7 +80,7 @@ Suppose you have a service, coded by your internal development team, exposing an
 }
 ```
 
-Which returns the created customer with a generated `customerId` and the operator that created such user:
+This operation would then return the created customer with a generated `customerId` and the operator that created such user:
 
 ```json
 {
@@ -94,13 +89,13 @@ Which returns the created customer with a generated `customerId` and the operato
 }
 ```
 
-Suppose now that given your business is growing you decide that it makes sense to **replace your homemade Customer service** with a thirthy party cloud service that's offering better Customer management capabilities that perfectly fit for your company.
+Suppose now that, given your business is growing, you decide that it makes sense to **replace your homemade customer service** with a third-party cloud service that's offering better customer management capabilities that perfectly fits your company needs.
 
-Most likely, the offered API, as well as provided features, will differ in multiple parts. For example, the URL space is going to be different as well as the accepted and returned payload.
+Most likely, the offered API, as well as the provided features, will differ in multiple parts. For example, the URL space is going to be different as well as the accepted and returned payloads.
 
-In this example, let's suppose the new service has an endpoint on `/v1/cust` (instead of `/customers`) and, instead of accepting a `name` and `surname` properties, it requires an unique `fullname` property. Also — as it's an external service, it does not include any `createdBy` property, as it's a property that exists exclusively in your system.
+In this example, suppose the new service has an endpoint on `/v1/cust` (instead of `/customers`) and, instead of accepting a `name` and `surname` properties, it requires an unique `fullname` property. Also, as it's an external service, it does not include any `createdBy` property, as it's a property that exists exclusively in your system.
 
-While these changes most likely make sense for your internal clients because of business requirements and so on, maybe your existing thirty party clients do not care that much of this change and, while willing to migrate at a certain point in the future, flipping directly the switch might not be an option.
+While these changes most likely make sense for your internal clients (due to business requirements for example), your existing third-party clients do not care that much about this change. So, while willing to migrate at a certain point in the future, flipping directly the switch would not be an option.
 
 ### Keeping the legacy API intact using Express Gateway
 
