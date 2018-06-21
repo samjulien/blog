@@ -116,12 +116,11 @@ The most important endpoint of this app will be `/items` because, from there, us
 
 To do so, you will have to create a directory called `items` inside `src`. You will store all files related to the `/items` endpoint in this new directory.
 
-### Creating a controller
+### Creating a Nest.js Controller
 
-In Nest, like in many other web frameworks out there, [Controllers](https://docs.nestjs.com/controllers) are responsible for mapping endpoints to functionalities. To create a controller in Nest, you can use the `@Controller` decorator, as follows: `@Controller(${ENDPOINT})`. Then, to map different HTTP methods like GET and POST, you would use decorators like: `@Get`, `@Post`, `@Delete`, etc.
+In Nest.js, like in many other frameworks out there, [controllers](https://docs.nestjs.com/controllers) are responsible for mapping endpoints to functionalities. To create a controller in Nest.js, you can use the `@Controller` decorator, as follows: `@Controller(${ENDPOINT})`. Then, to map different HTTP methods like GET and POST, you would use decorators like: `@Get`, `@Post`, `@Delete`, etc.
 
-So, as in your case you need to create a controller that returns items available on a restaurant and that admins can use to manage these items, you can create a file called `items.controller.ts` and add the following code to it:
-
+So, as in your case you will need to create a controller that returns items available on a restaurant and that admins can use to manage these items, you can create a file called `items.controller.ts` and add the following code into it:
 
 ```typescript
 import {
@@ -145,7 +144,7 @@ export class ItemsController {
 }
 ```
 
-Then, to make your controller available in your module (and in you app), you will have to update `app.module.ts` as follows:
+Then, to make your controller available in your module (and in your app), you will have to replace the code on `app.module.ts` with the following:
 
 ```typescript
 import { Module } from '@nestjs/common';
@@ -159,7 +158,7 @@ import { ItemsController } from './items/items.controller';
 export class AppModule {}
 ```
 
-Now, you can head to [http://localhost:3000/items](http://localhost:3000/items) (you might need to restart your app: npm run start:dev) and you will get an array containing `['Pizza', 'Coke']`. 
+Now, you can head to [http://localhost:3000/items](http://localhost:3000/items) (you might need to restart your app: `npm run start:dev`) and you will get the following response: `['Pizza', 'Coke']`. 
 
 ### Adding a service
 
