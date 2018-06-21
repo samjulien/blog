@@ -160,20 +160,20 @@ export class AppModule {}
 
 Now, you can head to [http://localhost:3000/items](http://localhost:3000/items) (you might need to restart your app: `npm run start:dev`) and you will get the following response: `['Pizza', 'Coke']`. 
 
-### Adding a service
+### Adding a Nest.js Service
 
-The array returned by the `/items` endpoint is just an static array that is recreated for every request and that cannot be altered. As the handling of structures that persist data should not be addressed by controllers, you will create a service to handle that.
+For now, the array returned by the `/items` endpoint is just an static array that is recreated for every request and that cannot be changed. As the handling of structures that persist data should not be addressed by controllers, you will create a service to do that.
 
-Services, in Nest, are classes marked with the `@Injectable` decorator. As the name states, adding this decorator to classes make them injectable in other components, like controllers.
+Services, in Nest.js, are classes marked with the `@Injectable` decorator. As the name states, adding this decorator to classes make them injectable in other components, like controllers.
 
-So, now, you can create a new file called `items.service.ts` in the `./src/items directory`, and add the following code:
+So, to create this service, you can create a new file called `items.service.ts` in the `./src/items` directory, and add the following code:
 
 ```typescript
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ItemsService {
-  private readonly items: string[] = ["Pizza", "Coke"];
+  private readonly items: string[] = ['Pizza', 'Coke'];
 
   findAll(): string[] {
     return this.items;
@@ -185,7 +185,7 @@ export class ItemsService {
 }
 ```
 
-Then, you will need to change ItemsController to use this service:
+Then, you will need to change `ItemsController` to use this service:
 
 ```typescript
 import {
@@ -194,30 +194,30 @@ import {
     Body,
     Controller,
   } from '@nestjs/common';
-  import { ItemsService } from './items.service';
+import { ItemsService } from './items.service';
 
-  @Controller('items')
-  export class ItemsController {
+@Controller('items')
+export class ItemsController {
 
-  constructor(private readonly itemsService: ItemsService) {}
-  
-    @Get()
-    async findAll(): Promise<string[]> {
-      return this.itemsService.findAll();
-    }
-  
-    @Post()
-    async create(@Body('item') item: string) {
-      this.itemsService.create(item);
-    }
+constructor(private readonly itemsService: ItemsService) {}
+
+  @Get()
+  async findAll(): Promise<string[]> {
+    return this.itemsService.findAll();
   }
+
+  @Post()
+  async create(@Body('item') item: string) {
+    this.itemsService.create(item);
+  }
+}
 ```
 
-Note that the create method has a parameter decorated with `@Body('item')` to map data sent through `req.body['item']` to the parameter itself (item in this case).
+In the new version of your controller you are defining a parameter decorated with `@Body('item')` in the `create` method. This parameter is used to automatically map data sent through `req.body['item']` to the parameter itself (`item` in this case).
 
-The class itemsService is injected through `constructor`. The `private readonly` that accompanies the ItemsService declaration makes this instance only visible inside this class and unchangeable.
+Also, your controller now gets an instance of the `ItemsService` class injected through the `constructor`. The `private readonly` that accompanies the `ItemsService` declaration makes this instance unchangeable and only visible inside this class.
 
-Now, to make `ItemsService` available in your app, you will need to update `app.modules.ts` as follows:
+Now, to make `ItemsService` available in your app, you will need to update `app.module.ts` as follows:
 
 ```typescript
 import { Module } from '@nestjs/common';
@@ -235,18 +235,16 @@ export class AppModule {}
 With these changes in place, you can issue HTTP POST requests to the menu:
 
 ```bash
-curl \
--H 'content-type: application/json'\
--d '{item:salad}' \
-localhost:3000/items
+curl -X POST -H 'content-type: application/json' -d '{
+  "item": "Salad"
+}' localhost:3000/items
 ```
 
-After that, you will be able to see this new item in your menu by issuing the following GET request or by heading to [http://localhost:3000/items](http://localhost:3000/items) in your browser:
+After that, you will be able to see this new item in your menu by issuing the following GET request (or by heading to [http://localhost:3000/items](http://localhost:3000/items) in your browser):
 
 ```bash
 curl localhost:3000/items
 ```
-
 
 ### Creating a simple route for shop cart
 
