@@ -438,7 +438,7 @@ ionic cordova plugin add cordova-plugin-safariviewcontroller
 5. Add `http://localhost:8080` to the **Allowed Logout URLs**.
 6. Click the "Save Changes" button.
 
-> **Note:** If running on an emulator, you might need to add an URL different than `http://localhost:8080` to the **Allowed Origins (CORS)** box. When running you app, check the `allow-navigation` property of the `config.xml` file to find out the correct URL. For example: `http://192.168.0.14:8100`.
+> **Note:** If running your app with the live reload feature, you might need to add an URL different than `http://localhost:8080` to the **Allowed Origins (CORS)** box. When running you app, check the `allow-navigation` property of the `config.xml` file to find out the correct URL. For example: `http://192.168.0.14:8100`.
 
 > **Note:** On step 4, you will need to replace `YOUR_PACKAGE_ID` and `YOUR_AUTH_DOMAIN` with your own data (the same as used while installing your project dependencies: e.g. `io.ionic.starter` and `ionic-audio-player.auth0.com`).
 
@@ -600,7 +600,7 @@ export class MyApp {
 
 So far, you wrote code that is not related to the user interface (UI) of your application. In this section, you will design the UI and it's behavior. In the end, your application will look like this:
 
-![Audio Player Image](https://i.imgur.com/QND8PHF.png)
+![The Ionic audio player that you will create](https://cdn.auth0.com/blog/ionic-audio-player/final-app.png)
 
 ### The Audio Player HTML
 
@@ -630,7 +630,7 @@ Besides the header, you will have the `ion-content` with a log in button, your a
   </ng-template>
 
   <ion-list *ngIf="files.length && loggedIn">
-    <ion-list-header>Hello {{auth.user.name}}</ion-list-header>
+    <ion-list-header>Hello {{auth.user?.name}}</ion-list-header>
     <ng-container *ngFor="let file of files; let i = index">
       <ion-item text-wrap (click)="openFile(file, i)">
         <ion-icon color="primary" item-start name="musical-note"></ion-icon>{{ file.name }}
@@ -1259,10 +1259,8 @@ ionic cordova run android
 
 ## Conclusion and Next Steps
 
-<!--@brunokrebs: Please do your magic here -->
-In the first part of this series, you have created an Audio Player application with Ionic. You have used RxJS to develop audio playback features. Along with that, you have used NgRx to manage the state of application. Besides that, you have also used Auth0 to add Authentication in the application. With this, you have finished developing first version of application with static audio content.
+In this article, you created an audio player mobile app with Ionic. You used RxJS to develop audio playback features. Along with that, you used NgRx to manage the state of application. Besides that, you also used Auth0 to handle user authentication in your mobile app. With this, you have finished developing the first version of the application with static audio content.
 
-<!-- @brunokrebs: I am not sure, how you wanna do the second part. Is it will Google Cloud?-->
-In the next part of series, you will create a backend using NodeJS and Google Cloud to serve dyamic audio content to the audio player. You will use [Webtask](https://webtask.io) to host node backend and you will use Auth0 to secure it.
+In a future opportunity, you will create a backend using Node.js and Google Cloud to serve dynamic audio content to your audio player. To avoid spending too much time around configuring servers to host your backend, you will take advantage of [Webtask](https://webtask.io), a serverless solution for Node.js apps.
 
-I hope you enjoyed this part. Stay tuned for next part!
+I hope you enjoyed this article. Stay tuned for next part!
