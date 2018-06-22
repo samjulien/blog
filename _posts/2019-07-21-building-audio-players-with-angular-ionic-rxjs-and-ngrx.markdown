@@ -164,7 +164,7 @@ Now that you understand why do you need an observable, you can start by creating
 ionic generate provider audio
 ```
 
-This will generate a service in a file called `audio.ts` under `./src/providers/audio/` and this service will be added to `NgModule` in `app.module.ts`. Replace the contents of this file with:
+This will generate a service in a file called `audio.ts` under `./src/providers/audio/` and this service will be added to `NgModule` in `app.module.ts`. Replace the contents of the `audio.ts` file with:
 
 ```typescript
 import {Injectable} from '@angular/core';
@@ -270,11 +270,12 @@ export class AudioProvider {
 
 ## Reading the Music Files
 
-Now that you have created the audio service for the playback features, you will need to create a service to get a list of files. To do so, you can create a cloud service using Ionic:
+After creating the audio service for the playback features, you will need to create a service to get a list of files. To do so, you can create a cloud service using Ionic:
 
 ```bash
 ionic generate provider cloud
 ```
+
 This command will generate a service in a file called `cloud.ts` under `./src/providers/cloud`. Now, replace the contents of this file with:
 
 ```typescript
