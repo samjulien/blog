@@ -33,7 +33,7 @@ Creating an audio player is always an intimidating task. Specially if you think 
 
 To handle media playback in a reactive way, you will adapt [JavaScript's `Audio` object](https://www.w3schools.com/jsref/dom_obj_audio.asp) with a **RxJS** _Observable_ and you will use the **NgRx** store to manage the state of your audio player.
 
-Besides that, you will also use [Auth0](https://auth0.com) to secure your mobile app and, in a subsequent article, you will learn how to create a secure backend to provide the list of musics to your app (for now, you will use a mock service with static data).
+Besides that, you will also use [Auth0](https://auth0.com) to secure your mobile app and, in a subsequent article, you will learn how to create a secure backend to provide the list of music files to your app (for now, you will use a mock service with static data).
 
 ## Prerequisites for Ionic Development
 
@@ -99,7 +99,7 @@ For example, if you are on a Mac OS X environment and you want to use an emulato
 ionic cordova run ios -lc
 ```
 
-> **Note**: `-lc` above means that you want Ionic to _spin up server to live-reload www files_ (the `l`) and to _print out console logs to terminal_ (the `c`).
+> **Note**: `-lc` above means that you want Ionic to _spin up a server to live-reload www files_ (the `l`) and to _print out console logs to terminal_ (the `c`).
 
 For reference, these are the other commands that you can use when aiming your current development machine (i.e. a browser on it) or Android:
 
@@ -122,7 +122,7 @@ a library built to integrate RxJS and Angular applications to help you manage th
 * [`auth0-js`](https://www.npmjs.com/package/auth0-js): the official Auth0 library for JavaScript apps;
 * [`@auth0/cordova`](https://github.com/auth0/auth0-cordova): the official Auth0 library for Cordova apps;
 * [`rxjs`](https://github.com/ReactiveX/rxjs): a reactive programming library for JavaScript;
-* [`rxjs-compat`](https://github.com/ReactiveX/rxjs/tree/master/compat): a package to get backwards compatibility with RxJS previous to version 6;
+* [`rxjs-compat`](https://github.com/ReactiveX/rxjs/tree/master/compat): a package to get backward compatibility with RxJS previous to version 6;
 
 To install these libraries, you can use the following commands:
 
@@ -152,7 +152,7 @@ This function takes an `observer` object and returns a function. Observer object
 
 1.  To emit a value, you can call the `observer.next` method with the desired value.
 2.  In case of an error, you can use the `observer.error` function to throw the error and make the observable stop.
-3.  If you no longer need the observer and there is no more values to emit, you can call the `observer.complete` method.
+3.  If you no longer need the observer and there are no more values to emit, you can call the `observer.complete` method.
 
 Also, calling `Observable.create` will return a function that you can call when you want to unsubscribe from the observable.
 
@@ -302,7 +302,7 @@ export class CloudProvider {
 }
 ```
 
-The `getFiles` method above basically mocks a HTTP request by returning an `Observable` with a static `files` object.
+The `getFiles` method above basically mocks an HTTP request by returning an `Observable` with a static `files` object.
 
 ## Managing Ionic App's State with NgRx Store
 
@@ -310,7 +310,7 @@ To help you manage the state of your application, you will take advantage of [th
 
 If you don't know what Redux is (or how it works), here it goes a brief explanation around it:
 
-> In Redux, the state is managed in a central place. What this means is that you have just one object which stores the current state of your whole application. If, at any point, you want to update this state, you need to `dispatch` an `action` to a function known as `reducer`. This `reducer` is responsible for understanding the `action` and generating a new state based on the action `type` and `data`.
+> In Redux, the state is managed in a central place. What this means is that you have just one object which stores the current state of your whole application. If at any point, you want to update this state, you need to `dispatch` an `action` to a function known as `reducer`. This `reducer` is responsible for understanding the `action` and generating a new state based on the action `type` and `data`.
 
 ### Creating a Reducer with NgRx Store
 
@@ -438,7 +438,7 @@ ionic cordova plugin add cordova-plugin-safariviewcontroller
 5. Add `http://localhost:8080` to the **Allowed Logout URLs**.
 6. Click the "Save Changes" button.
 
-> **Note:** If running your app with the live reload feature, you might need to add an URL different than `http://localhost:8080` to the **Allowed Origins (CORS)** box. When running you app, check the `allow-navigation` property of the `config.xml` file to find out the correct URL. For example: `http://192.168.0.14:8100`.
+> **Note:** If running your app with the live reload feature, you might need to add an URL different than `http://localhost:8080` to the **Allowed Origins (CORS)** box. When running your app, check the `allow-navigation` property of the `config.xml` file to find out the correct URL. For example: `http://192.168.0.14:8100`.
 
 > **Note:** On step 4, you will need to replace `YOUR_PACKAGE_ID` and `YOUR_AUTH_DOMAIN` with your own data (the same as used while installing your project dependencies: e.g. `io.ionic.starter` and `ionic-audio-player.auth0.com`).
 
@@ -598,7 +598,7 @@ export class MyApp {
 
 ## Developing the Audio Player UI on Ionic
 
-So far, you wrote code that is not related to the user interface (UI) of your application. In this section, you will design the UI and it's behavior. In the end, your application will look like this:
+So far, you wrote code that is not related to the user interface (UI) of your application. In this section, you will design the UI and its behavior. In the end, your application will look like this:
 
 ![The Ionic audio player that you will create](https://cdn.auth0.com/blog/ionic-audio-player/final-app.png)
 
@@ -606,7 +606,7 @@ So far, you wrote code that is not related to the user interface (UI) of your ap
 
 Inside the `./src/pages/home/` directory, you will find the `home.html` file. In this file, you will add some HTML to define your player. As you will see, on the top, you will have a navigation bar which contains the name of the application and a log out button. This button will be shown if the user is logged in.
 
-Besides the header, you will have the `ion-content` with a log in button, your app's logo, and the list of media files:
+Besides the header, you will have the `ion-content` with a login button, your app's logo, and the list of media files:
 
 {% highlight html %}
 {% raw %}
@@ -735,7 +735,7 @@ To help you control your audio player user interface, you will implement a contr
 As you are using the default `HomePage` to implement your audio player, you will implement most of the logic inside the `HomePage` class. So, throughout the following sections, you will implement the following methods:
 
 - `constructor`: this method will create an instance of `HomePage` and subscribe to the `isLoggedIn` subject;
-- `login`: this method will enable users to login;
+- `login`: this method will enable users to log in;
 - `getDocuments`: this method will load the music files;
 - `presentLoading`: this method will present a nice loading screen;
 - `ionViewWillLoad`: this method will add listeners to media events to update the screen;
@@ -748,13 +748,13 @@ As you are using the default `HomePage` to implement your audio player, you will
 - `next`: this method will allow users to move to the next music;
 - `previous`: this method will allow users to the previous music;
 - `isFirstPlaying`: this method will be used to block the previous button;
-- `isLastPlaying`: this method will be use to block the next button;
+- `isLastPlaying`: this method will be used to block the next button;
 - `onSeekStart` and `onSeekEnd`: these methods will be used while using the seek feature;
 - `logout`: this method will allow users to log out;
 - `reset`: this method will reset the state of the Ionic app;
 
 However, before focusing on the implementation of these methods, you can add some cool animations to enhance the UX of your app.
-These animations will appear when the audio player switch between the `inactive` and `active` states. This basically means that, when user starts playing the audio file, your app will show music controls to the user.
+These animations will appear when the audio player switch between the `inactive` and `active` states. This basically means that, when a user starts playing the audio file, your app will show music controls to the user.
 
 To do this, open the `./src/pages/home/home.ts` file and replace its code with this:
 
@@ -847,7 +847,7 @@ export class HomePage {
 
 ### The `login` Method
 
-Then, to enable users to login, you will add the following method to `HomePage`:
+Then, to enable users to log in, you will add the following method to `HomePage`:
 
 ```typescript
 // ... import statements and @Component declaration ...
@@ -893,7 +893,7 @@ export class HomePage {
 
 ### The `ionViewWillLoad` Method
 
-As you may know, in Ionic, just like in Angular, you have lifecycle hooks. One these lifecycle hooks is the `ionViewWillLoad` one. You will use this hook to add listeners to media state changes. So, when changes are detected, you can update your screen.
+As you may know, in Ionic, just like in Angular, you have lifecycle hooks. One of these lifecycle hooks is the `ionViewWillLoad` one. You will use this hook to add listeners to media state changes. So, when changes are detected, you can update your screen.
 
 The listening process will be achieved by using NgRx store inside this lifecycle hook method:
 
@@ -908,7 +908,7 @@ export class HomePage {
       this.state = value.media;
     });
 
-    // Resize the Content Screen so that Ionic is aware of footer
+    // Resize the Content Screen so that Ionic is aware of the footer
     this.store
       .select('appState')
       .pipe(pluck('media', 'canplay'), filter(value => value === true))
@@ -973,7 +973,7 @@ To do this, the `resetState` method stops the currently running media file and d
 
 ### The `playStream` Method
 
-Then, the `playstream` method can fire the `playStream` method of your `AudioProvider`. This method on the provider returns an observable that you will use to subscribe and start listening media events like `canplay`, `playing`, etc.
+Then, the `playstream` method can fire the `playStream` method of your `AudioProvider`. This method on the provider returns an observable that you will use to subscribe and start listening to media events like `canplay`, `playing`, etc.
 
 Based on each particular event, you will dispatch a store action with the appropriate payload. Basically, these actions will store media information like current time and duration of the media.
 
@@ -1140,9 +1140,9 @@ export class HomePage {
 
 ### The `onSeekStart` and `onSeekEnd` Methods
 
-Also, you will want to enable your users to do seek operations. So, when the user initiate the seek operation, it will fire the `onSeekStart` method. In it, it will check if the file is currently being played or not and save that information. Then, it will pause the audio file.
+Also, you will want to enable your users to do seek operations. So, when the user initiates the seek operation, it will fire the `onSeekStart` method. In it, it will check if the file is currently being played or not and save that information. Then, it will pause the audio file.
 
-When the seek operation ends, it will fire the `onSeekEnd` method and, in it, you can fetch time select by the user. If file was being played before seeking, you resume the playback:
+When the seek operation ends, it will fire the `onSeekEnd` method and, in it, you can fetch the time selected by the user. If a file was being played before seeking, you resume the playback:
 
 ```typescript
 // ... import statements and @Component declaration ...
@@ -1259,7 +1259,7 @@ ionic cordova run android
 
 ## Conclusion and Next Steps
 
-In this article, you created an audio player mobile app with Ionic. You used RxJS to develop audio playback features. Along with that, you used NgRx to manage the state of application. Besides that, you also used Auth0 to handle user authentication in your mobile app. With this, you have finished developing the first version of the application with static audio content.
+In this article, you created an audio player mobile app with Ionic. You used RxJS to develop audio playback features. Along with that, you used NgRx to manage the state of the application. Besides that, you also used Auth0 to handle user authentication in your mobile app. With this, you have finished developing the first version of the application with static audio content.
 
 In a future opportunity, you will create a backend using Node.js and Google Cloud to serve dynamic audio content to your audio player. To avoid spending too much time around configuring servers to host your backend, you will take advantage of [Webtask](https://webtask.io), a serverless solution for Node.js apps.
 
