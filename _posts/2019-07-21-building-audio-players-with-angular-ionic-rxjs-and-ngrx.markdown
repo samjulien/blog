@@ -43,7 +43,7 @@ The following sections show the steps you will need to follow before starting th
 
 ### Install Native SDKs for iOS
 
-For the iOS platform, you will need a Mac OS X environment and Xcode installed on it. [For more information about configuring native SDKs in a Mac OS X environment, check this reference](https://cordova.apache.org/docs/en/latest/guide/platforms/ios/#installing-the-requirements). After installing Xcode, you will also need some command-line tools and the `ios-deploy` tool to run a simulator.
+For the iOS platform, you will need a Mac OS X environment and [Xcode](https://developer.apple.com/xcode/) installed on it. [For more information about configuring native SDKs in a Mac OS X environment, check this reference](https://cordova.apache.org/docs/en/latest/guide/platforms/ios/#installing-the-requirements). After installing Xcode, you will also need some command-line tools and the `ios-deploy` tool to run a simulator.
 
 To install these tools, proceed as follows:
 
@@ -54,9 +54,9 @@ To install these tools, proceed as follows:
 
 ### Install Native SDKs for Android
 
-For Android applications, you will need to have Android SDKs and some tools. The steps below, briefly explain how to install these SDKs and tools in your environment. However, if you need more information, [you can check this link for a more thorough explanation on how to install everything](https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html#installing-the-requirements):
+For Android applications, you will need to have Android SDKs and some tools. The steps below briefly explain how to install these SDKs and tools in your environment. However, if you need more information, [you can check this link for a more thorough explanation on how to install everything](https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html#installing-the-requirements):
 
-* JDK: [You will need to have a JDK installed](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and the `JAVA_HOME` environment variable set to your JDK installation.
+* JDK: [You will need to have a JDK installed](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and the `JAVA_HOME` environment variable pointing to your JDK installation.
 * Gradle: You will also need to install [Gradle](https://gradle.org/) and add it to the `PATH` variable in your environment variables.
 * Android SDK: Most importantly, you will need Android SDKs to generate `apk` files for your app. So, install [the Android Studio IDE](https://developer.android.com/studio/) and, using the `sdkmanager`, install these:
   1.  Android Platform SDK;
@@ -67,7 +67,7 @@ After these, you will need to set the `ANDROID_HOME` environment variable to you
 
 ### Install Node.js and Tools
 
-As already mentioned, you will need to install Node.js in your development machine. So, if you haven't done so yet, go to [the download page of Node.js](https://nodejs.org/en/download/) and follow the instructions.
+As already mentioned, you will need to install Node.js in your development machine. So, if you haven't done so yet, go to [the download page of Node.js](https://nodejs.org/en/download/) and follow the instructions there.
 
 After installing it, you will need to install Cordova CLI and Ionic CLI via `npm`:
 
