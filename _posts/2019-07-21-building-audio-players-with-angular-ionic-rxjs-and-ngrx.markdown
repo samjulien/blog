@@ -342,8 +342,6 @@ export const RESET = 'RESET';
 
 After that, you will be able to implement the reducer function that receives and treats instances of `MediaAction`:
 
-@imsingh, please, check if my refactoring to your if/else statements make sense!
-
 ```typescript
 // ... import, MediaAction, and consts ...
 
@@ -391,6 +389,8 @@ Now, to register your reducer in your Ionic app, open the `app.module.ts` file a
 
 ```typescript
 // ... other import statements ...
+import { StoreModule } from '@ngrx/store';
+import { mediaStateReducer } from '../providers/store/store';
 
 @NgModule({
   // ... declarations ...
