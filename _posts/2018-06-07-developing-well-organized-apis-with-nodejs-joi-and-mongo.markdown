@@ -114,7 +114,7 @@ The list below provides a brief explanation of what these libraries do:
 * `http-status` is a utility to interact with HTTP status code.
 * `restify-errors` is a library that contains sets of error constructors to create new error objects with their default status codes.
 * `restify-url-semver` is a library used for versioning the Restify API.
-* `winston` is a universal logging library with support for multiple transports.
+* `winston` is a universal logging library with support for multiple transports. A [transport](https://github.com/winstonjs/winston#transports) is essentially a storage device for your logs.
 * `dotenv` is a tiny package that loads environment variables from `.env` file into `process.env`.
 
 ### Creating the App Configuration
