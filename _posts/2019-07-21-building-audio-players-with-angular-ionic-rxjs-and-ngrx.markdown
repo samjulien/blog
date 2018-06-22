@@ -438,6 +438,8 @@ ionic cordova plugin add cordova-plugin-safariviewcontroller
 5. Add `http://localhost:8080` to the **Allowed Logout URLs**.
 6. Click the "Save Changes" button.
 
+> **Note:** If running on an emulator, you might need to add an URL different than `http://localhost:8080` to the **Allowed Origins (CORS)** box. When running you app, check the `allow-navigation` property of the `config.xml` file to find out the correct URL. For example: `http://192.168.0.14:8100`.
+
 > **Note:** On step 4, you will need to replace `YOUR_PACKAGE_ID` and `YOUR_AUTH_DOMAIN` with your own data (the same as used while installing your project dependencies: e.g. `io.ionic.starter` and `ionic-audio-player.auth0.com`).
 
 ### Configuring Auth0 on Ionic
