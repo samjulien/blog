@@ -99,7 +99,7 @@ For example, if you are on a Mac OS X environment and you want to use an emulato
 ionic cordova run ios -lc
 ```
 
-> **Note**: `-lc` above means that you Ionic to _spin up server to live-reload www files_ (the `l`) and to _print out console logs to terminal_ (the `c`).
+> **Note**: `-lc` above means that you want Ionic to _spin up server to live-reload www files_ (the `l`) and to _print out console logs to terminal_ (the `c`).
 
 For reference, these are the other commands that you can use when aiming your current development machine (i.e. a browser on it) or Android:
 
@@ -123,17 +123,18 @@ a library built to integrate RxJS and Angular applications to help you manage th
 * [`@auth0/cordova`](https://github.com/auth0/auth0-cordova): the official Auth0 library for Cordova apps;
 * [`rxjs`](https://github.com/ReactiveX/rxjs): a reactive programming library for JavaScript;
 * [`rxjs-compat`](https://github.com/ReactiveX/rxjs/tree/master/compat): a package to get backwards compatibility with RxJS previous to version 6;
-<!--* [`@auth0/angular-jwt`](https://www.npmjs.com/package/@auth0/angular-jwt): the official Auth0 library to help handling JWTs on Angular apps;-->
 
 To install these libraries, you can use the following commands:
 
 ```bash
+# make sure you are in the project root
 cd audio-player
+
+# install all libs
 npm install --save @angular/animations @ngrx/store moment auth0-js @types/auth0-js @auth0/cordova rxjs@6.2.1 rxjs-compat@6.2.1
 ```
 
 > **Note**: In the command above, you installed both `rxjs@6.2.1` and `rxjs-compat@6.2.1` because Ionic (at least, at the time of writing) ships with Angular 5 and because Angular 5 uses RxJS 5 APIs.
-
 
 ## Creating an Ionic Service to Manage the Playback
 
