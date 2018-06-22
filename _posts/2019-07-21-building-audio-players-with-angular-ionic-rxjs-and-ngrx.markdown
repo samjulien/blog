@@ -35,6 +35,8 @@ To handle media playback in a reactive way, you will adapt [JavaScript's `Audio`
 
 Besides that, you will also use [Auth0](https://auth0.com) to secure your mobile app and, in a subsequent article, you will learn how to create a secure backend to provide the list of music files to your app (for now, you will use a mock service with static data).
 
+{% include tweet_quote.html quote_text="Let's use @Ionicframework, @angular, RxJS, and NgRx to build a mobile audio player app." %}
+
 ## Prerequisites for Ionic Development
 
 Since you are going to make a mobile application, you will need to have the required SDKs for building the app. In this article, you will use [Cordova](https://cordova.apache.org/) to package your Ionic app into native mobile packages.
@@ -1256,6 +1258,8 @@ ionic cordova run ios
 # for the android app
 ionic cordova run android
 ```
+
+{% include tweet_quote.html quote_text="I just built a mobile audio player with @Ionicframework, @angular, RxJS, and NgRx!!!" %}
 
 ## Conclusion and Next Steps
 
