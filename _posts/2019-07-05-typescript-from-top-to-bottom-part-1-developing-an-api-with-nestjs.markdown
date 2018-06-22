@@ -474,7 +474,7 @@ After creating your account, log in to it, head to [the APIs section in your Aut
 
 Then you should visit the [_Applications_ section](https://manage.auth0.com/#/applications) of your Auth0 management dashboard, and click on the application with the same name as the API you just created. 
 
-In this page, go to the _Settings_ section. There, you can change the _Application Type_ to `Single Page Application`, add `http://localhost:8080/login` (you are going to use it in the next article) to the _Allowed Callback URLs_ field, and save the changes (you can also remove `(Test Application)` from the application name). Then, leave this page open as you will need to copy _Domain_, _Client ID_, and _Client Secret_ to configure your API.
+In this page, go to the _Settings_ section. There, you can change the _Application Type_ to `Single Page Application`, add `http://localhost:4200/login` (you are going to use it in the next article) to the _Allowed Callback URLs_ field, and save the changes (you can also remove `(Test Application)` from the application name). Then, leave this page open as you will need to copy _Domain_, _Client ID_, and _Client Secret_ to configure your API.
 
 Now, you can generate an access token with Auth0 (you will use this token soon, after securing your API). To do this, head to the following address in your browser:
 
@@ -482,7 +482,7 @@ Now, you can generate an access token with Auth0 (you will use this token soon, 
 AUTH0_DOMAIN=${AUTH0_DOMAIN}
 AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID}
 
-open https://$AUTH0_DOMAIN/authorize?audience=http://localhost:3000&scope=SCOPE&response_type=code&client_id=$AUTH0_CLIENT_ID&redirect_uri=http://localhost:8080/login&state=STATE?prompt=none
+open https://$AUTH0_DOMAIN/authorize?audience=http://localhost:3000&scope=SCOPE&response_type=code&client_id=$AUTH0_CLIENT_ID&redirect_uri=http://localhost:4200/login&state=STATE?prompt=none
 ```
 
 > **Note:** You will need to replace `${AUTH0_DOMAIN}` and `${AUTH0_CLIENT_ID}` in the URL above with the values retrieved from your Auth0 Application.
@@ -494,7 +494,7 @@ If everything is correct, you should get the following page:
 Then, you can proceed to login as you would do in any application secured with Auth0 (you may create a new account or use your Google Account) and then the page will return to the following address: 
 
 ```bash 
-http://localhost:8080/login?code=${CODE}&state=${SOME_STATE}
+http://localhost:4200/login?code=${CODE}&state=${SOME_STATE}
 ```
 
 You will get a white page. From there, copy the value returned in the place of `${CODE}` and run the following in a terminal:
@@ -510,7 +510,7 @@ curl -X POST -H 'content-type: application/json' -d '{
   "client_id": "'$AUTH0_CLIENT_ID'",
   "client_secret": "'$AUTH0_CLIENT_SECRET'",
   "code": "'$CODE'",
-  "redirect_uri": "http://localhost:8080"
+  "redirect_uri": "http://localhost:4200"
 }' https://$AUTH0_DOMAIN/oauth/token
 ```
 
