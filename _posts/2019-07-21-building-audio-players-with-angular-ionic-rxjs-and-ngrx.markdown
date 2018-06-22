@@ -29,11 +29,11 @@ related:
 
 ## Introduction
 
-Creating an audio player is always an intimidating task. Specially if you think about managing media's _state_, reacting to media _events_, and reflecting these changes correctly on the UI. So, in this article, you will use Angular and Ionic to easily solve these issues.
+Creating an audio player is always an intimidating task. Specially if you think about managing media's _state_, reacting to media _events_, and reflecting these changes correctly on the UI (User Interface). So, in this article, you will use Angular and Ionic (with some other libraries) to easily solve these issues.
 
-To handle media playback in a reactive way, you will adapt [JavaScript's **Audio** object](https://www.w3schools.com/jsref/dom_obj_audio.asp) with a **RxJS** _Observable_ and you will use the **NgRx** store to manage the state of your audio player.
+To handle media playback in a reactive way, you will adapt [JavaScript's `Audio` object](https://www.w3schools.com/jsref/dom_obj_audio.asp) with a **RxJS** _Observable_ and you will use the **NgRx** store to manage the state of your audio player.
 
-Besides that, you will also use Auth0 to secure your mobile app and, in a subsequent article, you will learn how to create a secure backend to provide the list of musics to your app (for now, you will use a mock service with static data).
+Besides that, you will also use [Auth0](https://auth0.com) to secure your mobile app and, in a subsequent article, you will learn how to create a secure backend to provide the list of musics to your app (for now, you will use a mock service with static data).
 
 ## Prerequisites for Ionic Development
 
