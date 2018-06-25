@@ -12,7 +12,7 @@ author:
   mail: "jennifer.obrien@auth0.com"
   avatar: "https://cdn.auth0.com/blog/avatars/jenny-obrien.png"
 design:
-  bg_color: "#56416C"
+  bg_color: "#222228"
   image: https://cdn.auth0.com/blog/strategies/logo.png
 tags:
 - gartner
