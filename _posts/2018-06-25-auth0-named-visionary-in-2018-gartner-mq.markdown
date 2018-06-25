@@ -12,11 +12,14 @@ author:
   mail: "jennifer.obrien@auth0.com"
   avatar: "https://cdn.auth0.com/blog/avatars/jenny-obrien.png"
 design:
-  bg_color: "#222228"
-  image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
+  bg_color: "#56416C"
+  image: https://cdn.auth0.com/blog/strategies/logo.png
 tags:
 - gartner
 - magic-quadrant
+- identity-management
+- idaas
+- identity
 related:
 - 2018-04-16-auth0-wins-infosec-2018-editors-choice-award
 - 2018-01-29-auth0-announces-record-year
