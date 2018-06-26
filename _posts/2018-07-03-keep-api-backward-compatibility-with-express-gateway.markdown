@@ -108,11 +108,11 @@ It turns out that an [API Gateway][express-gateway] can solve this problem for y
 Here's what you would need to do to set up a gateway:
 
 - You would need to configure the [`proxy`][proxy] policy so that the request to the old endpoint get routed to the new, correct internal services.
-- You would need to configure the [`bodyModifier`][bodyModifier] policy to modify the request's body so that the new customer service can consume it. In the same way, you would use the same policy this time to modify the response object to make sure the `createdBy` property is correctly added.
+- You would need to configure the `bodyModifier` policy to modify the request's body so that the new customer service can consume it. In the same way, you would use the same policy this time to modify the response object to make sure the `createdBy` property is correctly added.
 
 ### Installing Express Gateway
 
-To solve these problems with Express Gateway, you would install and use a beta version of the framework. This version will most likely land in the `master`branch (thus as an official version) soon (the team supporting Express Gateway is still in the process of discussing some internal requirements, so they weren't able to make it happen officially yet).
+To solve these problems with Express Gateway, you would install and use a beta version of the framework. This version will most likely land in the `master` branch (thus as an official version) soon (the team supporting Express Gateway is still in the process of discussing some internal requirements, so they weren't able to make it happen officially yet).
 
 ```bash
 npm install expressgateway/express-gateway#feat/proxy-events
@@ -184,4 +184,3 @@ It is important to note that this approach would keep the whole object in memory
 
 [express-gateway]: https://express-gateway.io
 [proxy]: https://express-gateway.io/docs/policies/proxy
-[bodyModifier]: https://express-gateway.io/docs/policies/bodyModifier
