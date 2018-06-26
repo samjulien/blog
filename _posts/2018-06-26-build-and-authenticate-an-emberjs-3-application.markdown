@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Authenticate an EmberJS 3 Application"
-description: "Learn how to authenticate an EmberJS 3 Single Page Application with Auth0."
-date: 2018-mm-dd 8:30
-category: Technical guide, Ember
+title: "Build and Authenticate an EmberJS 3 Application"
+description: "Learn how to build and authenticate an EmberJS 3 Single Page Application"
+date: 2018-06-26 8:30
+category: Technical Guide, Frontend, Ember
 banner:
   text: "Auth0 makes it easy to add authentication to your EmberJS application."
 author:
@@ -23,6 +23,7 @@ tags:
 related:
 - 2016-09-29-angular-2-authentication
 - 2018-05-22-building-modern-applications-with-django-and-vuejs
+- 2018-05-07-whats-new-in-angular6
 ---
 
 **TL;DR:** Let’s dive into the world of [**EmberJS**](https://www.emberjs.com/), a framework built so that we all can be more productive as developers. Easy to jump in to and easy to get started with, EmberJS is a great framework to know and understand. In this tutorial, we will be building an application using EmberJS 3 and then add some **trusty authentication** to it. You can find the [GitHub repo here](https://github.com/SarahJay55/ember-js-auth) to get the code from this tutorial. 
