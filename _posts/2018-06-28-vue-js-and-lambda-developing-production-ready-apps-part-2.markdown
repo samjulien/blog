@@ -60,6 +60,16 @@ After inserting these values into these fields, hit the _Save Changes_ button at
 
 ### Creating a MongoDB Instance Locally
 
+After creating both the Auth0 Application and the Auth0 API, you will need to initialise a MongoDB instance to persist your users' data. To facilitate this process, you can rely on Docker (for this, [you will need Docker installed in your machine](https://docs.docker.com/install/)). After installing it, you can trigger a new MongoDB instance with the following command:
+
+```bash
+docker run --name mongo \
+    -p 27017:27017 \
+    -d mongo
+```
+
+Yup, that's it. It's easy like that to initialise a new MongoDB instance in a Docker container. For more information about it, you can check the instructions on [the official Docker image for MongoDB](https://hub.docker.com/_/mongo/).
+
 ### Forking and Cloning the App's GitHub Repository
 
 The first thing you will need to is [to fork and clone](https://guides.github.com/activities/forking/) the [GitHub repository created throughout the previous article](https://github.com/auth0-blog/vue-js-lambda-part-1). After forking it into your own GitHub account, you can use the following commands to clone your fork:
