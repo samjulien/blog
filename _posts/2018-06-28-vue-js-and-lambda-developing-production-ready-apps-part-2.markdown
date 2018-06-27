@@ -26,9 +26,9 @@ related:
 
 **TL;DR:** In this series, you will use modern technologies like Vue.js, AWS Lambda, Express, MongoDB, and Auth0 to create a production-ready application that acts like a micro-blog engine. [The first part of the series focused on the setup of the Vue.js client that users will interact with and on the definition of the Express backend app](https://auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps-part-1/). 
 
-The second part (this one), will show you how to prepare your app for showtime. You will start by signing up to AWS and to MongoLabs (where you will deploy the production MongoDB instance), then you will focus on refactoring both your frontend and backend apps to support different environments (in this case, development and production).
+The second part (this one) will show you how to prepare your app for showtime. You will start by signing up to AWS and to MongoLabs (where you will deploy the production MongoDB instance), then you will focus on refactoring both your frontend and backend apps to support different environments (in this case, development and production).
 
-> **Note:** the instructions described in this article probably won't incur any debts. Both AWS and MongoLabs have free tiers that support a good amount of requests and processing. If you don't extrapolate usage, you won't have to pay anything.
+> **Note:** the instructions described in this article probably won't incur any charges. Both AWS and MongoLabs have free tiers that support a good amount of requests and processing. If you don't extrapolate usage, you won't have to pay anything.
 
 If interested, [you can find the final code developed in this part in this GitHub repository](https://github.com/auth0-blog/vue-js-lambda-part-2).
 
