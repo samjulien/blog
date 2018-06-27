@@ -153,9 +153,8 @@ The last thing you will need to do to use your MongoDB instance is to define a u
 
 That's it, you are now ready to start refactoring your project source code to deploy it to production.
 
-## Installing and Configuring Claudia
-
 ## Preparing the Express App for Claudia
+### Installing and Configuring Claudia
 ### Refactoring your Index Express File
 ### Creating a new Auth0 Tenant for Production
 ### Creating a new Auth0 API
