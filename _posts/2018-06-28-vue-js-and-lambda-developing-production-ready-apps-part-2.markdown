@@ -20,7 +20,7 @@ tags:
 - spa
 - auth0
 related:
-- 2018-06-28-vue-js-and-lambda-developing-production-ready-apps-part-2
+- 2018-06-13-vue-js-and-lambda-developing-production-ready-apps-part-1
 - 2017-04-18-vuejs2-authentication-tutorial
 ---
 
