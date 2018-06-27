@@ -130,7 +130,14 @@ As such, to make Lambda functions available to public clients like your Vue.js a
 
 This (extremely) short introduction about AWS Lambda and AWS API Gateway is not even close to provide a complete explanation on how these features can be used (nor it is the goal here). If you need more explanation around these topics, [you can refer to the official documentation available at AWS](https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started-with-lambda-integration.html) and, if you are wondering how cumbersome would be to remove Claudia from your setup, you can refer to [this nice blog post that shows how to use the AWS CLI to create everything manually](https://ig.nore.me/2016/03/setting-up-lambda-and-a-gateway-through-the-cli/).
 
-## Signing Up to AWS
+### Signing Up to AWS
+
+Now, to set up AWS Lambda functions and an API Gateway (both manually or with the help of Claudia), you will need an AWS account. If you don't have one yet, [you can open this page to create your account](https://portal.aws.amazon.com/billing/signup). As you can see there, new AWS accounts include 12 months of free tier access which, [as described here](https://aws.amazon.com/free/), grant you (among other things):
+
+- _Amazon API Gateway_: 1 million API calls per month;
+- _AWS Lambda_: 1 million free requests per month;
+
+This will probably be enough for the use case presented here. Unless you end up creating the next Twitter. :)
 
 ## Deploying a MongoDB Instance on the Cloud
 
