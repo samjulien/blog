@@ -122,6 +122,14 @@ Now, if you open [`http://localhost:8080`](http://localhost:8080) on a web brows
 
 ## AWS Lambda Overview
 
+As [AWS Lambda](https://aws.amazon.com/lambda/) is one of the most popular serverless solutions available, it probably doesn't need a thorough introduction. Nevertheless, even though you are going to use Claudia to abstract the usage of the AWS Lambda service, a basic understanding of how this solution works might come in handy.
+
+On its own, AWS Lambda functions are not enough to handle HTTP requests originated from the Internet (and from your users' browsers when accessing the Vue.js application). If you were creating your serverless functions without the help of Claudia, you would have to use the [AWS API Gateway](https://aws.amazon.com/api-gateway/) solution along with Lambda. This would be needed because Lambda functions are raw functionalities that can be triggered by different clients (for example, from other resources at your AWS account, which wouldn't need the API Gateway).
+
+As such, to make Lambda functions available to public clients like your Vue.js app, you would need to set up an API Gateway that would make the middle between both ends (Lambda and Vue.js, for example).
+
+This (extremely) short introduction about AWS Lambda and AWS API Gateway is not even close to provide a complete explanation on how these features can be used (nor it is the goal here). If you need more explanation around these topics, [you can refer to the official documentation available at AWS](https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started-with-lambda-integration.html) and, if you are wondering how cumbersome would be to remove Claudia from your setup, you can refer to [this nice blog post that shows how to use the AWS CLI to create everything manually](https://ig.nore.me/2016/03/setting-up-lambda-and-a-gateway-through-the-cli/).
+
 ## Signing Up to AWS
 
 ## Deploying a MongoDB Instance on the Cloud
