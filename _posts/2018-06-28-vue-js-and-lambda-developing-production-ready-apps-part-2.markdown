@@ -56,7 +56,7 @@ After clicking on the _Create_ button, Auth0 will redirect you to a new page whe
 - "Allowed Callback URLs": Here you will need to add `http://localhost:8080/callback` so that Auth0 knows it can redirect users to this URL after the authentication process.
 - "Allowed Logout URLs": The same idea but for the logout process. So, add `http://localhost:8080/` in this field.
 
-After inserting these values into these fields, hit the _Save Changes_ button at the bottom of the page.
+After inserting these values into these fields, hit the _Save Changes_ button at the bottom of the page and leave this page open (as you will need to copy some properties from it soon).
 
 ### Creating a MongoDB Instance Locally
 
@@ -72,7 +72,7 @@ Yup, that's it. It's easy like that to initialise a new MongoDB instance in a Do
 
 ### Forking and Cloning the App's GitHub Repository
 
-The first thing you will need to is [to fork and clone](https://guides.github.com/activities/forking/) the [GitHub repository created throughout the previous article](https://github.com/auth0-blog/vue-js-lambda-part-1). After forking it into your own GitHub account, you can use the following commands to clone your fork:
+With both Auth0 and a MongoDB instance properly configured, the next thing to do is [to fork and clone](https://guides.github.com/activities/forking/) the [GitHub repository created throughout the previous article](https://github.com/auth0-blog/vue-js-lambda-part-1). After forking it into your own GitHub account, you can use the following commands to clone your fork locally:
 
 ```bash
 # replace this with your own GitHub user
@@ -98,10 +98,27 @@ cd ../backend
 npm i
 ```
 
-Then, open the project root (the parent of the `client` and `backend` directories) into your preferred IDE and proceed as follows:
+Then, you will need to open the project root (the parent of the `client` and `backend` directories) into your preferred IDE and proceed as follows:
 
-1. Open the `/client/src/App.vue` file and replace the `domain`, `clientID`, and `audience` properties of the object passed to `Auth0.configure` with the properties from the Auth0 Application created previously.
-2. 
+1. On the `./client/src/App.vue` file, replace the `domain`, `clientID`, and `audience` properties of the object passed to `Auth0.configure` with the properties from the Auth0 Application created previously.
+2. On the `./backend/src/routes.js` file, replace all appearances of `bk-tmp.auth0.com` with your own Auth0 domain and replace the `clientId` property of the object passed to `auth0.AuthenticationClient` with the _Client ID_ of your Auth0 Application.
+
+After changing these files, you can use the following commands to start your application:
+
+```bash
+# from the backend directory, start the Express app in the background
+node src/index.js &
+
+# then move into the client directory
+cd ../client
+
+# and run the Vue.js app
+npm start
+```
+
+Now, if you open [`http://localhost:8080`](http://localhost:8080) on a web browser, you should be able to sign in into your app through Auth0 and to post messages to your micro-blog engine.
+
+![Running locally your Vue.js and Express app](https://cdn.auth0.com/blog/vuejs-lambda-part-2/running-the-app-locally.png)
 
 ## AWS Lambda Overview
 
