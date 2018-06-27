@@ -34,6 +34,65 @@ If interested, [you can find the final code developed in this part in this GitHu
 
 ## Before Starting
 
+Before you can start following the instructions presented in this article, you will need to make sure you have a version of the app running in your local machine. If you already followed [the instructions described in the previous article](https://auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps-part-1/) and already have the app running locally, you can jump this section. Otherwise, you can opt to ignore the previous article and take the shortcut described in the following subsections.
+
+### Configure an Auth0 Application and an Auth0 API
+
+As you want your micro-blog engine to be as secure as possible and don't want to waste time focusing on features that are not unique to your app (i.e. [identity management features](https://auth0.com/learn/cloud-identity-access-management/)), you will use Auth0 to manage authentication. As such, if you haven't done so yet, you can <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account here</a>.
+
+After signing up to Auth0, [you can head to the APIs section of the management dashboard](https://manage.auth0.com/#/apis) and click on the _Create API_ button. In the form that Auth0 shows, you can fill the fields as follows:
+
+- _Name_: "Micro-Blog API"
+- _Identifier_: `https://micro-blog-app`
+- _Signing Algorithm_: `RS256`
+
+To finish the creation of your Auth0 API, click on the _Create_ button. After that, head to [the _Applications_ section](https://manage.auth0.com/#/applications) and click on the _Create Application_ button. In the form presented, fill the options as follows:
+
+1. The name of your application: you can enter something like "Vue.js Micro-Blog".
+2. The type of your application: here you will have to choose _Single Page Web Applications_.
+
+After clicking on the _Create_ button, Auth0 will redirect you to a new page where you will need to tweak your application configuration. For now, you are only interested in adding values to two fields:
+
+- "Allowed Callback URLs": Here you will need to add `http://localhost:8080/callback` so that Auth0 knows it can redirect users to this URL after the authentication process.
+- "Allowed Logout URLs": The same idea but for the logout process. So, add `http://localhost:8080/` in this field.
+
+After inserting these values into these fields, hit the _Save Changes_ button at the bottom of the page.
+
+### Creating a MongoDB Instance Locally
+
+### Forking and Cloning the App's GitHub Repository
+
+The first thing you will need to is [to fork and clone](https://guides.github.com/activities/forking/) the [GitHub repository created throughout the previous article](https://github.com/auth0-blog/vue-js-lambda-part-1). After forking it into your own GitHub account, you can use the following commands to clone your fork:
+
+```bash
+# replace this with your own GitHub user
+GITHUB_USER=brunokrebs
+
+# clone your fork
+git clone git@github.com:$GITHUB_USER/vue-js-lambda-part-1.git
+```
+
+After that, you can install the backend and frontend dependencies:
+
+```bash
+# move into the Vue.js app
+cd vue-js-lambda-part-1/client
+
+# install frontend dependencies
+npm i
+
+# then move into the Express app
+cd ../backend
+
+# install backend dependencies
+npm i
+```
+
+Then, open the project root (the parent of the `client` and `backend` directories) into your preferred IDE and proceed as follows:
+
+1. Open the `/client/src/App.vue` file and replace the `domain`, `clientID`, and `audience` properties of the object passed to `Auth0.configure` with the properties from the Auth0 Application created previously.
+2. 
+
 ## AWS Lambda Overview
 
 ## Signing Up to AWS
