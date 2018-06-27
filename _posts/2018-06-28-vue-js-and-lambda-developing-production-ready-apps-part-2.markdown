@@ -26,9 +26,9 @@ related:
 
 **TL;DR:** In this series, you will use modern technologies like Vue.js, AWS Lambda, Express, MongoDB, and Auth0 to create a production-ready application that acts like a micro-blog engine. [The first part of the series focused on the setup of the Vue.js client that users will interact with and on the definition of the Express backend app](https://auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps-part-1/). 
 
-The second part (this one) will show you how to prepare your app for showtime. You will start by signing up to AWS and to MongoLabs (where you will deploy the production MongoDB instance), then you will focus on refactoring both your frontend and backend apps to support different environments (in this case, development and production).
+The second part (this one) will show you how to prepare your app for showtime. You will start by signing up to AWS and to mLab (where you will deploy the production MongoDB instance), then you will focus on refactoring both your frontend and backend apps to support different environments (in this case, development and production).
 
-> **Note:** the instructions described in this article probably won't incur any charges. Both AWS and MongoLabs have free tiers that support a good amount of requests and processing. If you don't extrapolate usage, you won't have to pay anything.
+> **Note:** the instructions described in this article probably won't incur any charges. Both AWS and mLab have free tiers that support a good amount of requests and processing. If you don't extrapolate usage, you won't have to pay anything.
 
 If interested, [you can find the final code developed in this part in this GitHub repository](https://github.com/auth0-blog/vue-js-lambda-part-2).
 
@@ -140,6 +140,18 @@ Now, to set up AWS Lambda functions and an API Gateway (both manually or with th
 This will probably be enough for the use case presented here. Unless you end up creating the next Twitter. :)
 
 ## Deploying a MongoDB Instance on the Cloud
+
+After signing up to AWS, the next service that you will need to sign up to is [mLab](https://mlab.com/). You will need this service because it facilitates the deployment of production-ready, world-wide available MongoDB instances.
+
+> **Note:** you can also choose to host a MongoDB instance on your own servers (like on an EC2 instance). However, to keep things easier to grasp, this article won't cover the steps needed to do so.
+
+After signing up to mLab, you can head to [their dashboard and click on the _Create New_ button](https://mlab.com/create/wizard). Then, you will have to choose a cloud provider (as you will use this instance with AWS Lambda functions, it might make sense to choose _Amazon Web Services_ here) and a _Plan Type_. For the last option, _sandbox_ (the free plan) will be more than enough.
+
+Now, you can click on _Continue_ and choose a region for your deployment. Choose some region geographically close to yourself. Then, when you click on _Continue_, mLab will require you to choose a database name. Here, you can set something like `vuejs-blog-engine` and click on _Continue_. After this, mLab will present the details of your instance where, if everything is looking good, you will be able to finish the process by clicking on the _Submit Order_ button.
+
+The last thing you will need to do to use your MongoDB instance is to define a user and password for your connections. So, [click on your instance](https://mlab.com/databases/vuejs-blog-engine) and choose the _Users_ tab. There, you can click on the _Add Database User_ button and fill the form with the details of your new user (e.g. `vuejs-blog-engine-db-user` as the username and `357#DbPass`as the password).
+
+That's it, you are now ready to start refactoring your project source code to deploy it to production.
 
 ## Installing and Configuring Claudia
 
