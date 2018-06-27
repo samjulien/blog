@@ -21,12 +21,15 @@ tags:
 - spa
 - auth0
 related:
-- 2018-03-29-vuejs-kanban-board-the-development-process
+- 2018-06-13-vue-js-and-lambda-developing-production-ready-apps-part-1
 - 2017-04-18-vuejs2-authentication-tutorial
-- 2018-05-22-building-modern-applications-with-django-and-vuejs
 ---
 
-**TL;DR:** In this series, you will use modern technologies like Vue.js, AWS Lambda, Express, MongoDB, and Auth0 to create a production-ready application that acts like a micro-blog engine. The first part of the series (this one) will focus on the setup of the Vue.js client that users will interact with and on the definition of the Express backend app. [You can find the final code developed in this part in this GitHub repository](https://github.com/auth0-blog/vue-js-lambda-part-1).
+**TL;DR:** In this series, you will use modern technologies like Vue.js, AWS Lambda, Express, MongoDB, and Auth0 to create a production-ready application that acts like a micro-blog engine. The first part of the series (this one) will focus on the setup of the Vue.js client that users will interact with and on the definition of the Express backend app.
+
+[The second part, will show you how to prepare your app for showtime](https://auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps-part-2/). There, you will start by signing up to AWS and to MongoLabs (where you will deploy the production MongoDB instance), then you will focus on refactoring both your frontend and backend apps to support different environments (like development and production).
+
+[You can find the final code developed in this part in this GitHub repository](https://github.com/auth0-blog/vue-js-lambda-part-1).
 
 ## Stack Overview
 
@@ -985,6 +988,6 @@ git cm 'vue.js and express fully integrated with auth0'
 
 In the first part of this series, you have created a Vue.js application to work as the user interface of a micro-blog engine. You have also created an Express API to persists micro-posts in a MongoDB instance. Besides that, you have installed and configured Auth0 on both your frontend and backend applications to take advantage of a modern identity management system. With this, you have finished developing the first version of your micro-blog engine and you are ready to move it to production.
 
-So, in the next part of this series, you will prepare your source code to deploy your backend API to AWS Lambda and your frontend Vue.js app to an AWS S3 bucket. Then, you will use [Claudia](https://claudiajs.com/), a tool that facilitates AWS Lambda management, to make your backend code live and will use the AWS CLI (Command Line Interface) tool to push your Vue.js app to AWS S3.
+So, [in the next part of this series](https://auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps-part-2/), you will prepare your source code to deploy your backend API to AWS Lambda and your frontend Vue.js app to an AWS S3 bucket. Then, you will use [Claudia, a tool that facilitates AWS Lambda management](https://claudiajs.com/), to make your backend code live and will use the AWS CLI (Command Line Interface) tool to push your Vue.js app to AWS S3.
 
 I hope you enjoy the process. Stay tuned!
