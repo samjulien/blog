@@ -216,7 +216,6 @@ app.listen(8081, () => {
 With that in place, you can issue `node src/development-server.js` from the `backend` directory to start the Express app in your machine.
 
 ### Creating a new Auth0 Tenant for Production
-### Creating a new Auth0 Application
 ### Creating a new Auth0 API
 ### Extracting Environment Variables
 
@@ -373,11 +372,55 @@ And that's it. You now have deployed your Express API to AWS Lambda with the hel
 curl https://8qi5y1ils2.execute-api.us-east-1.amazonaws.com/latest/micro-posts
 ```
 
-Just make sure you replace `8qi5y1ils2.execute-api.us-east-1.amazonaws.com` in the URL with the endpoint created by Claudia.js for you (you can find this info in the `url` property of the `api` object returned after invoking `claudia create`).
+Not hard, right?
+
+> Just make sure you replace `8qi5y1ils2.execute-api.us-east-1.amazonaws.com` in the URL with the endpoint created by Claudia.js for you (you can find this info in the `url` property of the `api` object returned after invoking `claudia create`).
 
 ## Preparing your Vue.js App to AWS S3
-### Creating a new Auth0 Client
+
+As you will see, the process of preparing your frontend app for AWS S3 will be easier than preparing the backend to AWS Lambda. Here, you will start by creating the production Auth0 Application. Then, you will extract some hard-coded values into environment variables. After that, you will create an AWS S3 bucket where you will deploy the Vue.js app.
+
+### Creating a new Auth0 Application
 ### Extracting Environment Variables
+
+There are only 5 variables that you need to extract from your source code:
+
+- the `url` constant that contains the URL of the backend API (for production it will be your AWS Lambda URL);
+- and the `domain`, `clientID`, `returnTo`, `redirectUri` variables related with Auth0.
+
+To start this extraction, you can open the `./config/dev.env.js` file of the `client` project and add these variables to the object passed to `merge`:
+
+```javascript
+'use strict'
+const merge = require('webpack-merge')
+const prodEnv = require('./prod.env')
+
+module.exports = merge(prodEnv, {
+  NODE_ENV: '"development"',
+  BACKEND_URL: 'http://localhost:8081/micro-posts/',
+  AUTH0_CLIENT_ID: 'KsX...BGPy',
+  AUTH0_DOMAIN: 'bk-tmp.auth0.com',
+  AUTH0_LOGOUT_URL: 'http://localhost:8080/',
+  AUTH0_CALLBACK_URL: 'http://localhost:8080/callback'
+})
+```
+
+> **Note**: you will have to replace the values passed to `AUTH0_CLIENT_ID` and `AUTH0_DOMAIN` in the code snippet above.
+
+You will also need to do a similar update but now on the `./config/prod.env.js`:
+
+```javascript
+'use strict'
+module.exports = {
+  NODE_ENV: '"production"',
+  BACKEND_URL: 'https://ww...j2y2.execute-api.us-east-1.amazonaws.com/latest/micro-post',
+  AUTH0_CLIENT_ID: 'Pf1...lJm',
+  AUTH0_DOMAIN: 'bk-prod.auth0.com',
+  AUTH0_LOGOUT_URL: 'http://localhost:8080/',
+  AUTH0_CALLBACK_URL: 'http://localhost:8080/callback'
+}
+```
+
 ### Creating an AWS S3 Bucket
 ### Uploading your Vue.js App to AWS S3
 
