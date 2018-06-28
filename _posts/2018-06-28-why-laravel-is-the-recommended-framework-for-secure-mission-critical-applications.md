@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Why Laravel is the recommended framework for secure, mission-critical applications?"
+title: "Why Laravel is the Recommended Framework for Secure, Mission-Critical Applications"
 description: "Out of the box, Laravel ships with many features that make your applications ready for prime time. In this article, you will learn about these features."
 longdescription: "Out of the box, Laravel ships with many features that make your applications ready for prime time. In this article, you will learn about what these features are and how they can help you produce high-quality, production-ready applications."
-date: 2018-06-12 08:30
+date: 2018-06-28 08:30
 category: Technical Guide, PHP, Laravel
 author:
   name: "Shahid Mansuri"
@@ -27,6 +27,7 @@ tags:
 related:
 - 2016-06-23-creating-your-first-laravel-app-and-adding-authentication
 - 2018-02-21-laravel-5-6-release-what-is-new
+- 2017-12-26-developing-restful-apis-with-lumen
 ---
 
 **TL;DR:** Laravel makes your applications more secure by default, which makes it the recommended PHP framework for mission-critical applications. In this article, we will briefly address how Laravel can help you create mission-critical, production-ready applications.
