@@ -38,7 +38,7 @@ Before you can start following the instructions presented in this article, you w
 
 ### Configure an Auth0 Application and an Auth0 API
 
-As you want your micro-blog engine to be as secure as possible and don't want to waste time focusing on features that are not unique to your app (i.e. [identity management features](https://auth0.com/learn/cloud-identity-access-management/)), you will use Auth0 to manage authentication. As such, if you haven't done so yet, you can <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account here</a>.
+As you want your micro-blog engine to be as secure as possible and don't want to waste time focusing on features that are not unique to your app (e.g. [identity management features](https://auth0.com/learn/cloud-identity-access-management/)), you will use Auth0 to manage authentication. As such, if you haven't done so yet, you can <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account here</a>.
 
 After signing up to Auth0, [you can head to the APIs section of the management dashboard](https://manage.auth0.com/#/apis) and click on the _Create API_ button. In the form that Auth0 shows, you can fill the fields as follows:
 
@@ -56,7 +56,7 @@ After clicking on the _Create_ button, Auth0 will redirect you to a new page whe
 - "Allowed Callback URLs": Here you will need to add `http://localhost:8080/callback` so that Auth0 knows it can redirect users to this URL after the authentication process.
 - "Allowed Logout URLs": The same idea but for the logout process. So, add `http://localhost:8080/` in this field.
 
-After inserting these values into these fields, hit the _Save Changes_ button at the bottom of the page and leave this page open (as you will need to copy some properties from it soon).
+After inserting these values, hit the _Save Changes_ button at the bottom of the page and leave the page open (you will need to copy some properties from it soon).
 
 ### Creating a MongoDB Instance Locally
 
@@ -100,7 +100,7 @@ npm i
 
 Then, you will need to open the project root (the parent of the `client` and `backend` directories) into your preferred IDE and proceed as follows:
 
-1. On the `./client/src/App.vue` file, replace the `domain`, `clientID`, and `audience` properties of the object passed to `Auth0.configure` with the properties from the Auth0 Application created previously.
+1. On the `./client/src/App.vue` file, replace the `domain`, `clientID`, and `audience` properties of the object passed to `Auth0.configure` with the properties from the Auth0 Application and API created previously (`audience` is the `identifier` of you Auth0 API).
 2. On the `./backend/src/routes.js` file, replace all appearances of `bk-tmp.auth0.com` with your own Auth0 domain and replace the `clientId` property of the object passed to `auth0.AuthenticationClient` with the _Client ID_ of your Auth0 Application.
 
 After changing these files, you can use the following commands to start your application:
