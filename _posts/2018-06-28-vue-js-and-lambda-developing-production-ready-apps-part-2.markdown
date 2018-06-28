@@ -147,11 +147,11 @@ After signing up to AWS, the next service that you will need to sign up to is [m
 
 After signing up to mLab, you can head to [their dashboard and click on the _Create New_ button](https://mlab.com/create/wizard). Then, you will have to choose a cloud provider (as you will use this instance with AWS Lambda functions, it might make sense to choose _Amazon Web Services_ here) and a _Plan Type_. For the last option, _sandbox_ (the free plan) will be more than enough.
 
-Now, you can click on _Continue_ and choose a region for your deployment. Choose some region geographically close to yourself. Then, when you click on _Continue_, mLab will require you to choose a database name. Here, you can set something like `vuejs-blog-engine` and click on _Continue_. After this, mLab will present the details of your instance where, if everything is looking good, you will be able to finish the process by clicking on the _Submit Order_ button.
+Now, you can click on _Continue_ and choose a region for your deployment. Choose some region geographically close to yourself. Then, when you click on _Continue_, mLab will require you to choose a database name. Here, you can set something like `micro-blog` and click on _Continue_. After this, mLab will present the details of your instance where, if everything is looking good, you will be able to finish the process by clicking on the _Submit Order_ button.
 
-The last thing you will need to do to use your MongoDB instance is to define a user and password for your connections. So, [click on your instance](https://mlab.com/databases/vuejs-blog-engine) and choose the _Users_ tab. There, you can click on the _Add Database User_ button and fill the form with the details of your new user (e.g. `vuejs-blog-engine-db-user` as the username and `357#DbPass`as the password).
+The last thing you will need to do to use your MongoDB instance is to define a user and password for your connections. So, [click on your instance](https://mlab.com/databases/micro-blog) and choose the _Users_ tab. There, you can click on the _Add Database User_ button and fill the form with the details of your new user (e.g. `micro-blog-db-user` as the username and `357-DbPass`as the password).
 
-That's it, you are now ready to start refactoring your project source code to deploy it to production.
+That's it, you are now ready to start refactoring your project source code to deploy it to production. Just leave this page open for further reference (you will need to copy the connection string from here).
 
 ## Preparing the Express App for Claudia.js
 
@@ -173,7 +173,7 @@ To create an AWS profile, go to the [_Users_ section of your _IAM Management Con
 After that, click on the _next (permissions)_ button and click on the _create group_ button. You will need a new group to restrict access to what the Claudia.js user needs (i.e. the `AWSLambdaFullAccess` policy type). So, on the page that creates groups, configure the new one as follows:
 
 - For the _Group name_, input something meaningful like `lambda-group`.
-- Then, check the `AWSLambdaFullAccess` policy type to grant Claudia.js enough access.
+- Then, check the `AWSLambdaFullAccess`, `AmazonAPIGatewayAdministrator`, and the `IAMFullAccess` policy types to grant Claudia.js enough access.
 
 Now you can hit the _create group_ button which will redirect you back to the user creation page. There, you will need to make sure that _only_ your new group (e.g. `lambda-group`) is selected. Having checked that, click on _Next: Review_.
 
@@ -216,10 +216,143 @@ app.listen(8081, () => {
 With that in place, you can issue `node src/development-server.js` from the `backend` directory to start the Express app in your machine.
 
 ### Creating a new Auth0 Tenant for Production
+### Creating a new Auth0 Application
 ### Creating a new Auth0 API
 ### Extracting Environment Variables
+
+After creating the new Auth0 settings, you will need to replace the content of the `./backend/src/routes.js` file with this:
+
+```javascript
+const express = require('express');
+const MongoClient = require('mongodb').MongoClient;
+const auth0 = require('auth0');
+const jwt = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
+
+const router = express.Router();
+
+const { AUTH0_CLIENT_ID, AUTH0_DOMAIN, MONGODB_URL } = process.env;
+
+// retrieve latest micro-posts
+router.get('/', async (req, res) => {
+  const collection = await loadMicroPostsCollection();
+  res.send(
+    await collection.find({}).toArray()
+  );
+});
+
+const checkJwt = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://${AUTH0_DOMAIN}/.well-known/jwks.json`
+  }),
+
+  // Validate the audience and the issuer.
+  audience: 'https://micro-blog-app',
+  issuer: `https://${AUTH0_DOMAIN}/`,
+  algorithms: ['RS256']
+});
+
+// insert a new micro-post
+router.post('/', checkJwt, async (req, res) => {
+  const collection = await loadMicroPostsCollection();
+
+  const token = req.headers.authorization
+    .replace('bearer ', '')
+    .replace('Bearer ', '');
+
+  const authClient = new auth0.AuthenticationClient({
+    domain: AUTH0_DOMAIN,
+    clientId: AUTH0_CLIENT_ID,
+  });
+
+  authClient.getProfile(token, async (err, userInfo) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+
+    await collection.insertOne({
+      text: req.body.text,
+      createdAt: new Date(),
+      author: {
+        sub: userInfo.sub,
+        name: userInfo.name,
+        picture: userInfo.picture,
+      },
+    });
+
+    res.status(200).send();
+  });
+});
+
+async function loadMicroPostsCollection() {
+  const client = await MongoClient.connect(MONGODB_URL);
+  return client.db('micro-blog').collection('micro-posts');
+}
+
+module.exports = router;
+```
+
+If you take a close look to this file now, you will notice that its new version makes your code more configurable by extracting some hard-coded values into `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `MONGODB_URL`. From now on, these values will come from environment variables (`process.env`). As such, before executing the Express API locally again, you will have to set these three environment variables in your machine:
+
+```bash
+export AUTH0_CLIENT_ID=KsX...mBGPy
+export AUTH0_DOMAIN=bk-tmp.auth0.com
+export MONGODB_URL=mongodb://localhost:27017/
+
+node ./backend/src/development-server.js
+```
+
+> **Don't forget**: The values presented above are for illustration only, use your own values. Mainly for the `AUTH0_CLIENT_ID` and `AUTH0_DOMAIN` variables.
+
 ### Wrapping your Express App with an AWS Lambda Proxy
+
+```bash
+claudia generate-serverless-express-proxy --express-module app
+```
+
 ### Deploying your Express App to AWS Lambda
+
+```bash
+# define the profile Claudia.js will use
+export AWS_PROFILE=digituz
+
+# make Claudia.js create the AWS Lambda function for you
+claudia create --handler lambda.handler --deploy-proxy-api --region us-east-1
+```
+
+This will result in a response like this:
+
+```bash
+saving configuration
+{
+  "lambda": {
+    "role": "backend-executor",
+    "name": "backend",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "7kq5w1ilz2",
+    "url": "https://7kq5w1ilz2.execute-api.us-east-1.amazonaws.com/latest"
+  }
+}
+```
+
+Where you can grab the `url` of your Lambda function. If you are wondering what happened behind the scenes, the last step in the code snippet above ended up:
+
+- creating a role called `backend-executor` that has the `log-writer` policy attached to it (needed so your Lambda functions can write to CloudWatch);
+- creating the Lambda function (called `backend`) with your Express API code;
+- creating an API Gateway (also called `backend`) that does nothing besides proxying requests to the Lambda function;
+
+And that's it. You now have deployed your Express API to AWS Lambda with the help of Claudia.js. To test it, you can issue an HTTP GET request to it like so:
+
+```bash
+curl https://8qi5y1ils2.execute-api.us-east-1.amazonaws.com/latest/micro-posts
+```
+
+Just make sure you replace `8qi5y1ils2.execute-api.us-east-1.amazonaws.com` in the URL with the endpoint created by Claudia.js for you (you can find this info in the `url` property of the `api` object returned after invoking `claudia create`).
 
 ## Preparing your Vue.js App to AWS S3
 ### Creating a new Auth0 Client
