@@ -307,21 +307,40 @@ node ./backend/src/development-server.js
 
 > **Don't forget**: The values presented above are for illustration only, use your own values. Mainly for the `AUTH0_CLIENT_ID` and `AUTH0_DOMAIN` variables.
 
-### Wrapping your Express App with an AWS Lambda Proxy
+### Wrapping your Express API with an AWS Lambda Proxy
+
+After refactoring your Express API, you will use the `claudia` CLI tool to prepare a serverless proxy around it:
 
 ```bash
-claudia generate-serverless-express-proxy --express-module app
+# make sure you are on the backend directory
+cd backend
+
+# generate the proxy
+claudia generate-serverless-express-proxy --express-module src/index
 ```
+
+Running the code above will result in the creation of a file called `lambda.js`. This file will act as the connection point between your Express API and the AWS Lambda infrastructure. As such, you should commit this file to your Git repository (you are committing stuff to Git, right?).
 
 ### Deploying your Express App to AWS Lambda
 
+Now, to the most expected part of this section, the deployment of your Express API to AWS Lambda, you will have to define the `AWS_PROFILE` that Claudia.js will use. Then, you will have to define the `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `MONGODB_URL` variables with the settings for the production deployment (i.e. use the Auth0 properties of the new tenant you created for production and the URL provided by mLab) so you can call `create` on its CLI:
+
 ```bash
 # define the profile Claudia.js will use
-export AWS_PROFILE=digituz
+export AWS_PROFILE=auth0
+export AUTH0_CLIENT_ID=KsX...BGPy
+export AUTH0_DOMAIN=bk-tmp.auth0.com
+export MONGODB_URL=mongodb://micro-blog-db-user:357-DbPass@ds212391.mlab.com:21301/micro-blog
 
 # make Claudia.js create the AWS Lambda function for you
-claudia create --handler lambda.handler --deploy-proxy-api --region us-east-1
+claudia create \
+  --handler lambda.handler \
+  --deploy-proxy-api \
+  --region us-east-1 \
+  --set-env AUTH0_CLIENT_ID=$AUTH0_CLIENT_ID,AUTH0_DOMAIN=$AUTH0_DOMAIN,MONGODB_URL=$MONGODB_URL
 ```
+
+> **Note**: Replace the value set to `AWS_PROFILE` to the name of the profile you added to `~/.aws/credentials` before. Also, replace `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `MONGODB_URL` with your production settings. Besides that, you can choose an AWS region other than `us-east-1` to deploy your Lambda function.
 
 This will result in a response like this:
 
@@ -340,11 +359,13 @@ saving configuration
 }
 ```
 
-Where you can grab the `url` of your Lambda function. If you are wondering what happened behind the scenes, the last step in the code snippet above ended up:
+Here, you can grab the `url` of your new Lambda function.
+
+If you are wondering what happened behind the scenes, the last step in the code snippet above ended up:
 
 - creating a role called `backend-executor` that has the `log-writer` policy attached to it (needed so your Lambda functions can write to CloudWatch);
 - creating the Lambda function (called `backend`) with your Express API code;
-- creating an API Gateway (also called `backend`) that does nothing besides proxying requests to the Lambda function;
+- and creating an API Gateway (also called `backend`) that does nothing else besides proxying requests to the Lambda function;
 
 And that's it. You now have deployed your Express API to AWS Lambda with the help of Claudia.js. To test it, you can issue an HTTP GET request to it like so:
 
