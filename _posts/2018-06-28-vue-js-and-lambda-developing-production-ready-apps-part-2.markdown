@@ -122,17 +122,17 @@ Now, if you open [`http://localhost:8080`](http://localhost:8080) on a web brows
 
 ## AWS Lambda Overview
 
-As [AWS Lambda](https://aws.amazon.com/lambda/) is one of the most popular serverless solutions available, it probably doesn't need a thorough introduction. Nevertheless, even though you are going to use Claudia to abstract the usage of the AWS Lambda service, a basic understanding of how this solution works might come in handy.
+As [AWS Lambda](https://aws.amazon.com/lambda/) is one of the most popular serverless solutions available, it probably doesn't need a thorough introduction. Nevertheless, even though you are going to use Claudia.js to abstract the usage of the AWS Lambda service, a basic understanding of how this solution works might come in handy.
 
-On its own, AWS Lambda functions are not enough to handle HTTP requests originated from the Internet (and from your users' browsers when accessing the Vue.js application). If you were creating your serverless functions without the help of Claudia, you would have to use the [AWS API Gateway](https://aws.amazon.com/api-gateway/) solution along with Lambda. This would be needed because Lambda functions are raw functionalities that can be triggered by different clients (for example, from other resources at your AWS account, which wouldn't need the API Gateway).
+On its own, AWS Lambda functions are not enough to handle HTTP requests originated from the Internet (and from your users' browsers when accessing the Vue.js application). If you were creating your serverless functions without the help of Claudia.js, you would have to use the [AWS API Gateway](https://aws.amazon.com/api-gateway/) solution along with Lambda. This would be needed because Lambda functions are raw functionalities that can be triggered by different clients (for example, from other resources at your AWS account, which wouldn't need the API Gateway).
 
 As such, to make Lambda functions available to public clients like your Vue.js app, you would need to set up an API Gateway that would make the middle between both ends (Lambda and Vue.js, for example).
 
-This (extremely) short introduction about AWS Lambda and AWS API Gateway is not even close to provide a complete explanation on how these features can be used (nor it is the goal here). If you need more explanation around these topics, [you can refer to the official documentation available at AWS](https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started-with-lambda-integration.html) and, if you are wondering how cumbersome would be to remove Claudia from your setup, you can refer to [this nice blog post that shows how to use the AWS CLI to create everything manually](https://ig.nore.me/2016/03/setting-up-lambda-and-a-gateway-through-the-cli/).
+This (extremely) short introduction about AWS Lambda and AWS API Gateway is not even close to provide a complete explanation on how these features can be used (nor it is the goal here). If you need more explanation around these topics, [you can refer to the official documentation available at AWS](https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started-with-lambda-integration.html) and, if you are wondering how cumbersome would be to remove Claudia.js from your setup, you can refer to [this nice blog post that shows how to use the AWS CLI to create everything manually](https://ig.nore.me/2016/03/setting-up-lambda-and-a-gateway-through-the-cli/).
 
 ### Signing Up to AWS
 
-Now, to set up AWS Lambda functions and an API Gateway (both manually or with the help of Claudia), you will need an AWS account. If you don't have one yet, [you can open this page to create your account](https://portal.aws.amazon.com/billing/signup). As you can see there, new AWS accounts include 12 months of free tier access which, [as described here](https://aws.amazon.com/free/), grant you (among other things):
+Now, to set up AWS Lambda functions and an API Gateway (both manually or with the help of Claudia.js), you will need an AWS account. If you don't have one yet, [you can open this page to create your account](https://portal.aws.amazon.com/billing/signup). As you can see there, new AWS accounts include 12 months of free tier access which, [as described here](https://aws.amazon.com/free/), grant you (among other things):
 
 - _Amazon API Gateway_: 1 million API calls per month;
 - _AWS Lambda_: 1 million free requests per month;
@@ -153,8 +153,46 @@ The last thing you will need to do to use your MongoDB instance is to define a u
 
 That's it, you are now ready to start refactoring your project source code to deploy it to production.
 
-## Preparing the Express App for Claudia
-### Installing and Configuring Claudia
+## Preparing the Express App for Claudia.js
+
+Having both your AWS and mLab accounts properly created, you can start changing your code. In the subsections presented here, you will install some dependencies, refactor parts of your Express API, and deploy your API to AWS Lambda.
+
+### Installing Claudia.js
+
+The process of installing and configuring Claudia.js can be pretty simple. Basically, to prepare your environment and your project to integrate with Cluadia.js, you will need to:
+
+1. Install Claudia.js globally (you will need its CLI in a moment). This can be done by issuing `npm install claudia -g` in any terminal.
+2. Install Claudia.js as a project development dependency to the `backend` subproject. You can achieve this by issuing `npm install claudia -D` on a terminal pointing to the `backend` directory.
+3. Create an AWS profile and configure it locally so Claudia.js can deploy the project for you.
+
+To create an AWS profile, go to the [_Users_ section of your _IAM Management Console_](https://console.aws.amazon.com/iam/home#/users) and click on _add user_. Then, you can configure your new user as follows:
+
+- _User name_: Just enter something meaningful like `claudiajs-manager`.
+- _Access type_: Check only the _programmatic access_ option as you won't use this user to log into the AWS console.
+
+After that, click on the _next (permissions)_ button and click on the _create group_ button. You will need a new group to restrict access to what the Claudia.js user needs (i.e. the `AWSLambdaFullAccess` policy type). So, on the page that creates groups, configure the new one as follows:
+
+- For the _Group name_, input something meaningful like `lambda-group`.
+- Then, check the `AWSLambdaFullAccess` policy type to grant Claudia.js enough access.
+
+Now you can hit the _create group_ button which will redirect you back to the user creation page. There, you will need to make sure that _only_ your new group (e.g. `lambda-group`) is selected. Having checked that, click on _Next: Review_.
+
+On the next step, as shown in the next screenshot, you will see a page where you will have access to both the access and the secret access keys. Leave this page open so you can copy both keys.
+
+![AWS access key and secret access key strings.](https://cdn.auth0.com/blog/vuejs-lambda-part-2/aws-user-credentials.png)
+
+The last thing you will need to do is to head back to the terminal, move into your home directory (`~/`) and update the `.aws/credentials` file to include both keys (you might actually need to create the `.aws` directory and the `credentials` file inside it):
+
+```bash
+[auth0]
+aws_access_key_id = AKIR...WDNA
+aws_secret_access_key = kuNgBlgz...xsBl
+```
+
+Make sure you replace `AKIR...WDNA` and `kuNgBlgz...xsBl` with your own credentials and that you replace `auth0` with a meaningful profile name.
+
+In case you need more info about this topic, [you can check the official Claudia.js docs](https://claudiajs.com/tutorials/installing.html#configuring-access-credentials) or you can [get in touch in the comments section down here](#disqus_thread).
+
 ### Refactoring your Index Express File
 ### Creating a new Auth0 Tenant for Production
 ### Creating a new Auth0 API

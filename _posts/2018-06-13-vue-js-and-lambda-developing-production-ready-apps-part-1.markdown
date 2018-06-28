@@ -45,7 +45,7 @@ In this series, you will have the opportunity to see this great framework in act
 
 [AWS Lambda](https://aws.amazon.com/lambda/) is a serverless computer platform, provided by Amazon, that allows developers to run their code without having to spend too much time thinking about the servers needed to run it. Although the main idea of using a serverless platform is to facilitate the deployment process and the scalability of applications, AWS Lambda is not easy for newcomers. In fact, AWS Lambda on its own is not enough to run Rest APIs like the one you will need for your micro-blog engine. Besides this AWS service, you will also need to use [AWS API Gateway](https://aws.amazon.com/api-gateway/) to define how external services (or, in this case, a Vue.js client) can communicate with your serverless backend app. This last piece is exactly what makes AWS Lambda not straightforward.
 
-So, to avoid wasting your time with the intricacies of AWS API Gateway and AWS Lambda, you will take advantage of an open-source tool called [Claudia](https://claudiajs.com/). The goal of this tool is to enable you to deploy your Node.js projects to AWS Lambda and API Gateway easily.
+So, to avoid wasting your time with the intricacies of AWS API Gateway and AWS Lambda, you will take advantage of an open-source tool called [Claudia.js](https://claudiajs.com/). The goal of this tool is to enable you to deploy your Node.js projects to AWS Lambda and API Gateway easily.
 
 ### Express
 
@@ -988,6 +988,6 @@ git cm 'vue.js and express fully integrated with auth0'
 
 In the first part of this series, you have created a Vue.js application to work as the user interface of a micro-blog engine. You have also created an Express API to persists micro-posts in a MongoDB instance. Besides that, you have installed and configured Auth0 on both your frontend and backend applications to take advantage of a modern identity management system. With this, you have finished developing the first version of your micro-blog engine and you are ready to move it to production.
 
-So, [in the next part of this series](https://auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps-part-2/), you will prepare your source code to deploy your backend API to AWS Lambda and your frontend Vue.js app to an AWS S3 bucket. Then, you will use [Claudia, a tool that facilitates AWS Lambda management](https://claudiajs.com/), to make your backend code live and will use the AWS CLI (Command Line Interface) tool to push your Vue.js app to AWS S3.
+So, [in the next part of this series](https://auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps-part-2/), you will prepare your source code to deploy your backend API to AWS Lambda and your frontend Vue.js app to an AWS S3 bucket. Then, you will use [Claudia.js, a tool that facilitates AWS Lambda management](https://claudiajs.com/), to make your backend code live and will use the AWS CLI (Command Line Interface) tool to push your Vue.js app to AWS S3.
 
 I hope you enjoy the process. Stay tuned!
