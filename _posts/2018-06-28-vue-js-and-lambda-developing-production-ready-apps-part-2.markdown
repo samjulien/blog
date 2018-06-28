@@ -181,7 +181,7 @@ On the next step, as shown in the next screenshot, you will see a page where you
 
 ![AWS access key and secret access key strings.](https://cdn.auth0.com/blog/vuejs-lambda-part-2/aws-user-credentials.png)
 
-The last thing you will need to do is to head back to the terminal, move into your home directory (`~/`) and update the `.aws/credentials` file to include both keys (you might actually need to create the `.aws` directory and the `credentials` file inside it):
+The last things you will need to do is to head back to the terminal, move into your home directory (`~/`), and update the `.aws/credentials` file to include both keys (you might actually need to create the `.aws` directory and the `credentials` file inside it):
 
 ```bash
 [auth0]
@@ -189,7 +189,7 @@ aws_access_key_id = AKIR...WDNA
 aws_secret_access_key = kuNgBlgz...xsBl
 ```
 
-Make sure you replace `AKIR...WDNA` and `kuNgBlgz...xsBl` with your own credentials and that you replace `auth0` with a meaningful profile name.
+Just make sure you replace `AKIR...WDNA` and `kuNgBlgz...xsBl` with your own credentials and that you replace `auth0` with a meaningful profile name.
 
 In case you need more info about this topic, [you can check the official Claudia.js docs](https://claudiajs.com/tutorials/installing.html#configuring-access-credentials) or you can [get in touch in the comments section down here](#disqus_thread).
 
