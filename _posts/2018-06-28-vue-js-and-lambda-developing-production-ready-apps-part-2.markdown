@@ -191,7 +191,7 @@ aws_secret_access_key = kuNgBlgz...xsBl
 
 Just make sure you replace `AKIR...WDNA` and `kuNgBlgz...xsBl` with your own credentials and that you replace `auth0` with a meaningful profile name.
 
-In case you need more info about this topic, [you can check the official Claudia.js docs](https://claudiajs.com/tutorials/installing.html#configuring-access-credentials) or you can [get in touch in the comments section down here](#disqus_thread).
+In case you need more info about this topic, [you can check the official Claudia.js docs](https://claudiajs.com/tutorials/installing.html#configuring-access-credentials) or you can get in touch in the comments section down here.
 
 ### Refactoring your Index Express File
 
