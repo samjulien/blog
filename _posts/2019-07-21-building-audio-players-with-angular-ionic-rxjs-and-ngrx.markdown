@@ -144,19 +144,21 @@ After installing your app's dependencies, you can start working on the playback 
 
 ### Creating an RxJS Observable
 
-The Observable that you are going to create is the central piece of your application. RxJS comes with a helper function named `create` to help you create custom observables.
+The Observable that you are going to create is the central piece of your application. RxJS comes with a helper function named `create` to help you create custom observables. It takes `subscribe` function as an input.
 
 ```typescript
-Observable.create(observer);
+Observable.create(subscribe): Observable<any>;
 ```
 
-This function takes an `observer` object and returns a function. Observer objects provide three methods: `next`, `error`, and `complete`.
+This `subscribe` function takes an `observer` object and returns a function. Observer objects provide three methods: `next`, `error`, and `complete`.
 
 1.  To emit a value, you can call the `observer.next` method with the desired value.
 2.  In case of an error, you can use the `observer.error` function to throw the error and make the observable stop.
 3.  If you no longer need the observer and there are no more values to emit, you can call the `observer.complete` method.
 
-Also, calling `Observable.create` will return a function that you can call when you want to unsubscribe from the observable.
+Also, calling `Observable.create` will return an `Observable` to which you can subscribe via the `subscribe` method. This method returns a function that you can call when you want to unsubscribe from the observable.
+
+> Don't be confused with `Observable.create(subscribe)` and `Observable.subscribe()`. Former `subscribe` function is an input to `Observable.create`, which is sort of like blueprint of an observable, and latter is the one which invokes the execution of an observable.
 
 In your audio player app, you are going to create an observable to get notifications about media events like `playing`, `pause`, `timeupdate`, and so on. So, basically, you will listen to the media event's of `Audio()` inside the observable and then notify the rest of the app via the `observer.next` method.
 
