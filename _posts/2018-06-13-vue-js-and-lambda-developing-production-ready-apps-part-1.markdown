@@ -418,23 +418,23 @@ npm i axios
 After installing this library, you can wrap your head around the `HelloWorld` component (this is the first component your users will see when they access your application). In this component, you will use the newly created service to show micro-posts to all users. So, open the `HelloWorld.vue` file and replace the contents of the `<script>` tag with the following:
 
 ```js
-import MicroPostService from '../MicroPostsService';
+import MicroPostService from '../MicroPostsService'
 
 export default {
   name: 'HelloWorld',
   data () {
     return {
       microPosts: [],
-      error: '',
+      error: ''
     };
   },
   async created () {
     try {
-      this.microPosts = await MicroPostService.getMicroPosts();
+      this.microPosts = await MicroPostService.getMicroPosts()
     } catch (error) {
-      this.error = error.message;
+      this.error = error.message
     }
-  },
+  }
 }
 ```
 
@@ -588,14 +588,14 @@ With this package in place, you will create a new component (which you will call
 {% highlight html %}
 {% raw %}
 <script>
-import * as Auth0 from 'auth0-web';
+import * as Auth0 from 'auth0-web'
 
 export default {
   name: 'Callback',
   created () {
     Auth0.handleAuthCallback(() => {
-      this.$router.push('/');
-    });
+      this.$router.push('/')
+    })
   }
 }
 </script>
@@ -629,7 +629,7 @@ Then, after creating the `Callback` component, you will add buttons to your app 
 {% highlight html %}
 {% raw %}
 <script>
-import * as Auth0 from 'auth0-web';
+import * as Auth0 from 'auth0-web'
 
 export default {
   name: 'App',
@@ -640,8 +640,8 @@ export default {
       audience: '<AN-AUTH0-AUDIENCE>',
       redirectUri: 'http://localhost:8080/#/callback',
       responseType: 'token id_token',
-      scope: 'openid profile',
-    });
+      scope: 'openid profile'
+    })
   }
 }
 </script>
@@ -684,8 +684,8 @@ The new version of the template adds buttons to allow users to sign in and sign 
 {% highlight html %}
 {% raw %}
 <script>
-import * as Auth0 from 'auth0-web';
-import MicroPostService from '../MicroPostsService';
+import * as Auth0 from 'auth0-web'
+import MicroPostService from '../MicroPostsService'
 
 export default {
   name: 'HelloWorld',
@@ -694,16 +694,16 @@ export default {
       microPosts: [],
       error: '',
       profile: null
-    };
+    }
   },
   async created () {
     try {
-      this.microPosts = await MicroPostService.getMicroPosts();
+      this.microPosts = await MicroPostService.getMicroPosts()
       Auth0.subscribe(() => {
-        this.profile = Auth0.getProfile();
+        this.profile = Auth0.getProfile()
       })
     } catch (error) {
-      this.error = error.message;
+      this.error = error.message
     }
   },
   methods: {
@@ -711,8 +711,8 @@ export default {
     signOut () {
       Auth0.signOut({
         clientID: '<AN-AUTH0-CLIENT-ID>',
-        returnTo: 'http://localhost:8080/',
-      });
+        returnTo: 'http://localhost:8080/'
+      })
     }
   }
 }
@@ -729,12 +729,12 @@ Also, you made this component subscribe as a listener (by using the `Auth0.subsc
 The last missing piece to have a Vue.js application properly integrated with Auth0 is to register the `Callback` component as the responsible for the `/callback` route. To achieve this, open the `index.js` file that resides in the `./client/src/router/` directory and replace its contents with this:
 
 ```javascript
-import Vue from 'vue';
-import Router from 'vue-router';
-import HelloWorld from '@/components/HelloWorld';
-import Callback from '@/components/Callback';
+import Vue from 'vue'
+import Router from 'vue-router'
+import HelloWorld from '@/components/HelloWorld'
+import Callback from '@/components/Callback'
 
-Vue.use(Router);
+Vue.use(Router)
 
 export default new Router({
   mode: 'history',
@@ -742,15 +742,15 @@ export default new Router({
     {
       path: '/',
       name: 'HelloWorld',
-      component: HelloWorld,
+      component: HelloWorld
     },
     {
       path: '/callback',
       name: 'Callback',
-      component: Callback,
+      component: Callback
     }
-  ],
-});
+  ]
+})
 ```
 
 > **Note** The `mode: 'history'` property is needed because, without it, your Vue.js app won't be able to properly handle the hash present in the callback URL.
@@ -772,7 +772,7 @@ For that, the first thing you will do is to create a new file called `ShareThoug
 {% highlight html %}
 {% raw %}
 <script>
-import MicroPostsService from '../MicroPostsService';
+import MicroPostsService from '../MicroPostsService'
 
 export default {
   name: 'ShareThoughts',
@@ -783,10 +783,10 @@ export default {
   },
   methods: {
     async shareThouths () {
-      await MicroPostsService.insertMicroPost(this.text);
-      this.$router.push('/');
+      await MicroPostsService.insertMicroPost(this.text)
+      this.$router.push('/')
     }
-  },
+  }
 }
 </script>
 {% endraw %}
@@ -798,10 +798,10 @@ To make this new component available in your app, you need to register it under 
 
 ```js
 // ... other import statements ...
-import ShareThoughts from '@/components/ShareThoughts';
-import * as Auth0 from 'auth0-web';
+import ShareThoughts from '@/components/ShareThoughts'
+import * as Auth0 from 'auth0-web'
 
-Vue.use(Router);
+Vue.use(Router)
 
 export default new Router({
   mode: 'history',
@@ -813,10 +813,10 @@ export default new Router({
       component: ShareThoughts,
       beforeEnter: (to, from, next) => {
         if (Auth0.isAuthenticated()) {
-          return next();
+          return next()
         }
-        this.$router.push('/');
-      },
+        this.$router.push('/')
+      }
     }
   ]
 })
@@ -920,7 +920,7 @@ Back to the code, you will need to perform two changes in your Vue.js app. First
 
 ```js
 // ... import axios ...
-import * as Auth0 from 'auth0-web';
+import * as Auth0 from 'auth0-web'
 
 // ... const url ...
 
