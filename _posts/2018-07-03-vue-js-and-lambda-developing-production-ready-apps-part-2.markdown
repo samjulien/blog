@@ -122,11 +122,11 @@ Now, if you open [`http://localhost:8080`](http://localhost:8080) on a web brows
 
 ## AWS Lambda Overview
 
-As [AWS Lambda](https://aws.amazon.com/lambda/) is one of the most popular serverless solutions available, it probably doesn't need a thorough introduction. Nevertheless, even though you are going to use Claudia.js to abstract the usage of the AWS Lambda service, a basic understanding of how this solution works might come in handy.
+As [AWS Lambda](https://aws.amazon.com/lambda/) is one of the most popular serverless solutions available, it probably doesn't need a thorough introduction. Nevertheless, even though you are going to use Claudia.js to abstract the usage of the AWS Lambda service, a basic understanding about how this solution works might come in handy.
 
 On its own, AWS Lambda functions are not enough to handle HTTP requests originated from the Internet (and from your users' browsers when accessing the Vue.js application). If you were creating your serverless functions without the help of Claudia.js, you would have to use the [AWS API Gateway](https://aws.amazon.com/api-gateway/) solution along with Lambda. This would be needed because Lambda functions are raw functionalities that can be triggered by different clients (for example, from other resources at your AWS account, which wouldn't need the API Gateway).
 
-As such, to make Lambda functions available to public clients like your Vue.js app, you would need to set up an API Gateway that would make the middle between both ends (Lambda and Vue.js, for example).
+As such, to make Lambda functions available to public clients (like your Vue.js app), you would need to set up an API Gateway that would integrate both ends (Lambda and Vue.js, for example).
 
 This (extremely) short introduction about AWS Lambda and AWS API Gateway is not even close to provide a complete explanation on how these features can be used (nor it is the goal here). If you need more explanation around these topics, [you can refer to the official documentation available at AWS](https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started-with-lambda-integration.html) and, if you are wondering how cumbersome would be to remove Claudia.js from your setup, you can refer to [this nice blog post that shows how to use the AWS CLI to create everything manually](https://ig.nore.me/2016/03/setting-up-lambda-and-a-gateway-through-the-cli/).
 
@@ -147,9 +147,9 @@ After signing up to AWS, the next service that you will need to sign up to is [m
 
 After signing up to mLab, you can head to [their dashboard and click on the _Create New_ button](https://mlab.com/create/wizard). Then, you will have to choose a cloud provider (as you will use this instance with AWS Lambda functions, it might make sense to choose _Amazon Web Services_ here) and a _Plan Type_. For the last option, _sandbox_ (the free plan) will be more than enough.
 
-Now, you can click on _Continue_ and choose a region for your deployment. Choose some region geographically close to yourself. Then, when you click on _Continue_, mLab will require you to choose a database name. Here, you can set something like `micro-blog` and click on _Continue_. After this, mLab will present the details of your instance where, if everything is looking good, you will be able to finish the process by clicking on the _Submit Order_ button.
+Now, you can click on _Continue_ and choose a region for your deployment. Choose some region geographically close to yourself. Then, when you click on _Continue_ again, mLab will require you to choose a database name. Here, you can set something like `micro-blog` and click on _Continue_ one more time. After this, mLab will present the details of your instance where, if everything is looking good, you will be able to finish the process by clicking on the _Submit Order_ button.
 
-The last thing you will need to do to use your MongoDB instance is to define a user and password for your connections. So, [click on your instance](https://mlab.com/databases/micro-blog) and choose the _Users_ tab. There, you can click on the _Add Database User_ button and fill the form with the details of your new user (e.g. `micro-blog-db-user` as the username and `357-DbPass`as the password).
+The last thing you will need to do to use your MongoDB instance is to define a user and password for your connections. So, [click on your instance](https://mlab.com/databases/micro-blog) and choose the _Users_ tab. There, you can click on the _Add Database User_ button and fill the form with the details of your new user (e.g. `micro-blog-db-user` as the username and `963-DbP4ss`as the password).
 
 That's it, you are now ready to start refactoring your project source code to deploy it to production. Just leave this page open for further reference (you will need to copy the connection string from here).
 
@@ -170,7 +170,7 @@ To create an AWS profile, go to the [_Users_ section of your _IAM Management Con
 - _User name_: Just enter something meaningful like `claudiajs-manager`.
 - _Access type_: Check only the _programmatic access_ option as you won't use this user to log into the AWS console.
 
-After that, click on the _next (permissions)_ button and click on the _create group_ button. You will need a new group to restrict access to what the Claudia.js user needs (i.e. the `AWSLambdaFullAccess` policy type). So, on the page that creates groups, configure the new one as follows:
+After that, click on the _next (permissions)_ button and click on the _create group_ button. You will need a new group to restrict access to what the Claudia.js user needs (i.e. the policy types). So, on the page that creates groups, configure the new one as follows:
 
 - For the _Group name_, input something meaningful like `lambda-group`.
 - Then, check the `AWSLambdaFullAccess`, `AmazonAPIGatewayAdministrator`, and the `IAMFullAccess` policy types to grant Claudia.js enough access.
@@ -191,7 +191,7 @@ aws_secret_access_key = kuNgBlgz...xsBl
 
 Just make sure you replace `AKIR...WDNA` and `kuNgBlgz...xsBl` with your own credentials and that you replace `auth0` with a meaningful profile name.
 
-In case you need more info about this topic, [you can check the official Claudia.js docs](https://claudiajs.com/tutorials/installing.html#configuring-access-credentials) or you can get in touch in the comments section down here.
+In case you need more info about this topic, [you can check the official Claudia.js docs](https://claudiajs.com/tutorials/installing.html#configuring-access-credentials) or you can get in touch in the comments section down below.
 
 ### Refactoring your Index Express File
 
@@ -217,7 +217,7 @@ With that in place, you can issue `node src/development-server.js` from the `bac
 
 ### Creating a new Auth0 Tenant for Production
 
-As you don't want to mix development users with real users (that is, users of the production version of your app), you will need to create a new Auth0 tenant for prodution. Therefore, open [the Auth0 dashboard in your browser](https://manage.auth0.com/) and click in your picture in the upper-right corner. There, you will find an option called _Create Tenant_. Click on this option, enter a new tenant subdomain (e.g. `micro-blog-prod`), and click on the _Create_ button.
+As you don't want to mix development users with real users (that is, users of the production version of your app), you will need to create a new Auth0 tenant for production. Therefore, open [the Auth0 dashboard in your browser](https://manage.auth0.com/) and click in your picture in the upper-right corner. There, you will find an option called _Create Tenant_. Click on this option, enter a new tenant subdomain (e.g. `micro-blog-prod`), and click on the _Create_ button.
 
 ![Creating a new Auth0 tenant](https://cdn.auth0.com/blog/vuejs-lambda-part2/new-auth0-tenant.png)
 
@@ -309,7 +309,7 @@ async function loadMicroPostsCollection() {
 module.exports = router;
 ```
 
-If you take a close look to this file now, you will notice that its new version makes your code more configurable by extracting some hard-coded values into `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `MONGODB_URL`. From now on, these values will come from environment variables (`process.env`). As such, before executing the Express API locally again, you will have to set these three environment variables in your machine:
+If you take a close look to this file, you will notice that its new version makes your code more configurable by extracting some hard-coded values into `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `MONGODB_URL`. From now on, these values will come from environment variables (i.e. from the `process.env` object). As such, before executing the Express API locally again, you will have to set these three environment variables in your machine:
 
 ```bash
 export AUTH0_CLIENT_ID=KsX...mBGPy
@@ -337,14 +337,14 @@ Running the code above will result in the creation of a file called `lambda.js`.
 
 ### Deploying your Express App to AWS Lambda
 
-Now, to the most expected part of this section, the deployment of your Express API to AWS Lambda, you will have to define the `AWS_PROFILE` that Claudia.js will use. Then, you will have to define the `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `MONGODB_URL` variables with the settings for the production deployment (i.e. use the Auth0 properties of the new tenant you created for production and the URL provided by mLab) so you can call `create` on its CLI:
+Now, on the most expected part of this section, the deployment of your Express API to AWS Lambda, you will have to define the `AWS_PROFILE` that Claudia.js will use. Then, you will have to define the `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `MONGODB_URL` variables with the settings for the production deployment (i.e. use the Auth0 properties of the new tenant you created for production and the URL provided by mLab) so you can call `create` on its CLI:
 
 ```bash
 # define the profile Claudia.js will use
 export AWS_PROFILE=auth0
 export AUTH0_CLIENT_ID=KsX...BGPy
 export AUTH0_DOMAIN=bk-tmp.auth0.com
-export MONGODB_URL=mongodb://micro-blog-db-user:357-DbPass@ds212391.mlab.com:21301/micro-blog
+export MONGODB_URL=mongodb://micro-blog-db-user:963-DbP4ss@ds212391.mlab.com:21301/micro-blog
 
 # make Claudia.js create the AWS Lambda function for you
 claudia create \
@@ -354,7 +354,7 @@ claudia create \
   --set-env AUTH0_CLIENT_ID=$AUTH0_CLIENT_ID,AUTH0_DOMAIN=$AUTH0_DOMAIN,MONGODB_URL=$MONGODB_URL
 ```
 
-> **Note**: Replace the value set to `AWS_PROFILE` to the name of the profile you added to `~/.aws/credentials` before. Also, replace `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `MONGODB_URL` with your production settings. Besides that, you can choose an AWS region other than `us-east-1` to deploy your Lambda function.
+> **Note**: Replace the value set to `AWS_PROFILE` with the name of the profile you added to `~/.aws/credentials` before. Also, replace `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `MONGODB_URL` with your production settings. Besides that, you can choose an AWS region other than `us-east-1` to deploy your Lambda function.
 
 This will result in a response like this:
 
@@ -377,9 +377,9 @@ Here, you can grab the `url` of your new Lambda function.
 
 If you are wondering what happened behind the scenes, the last step in the code snippet above ended up:
 
-- creating a role called `backend-executor` that has the `log-writer` policy attached to it (needed so your Lambda functions can write to CloudWatch);
-- creating the Lambda function (called `backend`) with your Express API code;
-- and creating an API Gateway (also called `backend`) that does nothing else besides proxying requests to the Lambda function;
+- creating a role called `backend-executor` that has the `log-writer` policy attached to it (needed so your Lambda functions can write logs to CloudWatch);
+- creating a Lambda function called `backend` with your Express API code;
+- and creating an API Gateway (also called `backend`) that does nothing else besides proxying requests to your Lambda function;
 
 And that's it. You now have deployed your Express API to AWS Lambda with the help of Claudia.js. To test it, you can issue an HTTP GET request to it like so:
 
@@ -389,7 +389,7 @@ curl https://8qi5y1ils2.execute-api.us-east-1.amazonaws.com/latest/micro-posts
 
 Not hard, right?
 
-> Just make sure you replace `8qi5y1ils2.execute-api.us-east-1.amazonaws.com` in the URL with the endpoint created by Claudia.js for you (you can find this info in the `url` property of the `api` object returned after invoking `claudia create`).
+> Just make sure you replace `8qi5y1ils2.execute-api.us-east-1.amazonaws.com` in the URL with the endpoint created by Claudia.js (you can find this info in the `url` property of the `api` object returned after invoking `claudia create`).
 
 ## Preparing your Vue.js App to AWS S3
 
@@ -406,7 +406,7 @@ Then, after clicking on the _Create_ button, open the _Settings_ section of your
 There are only 5 variables that you need to extract from your source code:
 
 - the `url` constant that refers to the backend API (for production this will be your AWS Lambda URL);
-- and the `domain`, `clientID`, `returnTo`, and `redirectUri` variables related to your Auth0 configurations.
+- and the `domain`, `clientID`, `returnTo`, and `redirectUri` variables related to your Auth0 configuration.
 
 To start this extraction, open the `./config/dev.env.js` file of the `client` project and add these variables to the object passed to `merge`:
 
@@ -447,7 +447,7 @@ module.exports = {
 
 > **Note**: Replace the values entered for `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `BACKEND_URL` with the values available in your production Auth0 Application. Also, don't mind about the empty `APP_URL` constant in the last snippet, you will change it in a while.
 
-With both config files (`prod` and `dev`) properly updated, you will need to update three files: `App.vue`, `HelloWorld.vue`, and `MicroPostsService.js`. To start with the service that makes the bridge between the Vue.js app and the AWS Lambda function, open the `./client/src/MicroPostsService.js` file and replace the `url`constant definition with this:
+With both config files (`prod` and `dev`) properly updated, you will need to update three files: `App.vue`, `HelloWorld.vue`, and `MicroPostsService.js`. To start, you can open the `./client/src/MicroPostsService.js` file and replace the `url`constant definition with this:
 
 ```javascript
 // ... import statements ...
@@ -544,11 +544,13 @@ This will generate a new directory called `dist` with all the code you need to r
 
 Then, you will have to click on _Next_ and, on the _set permissions_ section, you will have to choose the _Grant public read access to this object(s)_ option for the _Manage public permissions_ field. After that, you can click _next_ twice so you reach the _Review_ section. On this last section, click on upload and wait until AWS finishes uploading your files.
 
+![Vue.js files uploaded to AWS S3.](https://cdn.auth0.com/blog/vuejs-lambda-part-2/aws-s3-bucket-with-vuejs-files.png)
+
 Now, if you open the URL created for your AWS S3 bucket on a browser, you will see your Vue.js app up, running, and consuming your AWS Lambda function.
 
 ![Vue.js app running on an AWS S3 bucket.](https://cdn.auth0.com/blog/vuejs-lambda-part-2/running-vuejs-on-aws-s3.png)
 
-Then, to wrap up, you will need to update the _Allowed Callback URLs_ and the _Allowed Logout URLs_ fields of your production Auth0 application to support your new URL. That is, if the URL of the AWS S3 bucket is `http://vuejs-micro-blog.s3-website-us-east-1.amazonaws.com/` you will have to:
+Then, to wrap up, you will need to update the _Allowed Callback URLs_ and the _Allowed Logout URLs_ fields of your production Auth0 Application to support your new URL. That is, if the URL of your AWS S3 bucket is `http://vuejs-micro-blog.s3-website-us-east-1.amazonaws.com/`, you will have to:
 
 - Insert `http://vuejs-micro-blog.s3-website-us-east-1.amazonaws.com/callback` in the _Allowed Callback URLs_ field;
 - Insert `http://vuejs-micro-blog.s3-website-us-east-1.amazonaws.com` in the _Allowed Logout URLs_ field.
