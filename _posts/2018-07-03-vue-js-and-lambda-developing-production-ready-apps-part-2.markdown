@@ -32,6 +32,8 @@ The second part (this one) will show you how to prepare your app for showtime. Y
 
 If interested, [you can find the final code developed in this part in this GitHub repository](https://github.com/auth0-blog/vue-js-lambda-part-2).
 
+{% include tweet_quote.html quote_text="Learn how to deploy Express APIs to AWS Lambda and to deploy @vuejs apps to AWS S3 for production-ready apps." %}
+
 ## Before Starting
 
 Before you can start following the instructions presented in this article, you will need to make sure you have a version of the app running on your local machine. If you already followed [the instructions described in the previous article](https://auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps-part-1/) and already have the app running locally, you can jump this section. Otherwise, you can opt to ignore the previous article and take the shortcut described in the following subsections.
@@ -391,6 +393,8 @@ Not hard, right?
 
 > Just make sure you replace `8qi5y1ils2.execute-api.us-east-1.amazonaws.com` in the URL with the endpoint created by Claudia.js (you can find this info in the `url` property of the `api` object returned after invoking `claudia create`).
 
+{% include tweet_quote.html quote_text="Using Claudia.js to deploy Express APIs to AWS Lambda is super easy!" %}
+
 ## Preparing your Vue.js App to AWS S3
 
 As you will see, the process of preparing your frontend app for AWS S3 will be easier than preparing the backend to AWS Lambda. Here, you will start by creating the production Auth0 Application. Then, you will extract some hard-coded values into environment variables. After that, you will create an AWS S3 bucket where you will deploy the Vue.js app.
@@ -556,6 +560,8 @@ Then, to wrap up, you will need to update the _Allowed Callback URLs_ and the _A
 - Insert `http://vuejs-micro-blog.s3-website-us-east-1.amazonaws.com` in the _Allowed Logout URLs_ field.
 
 After that, you will have finished deploying both your Vue.js app to AWS S3 and your Express API to an AWS Lambda function. Congratulations!
+
+{% include tweet_quote.html quote_text="Deploying @vuejs apps to AWS S3 is really simple." %}
 
 ## Conclusion and Next Steps
 
