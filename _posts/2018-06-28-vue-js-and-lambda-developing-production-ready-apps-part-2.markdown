@@ -396,6 +396,11 @@ Not hard, right?
 As you will see, the process of preparing your frontend app for AWS S3 will be easier than preparing the backend to AWS Lambda. Here, you will start by creating the production Auth0 Application. Then, you will extract some hard-coded values into environment variables. After that, you will create an AWS S3 bucket where you will deploy the Vue.js app.
 
 ### Creating a new Auth0 Application
+
+Besides recreating the Auth0 API for production, you will also need a new Auth0 Application. So, [go to the _Applications_ section of the Auth0 dashboard](https://manage.auth0.com/#/applications) and click on _Create Application_. On the form shown, enter a meaningful name for you application (e.g. "Micro-Blog Engine") and choose the _Single Page Web Applications_ type for it.
+
+Then, after clicking on the _Create_ button, open the _Settings_ section of your new Auth0 Application and leave this page open. You will copy the _Domain_ and _Client ID_ properties from there soon.
+
 ### Extracting Environment Variables
 
 There are only 5 variables that you need to extract from your source code:
