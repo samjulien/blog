@@ -537,4 +537,8 @@ After that, you will have finished deploying both your Vue.js app to AWS S3 and 
 
 ## Conclusion and Next Steps
 
+In this part of the series, you learned about how Claudia.js can help you deploy Express APIs as AWS Lambda functions. You also learned how to extract environment variables from both your `backend` and `client` subprojects to make them ready for production. And, in the end, you created an AWS S3 bucket with static website hosting capabilities so you could upload your Vue.js app to it.
 
+With this, you have a production-ready application built with Vue.js and Express that is deployed to AWS Lambda and to AWS S3.
+
+For a next opportunity, you will learn how to automate the deployment process of these apps to make your development lifecycle faster. Stay tuned!
