@@ -34,7 +34,7 @@ If interested, [you can find the final code developed in this part in this GitHu
 
 ## Before Starting
 
-Before you can start following the instructions presented in this article, you will need to make sure you have a version of the app running in your local machine. If you already followed [the instructions described in the previous article](https://auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps-part-1/) and already have the app running locally, you can jump this section. Otherwise, you can opt to ignore the previous article and take the shortcut described in the following subsections.
+Before you can start following the instructions presented in this article, you will need to make sure you have a version of the app running on your local machine. If you already followed [the instructions described in the previous article](https://auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps-part-1/) and already have the app running locally, you can jump this section. Otherwise, you can opt to ignore the previous article and take the shortcut described in the following subsections.
 
 ### Configure an Auth0 Application and an Auth0 API
 
@@ -124,7 +124,7 @@ Now, if you open [`http://localhost:8080`](http://localhost:8080) on a web brows
 
 As [AWS Lambda](https://aws.amazon.com/lambda/) is one of the most popular serverless solutions available, it probably doesn't need a thorough introduction. Nevertheless, even though you are going to use Claudia.js to abstract the usage of the AWS Lambda service, a basic understanding about how this solution works might come in handy.
 
-On its own, AWS Lambda functions are not enough to handle HTTP requests originated from the Internet (and from your users' browsers when accessing the Vue.js application). If you were creating your serverless functions without the help of Claudia.js, you would have to use the [AWS API Gateway](https://aws.amazon.com/api-gateway/) solution along with Lambda. This would be needed because Lambda functions are raw functionalities that can be triggered by different clients (for example, from other resources at your AWS account, which wouldn't need the API Gateway).
+On its own, AWS Lambda functions are not enough to handle HTTP requests originating from the Internet (and from your users' browsers when accessing the Vue.js application). If you were creating your serverless functions without the help of Claudia.js, you would have to use the [AWS API Gateway](https://aws.amazon.com/api-gateway/) solution along with Lambda. This would be needed because Lambda functions are raw functionalities that can be triggered by different clients (for example, from other resources at your AWS account, which wouldn't need the API Gateway).
 
 As such, to make Lambda functions available to public clients (like your Vue.js app), you would need to set up an API Gateway that would integrate both ends (Lambda and Vue.js, for example).
 
@@ -162,7 +162,7 @@ Having both your AWS and mLab accounts properly created, you can start changing 
 The process of installing and configuring Claudia.js can be pretty simple. Basically, to prepare your environment and your project to integrate with Cluadia.js, you will need to:
 
 1. Install Claudia.js globally (you will need its CLI in a moment). This can be done by issuing `npm install claudia -g` in any terminal.
-2. Install Claudia.js as a project development dependency to the `backend` subproject. You can achieve this by issuing `npm install claudia -D` on a terminal pointing to the `backend` directory.
+2. Install Claudia.js as a project development dependency on the `backend` subproject. You can achieve this by issuing `npm install claudia -D` on a terminal pointing to the `backend` directory.
 3. Create an AWS profile and configure it locally so Claudia.js can deploy the project for you.
 
 To create an AWS profile, go to the [_Users_ section of your _IAM Management Console_](https://console.aws.amazon.com/iam/home#/users) and click on _add user_. Then, you can configure your new user as follows:
@@ -203,7 +203,7 @@ To use your Express API with AWS Lambda, Claudia.js requires that you export an 
 module.exports = app;
 ```
 
-After that, you will loose the ability to run your server locally. To circumvent this problem, you will need to create a new file called `development-server.js` inside the `./backend/src/` directory and add the following code to it:
+After that, you will lose the ability to run your server locally. To circumvent this problem, you will need to create a new file called `development-server.js` inside the `./backend/src/` directory and add the following code to it:
 
 ```javascript
 const app = require('./index');
@@ -217,7 +217,7 @@ With that in place, you can issue `node src/development-server.js` from the `bac
 
 ### Creating a new Auth0 Tenant for Production
 
-As you don't want to mix development users with real users (that is, users of the production version of your app), you will need to create a new Auth0 tenant for production. Therefore, open [the Auth0 dashboard in your browser](https://manage.auth0.com/) and click in your picture in the upper-right corner. There, you will find an option called _Create Tenant_. Click on this option, enter a new tenant subdomain (e.g. `micro-blog-prod`), and click on the _Create_ button.
+As you don't want to mix development users with real users (that is, users of the production version of your app), you will need to create a new Auth0 tenant for production. Therefore, open [the Auth0 dashboard in your browser](https://manage.auth0.com/) and click on your picture in the upper-right corner. There, you will find an option called _Create Tenant_. Click on this option, enter a new tenant subdomain (e.g. `micro-blog-prod`), and click on the _Create_ button.
 
 ![Creating a new Auth0 tenant](https://cdn.auth0.com/blog/vuejs-lambda-part2/new-auth0-tenant.png)
 
@@ -397,7 +397,7 @@ As you will see, the process of preparing your frontend app for AWS S3 will be e
 
 ### Creating a new Auth0 Application
 
-Besides recreating the Auth0 API for production, you will also need a new Auth0 Application. So, [go to the _Applications_ section of the Auth0 dashboard](https://manage.auth0.com/#/applications) and click on _Create Application_. On the form shown, enter a meaningful name for you application (e.g. "Micro-Blog Engine") and choose the _Single Page Web Applications_ type for it.
+Besides recreating the Auth0 API for production, you will also need a new Auth0 Application. So, [go to the _Applications_ section of the Auth0 dashboard](https://manage.auth0.com/#/applications) and click on _Create Application_. On the form shown, enter a meaningful name for your application (e.g. "Micro-Blog Engine") and choose the _Single Page Web Applications_ type for it.
 
 Then, after clicking on the _Create_ button, open the _Settings_ section of your new Auth0 Application and leave this page open. You will copy the _Domain_ and _Client ID_ properties from there soon.
 
@@ -447,7 +447,7 @@ module.exports = {
 
 > **Note**: Replace the values entered for `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `BACKEND_URL` with the values available in your production Auth0 Application. Also, don't mind about the empty `APP_URL` constant in the last snippet, you will change it in a while.
 
-With both config files (`prod` and `dev`) properly updated, you will need to update three files: `App.vue`, `HelloWorld.vue`, and `MicroPostsService.js`. To start, you can open the `./client/src/MicroPostsService.js` file and replace the `url`constant definition with this:
+With both config files (`prod` and `dev`) properly updated, you will need to update three files: `App.vue`, `HelloWorld.vue`, and `MicroPostsService.js`. To start, you can open the `./client/src/MicroPostsService.js` file and replace the `url` constant definition with this:
 
 ```javascript
 // ... import statements ...
