@@ -18,6 +18,8 @@ tags:
   - javascript
   - cloud
   - authentication
+  - auth
+  - ide
 related:
   - 
 ---
@@ -127,15 +129,11 @@ Let's go briefly over the steps that we need to take to set up Auth0 to use it w
 
 > If you already have an account, you can skip this step. Otherwise, read on, please.
 
-Sign up for a free Auth0 account at [Auth0](https://auth0.com/signup?&signUpData=%7B%22category%22%3A%22button%22%7D). During the sign-up process, you are going to create something called a *Tenant*, this represents the product or service to which you that are adding authentication. I'll explain more on this is a moment. 
+<a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">Sign up for a free Auth0 account here</a>. During the sign-up process, you are going to create something called a *Tenant*, this represents the product or service to which you that are adding authentication. I'll explain more on this is a moment. 
 
 Once you are signed in, you are welcomed into the Auth0 Dashboard. In the left sidebar menu, click on `Applications`. Let's understand better what this area represents.
 
-The term *Application*, as used within the context of Auth0, doesn't represent an individual customer application, instead, each Auth0 application represents an instance of our authentication service being applied to a different platform that a customer application may provide. Thus, the *Auth0 tenant* is your product and the *Auth0 applications* are the platforms where you deploy your product that need authentication.
-
-{% include tweet_quote.html quote_text="Auth0 allows you to create different authentication instances that can be wired to each of the platforms where your product or service lives!" %}
-
-For example, let's say that we have a photo-sharing app called Auth0gram. We then would create an *Auth0 tenant* called `auth0gram`. From a customer perspective, Auth0gram is that customer's product or service. Auth0gram is available as a web app that can be accessed through desktop and mobile browsers and as a native mobile app for iOS and Android. That is, Auth0gram is available on 3 platforms: web as a single page application, Android as a native mobile app, and iOS also as a native mobile app. If each platform needs authentication, then we would need to create 3 *Auth0 applications* that would connect with each respective platform to provide the product all the wiring and procedures needed to authenticate users through that platform. Auth0gram users would belong to the *Auth0 tenant* and are shared across *Auth0 applications*. If we have another product called "Auth0shop" that needs authentication, we would need to create another tenant, `auth0shop`, and create new Auth0 applications for it depending on the platforms where it lives.    
+Let's say that we have a photo-sharing app called Auth0gram. We then would create an *Auth0 tenant* called `auth0gram`. From a customer perspective, Auth0gram is that customer's product or service. Auth0gram is available as a web app that can be accessed through desktop and mobile browsers and as a native mobile app for iOS and Android. That is, Auth0gram is available on 3 platforms: web as a single page application, Android as a native mobile app, and iOS also as a native mobile app. If each platform needs authentication, then we would need to create 3 *Auth0 applications* that would connect with each respective platform to provide the product all the wiring and procedures needed to authenticate users through that platform. Auth0gram users would belong to the *Auth0 tenant* and are shared across *Auth0 applications*. If we have another product called "Auth0shop" that needs authentication, we would need to create another tenant, `auth0shop`, and create new Auth0 applications for it depending on the platforms where it lives.    
 
 With this knowledge, in `Applications`, click on the button `Create Application`. A modal titled `Create Application` will open up. We have the option to provide a `Name` for the application and choose its type. 
 
@@ -163,7 +161,6 @@ What we want from the Auth0 Application are some data points that we need to mak
 interface AuthConfig {
   CLIENT_ID: string;
   CLIENT_DOMAIN: string;
-  AUDIENCE: string;
   REDIRECT: string;
   SCOPE: string;
 }
@@ -171,17 +168,12 @@ interface AuthConfig {
 export const AUTH_CONFIG: AuthConfig = {
   CLIENT_ID: 'YOUR-CLIENT-ID', //e.g. 8zOgTfK4Ga1KaiFPNFen6gQstt2Jvwlo
   CLIENT_DOMAIN: 'YOUR-DOMAIN.auth0.com', // e.g., adobot.auth0.com
-  AUDIENCE: 'https://YOUR-DOMAIN.auth0.com/userinfo', // e.g., https://adobot.auth0.com/userinfo
   REDIRECT: 'https://auth0.stackblitz.io/callback',
   SCOPE: 'openid profile email'
 };
 ```
 
-To populate the `AUTH_CONFIG` object, we need the `CLIENT_ID` and the `CLIENT_DOMAIN` which we can get from the Auth0 `Settings`. Copy your `Client ID` and paste it as the value of `CLIENT_ID`. Next copy your `Domain` and paste it as the value of `CLIENT_DOMAIN`. Within the value of `AUDIENCE` also replace `YOUR-DOMAIN` with your `Domain` value from the settings without the `auth0.com` part as it is already provided. 
-
-```typescript
-AUDIENCE: 'https:/<YOUR DOMAIN>/userinfo'
-```
+To populate the `AUTH_CONFIG` object, we need the `CLIENT_ID` and the `CLIENT_DOMAIN` which we can get from the Auth0 `Settings`. Copy your `Client ID` and paste it as the value of `CLIENT_ID`. Next copy your `Domain` and paste it as the value of `CLIENT_DOMAIN`.
 
 What this is doing is establishing the credentials that our Angular app will use to tell Auth0 that it is authorized to be part of the authentication flow. Please change the `REDIRECT` field with the value of your StackBlitz app URL plus a `/callback` path. In my case, it would look like this: 
 
@@ -189,9 +181,7 @@ What this is doing is establishing the credentials that our Angular app will use
 REDIRECT: 'https://angular-cloud.stackblitz.io/callback'
 ```
 
-What is `AUDIENCE` and `SCOPES` for anyway?
-
-Audience is the API identifier that we want our access token to be for. The default by Auth0 is `/userinfo`. The [`/userinfo` endpoint](https://auth0.com/docs/user-profile/user-profile-details) takes as input an Auth0 Access Token and returns User Profile information. The *Auth0 User Profile* is a set of attributes about a user, such as first name, last name, email address, and nickname, which we may need to customize the user experience of our application. For example, we may want to greet our users by first name after they log in.
+What is `SCOPES` for anyway?
 
 Scopes are the scopes that we need for our application.  For the `/userinfo` endpoint, they are the [OIDC standard scopes](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo). This tells the authentication service which user claims to put in the ID token and make available on the `/userinfo` endpoint.
 
@@ -226,6 +216,67 @@ If we click on the `protected page` link in "Step 4" that points to the protecte
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/9-account-page.png" alt="Access to protected Account View">
 </p>
+
+Within `app/auth/auth.guard.ts`, we have a routing guard, `AuthGuard`, defined that uses the `authenticated` method from our `AuthService` to verify if a user is authenticated or not when visiting a route:
+
+```typescript
+// app/auth/auth.guard.ts
+
+// ...
+
+@Injectable()
+export class AuthGuard implements CanActivate {
+
+  constructor(private authService: AuthService, private router: Router) {}
+
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    if (!this.authService.authenticated) {
+      this.router.navigate(['/']);
+      return false;
+    }
+    return true;
+  }
+}
+```
+
+When `AuthGuard` is invoked by the router, if the user is not authenticated, the router navigates to the Home Screen.
+
+Within our router configuration in `app/router.module.ts`, we use `AuthGuard` to protect the path `/account` against unauthenticated access: 
+
+```typescript
+// app/router.module.ts
+
+// ... 
+
+const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: 'account',
+    component: AccountComponent,
+    canActivate: [
+      AuthGuard
+    ]
+  },
+  {
+    path: 'callback',
+    component: CallbackComponent
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  providers: [AuthGuard],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+``` 
+
+You can use `AuthGuard` to protect any other route you may create afterward. 
 
 And, that's it! All that is left is for you to continue building your project in StackBlitz or to export the project locally by downloading it.
 
