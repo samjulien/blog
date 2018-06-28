@@ -374,7 +374,6 @@ Now, you can focus on upgrading your Vue.js app to communicate with these two ne
 
 ```javascript
 import axios from 'axios'
-import * as Auth0 from 'auth0-web'
 
 const url = 'http://localhost:8081/micro-posts/'
 
@@ -397,8 +396,6 @@ class MicroPostsService {
   static insertMicroPost (text) {
     return axios.post(url, {
       text
-    }, {
-      headers: { 'Authorization': `Bearer ${Auth0.getAccessToken()}` }
     })
   }
 }
@@ -426,7 +423,7 @@ export default {
     return {
       microPosts: [],
       error: ''
-    };
+    }
   },
   async created () {
     try {
@@ -778,7 +775,7 @@ export default {
   name: 'ShareThoughts',
   data () {
     return {
-      text: '',
+      text: ''
     }
   },
   methods: {
@@ -870,7 +867,7 @@ const checkJwt = jwt({
   // Validate the audience and the issuer.
   audience: '<AN_AUTH0_AUDIENCE>',
   issuer: `https://<YOUR-AUTH0-DOMAIN>/`,
-  algorithms: ['RS256'],
+  algorithms: ['RS256']
 });
 
 // insert a new micro-post with user details
@@ -929,9 +926,9 @@ class MicroPostsService {
 
   static insertMicroPost (text) {
     return axios.post(url, {
-      text,
+      text
     }, {
-      headers: { 'Authorization': `Bearer ${Auth0.getAccessToken()}` },
+      headers: { 'Authorization': `Bearer ${Auth0.getAccessToken()}` }
     })
   }
 }
