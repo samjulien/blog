@@ -216,7 +216,22 @@ app.listen(8081, () => {
 With that in place, you can issue `node src/development-server.js` from the `backend` directory to start the Express app in your machine.
 
 ### Creating a new Auth0 Tenant for Production
+
+As you don't want to mix development users with real users (that is, users of the production version of your app), you will need to create a new Auth0 tenant for prodution. Therefore, open [the Auth0 dashboard in your browser](https://manage.auth0.com/) and click in your picture in the upper-right corner. There, you will find an option called _Create Tenant_. Click on this option, enter a new tenant subdomain (e.g. `micro-blog-prod`), and click on the _Create_ button.
+
+![Creating a new Auth0 tenant](https://cdn.auth0.com/blog/vuejs-lambda-part2/new-auth0-tenant.png)
+
+After that, Auth0 will redirect you to your new tenant.
+
 ### Creating a new Auth0 API
+
+As you now have a tenant for your production environment, you will need to recreate your Auth0 API. So, go to the [_APIs_](https://manage.auth0.com/#/apis) section and click on the _Create API_ button. For the name and the identifier of your API, you can enter the same values entered before:
+
+- _Name_: Enter something meaningful like "Micro-Blog API".
+- _Identifier_: Enter something meaningful like `https://micro-blog-app`.
+
+Then click on the _Create_ button and leave the management dashboard open.
+
 ### Extracting Environment Variables
 
 After creating the new Auth0 settings, you will need to replace the content of the `./backend/src/routes.js` file with this:
