@@ -194,6 +194,27 @@ Just make sure you replace `AKIR...WDNA` and `kuNgBlgz...xsBl` with your own cre
 In case you need more info about this topic, [you can check the official Claudia.js docs](https://claudiajs.com/tutorials/installing.html#configuring-access-credentials) or you can [get in touch in the comments section down here](#disqus_thread).
 
 ### Refactoring your Index Express File
+
+To use your Express API with AWS Lambda, Claudia.js requires that you export an `express` instance (instead of triggering `listen` manually) from the `./backend/src/index.js` file. So, open this file and replace the `app.listen` call (the last three lines of this file) with this:
+
+```javascript
+// ... require statements and app definition
+
+module.exports = app;
+```
+
+After that, you will loose the ability to run your server locally. To circumvent this problem, you will need to create a new file called `development-server.js` inside the `./backend/src/` directory and add the following code to it:
+
+```javascript
+const app = require('./index');
+
+app.listen(8081, () => {
+  console.log('listening on port 8081');
+});
+```
+
+With that in place, you can issue `node src/development-server.js` from the `backend` directory to start the Express app in your machine.
+
 ### Creating a new Auth0 Tenant for Production
 ### Creating a new Auth0 API
 ### Extracting Environment Variables
