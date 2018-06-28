@@ -385,43 +385,109 @@ As you will see, the process of preparing your frontend app for AWS S3 will be e
 
 There are only 5 variables that you need to extract from your source code:
 
-- the `url` constant that contains the URL of the backend API (for production it will be your AWS Lambda URL);
-- and the `domain`, `clientID`, `returnTo`, `redirectUri` variables related with Auth0.
+- the `url` constant that refers to the backend API (for production this will be your AWS Lambda URL);
+- and the `domain`, `clientID`, `returnTo`, and `redirectUri` variables related to your Auth0 configurations.
 
-To start this extraction, you can open the `./config/dev.env.js` file of the `client` project and add these variables to the object passed to `merge`:
+To start this extraction, open the `./config/dev.env.js` file of the `client` project and add these variables to the object passed to `merge`:
 
 ```javascript
 'use strict'
 const merge = require('webpack-merge')
 const prodEnv = require('./prod.env')
 
+const APP_URL = 'http://localhost:8080/'
+
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  BACKEND_URL: 'http://localhost:8081/micro-posts/',
-  AUTH0_CLIENT_ID: 'KsX...BGPy',
-  AUTH0_DOMAIN: 'bk-tmp.auth0.com',
-  AUTH0_LOGOUT_URL: 'http://localhost:8080/',
-  AUTH0_CALLBACK_URL: 'http://localhost:8080/callback'
+  BACKEND_URL: '"http://localhost:8081/micro-posts/"',
+  AUTH0_CLIENT_ID: '"KsX...BGPy"',
+  AUTH0_DOMAIN: '"bk-tmp.auth0.com"',
+  AUTH0_LOGOUT_URL: `"${APP_URL}"`,
+  AUTH0_CALLBACK_URL: `"${APP_URL}callback"`
 })
 ```
 
 > **Note**: you will have to replace the values passed to `AUTH0_CLIENT_ID` and `AUTH0_DOMAIN` in the code snippet above.
 
-You will also need to do a similar update but now on the `./config/prod.env.js`:
+Then, you will need to do a similar update but now on the `./config/prod.env.js` file:
 
 ```javascript
 'use strict'
+const APP_URL = ''
+
 module.exports = {
   NODE_ENV: '"production"',
-  BACKEND_URL: 'https://ww...j2y2.execute-api.us-east-1.amazonaws.com/latest/micro-post',
-  AUTH0_CLIENT_ID: 'Pf1...lJm',
-  AUTH0_DOMAIN: 'bk-prod.auth0.com',
-  AUTH0_LOGOUT_URL: 'http://localhost:8080/',
-  AUTH0_CALLBACK_URL: 'http://localhost:8080/callback'
+  BACKEND_URL: '"https://ww...j2y2.execute-api.us-east-1.amazonaws.com/latest/micro-post"',
+  AUTH0_CLIENT_ID: '"Pf1...lJm"',
+  AUTH0_DOMAIN: '"bk-prod.auth0.com"',
+  AUTH0_LOGOUT_URL: `"${APP_URL}"`,
+  AUTH0_CALLBACK_URL: `"${APP_URL}callback"`
 }
 ```
 
+> **Note**: Replace the values entered for `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `BACKEND_URL` with the values available in your production Auth0 Application. Also, don't mind about the empty `APP_URL` constant in the last snippet, you will change it in a while.
+
+With both config files (`prod` and `dev`) properly updated, you will need to update three files: `App.vue`, `HelloWorld.vue`, and `MicroPostsService.js`. To start with the service that makes the bridge between the Vue.js app and the AWS Lambda function, open the `./client/src/MicroPostsService.js` file and replace the `url`constant definition with this:
+
+```javascript
+// ... import statements ...
+
+const url = process.env.BACKEND_URL
+
+// ... MicroPostsService class definition and export statement ...
+```
+
+After that, open the `./client/src/App.vue` file and replace the contents of the `script` section with this:
+
+```javascript
+import * as Auth0 from 'auth0-web'
+
+export default {
+  name: 'App',
+  created () {
+    Auth0.configure({
+      domain: process.env.AUTH0_DOMAIN,
+      clientID: process.env.AUTH0_CLIENT_ID,
+      audience: 'https://micro-blog-app',
+      redirectUri: process.env.AUTH0_CALLBACK_URL,
+      responseType: 'token id_token',
+      scope: 'openid profile'
+    })
+  }
+}
+```
+
+Lastly, open the `./client/src/components/HelloWorld.vue` file and replace the call to `Auth0.signOut` with this:
+
+```javascript
+Auth0.signOut({
+  clientID: process.env.AUTH0_CLIENT_ID,
+  returnTo: process.env.AUTH0_LOGOUT_URL
+})
+```
+
+As you may have noticed, the changes made to these three files refer to replacing hard-coded variables for environment variables (i.e. variables accessed through the `process.env` object).
+
+Now, if you try to execute both your backend and your Vue.js apps locally, things should run smoothly:
+
+```bash
+# make sure you move to the backend subproject directory
+cd backend
+
+# then execute your backend development server in the background
+node src/development-server &
+
+# now move back to the client directory
+cd ../client
+
+# and execute your Vue.js app
+npm start
+```
+
 ### Creating an AWS S3 Bucket
+
+
+
 ### Uploading your Vue.js App to AWS S3
 
 ## Conclusion and Next Steps
