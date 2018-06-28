@@ -486,8 +486,55 @@ npm start
 
 ### Creating an AWS S3 Bucket
 
+After preparing the Vue.js app to be deployed to production, you will have to go to [the S3 section of your AWS management console](https://s3.console.aws.amazon.com/s3/home). Once there, you can create on the _create bucket_ button and fill the form presented as follows:
 
+- _Bucket name_: Enter some meaningful, DNS-compliant name like `vuejs-micro-blog`.
+- _Region_: Choose some region geographically near to you.
+
+Then, you can click on the _next_ button three times: one for the _name and region_ section, one for the _set properties_ section, and one for the _set permissions_ section. You can leave these two sections (properties and permissions) with the default values.
+
+On the last section, AWS will ask you to confirm the details of your new bucket. There, you can click on the _create bucket_ button and then click on your new bucket from the list of buckets presented by the dashboard.
+
+Now, if you open the _Properties_ tab, you will see a new feature called _Static Website Hosting_. Click on this feature and check the _Use this bucket to host a website_ option. Also, enter `index.html` in the _Index document_ field and copy the URL presented in the _Endpoint_ label. Use this URL to fill the empty constant that you left in your `./config/prod.env.js` file:
+
+```javascript
+'use strict'
+const APP_URL = 'http://vuejs-micro-blog.s3-website-us-east-1.amazonaws.com/'
+
+// ... module.exports ...
+```
+
+> Don't forget to add the trailing slash to the `APP_URL` constant.
+
+After that, you can click save, head back to the _Overview_ tab of your bucket, and leave this page open.
 
 ### Uploading your Vue.js App to AWS S3
 
+To upload your Vue.js app to this new AWS S3 bucket, open the `client` directory on a terminal and build the project for production:
+
+```bash
+# make sure you are on the client directory
+cd client
+
+# build the app for production
+npm run build
+```
+
+This will generate a new directory called `dist` with all the code you need to run in production. So, back in the page you left open in the AWS console (the _Overview_ section of your S3 bucket), you can click on upload and drag and drop the `index.html` file and the `static` directory that are available in the `dist` directory.
+
+Then, you will have to click on _Next_ and, on the _set permissions_ section, you will have to choose the _Grant public read access to this object(s)_ option for the _Manage public permissions_ field. After that, you can click _next_ twice so you reach the _Review_ section. On this last section, click on upload and wait until AWS finishes uploading your files.
+
+Now, if you open the URL created for your AWS S3 bucket on a browser, you will see your Vue.js app up, running, and consuming your AWS Lambda function.
+
+![Vue.js app running on an AWS S3 bucket.](https://cdn.auth0.com/blog/vuejs-lambda-part-2/running-vuejs-on-aws-s3.png)
+
+Then, to wrap up, you will need to update the _Allowed Callback URLs_ and the _Allowed Logout URLs_ fields of your production Auth0 application to support your new URL. That is, if the URL of the AWS S3 bucket is `http://vuejs-micro-blog.s3-website-us-east-1.amazonaws.com/` you will have to:
+
+- Insert `http://vuejs-micro-blog.s3-website-us-east-1.amazonaws.com/callback` in the _Allowed Callback URLs_ field;
+- Insert `http://vuejs-micro-blog.s3-website-us-east-1.amazonaws.com` in the _Allowed Logout URLs_ field.
+
+After that, you will have finished deploying both your Vue.js app to AWS S3 and your Express API to an AWS Lambda function. Congratulations!
+
 ## Conclusion and Next Steps
+
+
