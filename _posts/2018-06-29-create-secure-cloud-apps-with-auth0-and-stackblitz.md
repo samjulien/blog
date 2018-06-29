@@ -193,36 +193,16 @@ We are done wiring up Auth0. It's time that we see it in action.
 
 ## Testing Authentication for Angular
 
-Let's go back to our app preview tab. In the Home Screen, if you click on the `protected page` link in "Step 4", nothing will happen. That's because we are not logged in. So let's go ahead and click on the `Login` button in "Step 3" and test if we are communicating correctly with Auth0 and get authenticated. 
-
-If everything was set up correctly, we are going to be received by our awesome [Universal Login page](https://auth0.com/docs/hosted-pages/login). It's a login page provided by Auth0 with batteries included that powers not only the login but the signup of new users into our application. If you have any existing user already, go ahead and log in; otherwise, sign up as a new user.
-
-<p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/7-hosted-login-page.png" alt="Auth0 Universal Login page">
-</p>
-
-What is really awesome is that the Universal Login page is part of the Auth0 domain, not StackBlitz or our app. It lets us delegate the process of user authentication, including registration, to Auth0!  
-
-If you created a new user through the sign-up process, you will receive an email asking you to verify your email. There are tons of settings that we can tweak to customize the signup and login experience of our users, such as [requiring a username for registration](https://auth0.com/docs/connections/database/require-username). Feel free to check out all the power presented to you by Auth0 within the Dashboard and our [Docs](https://auth0.com/docs).
-
-Once we signed up or logged in, we are taken back to our Angular app that is hosted in the StackBlitz domain. Notice that the button in the jumbotron changed from `Login` to `Logout` that means we are in! 
-
-<p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/8-logout-button-ready-alt.png" alt="Authenticated Session">
-</p>
-
-If we click on the `protected page` link in "Step 4" that points to the protected route `/account`, this time around we are successfully taken to that view. 
-
-<p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/9-account-page.png" alt="Access to protected Account View">
-</p>
-
-Within `app/auth/auth.guard.ts`, we have a routing guard, `AuthGuard`, defined that uses the `authenticated` method from our `AuthService` to verify if a user is authenticated or not when visiting a route:
+Let's go back to our app preview tab. In the Home Screen, if you click on the `protected page` link in "Step 4", nothing will happen. That's because we are not logged in and we are implementing a [route guard](https://angular.io/guide/router#milestone-5-route-guards) in our application. Route guards determine whether a user should be allowed to access a specific route or not. If the guard evaluates to `true`, navigation is allowed to complete. If the guard evaluates to `false`, the route is not activated and the user's attempted navigation does not take place. With the `AuthGuard` implemented in `auth/auth.guard.ts` we establish one level of authorization: Is the user authenticated?
 
 ```typescript
-// app/auth/auth.guard.ts
+// auth/auth.guard.ts
 
-// ...
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -241,9 +221,7 @@ export class AuthGuard implements CanActivate {
 }
 ```
 
-When `AuthGuard` is invoked by the router, if the user is not authenticated, the router navigates to the Home Screen.
-
-Within our router configuration in `app/router.module.ts`, we use `AuthGuard` to protect the path `/account` against unauthenticated access: 
+When `AuthGuard` is invoked by the router, if the user is not authenticated, the router navigates to the Home Screen. Within our router configuration in `app/router.module.ts`, we use `AuthGuard` to guard the path `/account` from unauthenticated access: 
 
 ```typescript
 // app/router.module.ts
@@ -278,6 +256,33 @@ export class AppRoutingModule { }
 
 You can use `AuthGuard` to protect any other route you may create afterward. 
 
+Route guards are for the UI only. They don't confer any security when it comes to accessing an API. However, if we were to enforce authentication and authorization in our API (as we should do in all our apps), we could take advantage of guards to authenticate and redirect users as well as stop unauthorized navigation.
+
+So let's go ahead and click on the `Login` button in "Step 3" and test if we are communicating correctly with Auth0 and get authenticated. 
+
+If everything was set up correctly, we are going to be received by our awesome [Universal Login page](https://auth0.com/docs/hosted-pages/login). It's a login page provided by Auth0 with batteries included that powers not only the login but the signup of new users into our application. If you have any existing user already, go ahead and log in; otherwise, sign up as a new user.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/7-hosted-login-page.png" alt="Auth0 Universal Login page">
+</p>
+
+What is really awesome is that the Universal Login page is part of the Auth0 domain, not StackBlitz or our app. It lets us delegate the process of user authentication, including registration, to Auth0!  
+
+If you created a new user through the sign-up process, you will receive an email asking you to verify your email. There are tons of settings that we can tweak to customize the signup and login experience of our users, such as [requiring a username for registration](https://auth0.com/docs/connections/database/require-username). Feel free to check out all the power presented to you by Auth0 within the Dashboard and our [Docs](https://auth0.com/docs).
+
+Once we signed up or logged in, we are taken back to our Angular app that is hosted in the StackBlitz domain. Notice that the button in the jumbotron changed from `Login` to `Logout` that means we are in! 
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/8-logout-button-ready-alt.png" alt="Authenticated Session">
+</p>
+
+If we click on the `protected page` link in "Step 4" that points to the guarded route `/account`, this time around we are successfully taken to that view. 
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/9-account-page.png" alt="Access to guarded Account View">
+</p>
+
+
 And, that's it! All that is left is for you to continue building your project in StackBlitz or to export the project locally by downloading it.
 
 ## Authentication Under the Hood
@@ -286,7 +291,7 @@ Within the `app/auth` folder we have three files:
 
 * `auth.config.ts` creates an object that contains our Auth0 application credentials and configuration.
 * `auth.service.ts` creates a service that handles of all our authentication flow.
-* `auth.guard.ts` wires up Angular router guards with our authentication service so that we can create protected routes within our router configuration.
+* `auth.guard.ts` wires up Angular router guards with our authentication service so that we can create guarded routes within our router configuration.
 
 ### Angular Authentication Service
 
@@ -375,7 +380,7 @@ export class CallbackComponent implements OnInit {
 }
 ```
 
-When the `CallbackComponent` is initialized by Angular, the authentication workflow is also started and our app is ready to handle login and logout requests as well as to enable or prevent navigation to protected routes based on the authentication status of the user, which is communicated by the `authenticated` method within `AuthService`.
+When the `CallbackComponent` is initialized by Angular, the authentication workflow is also started and our app is ready to handle login and logout requests as well as to enable or prevent navigation to guarded routes based on the authentication status of the user, which is communicated by the `authenticated` method within `AuthService`.
 
 Our under-the-hood view of the Auth0 Angular authentication process is now complete. Authentication is hard but Auth0 definitely makes it much easier to understand and implement. 
 
