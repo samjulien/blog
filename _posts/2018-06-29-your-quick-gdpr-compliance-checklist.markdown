@@ -26,6 +26,13 @@ related:
 - 2017-05-03-get-ready-for-gdpr
 ---
 
+<div class="alert alert-info alert-icon">
+  <i class="icon-budicon-500"></i>
+  <strong>GDPR has arrived. Are you Ready? Take our GDPR Readiness Assessment to find out. <a href="https://auth0.com/gdpr-assessment/tool-1">Start the survey</a>.</strong>
+</div>
+
+---
+
 The deadline to comply with GDPR has passed (5/25/18). As most know, if your business is audited and found to be irresponsible with its customer data, according to [GDPR regulations](https://www.gdpreu.org/compliance/fines-and-penalties/), fines are up to €20 million, or four percent of worldwide annual revenue. Moreover, GDPR does not just apply to EU companies; it extends to all those that process the data of EU residents.
 
 The regulation is no joke. Activist groups, already outraged by how many companies have misused personal information, have [called out giants like Facebook and Google](https://www.cnet.com/news/gdpr-google-and-facebook-face-up-to-9-3-billion-in-fines-on-first-day-of-new-privacy-law/) for not creating tight enough protocol. If these titans, with cutting-edge resources at their fingertips, are struggling to adhere to the new law, how can small and medium-sized teams make sure their operations are efficient, secure, and worthy of their customers? 
