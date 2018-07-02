@@ -3,27 +3,28 @@ layout: post
 title: "Breaking Down Master Data Management"
 description: "Consolidate and categorize your critical consumer data for better insights and enhanced security."
 longdescription: "Master data management is a set of tailored processes and techniques that allow teams to consolidate their critical streams of information into a single file. Consolidate and categorize your critical consumer data for better insights and enhanced security. "
-date: 2018-04-16 8:30
+date: 2018-07-02 8:30
 category: Growth
 is_non-tech: true
 banner:
   text: "Auth0 makes it easy to add authentication to your application."
 author:
-  name: "Diego Poza"
-  url: "https://twitter.com/diegopoza"
-  mail: "diego.poza@auth0.com"
-  avatar: "https://avatars3.githubusercontent.com/u/604869?v=3&s=200"
+  name: Martin Gontovnikas
+  url: http://twitter.com/mgonto
+  mail: gonto@auth0.com
+  avatar: https://www.gravatar.com/avatar/df6c864847fba9687d962cb80b482764??s=60
 design:
-  image: https://cdn.auth0.com/blog/...
-  bg_color: "#"
+  image: "https://cdn.auth0.com/blog/breaking-down-master-data-management/master-data-management-logo.png"
+  bg_color: "#4b673e"
 tags:
 - master-data-management
 - gdpr
 - data
 - social-login
 related:
-- 2018-03-12-gdpr-effect
+- 2017-08-28-how-to-become-a-data-driven-marketer
 - 2018-02-14-what-is-data-security
+- 2018-06-29-your-quick-gdpr-compliance-checklist
 ---
 
 The world is obsessed with data. Companies, governments, academics — everyone is racing to collect and compile the largest data sets, believing the hype about their enormous value. While it's true that data can provide shrewd insights and help in directing an organization's strategy, [research is beginning to show](https://www.schneier.com/blog/archives/2016/03/data_is_a_toxic.html) that more data isn't always better. In fact, there can be serious diminishing returns if your organization isn't set up to handle the volume of information, ranging from botched business analytics to irreversible damages from a data breach. 
@@ -56,7 +57,7 @@ Integrating with social network providers allows your organization access to add
 
 With streamlined information, you can create a comprehensive view of each of your customers:
 
-<p style="text-align: center;"><img src="https://auth0.com/learn/wp-content/uploads/2017/07/Screen-Shot-2017-07-12-at-11.07.36-PM-e1500002001915.png"></p>
+<p style="text-align: center;"><img src="https://auth0.com/learn/wp-content/uploads/2017/07/Screen-Shot-2017-07-12-at-11.07.36-PM-e1500002001915.png" alt="Consolidating User Data With Auth0's Social Login"></p>
 
 A detailed understanding of your users will form the basis for showing them more personalized content.  
 
@@ -66,7 +67,7 @@ Employing a vetted identity access tool like Social Login will automatically str
 
 ## Master Data Management and Complying with GDPR
 
-Master data management is even more important as the May 25, 2018 deadline for Europe's strict [GDPR policies](https://auth0.com/blog/gdpr-effect/) draws closer. These new rules will apply to all those in the EU who control data and/or undertake data processing. Consumers have greater rights under GDPR including:
+Master data management is even more important now that [GDPR finally entered into force](https://auth0.com/blog/data-privacy-doesnt-stop-at-the-eu-border/). These new rules apply to all those in the EU who control data and/or undertake data processing. Consumers have greater rights under GDPR including:
 
 * A new Right To Data Portability (i.e., the ability to copy and transfer personal data easily from one IT environment to another)
 * An expanded Right To Be Forgotten (also called the Right to Erasure)
