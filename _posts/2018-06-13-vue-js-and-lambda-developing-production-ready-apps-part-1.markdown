@@ -21,12 +21,15 @@ tags:
 - spa
 - auth0
 related:
-- 2018-03-29-vuejs-kanban-board-the-development-process
+- 2018-07-03-vue-js-and-lambda-developing-production-ready-apps-part-2
 - 2017-04-18-vuejs2-authentication-tutorial
-- 2018-05-22-building-modern-applications-with-django-and-vuejs
 ---
 
-**TL;DR:** In this series, you will use modern technologies like Vue.js, AWS Lambda, Express, MongoDB, and Auth0 to create a production-ready application that acts like a micro-blog engine. The first part of the series (this one) will focus on the setup of the Vue.js client that users will interact with and on the definition of the Express backend app. [You can find the final code developed in this part in this GitHub repository](https://github.com/auth0-blog/vue-js-lambda-part-1).
+**TL;DR:** In this series, you will use modern technologies like Vue.js, AWS Lambda, Express, MongoDB, and Auth0 to create a production-ready application that acts like a micro-blog engine. The first part of the series (this one) will focus on the setup of the Vue.js client that users will interact with and on the definition of the Express backend app.
+
+[The second part will show you how to prepare your app for showtime](https://auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps-part-2/). There, you will start by signing up to AWS and to MongoLabs (where you will deploy the production MongoDB instance), then you will focus on refactoring both your frontend and backend apps to support different environments (like development and production).
+
+[You can find the final code developed in this part in this GitHub repository](https://github.com/auth0-blog/vue-js-lambda-part-1).
 
 ## Stack Overview
 
@@ -42,7 +45,7 @@ In this series, you will have the opportunity to see this great framework in act
 
 [AWS Lambda](https://aws.amazon.com/lambda/) is a serverless computer platform, provided by Amazon, that allows developers to run their code without having to spend too much time thinking about the servers needed to run it. Although the main idea of using a serverless platform is to facilitate the deployment process and the scalability of applications, AWS Lambda is not easy for newcomers. In fact, AWS Lambda on its own is not enough to run Rest APIs like the one you will need for your micro-blog engine. Besides this AWS service, you will also need to use [AWS API Gateway](https://aws.amazon.com/api-gateway/) to define how external services (or, in this case, a Vue.js client) can communicate with your serverless backend app. This last piece is exactly what makes AWS Lambda not straightforward.
 
-So, to avoid wasting your time with the intricacies of AWS API Gateway and AWS Lambda, you will take advantage of an open-source tool called [Claudia](https://claudiajs.com/). The goal of this tool is to enable you to deploy your Node.js projects to AWS Lambda and API Gateway easily.
+So, to avoid wasting your time with the intricacies of AWS API Gateway and AWS Lambda, you will take advantage of an open-source tool called [Claudia.js](https://claudiajs.com/). The goal of this tool is to enable you to deploy your Node.js projects to AWS Lambda and API Gateway easily.
 
 ### Express
 
@@ -306,7 +309,7 @@ router.post('/', async (req, res) => {
   const collection = await loadMicroPostsCollection();
   await collection.insertOne({
     text: req.body.text,
-    createdAt: new Date()
+    createdAt: new Date(),
   });
   res.status(200).send();
 });
@@ -567,14 +570,14 @@ After inserting these values into these fields, hit the _Save Changes_ button at
 
 You can now move back to your code, but don't close the _Settings_ page just yet, you will need to copy some info from it soon.
 
-Back in your code, the first thing you will do is to install a package called [`auth0-web`](https://github.com/brunokrebs/auth0-web) in your Vue.js application:
+Back in your code, the first thing you will do is to install a package called [`auth0-web`](https://github.com/auth0-blog/auth0-web) in your Vue.js application:
 
 ```bash
 # make sure you are in the client directory
 cd ./client/
 
 # install auth0-web
-npm i auth0-web
+npm i auth0-web@1.7.0
 ```
 
 With this package in place, you will create a new component (which you will call `Callback`) to handle the authentication response from Auth0. So, create a new file called `Callback.vue` inside the `./client/src/components/` directory and define its `<script>` section as follows:
@@ -985,6 +988,6 @@ git cm 'vue.js and express fully integrated with auth0'
 
 In the first part of this series, you have created a Vue.js application to work as the user interface of a micro-blog engine. You have also created an Express API to persists micro-posts in a MongoDB instance. Besides that, you have installed and configured Auth0 on both your frontend and backend applications to take advantage of a modern identity management system. With this, you have finished developing the first version of your micro-blog engine and you are ready to move it to production.
 
-So, in the next part of this series, you will prepare your source code to deploy your backend API to AWS Lambda and your frontend Vue.js app to an AWS S3 bucket. Then, you will use [Claudia](https://claudiajs.com/), a tool that facilitates AWS Lambda management, to make your backend code live and will use the AWS CLI (Command Line Interface) tool to push your Vue.js app to AWS S3.
+So, [in the next part of this series](https://auth0.com/blog/vue-js-and-lambda-developing-production-ready-apps-part-2/), you will prepare your source code to deploy your backend API to AWS Lambda and your frontend Vue.js app to an AWS S3 bucket. Then, you will use [Claudia.js, a tool that facilitates AWS Lambda management](https://claudiajs.com/), to make your backend code live and will use the AWS CLI (Command Line Interface) tool to push your Vue.js app to AWS S3.
 
 I hope you enjoy the process. Stay tuned!
