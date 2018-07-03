@@ -64,9 +64,9 @@ In a few seconds, StackBlitz scaffolds a brand new project environment for us co
 
 Some cool StackBlitz online editor features to mention here:
 
-StackBlitz lets you save your progress so that you can leave the browser and come back to complete your work.
+StackBlitz lets you save your progress so that you can leave the browser and resume your work later on. To save your work, sign up with GitHub to create a StackBlitz profile. Your profile showcases all of the work that you have saved in the platform, which effectively allows you to use StackBlitz as an online portfolio that you can share with others, think of it as a **live code resume**! 
 
-You can sign up with GitHub and basically create an online portfolio with live code to share with others, team projects, prototypes, whatever you desire, all portable and easily accessible through the universal platform that is the web.
+You can also import your GitHub projects into StackBlitz and continue their development in the online editor. Use StackBlitz to develop team projects, prototypes, whatever you desire, it's all portable and easily accessible through the universal platform that is the web. 
 
 We can also provide our project with a custom name that would be reflected in its URL. To do this, locate the project name in the upper left corner, click on the pencil icon, and provide it a new unique name. I am naming mine `angular-cloud`. If we take a look at my browser preview domain, we can see that now I also have a custom domain:
 
@@ -97,7 +97,7 @@ If you are familiar with Angular apps generated through the [Angular CLI](https:
 At the project root folder we have:
 
 * `app` directory: It holds all the constructs that belong to the app.
-* `index.htmt`: The entry point for the frontend application
+* `index.html`: The entry point for the frontend application
 * `main.ts`: The entry point for the Angular application
 * `polyfills.ts`:  This file includes polyfills needed by Angular and is loaded before the app. You can add your own extra polyfills to this file.
 * `styles.css`: Application-wide (global) styles. Add your own to customize the app's look.
