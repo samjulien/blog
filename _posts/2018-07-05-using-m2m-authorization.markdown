@@ -2,7 +2,7 @@
 layout: post
 title: "Using Machine-to-Machine (M2M) Authorization"
 description: "APIs are first-class citizens at Auth0. Learn how to set up non-interactive apps to perform machine-to-machine API authorization."
-date: 2018-06-14 12:30
+date: 2018-07-05 12:30
 category: Technical Guide, Identity
 author:
   name: Sebastián Peyrott
