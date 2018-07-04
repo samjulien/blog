@@ -31,7 +31,7 @@ related:
 - 2018-05-23-introducing-the-mfa-api
 ---
 
-Many times, a secure, authorized communication channel between different parts of an autonomous system is required. Think of two backend services from different companies communicating through the internet. For these cases, OAuth 2.0 provides the [client credentials grant](https://tools.ietf.org/html/rfc6749#section-4.4) flow. In this post, we will take a look at how the client credentials grant from [OAuth 2.0](https://tools.ietf.org/html/rfc6749) can be used with Auth0 for [machine-to-machine communications](https://auth0.com/docs/api-auth/grant/client-credentials).
+Many times, a secure, authorized communication channel between different parts of an autonomous system is required. Think of two backend services from different companies communicating through the internet. For these cases, OAuth 2.0 provides the [client credentials grant](https://tools.ietf.org/html/rfc6749#section-4.4) flow. In this post, we will take a look at how the client credentials grant from [OAuth 2.0](https://tools.ietf.org/html/rfc6749) can be used with Auth0 for [machine-to-machine communications](https://auth0.com/docs/applications/machine-to-machine).
 
 {% include tweet_quote.html quote_text="Learn to use machine-to-machine authorization with Auth0!" %}
 
@@ -53,7 +53,7 @@ The [client credentials grant] from OAuth 2.0 attempts to fulfill the need for t
 Since the client must always hold the client secret, this grant is only meant to be used in _trusted_ clients. In other words, clients that hold the _client secret_ must always be used in places where there is no risk of that secret being misused. For example, while it may be a good idea to use the client credentials grant in an internal daemon that sends reports across the web to a different part of your system, it cannot be used for a public tool that any external user can download from GitHub.
 
 ## Client Credentials Grant
-The client credentials grant is very simple to use. The following are HTTP requests:
+The client credentials grant is very simple to use. The following are the relevant HTTP requests:
 
 ```
 POST https://<YOUR_AUTH0_DOMAIN>/oauth/token
@@ -78,13 +78,15 @@ Content-Type: application/json
 }
 ```
 
-In Auth0, to use the client credentials grant, you must first enable the grant through the dashboard:
+In Auth0, to use the client credentials grant, you can create a new "machine-to-machine" application from the dashboard:
 
-![Client Credentials Grant in the Auth0 Dashboard](https://cdn.auth0.com/blog/m2m/2-dashboard.png)
+![Machine to Machine in the Auth0 Dashboard](https://cdn.auth0.com/blog/m2m/2-create.png)
 
-This toggle is located in `Applications` -> `<Your App Name>` -> `Settings` -> `Advanced Settings` -> `Grant Types`.
+A machine-to-machine application requires the selection of at least one API. This is the API that gets selected through the `audience` claim in the HTTP request above.
 
-The `audience` claim is related to the API you are requesting access to. You can create audiences for your APIs and protected resources in the [API](https://manage.auth0.com/#/apis) section of the Auth0 Dashboard.
+![Select API](https://cdn.auth0.com/blog/m2m/3-select-api.png)
+
+You can create audiences for your APIs and protected resources in the [API](https://manage.auth0.com/#/apis) section of the Auth0 Dashboard.
 
 ### Granular Permissions in Auth0
 Thanks to the use of [rules in Auth0](https://auth0.com/docs/rules/current), it is very easy to have granular permissions for machine-to-machine communications. When a client uses the client credentials grant, a rule can be run to check for any data in the request, including `scopes` or `roles`. With this information, you can choose to either grant or deny the request.
