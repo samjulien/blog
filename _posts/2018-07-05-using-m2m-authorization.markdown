@@ -86,7 +86,7 @@ A machine-to-machine application requires the selection of at least one API. Thi
 
 ![Select API](https://cdn.auth0.com/blog/m2m/3-select-api.png)
 
-You can create audiences for your APIs and protected resources in the [API](https://manage.auth0.com/#/apis) section of the Auth0 Dashboard.
+You can create audiences for your APIs and protected resources in the [API](https://manage.auth0.com/#/apis) section of the Auth0 Dashboard. You can enable or disable these APIs in the `APIs` tab of your application.
 
 ### Granular Permissions in Auth0
 Thanks to the use of [rules in Auth0](https://auth0.com/docs/rules/current), it is very easy to have granular permissions for machine-to-machine communications. When a client uses the client credentials grant, a rule can be run to check for any data in the request, including `scopes` or `roles`. With this information, you can choose to either grant or deny the request.
