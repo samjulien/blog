@@ -1,7 +1,8 @@
 ---
 layout: post
-title: "Title Should be Less Than 56 characters"
-description: "Description goes here and must be less than 156 characters."
+title: "Title Should be Less Than 60 characters"
+subtitle: "Subtitle shown underneath the title on the post itself - brief description - must be less than 110 characters."
+description: "Rich description that shows in search engines and on blog feed goes here - must be less than 160 characters."
 date: 2018-mm-dd 8:30
 category: Technical guide, Thing, Thing2, PR, Press
 (!CanRemoveIfFalse)press_release: true
