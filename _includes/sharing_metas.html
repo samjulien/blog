@@ -19,6 +19,8 @@
 
 {% if page.description %}
 <meta property="og:description" content="{{ page.description | markdownify | strip_html | truncate: 140 | strip_newlines }}" />
+{% elsif page.subtitle %}
+<meta property="og:description" content="{{ page.subtitle | markdownify | strip_html | truncate: 140 | strip_newlines }}" />
 {% else %}
 <meta property="og:description" content="{{ site.description }}" />
 {% endif %}
@@ -47,6 +49,8 @@
 {% endif %}
 {% if page.description %}
   <meta name="twitter:description" content="{{ page.description }}">
+{% elsif page.subtitle %}
+  <meta name="twitter:description" content="{{ page.subtitle }}">
 {% else %}
   <meta name="twitter:description" content="{{ site.description }}">
 {% endif %}

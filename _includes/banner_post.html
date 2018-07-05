@@ -15,7 +15,12 @@
 
         <h1 class="entry-title"><a href="{{ site.baseurl }}{{current.url}}" title="Published: {{ current.date | date: "%B %d, %Y" }}"><span itemprop="headline">{{ current.title }}</span></a></h1>
 
-        {% if current.description %}
+        {% if current.subtitle %}
+        <div class="entry-content">
+          {{ current.subtitle | markdownify }}
+        </div>
+
+        {% elsif current.description %}
         <div class="entry-content" itemprop="description">
           {{ current.description | markdownify }}
         </div>
