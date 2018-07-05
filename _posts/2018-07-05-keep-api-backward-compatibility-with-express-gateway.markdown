@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Keep API Backward Compatibility with Express Gateway"
-description: "Learn how an API gateway can help you retaining API compatibility with old clients while evolving the product according to the new needs of your business."
+description: "Learn how this API gateway, built on Express.js, can help you retain API compatibility with old clients while evolving the product according to new business needs."
 date: 2018-07-05 08:30
 category: Technical Guide, Backend, NodeJS
 author:
