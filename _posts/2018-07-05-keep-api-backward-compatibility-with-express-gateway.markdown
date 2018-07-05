@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "Keep API Backward Compatibility with Express Gateway"
-description: "Express Gateway is an API gateway that sits at the heart of any microservices architecture and that can help you keep your APIs backward compatible."
-date: 2018-07-03 08:30
+description: "Learn how an API gateway can help you retaining API compatibility with old clients while evolving the product according to the new needs of your business."
+date: 2018-07-05 08:30
 category: Technical Guide, Backend, NodeJS
 author:
   name: "Vincenzo Chianese"
@@ -39,7 +39,7 @@ related:
 
 ## Why Do I Need Backward-Compatible APIs?
 
-Systems evolve continuously, and so do their WebAPIs. As they represent the interface for external clients to interact with your system, they're the first line **reflecting changes** in your organisation.
+Systems evolve continuously, and so do their WebAPIs. As they represent the interface for external clients to interact with your system, they're the first line **reflecting changes** in your organization.
 
 Such API changes can happen for a number of reasons. Technological advancements, change in the line of business, important bug fixes, and so on.
 
