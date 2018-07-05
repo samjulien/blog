@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "Title - less than 60 characters"
-description: "Shorter shown underneath the title on the post itself - brief description - must be less than 110 characters."
-metadescription: "Richer, longer description that shows in search engines and on blog feed - must be less than 160 characters."
+description: "Shorter shown underneath the title on the post itself and on blog feed - must be less than 110 characters."
+metadescription: "Richer, longer description that shows in search engines - must be less than 160 characters."
 date: 2018-mm-dd 8:30
 category: Technical guide, Thing, Thing2, PR, Press
 (!CanRemoveIfFalse)press_release: true
