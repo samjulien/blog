@@ -110,7 +110,7 @@ In this rule, access to a specific client ID has been denied. Since rules are Ja
 If you don't need the flexibility of rules, you can still achieve a level of granularity with scopes. These can be enabled on a per API and per application/client basis.
 
 ## Common Use Cases for M2M Communications
-In this section, ee will take a look at common scenarios where M2M communications might make sense.
+In this section, we will take a look at common scenarios where M2M communications might make sense.
 
 ### Backend-to-Backend (Services/Daemons)
 This is one of the most common scenarios. Let's say you have different internal services that produce data in the form of logs. You are storing those logs locally in your own data warehouse. However, as part of your policies, you also want those logs to be stored offsite in a cold storage solution. You send those logs over the internet to the cold storage service in a different cloud provider. To authorize log storage from different services in your network, you use the client credentials grant, giving each client a client ID and a client secret.
