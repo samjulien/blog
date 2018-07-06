@@ -29,6 +29,7 @@ We had a blast at [Identiverse 2018](https://identiverse.com/) (formerly Cloud I
 
 <p style="text-align: center;">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2-roRnqW3Jw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</p>
 
 There was a definite trend towards 'Customer Identity' (identity solutions for application developers), says [Auth0 Head of Content and Guidance Mike Fitzbaxter](https://twitter.com/mikefitzbaxter). "This was in contrast to the normal Enterprise-centric Identity solutions which are predominantly showcased at these events. It was an exciting justification of Auth0's product vision.”
 
@@ -38,6 +39,7 @@ There was a definite trend towards 'Customer Identity' (identity solutions for a
 
 <p style="text-align: center;">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-coC5zusfRc?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</p>
 
 {% include tweet_quote.html quote_text="Check out @vibronet’s #Identiverse 2018 interview with @Solution_Review on his move to @auth0 and open standards in identity + our conference recap!" %}
 
