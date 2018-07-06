@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Strong Emphasis on ‘Customer Identity’ at Identiverse 2018"
-description: "Identiverse 2018 recap: Focus on customer identity and access management (CIAM) for developers + Solutions Review interview with Vittorio Bertocci (video)."
+description: "Identiverse 2018 recap: Focus on Customer Identity and Access Management (CIAM) for developers + Solutions Review interview with Vittorio Bertocci (video)."
 date: 2018-07-06 10:30
 category: Announcements, Press
 is_non-tech: true
@@ -28,8 +28,7 @@ related:
 We had a blast at [Identiverse 2018](https://identiverse.com/) (formerly Cloud Identity Summit) in Boston last week and we had an amazing new booth specially designed for this event. The energy at the world’s largest gathering of identity professionals was inspiring. 
 
 <p style="text-align: center;">
-  <iframe src="https://youtu.be/2-roRnqW3Jw" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/2-roRnqW3Jw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 There was a definite trend towards 'Customer Identity' (identity solutions for application developers), says [Auth0 Head of Content and Guidance Mike Fitzbaxter](https://twitter.com/mikefitzbaxter). "This was in contrast to the normal Enterprise-centric Identity solutions which are predominantly showcased at these events. It was an exciting justification of Auth0's product vision.”
 
@@ -38,8 +37,7 @@ There was a definite trend towards 'Customer Identity' (identity solutions for a
 [Solutions Review’s Doug Atkinson](https://solutionsreview.com/author/solutions/) caught up with [Auth0 Principal Architect Vittorio Bertocci](https://auth0.com/blog/auth0-welcomes-vittorio-bertocci/) at the conference. They spoke about Vittorio’s recent move from Microsoft to Auth0 and the need for open standards in identity.
 
 <p style="text-align: center;">
-  <iframe src="https://youtu.be/-coC5zusfRc" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-coC5zusfRc?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 {% include tweet_quote.html quote_text="Check out @vibronet’s #Identiverse 2018 interview with @Solution_Review on his move to @auth0 and open standards in identity + our conference recap!" %}
 
