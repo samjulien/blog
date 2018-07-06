@@ -3,16 +3,16 @@ layout: post
 title: "Three Strategies to Streamline Your Data Migration"
 description: "Organize your workflow and clearly explain changes to your users for greater success."
 longdescription: "Data is the foundation of a company's success. It provides the basis for customer insights, corporate strategy, and operational efficiency. The tips in this article will help ensure that the movement of your most sensitive information is secure, organized, and accessible to your users."
-date: 2018-04-19 12:30
-category: Hot Topic, Trends
+date: 2018-07-06 12:30
+category: Growth, Data
 author:
-  name: Change Me
+  name: Martin Gontovnikas
   url: http://twitter.com/mgonto
   mail: gonto@auth0.com
   avatar: https://www.gravatar.com/avatar/df6c864847fba9687d962cb80b482764??s=60
 design:
-  image: https://cdn.auth0.com/blog/what-are-msp/logo.png
-  bg_color: "#29335C"
+  image: https://cdn.auth0.com/blog/data-migration/data-migration-logo.png
+  bg_color: "#29335c"
 tags:
 - data
 - migration
