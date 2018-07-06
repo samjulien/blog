@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Using Machine to Machine (M2M) Authorization"
-description: "APIs are first-class citizens at Auth0. Learn how to set up non-interactive apps to perform machine to machine API authorization."
+description: "How to set up non-interactive apps using the client credentials grant and Auth0 to perform IoT device, CLI tool, and more machine to machine API authorization."
 date: 2018-07-05 12:30
 category: Technical Guide, Identity
 author:
@@ -78,13 +78,13 @@ Content-Type: application/json
 }
 ```
 
-In Auth0, to use the client credentials grant, you can create a new "machine to machine" application from the dashboard:
+In Auth0, to use the client credentials grant, you can [create a new "machine to machine" application from the dashboard:](https://auth0.com/docs/applications/machine-to-machine)
 
 ![Machine to Machine in the Auth0 Dashboard](https://cdn.auth0.com/blog/m2m/2-create.png)
 
 A machine to machine application requires the selection of at least one API. This is the API that gets selected through the `audience` claim in the HTTP request above.
 
-![Select API](https://cdn.auth0.com/blog/m2m/3-select-api.png)
+![Select API in the Auth0 Dashboard](https://cdn.auth0.com/blog/m2m/3-select-api.png)
 
 You can create audiences for your APIs and protected resources in the [API](https://manage.auth0.com/#/apis) section of the Auth0 Dashboard. You can enable or disable these APIs in the `APIs` tab of your application.
 
