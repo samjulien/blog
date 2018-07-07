@@ -2,7 +2,7 @@
 layout: post
 title: "Implementing JWT Authentication on Spring Boot APIs"
 description: "Let's learn the correct way to secure Spring Boot RESTful APIs with JWTs."
-date: 2017-08-10 18:23
+date: 2018-07-07 18:23
 category: Technical Guide, Java, Spring Boot
 author:
   name: "Vladimir Fomene"
