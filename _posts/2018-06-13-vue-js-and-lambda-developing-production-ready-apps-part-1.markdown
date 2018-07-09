@@ -634,7 +634,7 @@ export default {
     Auth0.configure({
       domain: '<YOUR-AUTH0-DOMAIN>',
       clientID: '<AN-AUTH0-CLIENT-ID>',
-      audience: '<YOUR-AUTH0-DOMAIN>/userinfo',
+      audience: 'https://<YOUR-AUTH0-DOMAIN>/userinfo',
       redirectUri: 'http://localhost:8080/callback',
       responseType: 'token id_token',
       scope: 'openid profile'
@@ -835,7 +835,7 @@ If you run both your frontend app (by running `npm run dev` from the `client` di
 
 ![Vue.js route secured with Auth0](https://cdn.auth0.com/blog/vuejs-lambda/vuejs-secured-area.png)
 
-**Note:** If you don't authenticate yourself before trying to access this route, you will get redirected to the main route. This happens because you defined a guard condition on the `beforeEnter` hook that calls `this.$router.push('/')` for unauthenticated users. 
+**Note:** If you don't authenticate yourself before trying to access this route, you will get redirected to the main route. This happens because you defined a guard condition on the `beforeEnter` hook that calls `next('/')` for unauthenticated users. 
 
 Ok, then. From the frontend perspective, you have enough features. So, now it's time to focus on refactoring your backend application to integrate it with Auth0. But, as always, not before saving your progress:
 
@@ -849,7 +849,7 @@ As you have finished integrating your frontend application with Auth0, the only 
 
 ```bash
 # make sure you are in the backend directory
-cd ./backend
+cd ../backend
 
 # install dependencies
 npm i express-jwt jwks-rsa auth0
