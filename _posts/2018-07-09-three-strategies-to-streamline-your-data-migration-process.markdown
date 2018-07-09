@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "Three Strategies to Streamline Your Data Migration"
-description: "Organize your workflow and clearly explain changes to your users for greater success."
-longdescription: "Data is the foundation of a company's success. It provides the basis for customer insights, corporate strategy, and operational efficiency. The tips in this article will help ensure that the movement of your most sensitive information is secure, organized, and accessible to your users."
-date: 2018-07-06 12:30
+title: "Three Strategies to Streamline Your Data Migration Process"
+description: "Three tips: Data migration process - workflow and project management tools, user identity and access management, and migration best practices to ensure a secure and organized process."
+date: 2018-07-09 12:30
 category: Growth, Data
 author:
   name: Martin Gontovnikas
@@ -23,15 +22,15 @@ tags:
 - business
 related:
 - 2018-02-05-managed-service-providers-myths
-- 2018-02-02-3-ways-to-get-an-iam-budget-in-2018
-- 2017-12-08-how-poor-identity-access-management-equals-security-breaches
+- 2018-03-09-3-reasons-your-data-integration-plan-is-important
+- 2018-07-02-breaking-down-master-data-management
 ---
 
 Data is the foundation of a company's success. It provides the basis for customer insights, corporate strategy, and operational efficiency. As more companies embark on [digital transformation](https://auth0.com/app-modernization), migrating this critical information — particularly sensitive customer data — to a new platform(s) can be a burden. Moving data can unearth inaccuracies, unknowns, and/or duplicate entries, making it insufficient to use and requiring significant changes. 
 
 The tips below will help ensure that the movement of your most sensitive information is secure, organized, and accessible to your users.
 
-{% include tweet_quote.html quote_text="Data is the foundation of a company's success. The in this post will help ensure that the movement of your most sensitive information is secure, organized, and accessible to your users!" %}
+{% include tweet_quote.html quote_text="Data is the foundation of a company's success. This post will help ensure that the movement of your most sensitive information is secure, organized, and accessible to your users!" %}
 
 ---
 
@@ -49,7 +48,7 @@ Making sure your end users understand how you are securing their data after you'
 
 To address these potential issues, the following strategies focus on workflow, user access, and communications.
 
-## 1. Organize Your Workflow
+## 1. Organize Your Workflow and Project Management
 To clearly understand and outline the steps required for a successful data migration, take time to consider the following:
 
 - What will cause the least disruption to the daily operations of your system? That is, when are the best times to work on and/or migrate data sets of highest sensitivity or usage?
@@ -82,7 +81,7 @@ Understanding who is accessing and updating portions of sensitive customer data 
 
 Because of the complexity and urgency of this task, many teams choose to outsource their [identity management](https://auth0.com/app-modernization) when migrating data, particularly as part of a larger [digital transformation](https://auth0.com/learn/identity-management-drives-digital-transformation/).
 
-Auth0's user management [dashboard](https://auth0.com/b2e-identity-management-for-employees) allows a systems administrator to authorize new users, track their behaviors, and evaluate their performance according to the company's policies.
+[Auth0's user management dashboard](https://auth0.com/b2e-identity-management-for-employees) allows a systems administrator to authorize new users, track their behaviors, and evaluate their performance according to the company's policies.
 
 ![Auth0 Dashboard](https://cdn.auth0.com/blog/data-migration/2-auth0-manage.png)
 
@@ -91,12 +90,6 @@ Auth0's user management [dashboard](https://auth0.com/b2e-identity-management-fo
 In the Auth0 dashboard an administrator will have a clear view of users at any point. In addition, Auth0's identity platform offers enhanced options like multi-factor authentication, anomaly detection, and advanced logging. For example, if the administrator notices a certain user has a series of failed login attempts, they can [block access](https://auth0.com/docs/anomaly-detection) to investigate further. 
 
 From a user perspective, this function is an invisible and painless part of their workflow. 
-
-Additional tools for authorizing your users include:
-
-- [Okta's](https://developer.okta.com/) developer suite
-- [Centrify](https://www.centrify.com/products/application-services/app-catalog/box/) for corporate Box accounts
-- [Ping](https://www.pingidentity.com/en.html) offers SSO, MFA, and more
 
 ## 3. Explain Your Data Policy Changes
 If you can clearly communicate your data migration and updated data usage policies to your users, you will gain their trust — and an edge over your competitors. At the moment, very few company blogs or statements spell out the details of data usage in a digestible format — as we've recently seen with Facebook's [confusing policies](https://www.wired.com/story/mark-zuckerberg-congress-day-one/). 
