@@ -1,9 +1,8 @@
 ---
 layout: post
 title: "Upgrade Your AngularJS Authentication Service"
-description: "In this article, we’re going to talk about two difficult subjects: ngUpgrade and authentication."
-longdescription: "In this article, we’re going to talk about two difficult subjects: ngUpgrade and authentication. First, we’ll cover the foundations of upgrading a real application from AngularJS to Angular. Then, we’ll look at a practical example of upgrading AngularJS authentication strategies to Angular."
-date: 2018-05-22 17:28
+description: "Learn about upgrading an application from AngularJS to the new Angular. As well as how to upgrade AngularJS authentication strategies to Angular."
+date: 2018-07-10 08:30
 category: Technical Guide, Angular
 author:
   name: "Sam Julien"
@@ -18,9 +17,11 @@ tags:
 - ngupgrade
 - authentication
 - auth0
+- ngupgrade
 related:
-- 2016-09-29-angular-2-authentication
+- 2018-04-24-new-features-for-developing-angularjs-applications-part-1
 - 2017-06-28-real-world-angular-series-part-1
+- 2018-03-13-using-python-flask-and-angular-to-build-modern-apps-part-1
 ---
 
 **TL;DR:** In this article, we’re going to talk about two notoriously difficult subjects very near and dear to my heart: ngUpgrade and authentication. First, we’ll cover the foundations of upgrading a real application from AngularJS to Angular. Then, we’ll look at a practical example of upgrading AngularJS authentication strategies to Angular. We’ll look at a sample app that uses machine-to-machine authentication with Auth0.
@@ -37,7 +38,7 @@ That’s also why I’m writing articles like this one — to help you save 
 
 ### ngUpgrade Background
 
-Let’s start with a bit of background. AngularJS (1.x) is going to be entering a [long term stable schedule](https://blog.angular.io/stable-angularjs-and-long-term-support-7e077635ee9c) starting July 1st, 2018, and lasting through June 30, 2021. The last stable version is going to be version 1.7. So, where does that leave us? That leaves us with the new Angular (2+). You’ve now got this bridge period to determine if you need to upgrade and, if so, to complete that upgrade using the ngUpgrade library.
+Let’s start with a bit of background. AngularJS (1.x) entered a [long term stable schedule](https://blog.angular.io/stable-angularjs-and-long-term-support-7e077635ee9c) on July 1st, 2018 that will last until June 30, 2021. The last stable version is going to be version 1.7. So, where does that leave us? That leaves us with the new Angular (2+). You’ve now got this bridge period to determine if you need to upgrade and, if so, to complete that upgrade using the ngUpgrade library.
 
 Most of the time, you should upgrade, but there are a handful of exceptions. The main exception is if your application is just going to lay dormant from now on. If you’re never going to do any more feature development on it, you don’t need to upgrade. The AngularJS packages and CDNs will stay around forever. You don’t need to worry about your legacy code evaporating into thin air and being unable to do anything about it.
 
