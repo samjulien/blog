@@ -7,7 +7,7 @@ date: "2018-06-12 08:30"
 category: Technical Guide, Angular
 author:
   name: "Ravi Kiran"
-  url: "sravi_kiran"
+  url: "#"
   mail: "yuvakiran2009@gmail.com"
   avatar: "https://cdn.auth0.com/blog/guest-author/ravi_kiran.jpeg"
 design:
