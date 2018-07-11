@@ -6,7 +6,7 @@ date: 2018-07-21 08:30
 category: Technical Guide, Mobile, Ionic
 author:
   name: "Indermohan Singh"
-  url: "imsinghk7"
+  url: "https://twitter.com/imsinghk7"
   mail: "indermohansinghk7@gmail.com"
   avatar: "https://cdn.auth0.com/blog/guest-authors/indermohan-singh.jpg"
 design:
