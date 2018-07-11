@@ -1269,4 +1269,4 @@ In this article, you created an audio player mobile app with Ionic. You used RxJ
 
 In a future opportunity, you will create a backend using Node.js and Google Cloud to serve dynamic audio content to your audio player. To avoid spending too much time around configuring servers to host your backend, you will take advantage of [Webtask](https://webtask.io), a serverless solution for Node.js apps.
 
-I hope you enjoyed this article. Stay tuned for next part!
+I hope you enjoyed this article. Stay tuned for the next part!
