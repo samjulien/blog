@@ -25,7 +25,7 @@ related:
 - 2016-02-18-ionic-2-authentication-how-to-secure-your-mobile-app-with-jwt
 ---
 
-**TL;DR:** In this article, you will learn how to implement a mobile audio player app using [**Angular**](https://angular.io) and [**Ionic**](https://ionic.io). You will handle audio operations using [_RxJS_](https://github.com/ReactiveX/rxjs) and _Observables_, and you will also explore how you can manage application's state with [**NgRx**](https://github.com/ngrx/platform). To secure your application, you will use [**Auth0**](https://auth0.com). If needed, [you can find the final code on this GitHub repository](https://github.com/auth0-blog/ionic-audio-player).
+**TL;DR:** In this article, you will learn how to implement a mobile audio player app using [**Angular**](https://angular.io) and [**Ionic framework**](https://ionicframework.com/). You will handle audio operations using [_RxJS_](https://github.com/ReactiveX/rxjs) and _Observables_, and you will also explore how you can manage application's state with [**NgRx**](https://github.com/ngrx/platform). To secure your application, you will use [**Auth0**](https://auth0.com). If needed, [you can find the final code on this GitHub repository](https://github.com/auth0-blog/ionic-audio-player).
 
 ## Introduction
 
