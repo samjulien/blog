@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Building Audio Players with Angular, Ionic, RxJS, and NgRx"
-description: "In this article, you will learn how to develop modern mobile apps with Angular, Ionic, RxJS and NgRx."
-date: 2018-07-21 08:30
+title: "Building An Audio Player App with Ionic, Angular, RxJS, and NgRx"
+description: "Learn how to develop modern mobile apps with Angular, Ionic, RxJS and NgRx. Follow this tutorial to create a mobile audio player app."
+date: 2018-07-12 08:30
 category: Technical Guide, Mobile, Ionic
 author:
   name: "Indermohan Singh"
@@ -11,7 +11,7 @@ author:
   avatar: "https://cdn.auth0.com/blog/guest-authors/indermohan-singh.jpg"
 design:
   bg_color: "#2C508A"
-  image: https://cdn.auth0.com/blog/get-started-ionic/logo.png
+  image: https://cdn.auth0.com/blog/logos/ionic-framework.png
 tags:
 - ionic
 - angular
@@ -25,7 +25,7 @@ related:
 - 2016-02-18-ionic-2-authentication-how-to-secure-your-mobile-app-with-jwt
 ---
 
-**TL;DR:** In this article, you will learn how to implement a mobile audio player app using [**Angular**](https://angular.io) and [**Ionic framework**](https://ionicframework.com/). You will handle audio operations using [_RxJS_](https://github.com/ReactiveX/rxjs) and _Observables_, and you will also explore how you can manage application's state with [**NgRx**](https://github.com/ngrx/platform). To secure your application, you will use [**Auth0**](https://auth0.com). If needed, [you can find the final code on this GitHub repository](https://github.com/auth0-blog/ionic-audio-player).
+**TL;DR:** In this article, you will learn how to implement a mobile audio player app using [**Ionic framework**](https://ionicframework.com/) and [**Angular**](https://angular.io). You will handle audio operations using [_RxJS_](https://github.com/ReactiveX/rxjs) and _Observables_, and you will also explore how you can manage application's state with [**NgRx**](https://github.com/ngrx/platform). To secure your application, you will use [**Auth0**](https://auth0.com). If needed, [you can find the final code on this GitHub repository](https://github.com/auth0-blog/ionic-audio-player).
 
 ## Introduction
 
@@ -602,9 +602,9 @@ export class MyApp {
 
 ## Developing the Audio Player UI on Ionic
 
-So far, you wrote code that is not related to the user interface (UI) of your application. In this section, you will design the UI and its behavior. In the end, your application will look like this:
+So far, you have written code that is not related to the front-end and user interface (UI) of your application. In this section, you will design the UI and its behavior. In the end, your application will look like this:
 
-![The Ionic audio player that you will create](https://cdn.auth0.com/blog/ionic-audio-player/final-app.png)
+![Ionic audio player demo app UI](https://cdn.auth0.com/blog/ionic-audio-player/final-app.png)
 
 ### The Audio Player HTML
 
@@ -1261,12 +1261,12 @@ ionic cordova run ios
 ionic cordova run android
 ```
 
-{% include tweet_quote.html quote_text="I just built a mobile audio player with @Ionicframework, @angular, RxJS, and NgRx!!!" %}
+{% include tweet_quote.html quote_text="I just built a mobile audio player with @Ionicframework, @angular, #RxJS, and #NgRx!!!" %}
 
 ## Conclusion and Next Steps
 
-In this article, you created an audio player mobile app with Ionic. You used RxJS to develop audio playback features. Along with that, you used NgRx to manage the state of the application. Besides that, you also used Auth0 to handle user authentication in your mobile app. With this, you have finished developing the first version of the application with static audio content.
+In this article, you created a mobile audio player app with Ionic. You used RxJS to develop audio playback features. Along with that, you used NgRx to manage the state of the application. Besides that, you also used Auth0 to handle user authentication in your mobile app. With this, you have finished developing the first version of the application with static audio content.
 
-In a future opportunity, you will create a backend using Node.js and Google Cloud to serve dynamic audio content to your audio player. To avoid spending too much time around configuring servers to host your backend, you will take advantage of [Webtask](https://webtask.io), a serverless solution for Node.js apps.
+In an upcoming, follow-up article, you will create a backend using Node.js and Google Cloud to serve dynamic audio content to your audio player. To avoid spending too much time around configuring servers to host your backend, you will take advantage of [Webtask](https://webtask.io), a serverless solution for Node.js apps.
 
 I hope you enjoyed this article. Stay tuned for the next part!
