@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Beach Reads Recommended by Auziros
-description: NNeed a good read for the beach? Reading’s a big part of Auth0 culture. Here are a few book recommendations from Auziros from history and business to fiction!
+description: Need a good read for the beach? Reading’s a big part of Auth0 culture. Here are a few book recommendations from Auziros from history and business to fiction!
 date: 2018-07-13 07:00
 category: Announcements, Press
 is_non-tech: true
