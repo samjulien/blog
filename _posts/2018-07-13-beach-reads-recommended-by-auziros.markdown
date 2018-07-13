@@ -3,7 +3,7 @@ layout: post
 title: Beach Reads Recommended by Auziros
 description: Need a good read for the beach? Reading is a big part of Auth0 culture. Here are a few book recommendations from Auziros from history and business to fiction!
 date: 2018-07-13 07:00
-category: Announcements, Press
+category: Announcements, Press, Culture
 is_non-tech: true
 author:
   name: "Jenny O'Brien"
