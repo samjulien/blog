@@ -2,6 +2,8 @@
 <meta property="fb:app_id" content="534074790006350"/>
 {% if page.is_tag_index or page.switch_index %}
   <meta property="og:title" content="{{ page.tag | capitalize }} - Auth0 Blog" />
+{% elsif page.metatitle %}
+  <meta property="og:title" content="{{ page.metatitle }}">
 {% else %}
   <meta property="og:title" content="{{ page.title }}" />
 {% endif %}
@@ -34,7 +36,9 @@
 <!-- Twitter Cards -->
 <meta name="twitter:site" content="@auth0">
 <meta name="twitter:creator" content="@auth0">
-{% if page.title %}
+{% if page.metatitle %}
+  <meta name="twitter:title" content="{{ page.metatitle }}">
+{% elsif page.title %}
   <meta name="twitter:title" content="{{ page.title }}">
 {% else %}
   {% if page.is_tag_index or page.switch_index %}
