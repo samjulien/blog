@@ -25,7 +25,15 @@ related:
 
 ---
 
-![Beach Reads Recommended by Auziros](https://cdn.auth0.com/blog/beach-reads/beach-reads-auziros-auth0.png)
+<figure style="text-align: center; margin-bottom: 40px;">
+  <img style="margin: 40px 0 10px 0;" src="https://cdn.auth0.com/blog/beach-reads/beach-reads-auziros-auth0.png" alt="Beach Reads Recommended by Auziros">
+  <figcaption style="text-align: left;">
+  <p style="font-size: 14px; line-height: 22px; margin-bottom: 10px;">
+    Yvonne Wilson, Senior Director, Governance, Risk & Compliance at Auth0, digs into the setting of Auth0’s 2018 company-wide offsite at the [Westin Playa Bonita Hotel](http://www.starwoodhotels.com/westin/property/overview/index.html?propertyID=3386&language=en_US) in Panama.
+     <p style="font-size: 14px; line-height: 10px; font-style: italic;">Auth0 photo/[Márton Áts](http://www.martonats.com/)</p>
+  </p>
+    </figcaption>
+</figure>
 
 Someone’s always suggesting that you read something at Auth0. Since this year’s company offsite took Auth0 to the Pacific Beach in Panama, I thought I’d pull together a list of book recommendations to fill your summer with thought and intrigue.
 
