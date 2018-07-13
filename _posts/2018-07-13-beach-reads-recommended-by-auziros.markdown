@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Beach Reads Recommended by Auziros
-description: Need a good read for the beach? Reading’s a big part of Auth0 culture. Here are a few book recommendations from Auziros from history and business to fiction!
+description: NNeed a good read for the beach? Reading’s a big part of Auth0 culture. Here are a few book recommendations from Auziros from history and business to fiction!
 date: 2018-07-13 07:00
 category: Announcements, Press
 is_non-tech: true
@@ -12,19 +12,22 @@ author:
   avatar: "https://cdn.auth0.com/blog/avatars/jenny-obrien.png"
 design:
   bg_color: "#222228"
-  image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
+  image: https://cdn.auth0.com/blog/beach-reads/beach-reads-auziros-auth0-logo.png
 tags:
 - books
 - auth0
 - read
+- beach
 related:
-- 2018-04-16-auth0-wins-infosec-2018-editors-choice-award
+- 2017-08-14-our-culture-and-values-at-auth0
 - 2018-01-29-auth0-announces-record-year
-- 2018-06-25-auth0-debuts-as-a-visionary-in-gartner-mq-for-access-management
+- 2017-11-08-auth0-ranked-in-top10-employer-brands
 
 ---
 
-Someone’s always suggesting that you read something at Auth0. Since this year’s company offsite took Auth0 to the Pacific Beach in Panama, I thought I’d pull together a list of recommendations to fill your summer with thought and intrigue.
+![Beach Reads Recommended by Auziros](https://cdn.auth0.com/blog/beach-reads/beach-reads-auziros-auth0.png)
+
+Someone’s always suggesting that you read something at Auth0. Since this year’s company offsite took Auth0 to the Pacific Beach in Panama, I thought I’d pull together a list of book recommendations to fill your summer with thought and intrigue.
 
 {% include tweet_quote.html quote_text="Reading’s a big part of @auth0 culture. Here’s our list of exciting (and relaxing) reads for your beach pleasure." %}
 
