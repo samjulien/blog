@@ -92,7 +92,7 @@ Route::filter('csrf', function() {
 });
 ```
 
-The CSRF filter allows you to check for a forged request and if it has been forged, it's going to return an HTTP 500 error. You can use Form Classes Token method and CSRF filter together to protect your application routes.
+The CSRF filter allows you to check for a forged request and if it has been forged, it's going to return an HTTP 500 error. You can use the Form Classes Token method and CSRF filter together to protect your application routes.
 
 ## Mass Assignment Vulnerabilities on Laravel
 
@@ -153,7 +153,7 @@ This makes Laravel applications immune to this type of attack.
 
 ![Laravel applications are immune to cross-site scripting attacks.](https://cdn.auth0.com/blog/laravel-mission-critical/no-xss.png)
 
-{% include tweet_quote.html quote_text="With Laravel you can rest assured that the most common attacks will be handled by default." %}
+{% include tweet_quote.html quote_text="With Laravel, you can rest assured that the most common attacks will be handled by default." %}
 
 {% include asides/laravel-backend.markdown %}
 
