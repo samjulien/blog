@@ -691,35 +691,56 @@ Flight I768 goes from no status to "landing" status and, finally, to "landed" st
 
 ## Managing Event Types
 
-The timetable application developed so far responds to server events always in the same way: by updating the specific flight sent in the event's `data` property. How could we manage a different situation?
+The timetable application developed so far responds to server events always in the same way: by updating the specific flight sent in the event `data` property.
 
-Suppose, for example, that we want to remove the row describing a flight after a certain amount of time it landed. How could the server communicate an event that is not a state change? How can the client capture an event saying that it should remove a row from the table?
+But suppose, for example, that we want to remove the row describing a flight `X seconds` after it has landed. How could the server transmit an event that is not related to a flight status change? How can the client capture such event and remove the respective row from the table?
 
-We could think of using the `data` property of the event to specify a distinguishing event information. However, the Server-Sent Events protocol allows us to specify an event so that we can handle different type of events in an easy way. We are talking about the `event` keyword. Let's take a look at how our server's code changes:
+We certainly need to introduce some way to differentiate our server-sent events. We need to provide them with types.
+
+We could think of using the `data` property of the event to specify a differentiating characteristic of the event being sent. However, the Server-Sent Events protocol let us specify an `event` property as part of our message that we can use to easily transmit the event type to the client.
+
+We can then create two types of events, `flightStateUpdate` and `flightRemoval` by sending an `event` property with our response, just like this:
 
 ```javascript
-// server.js
+setTimeout(() => {
+  response.write("event: flightStateUpdate\n");
+  response.write('data: {"flight": "I768", "status": "landed"}');
+  response.write("\n\n");
+}, 6000);
 
-const http = require("http");
+setTimeout(() => {
+  response.write("event: flightRemoval\n");
+  response.write('data: {"flight": "I768"}');
+  response.write("\n\n");
+}, 9000);
+```
+
+It's important that we send the `event` message first so that the client knows what to do with the data it receives much easier. We can think about it as a `command => action` flow.
+
+> Client: First, tell me the type of event I will be handling so that I know what to do once I received the data.
+
+Let's integrate this event-typing in our `server.js` code:
+
+```javascript
+// server/server.js
+
+// ...
+
 http
   .createServer((request, response) => {
-    console.log("Requested url: " + request.url);
+    // ...
 
-    if (request.url.toLowerCase() == "/events") {
-      response.writeHead(200, {
-        Connection: "keep-alive",
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        "Access-Control-Allow-Origin": "*"
-      });
+    if (request.url.toLowerCase() === `/events`) {
+      // ...
+
       setTimeout(() => {
         response.write("event: flightStateUpdate\n");
-        response.write('data: {"flight": "I768", "state": "landing"}');
+        response.write('data: {"flight": "I768", "status": "landing"}');
         response.write("\n\n");
       }, 3000);
       setTimeout(() => {
         response.write("event: flightStateUpdate\n");
-        response.write('data: {"flight": "I768", "state": "landed"}');
+        response.write('data: {"flight": "I768", "status": "landed"}');
         response.write("\n\n");
       }, 6000);
       setTimeout(() => {
@@ -732,37 +753,81 @@ http
       response.end();
     }
   })
-  .listen(5000);
-console.log("Server running at http://127.0.0.1:5000/");
+  .listen(PORT);
+
+console.log(`Server running at http://127.0.0.1:${PORT}/`);
 ```
 
-While composing the response, we added a new `event` string before the `data` string. The `event` keyword helps us to specify the type of event you are sending to the client. In the example shown above, we indicated the `filghtStateUpdate` value for the previously existing events and added a new event with the `flightRemoval` value for `event` keyword. As we can easily imagine, we are saying to our client that some events concern the update of the flight's state and some others the removal of the flight. We will expect that the client will perform different actions for different types of events.
+If we refresh the browser window where the client is live, we will not see any changes happening in the table. That's because we have not adapted our client code to handle event-typing.
 
-So, let's see how the client handles these events:
+The client has to handle these typed events by creating custom event listeners on `this.eventSource` using the `addEventListener` method. For example, to listen to the `flightStateUpdate` server event, we would need to create an event listener like this:
 
-```react
-// src/App.js  
-
-import React, { Component } from 'react';  
-import ReactTable from 'react-table';  
-import { getInitialFlightData } from './DataProvider';  
-import 'react-table/react-table.css';  
-
-class App extends Component {  
- constructor(props) { //Initialization code //... this.eventSource = new EventSource('http://localhost:5000/events'); }  
- componentDidMount() { this.eventSource.addEventListener('flightStateUpdate', (e) => this.updateFlightState(JSON.parse(e.data))); this.eventSource.addEventListener('flightRemoval', (e) => this.removeFlight(JSON.parse(e.data))); }  
- updateFlightState(flightState) { let newData = this.state.data.map((item) => { if (item.flight === flightState.flight) { item.state = flightState.state; } return item; });  
- this.setState(Object.assign({}, {data: newData})); }  
- removeFlight(flightInfo) { const newData = this.state.data.filter((item) => item.flight !== flightInfo.flight);  
- this.setState(Object.assign({}, {data: newData})); }  
- render() { return ( <div className="App"> <ReactTable data={this.state.data} columns={this.columns} /> </div> ); }}  
-
-export default App;  
+```javascript
+this.eventSource.addEventListener("flightStateUpdate", e =>
+  this.updateFlightState(JSON.parse(e.data))
+);
 ```
 
-As we can see, the body of the `componentDidMount()` method has no longer the assignment of the event handler to the `onmessage` property. Now we are using the `addEventListener()` method in order to assign an event handler to a specific event. In this way, we are able to easily assign a specific event handler to each event generated by the server like it was generated by any standard HTML element.
+This is identical to creating regular `DOM` event listeners, but here, we use our custom event names. We can do the same for a `flightRemoval` event or any other event we may need to create.
 
-In the example we assigned the `updateFlightState()` method to the `flightStateUpdate` event, and the `removeFlight()` method to the `flightRemoval` event.
+Let's update our code to listen to our custom server-sent events:
+
+```javascript
+// client/src/App.js
+
+// ...
+
+class App extends Component {
+  constructor(props) {
+    // ...
+    this.eventSource = new EventSource("http://localhost:5000/events");
+  }
+
+  updateFlightState(flightState) {
+    let newData = this.state.data.map(item => {
+      if (item.flight === flightState.flight) {
+        item.status = flightState.status;
+      }
+      return item;
+    });
+
+    this.setState(Object.assign({}, { data: newData }));
+  }
+
+  removeFlight(flightInfo) {
+    const newData = this.state.data.filter(
+      item => item.flight !== flightInfo.flight
+    );
+
+    this.setState(Object.assign({}, { data: newData }));
+  }
+
+  componentDidMount() {
+    this.eventSource.addEventListener("flightStateUpdate", e =>
+      this.updateFlightState(JSON.parse(e.data))
+    );
+    this.eventSource.addEventListener("flightRemoval", e =>
+      this.removeFlight(JSON.parse(e.data))
+    );
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <ReactTable data={this.state.data} columns={this.columns} />
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+The `componentDidMount` method no longer assigns an event handler to the `onmessage` property of `this.eventSource`. Now we are using the `addEventListener()` method in order to assign an event handler to a specific event. We are able to easily assign a specific event handler to each event generated by the server as if it was generated by any standard HTML element.
+
+We assigned the `updateFlightState()` method to the `flightStateUpdate` event. We also created a `removeFlight()` method that uses the JavaScript array `filter` operator to remove a flight. `removeFlight()` is assigned to the `flightRemoval` event.
+
+Refresh the browser and witness not only the status of flight I768 changing, but its row also being removed a few seconds after it has landed.
 
 ## Handling Connection Closure
 
