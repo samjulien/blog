@@ -370,7 +370,7 @@ git cm 'integrating Express and Mongo'
 
 ### Consuming Express Endpoints with Vue.js
 
-Now, you can focus on upgrading your Vue.js app to communicate with these two new endpoints. So, first, you will need a new service that will interface this communication. To define this service, create a new file called `MicroPostsService.js` inside the `./client/src/` directory and add the following code to it:
+Now, you can focus on upgrading your Vue.js app to communicate with these two new endpoints. So, first, you will need a new service that will interface with this communication. To define this service, create a new file called `MicroPostsService.js` inside the `./client/src/` directory and add the following code to it:
 
 ```javascript
 import axios from 'axios'
@@ -787,7 +787,7 @@ export default {
 {% endraw %}
 {% endhighlight %}
 
-As you can see, the idea of this component is to let authenticated users to share their thoughts through the `shareThoughts` method. This method simply delegates the communication process with the backend to the `insertMicroPost` function of the `MicroPostsService` that you defined before. After this service finishes inserting the new micro-post in your backend, the `ShareThoughts` component forwards users to the public page where they can see all micro-posts (including what they just shared).
+As you can see, the idea of this component is to let authenticated users share their thoughts through the `shareThoughts` method. This method simply delegates the communication process with the backend to the `insertMicroPost` function of the `MicroPostsService` that you defined before. After this service finishes inserting the new micro-post in your backend, the `ShareThoughts` component forwards users to the public page where they can see all micro-posts (including what they just shared).
 
 For now, the layout of this component can be as simple as possible. Adding to it a label, an input, and a button will suffice to get the work done. So, still in the `ShareThoughts.vue` file, add the following template:
 
