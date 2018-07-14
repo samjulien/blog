@@ -2,7 +2,8 @@
 layout: post
 title: "Implementing JWT Authentication on Spring Boot APIs"
 description: "Let's learn the correct way to secure Spring Boot RESTful APIs with JWTs."
-date: 2018-07-07 18:23
+date: 2017-08-10 18:23
+updated: 2018-07-17 08:30
 category: Technical Guide, Java, Spring Boot
 author:
   name: "Vladimir Fomene"
@@ -52,7 +53,7 @@ git clone https://github.com/auth0-blog/springboot-auth-updated.git
 cd springboot-auth-updated
 ```
 
-- To ensure compatibility with Java 10, add the following line to the `build.gradle` of the project.
+- To ensure compatibility with Java 10, we have to add the following line to the `build.gradle` file:
 
 ```gradle
 ...
@@ -63,8 +64,7 @@ dependencies {
 }
 ```
 
-- Then run the unsecured RESTful API by either issuing the command `gradle bootRun` from the commandline or by
-building and running the project in your favorite IDE.
+- Then, we run the unsecured RESTful API by either issuing the command `gradle bootRun` from the command line or by building and running the project in our favorite IDE.
 
 If everything works as expected, our RESTful Spring Boot API will be up and running. To test it, we can use a tool like [Postman](https://www.getpostman.com/) or [curl](https://curl.haxx.se/) to issue request to the available endpoints:
 
@@ -107,31 +107,31 @@ import javax.persistence.Id;
 
 @Entity
 public class ApplicationUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String username;
-    private String password;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	private String username;
+	private String password;
 
-    public long getId() {
-        return id;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }
 ```
 
@@ -149,8 +149,7 @@ package com.auth0.samples.authapi.springbootauthupdated.user;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, Long> {
-
-    ApplicationUser findByUsername(String username);
+	ApplicationUser findByUsername(String username);
 }
 ```
 
@@ -171,24 +170,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
 
-    private ApplicationUserRepository applicationUserRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private ApplicationUserRepository applicationUserRepository;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserController(ApplicationUserRepository applicationUserRepository,
-                          BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.applicationUserRepository = applicationUserRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
+	public UserController(ApplicationUserRepository applicationUserRepository,
+						  BCryptPasswordEncoder bCryptPasswordEncoder) {
+		this.applicationUserRepository = applicationUserRepository;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+	}
 
-    @PostMapping("/sign-up")
-    public void signUp(@RequestBody ApplicationUser user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        applicationUserRepository.save(user);
-    }
+	@PostMapping("/sign-up")
+	public void signUp(@RequestBody ApplicationUser user) {
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		applicationUserRepository.save(user);
+	}
 }
 ```
 
-The implementation of the endpoint is quite simple. All it does is encrypt the password of the new user (holding it as plain text wouldn't be a good idea) and then save it to the database. The encryption process is handled by an instance of [`BCryptPasswordEncoder`](https://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/crypto/bcrypt/BCryptPasswordEncoder.html), which is a class that belongs to the Spring Security framework.
+The implementation of the endpoint is quite simple. All it does is encrypt the password of the new user (holding it as plain text wouldn't be a good idea) and then save it to the database. The encryption process is handled by an instance of [`BCryptPasswordEncoder`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/crypto/bcrypt/BCryptPasswordEncoder.html), which is a class that belongs to the Spring Security framework.
 
 Right now we have two gaps in our application:
 
@@ -202,14 +201,14 @@ The first problem we solve by adding the Spring Security framework dependency to
 
 dependencies {
 	...
-	compile('org.springframework.boot:spring-boot-starter-security')
+	compile("org.springframework.boot:spring-boot-starter-security")
 }
 ```
 
 The second problem, the missing `BCryptPasswordEncoder` instance, we solve by implementing a method that generates an instance of `BCryptPasswordEncoder`. This method must be annotated with `@Bean` and we will add it in the `Application` class:
 
 ```java
-package com.auth0.samples.authapi;
+package com.auth0.samples.authapi.springbootauthupdated;
 
 // ... other imports
 import org.springframework.context.annotation.Bean;
@@ -218,7 +217,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 public class Application {
 
-  @Bean
+	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
@@ -235,8 +234,8 @@ To support both authentication and authorization in our application, we are goin
 
 - implement an authentication filter to issue JWTS to users sending credentials,
 - implement an authorization filter to validate requests containing JWTS,
-- create a custom implementation of [`UserDetailsService`](https://docs.spring.io/spring-security/site/docs/4.2.6.RELEASE/apidocs/org/springframework/security/core/userdetails/UserDetailsService.html) to help Spring Security loading user-specific data in the framework,
-- and extend the [`WebSecurityConfigurerAdapter`](https://docs.spring.io/spring-security/site/docs/4.2.5.RELEASE/apidocs/org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter.html) class to customize the security framework to our needs.
+- create a custom implementation of [`UserDetailsService`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/core/userdetails/UserDetailsService.html) to help Spring Security loading user-specific data in the framework,
+- and extend the [`WebSecurityConfigurerAdapter`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter.html) class to customize the security framework to our needs.
 
 Before proceeding to the development of these filters and classes, let's create a new package called `com.auth0.samples.authapi.springbootauthupdated.security`. This package will hold all the code related to our app's security.
 
@@ -256,6 +255,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -271,53 +271,53 @@ import static com.auth0.samples.authapi.springbootauthupdated.security.SecurityC
 import static com.auth0.samples.authapi.springbootauthupdated.security.SecurityConstants.TOKEN_PREFIX;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
+	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+		this.authenticationManager = authenticationManager;
+	}
 
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest req,
-                                                HttpServletResponse res) throws AuthenticationException {
-        try {
-            ApplicationUser creds = new ObjectMapper()
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest req,
+												HttpServletResponse res) throws AuthenticationException {
+		try {
+			ApplicationUser creds = new ObjectMapper()
                     .readValue(req.getInputStream(), ApplicationUser.class);
 
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            creds.getUsername(),
-                            creds.getPassword(),
-                            new ArrayList<>())
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+			return authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(
+							creds.getUsername(),
+							creds.getPassword(),
+							new ArrayList<>())
+			);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
-        String token = JWT.create()
-                .withSubject(((User) auth.getPrincipal()).getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .sign(HMAC512(SECRET.getBytes()));
+	@Override
+	protected void successfulAuthentication(HttpServletRequest req,
+											HttpServletResponse res,
+											FilterChain chain,
+											Authentication auth) throws IOException, ServletException {
 
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
-    }
+		String token = JWT.create()
+				.withSubject(((User) auth.getPrincipal()).getUsername())
+				.withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+				.sign(HMAC512(SECRET.getBytes()));
+		res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+	}
 }
 ```
 
-Note that the authentication filter that we created extends the [`UsernamePasswordAuthenticationFilter` class](https://docs.spring.io/spring-security/site/docs/4.2.6.RELEASE/apidocs/org/springframework/security/web/authentication/UsernamePasswordAuthenticationFilter.html). When we add a new filter to Spring Security, we can explicitly define where in the *filter chain* we want that filter, or we can  let the framework figure it out by itself. By extending the filter provided within the security framework, Spring can automatically identify the best place to put it in the security chain.
+Note that the authentication filter that we created extends the [`UsernamePasswordAuthenticationFilter` class](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/web/authentication/UsernamePasswordAuthenticationFilter.html). When we add a new filter to Spring Security, we can explicitly define where in the *filter chain* we want that filter, or we can let the framework figure it out by itself. By extending the filter provided within the security framework, Spring can automatically identify the best place to put it in the security chain.
 
 Our custom authentication filter overwrites two methods of the base class:
 
-- `attemptAuthentication`: where we parse the user's credentials and issue them to the [`AuthenticationManager`](https://docs.spring.io/spring-security/site/docs/4.2.6.RELEASE/apidocs/org/springframework/security/authentication/AuthenticationManager.html).
+- `attemptAuthentication`: where we parse the user's credentials and issue them to the [`AuthenticationManager`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/authentication/AuthenticationManager.html).
 - `successfulAuthentication`: which is the method called when a user successfully logs in. We use this method to generate a JWT for this user.
 
-Our IDE will probably complain about the code in this class for two reasons. First, because the code imports four constants from a class that we haven't created yet, `SecurityConstants`. Second, because this class generates JWTS with the help of a class called `JWT`, which belongs to a library that we haven't added as dependency to our project.
+Our IDE will probably complain about the code in this class for two reasons. First, because the code imports four constants from a class that we haven't created yet, `SecurityConstants`. Second, because this class generates JWTS with the help of a class called `Jwts`, which belongs to a library that we haven't added as dependency to our project.
 
 Let's solve the missing dependency first. In the `./build.gradle` file, let's add the following line of code:
 
@@ -336,12 +336,11 @@ This will add the [Java JWT: JSON Web Token for Java and Android library](https:
 package com.auth0.samples.authapi.springbootauthupdated.security;
 
 public class SecurityConstants {
-
-    public static final String SECRET = "SecretKeyToGenJWTs";
-    public static final long EXPIRATION_TIME = 864_000_000; // 10 days
-    public static final String TOKEN_PREFIX = "Bearer ";
-    public static final String HEADER_STRING = "Authorization";
-    public static final String SIGN_UP_URL = "/users/sign-up";
+	public static final String SECRET = "SecretKeyToGenJWTs";
+	public static final long EXPIRATION_TIME = 864_000_000; // 10 days
+	public static final String TOKEN_PREFIX = "Bearer ";
+	public static final String HEADER_STRING = "Authorization";
+	public static final String SIGN_UP_URL = "/users/sign-up";
 }
 ```
 
@@ -349,11 +348,10 @@ This class contains all four constants referenced by the `JWTAuthenticationFilte
 
 ### The Authorization Filter
 
-As we have implemented the filter responsible for authenticating users, we now need to implement the filter responsible for user authorization. We create this filter as a new class, called `JWTAuthorizationFilter`, in the `package com.auth0.samples.authapi.springbootauthupdated.security` package:
+As we have implemented the filter responsible for authenticating users, we now need to implement the filter responsible for user authorization. We create this filter as a new class, called `JWTAuthorizationFilter`, in the `com.auth0.samples.authapi.springbootauthupdated.security` package:
 
 ```java
 package com.auth0.samples.authapi.springbootauthupdated.security;
-
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -361,6 +359,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -374,48 +373,47 @@ import static com.auth0.samples.authapi.springbootauthupdated.security.SecurityC
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
-        super(authManager);
-    }
+	public JWTAuthorizationFilter(AuthenticationManager authManager) {
+		super(authManager);
+	}
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest req,
-                                    HttpServletResponse res,
-                                    FilterChain chain) throws IOException, ServletException {
-        String header = req.getHeader(HEADER_STRING);
+	@Override
+	protected void doFilterInternal(HttpServletRequest req,
+									HttpServletResponse res,
+									FilterChain chain) throws IOException, ServletException {
+		String header = req.getHeader(HEADER_STRING);
 
-        if (header == null || !header.startsWith(TOKEN_PREFIX)) {
-            chain.doFilter(req, res);
-            return;
-        }
+		if (header == null || !header.startsWith(TOKEN_PREFIX)) {
+			chain.doFilter(req, res);
+			return;
+		}
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+		UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(req, res);
-    }
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		chain.doFilter(req, res);
+	}
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(HEADER_STRING);
-        if (token != null) {
-            // parse the token
-            String user = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
-                    .build()
-                    .verify(token.replace(TOKEN_PREFIX, ""))
-                    .getSubject();
+	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+		String token = request.getHeader(HEADER_STRING);
+		if (token != null) {
+			// parse the token.
+			String user = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
+					.build()
+					.verify(token.replace(TOKEN_PREFIX, ""))
+					.getSubject();
 
-
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-            }
-            return null;
-        }
-        return null;
-    }
+			if (user != null) {
+				return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+			}
+			return null;
+		}
+		return null;
+	}
 }
 ```
 
-We have extended the [`BasicAuthenticationFilter`](https://docs.spring.io/spring-security/site/docs/4.2.4.RELEASE/apidocs/org/springframework/security/web/authentication/www/BasicAuthenticationFilter.html) to make Spring replace it in the *filter chain* with our custom implementation. The most important part of the filter that we've implemented is the private `getAuthentication` method. This method reads the JWT from the `Authorization` header, and then uses [`JWT`](https://github.com/auth0/java-jwt/blob/master/lib/src/main/java/com/auth0/jwt/JWT.java) to validate the token. If everything is in place, we set the user in the [`SecurityContext`](https://docs.spring.io/spring-security/site/docs/4.2.4.RELEASE/apidocs/org/springframework/security/core/context/SecurityContext.html) and allow the request to move on.
+We have extended the [`BasicAuthenticationFilter`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/web/authentication/www/BasicAuthenticationFilter.html) to make Spring replace it in the *filter chain* with our custom implementation. The most important part of the filter that we've implemented is the private `getAuthentication` method. This method reads the JWT from the `Authorization` header, and then uses [`JWT`](https://github.com/auth0/java-jwt/blob/master/lib/src/main/java/com/auth0/jwt/JWT.java) to validate the token. If everything is in place, we set the user in the [`SecurityContext`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/core/context/SecurityContext.html) and allow the request to move on.
 
 ### Integrating the Security Filters on Spring Boot
 
@@ -430,56 +428,55 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import com.auth0.samples.authapi.springbootauthupdated.user.UserDetailsServiceImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.context.annotation.Bean;
-import com.auth0.samples.authapi.springbootauthupdated.user.UserDetailsServiceImpl;
 
 import static com.auth0.samples.authapi.springbootauthupdated.security.SecurityConstants.SIGN_UP_URL;
 
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
-    private UserDetailsServiceImpl userDetailsService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private UserDetailsServiceImpl userDetailsService;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userDetailsService = userDetailsService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
+	public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+		this.userDetailsService = userDetailsService;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
-                // this disables session creation on Spring Security
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.cors().and().csrf().disable().authorizeRequests()
+				.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+				.anyRequest().authenticated()
+				.and()
+				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+				.addFilter(new JWTAuthorizationFilter(authenticationManager()))
+				// this disables session creation on Spring Security
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	}
 
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-    }
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+	}
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-        return source;
-    }
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+    return source;
+  }
 }
-
 ```
 
 We have annotated this class with `@EnableWebSecurity` and made it extend `WebSecurityConfigurerAdapter` to take advantage of the default [web security configuration provided by Spring Security](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-security.html). This allows us to fine-tune the framework to our needs by defining three methods:
 
 - `configure(HttpSecurity http)`: a method where we can define which resources are public and which are secured. In our case, we set the `SIGN_UP_URL` endpoint as being public and everything else as being secured. We also configure CORS (Cross-Origin Resource Sharing) support through `http.cors()` and we add a custom security filter in the Spring Security filter chain.
-- `configure(AuthenticationManagerBuilder auth)`: a method where we defined a custom implementation of [`UserDetailsService`](https://docs.spring.io/spring-security/site/docs/4.2.6.RELEASE/apidocs/org/springframework/security/core/userdetails/UserDetailsService.html) to load user-specific data in the security framework. We have also used this method to set the encrypt method used by our application (`BCryptPasswordEncoder`).
+- `configure(AuthenticationManagerBuilder auth)`: a method where we defined a custom implementation of [`UserDetailsService`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/core/userdetails/UserDetailsService.html) to load user-specific data in the security framework. We have also used this method to set the encrypt method used by our application (`BCryptPasswordEncoder`).
 - `corsConfigurationSource()`: a method where we can allow/restrict our CORS support. In our case we left it wide open by permitting requests from any source (`/**`).
 
 Spring Security doesn't come with a concrete implementation of `UserDetailsService` that we could use out of the box with our in-memory database. Therefore, we create a new class called `UserDetailsServiceImpl` in the `com.auth0.samples.authapi.springbootauthupdated.user` package to provide one:
@@ -497,20 +494,20 @@ import static java.util.Collections.emptyList;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private ApplicationUserRepository applicationUserRepository;
+	private ApplicationUserRepository applicationUserRepository;
 
-    public UserDetailsServiceImpl(ApplicationUserRepository applicationUserRepository) {
-        this.applicationUserRepository = applicationUserRepository;
-    }
+	public UserDetailsServiceImpl(ApplicationUserRepository applicationUserRepository) {
+		this.applicationUserRepository = applicationUserRepository;
+	}
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ApplicationUser applicationUser = applicationUserRepository.findByUsername(username);
-        if (applicationUser == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return new User(applicationUser.getUsername(), applicationUser.getPassword(), emptyList());
-    }
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		ApplicationUser applicationUser = applicationUserRepository.findByUsername(username);
+		if (applicationUser == null) {
+			throw new UsernameNotFoundException(username);
+		}
+		return new User(applicationUser.getUsername(), applicationUser.getPassword(), emptyList());
+	}
 }
 ```
 
