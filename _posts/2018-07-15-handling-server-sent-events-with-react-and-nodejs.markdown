@@ -47,8 +47,8 @@ Here, we can find the flight arrival timetable that will automatically update wh
 
 Our project is made of two parts:
 
-* A client, where our user interface lives.
-* A server, where an endpoint that sends server events to the client resides.
+- A client, where our user interface lives.
+- A server, where an endpoint that sends server events to the client resides.
 
 Hence, to better organize our project, let's create a project folder named `flight-timetable`. This folder will act as our project root folder.
 
@@ -121,7 +121,7 @@ We should also remove the files that were connected with the lines of code that 
 We are going to need to hydrate our application with flight status data as mentioned earlier. Let's create a module that can provide us with such data. Within the `src` folder, let's create a file named `DataProvider.js` and populate it with the following code:
 
 ```javascript
-// src/DataProvider.js
+// client/src/DataProvider.js
 
 export function getInitialFlightData() {
   return [
@@ -183,7 +183,7 @@ In a real scenario, the function should request the data from an API, but using 
 We now need to provide that data to our `App` component by initializing its state with the flight data that `getInitialFlightData` returns:
 
 ```javascript
-// src/App.js
+// client/src/App.js
 
 import React, { Component } from "react";
 import { getInitialFlightData } from "./DataProvider";
@@ -214,7 +214,7 @@ npm install react-table
 Once that's installed, let's import `react-table` into our component and use it to present the data. `react-table` comes with a handy stylesheet that we can also important to add proper styling and structure to our table, saving us a lot of time:
 
 ```javascript
-// src/App.js
+// client/src/App.js
 
 import React, { Component } from "react";
 import { getInitialFlightData } from "./DataProvider";
@@ -242,7 +242,7 @@ export default App;
 So, how do we use `ReactTable`? `ReactTable` needs to be passed two important props: `data` and `columns`. As the name may imply, `data` represents any data that we want to show in the table. In our case, `data` would be the flight information we have stored in our `this.state.data`. However, `ReactTable` needs to map the provided data in table columns. To do so, we need to pass it an object that specifies how a provided data object maps into table columns. We can create this definition within our component through a `this.columns` property that maps a property of a flight data object into a `ReactTable` header. Check this out:
 
 ```javascript
-// src/App.js
+// client/src/App.js
 
 import React, { Component } from "react";
 import { getInitialFlightData } from "./DataProvider";
@@ -404,28 +404,24 @@ As we can see, in the `componentDidMount()` method an event handler has been add
 
 ## Building the Server
 
-The server-side of our application is a simple Node.js web server responding to requests submitted to the _events_ endpoint. Under the `flight-timetable` root folder, let's create a `server` folder to host all our server related code. 
+The server-side of our application is a simple Node.js web server responding to requests submitted to the _events_ endpoint. Under the `flight-timetable` root folder, let's create a `server` folder to host all our server related code.
 
 Next, within this folder, let's create a `server.js` file where we create a new instance of [`http.Server`](https://nodejs.org/api/http.html#http_class_http_server) using the Node.js [`http.createServer`](https://nodejs.org/api/http.html#http_http_createserver_options_requestlistener) method:
 
 ```javascript
 // server/server.js
 
-const http = require("http");  
-const PORT = 5000;  
-  
-http  
-  .createServer((request, response) => {  
-  
-    })  
-    .listen(PORT);  
-  
+const http = require("http");
+const PORT = 5000;
+
+http.createServer((request, response) => {}).listen(PORT);
+
 console.log(`Server running at http://127.0.0.1:${PORT}/`);
 ```
 
 To make running our server easier, we are going to install [`nodemon`](https://github.com/remy/nodemon). `nodemon` is a tool that helps us develop Node.js based applications by automatically restarting the Node application when file changes are detected in the directory.
 
-With `server` as our current working directory, let's quickly create a default `package.json` for our Node.js project by running the following command: 
+With `server` as our current working directory, let's quickly create a default `package.json` for our Node.js project by running the following command:
 
 ```shell
 npm init -y
@@ -440,21 +436,21 @@ npm install --save-dev nodemon
 Now, let's open `package.json` and let's change the `start` script so that it uses the `nodemon` command instead of the `node` command:
 
 ```json
-{  
-  "name": "server",  
-  "version": "1.0.0",  
-  "description": "",  
-  "main": "server.js",  
-  "scripts": {  
-    "test": "echo \"Error: no test specified\" && exit 1",  
-    "start": "nodemon server.js"  
-  },  
-  "keywords": [],  
-  "author": "",  
-  "license": "ISC",  
-  "devDependencies": {  
-    "nodemon": "^1.18.2"  
-  }  
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.18.2"
+  }
 }
 ```
 
@@ -473,28 +469,28 @@ Server running at http://127.0.0.1:5000/
 
 Now, any time we make a change to `server.js`, our Node application will be automatically restarted.
 
-With a solid development workflow in place, let's build our server further. Within our `createServer` callback, we are going to create business logic that is run whenever a server request to `/events` is made: 
+With a solid development workflow in place, let's build our server further. Within our `createServer` callback, we are going to create business logic that is run whenever a server request to `/events` is made:
 
 ```javascript
 // server/server.js
 
-const http = require("http");  
-const PORT = 5000;  
-  
-http  
-  .createServer((request, response) => {  
-    console.log(`Requested URL: ${request.url}`);  
-  
-    if (request.url.toLowerCase() === `/events`) {  
-      response.writeHead(200, {  
-        Connection: "keep-alive",  
-        "Content-Type": "text/event-stream",  
-        "Cache-Control": "no-cache"  
-  });  
-    }  
-  })  
-  .listen(PORT);  
-  
+const http = require("http");
+const PORT = 5000;
+
+http
+  .createServer((request, response) => {
+    console.log(`Requested URL: ${request.url}`);
+
+    if (request.url.toLowerCase() === `/events`) {
+      response.writeHead(200, {
+        Connection: "keep-alive",
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache"
+      });
+    }
+  })
+  .listen(PORT);
+
 console.log(`Server running at http://127.0.0.1:${PORT}/`);
 ```
 
@@ -506,7 +502,7 @@ The `text/event-stream` value of the `Content-Type` header determines the way th
 
 Finally, the `Cache-Control` header asks the client not to store data into its local cache, so that data read by the client comes strictly from the server.
 
-A client can use the [`EventSource API`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) to wait for events coming from the server that report newly available data. 
+A client can use the [`EventSource API`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) to wait for events coming from the server that report newly available data.
 
 Let test our server connection by issuing a request to our server using the `curl` command in another shell window:
 
@@ -514,38 +510,38 @@ Let test our server connection by issuing a request to our server using the `cur
 curl http://127.0.0.1:5000/events
 ```
 
-In our server shell, we will see `Requested URL: /events` being output. In the `curl` shell, we see nothing being return yet. Let's now create an event stream to use as reply: 
+In our server shell, we will see `Requested URL: /events` being output. In the `curl` shell, we see nothing being return yet. Let's now create an event stream to use as reply:
 
 ```javascript
 // server/server.js
 
-const http = require("http");  
-const PORT = 5000;  
-  
-http  
-  .createServer((request, response) => {  
-    console.log(`Requested URL: ${request.url}`);  
-  
-    if (request.url.toLowerCase() === `/events`) {  
-      response.writeHead(200, {  
-        Connection: "keep-alive",  
-        "Content-Type": "text/event-stream",  
-        "Cache-Control": "no-cache"  
-  });  
-  
-      setTimeout(() => {  
-        response.write('data: {"flight": "I768", "status": "landing"}');  
-        response.write("\n\n");  
-      }, 3000);  
-  
-      setTimeout(() => {  
-        response.write('data: {"flight": "I768", "status": "landed"}');  
-        response.write("\n\n");  
-      }, 6000);  
-    }  
-  })  
-  .listen(PORT);  
-  
+const http = require("http");
+const PORT = 5000;
+
+http
+  .createServer((request, response) => {
+    console.log(`Requested URL: ${request.url}`);
+
+    if (request.url.toLowerCase() === `/events`) {
+      response.writeHead(200, {
+        Connection: "keep-alive",
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache"
+      });
+
+      setTimeout(() => {
+        response.write('data: {"flight": "I768", "status": "landing"}');
+        response.write("\n\n");
+      }, 3000);
+
+      setTimeout(() => {
+        response.write('data: {"flight": "I768", "status": "landed"}');
+        response.write("\n\n");
+      }, 6000);
+    }
+  })
+  .listen(PORT);
+
 console.log(`Server running at http://127.0.0.1:${PORT}/`);
 ```
 
@@ -576,44 +572,43 @@ Observe how, after `6000` ms have elapsed, we have the following output in the `
 data: {"flight": "I768", "status": "landing"}
 
 data: {"flight": "I768", "status": "landed"}
-
 ```
 
-To complete our server code, let's add logic that responds to requests that do not match `/events`: 
+To complete our server code, let's add logic that responds to requests that do not match `/events`:
 
 ```javascript
 // server/server.js
 
-const http = require("http");  
-const PORT = 5000;  
-  
-http  
-  .createServer((request, response) => {  
-    console.log(`Requested URL: ${request.url}`);  
-  
-    if (request.url.toLowerCase() === `/events`) {  
-      response.writeHead(200, {  
-        Connection: "keep-alive",  
-        "Content-Type": "text/event-stream",  
-        "Cache-Control": "no-cache"  
-  });  
-  
-      setTimeout(() => {  
-        response.write('data: {"flight": "I768", "status": "landing"}');  
-        response.write("\n\n");  
-      }, 3000);  
-  
-      setTimeout(() => {  
-        response.write('data: {"flight": "I768", "status": "landed"}');  
-        response.write("\n\n");  
-      }, 6000);  
-    } else {  
-      response.writeHead(404);  
-      response.end();  
-    }  
-  })  
-  .listen(PORT);  
-  
+const http = require("http");
+const PORT = 5000;
+
+http
+  .createServer((request, response) => {
+    console.log(`Requested URL: ${request.url}`);
+
+    if (request.url.toLowerCase() === `/events`) {
+      response.writeHead(200, {
+        Connection: "keep-alive",
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache"
+      });
+
+      setTimeout(() => {
+        response.write('data: {"flight": "I768", "status": "landing"}');
+        response.write("\n\n");
+      }, 3000);
+
+      setTimeout(() => {
+        response.write('data: {"flight": "I768", "status": "landed"}');
+        response.write("\n\n");
+      }, 6000);
+    } else {
+      response.writeHead(404);
+      response.end();
+    }
+  })
+  .listen(PORT);
+
 console.log(`Server running at http://127.0.0.1:${PORT}/`);
 ```
 
@@ -627,7 +622,7 @@ Notice that the shell has no output and immediately ends the connection.
 
 If you want to test this tiny API better, you can use a tool like [Postman](https://www.getpostman.com/) to better visualize the response.
 
-We are now ready to start connecting our client with our server. 
+We are now ready to start connecting our client with our server.
 
 ## Putting It All Together
 
