@@ -404,57 +404,158 @@ As we can see, in the `componentDidMount()` method an event handler has been add
 
 ## Building the Server
 
-The server-side of our application is a simple _Node.js_ web server responding to requests submitted to the _events_ endpoint. To implement it, let's create a `server` folder at the same level of the `client` folder of the React application. Within the `server` folder, let's create the `server.js` file and put the following code inside it:
+The server-side of our application is a simple Node.js web server responding to requests submitted to the _events_ endpoint. Under the `flight-timetable` root folder, let's create a `server` folder to host all our server related code. 
+
+Next, within this folder, let's create a `server.js` file where we create a new instance of [`http.Server`](https://nodejs.org/api/http.html#http_class_http_server) using the Node.js [`http.createServer`](https://nodejs.org/api/http.html#http_http_createserver_options_requestlistener) method:
 
 ```javascript
-// server.js
+// server/server.js
 
-const http = require("http");
-
-http
-  .createServer((request, response) => {
-    console.log("Requested url: " + request.url);
-
-    if (request.url.toLowerCase() == "/events") {
-      response.writeHead(200, {
-        Connection: "keep-alive",
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache"
-      });
-
-      setTimeout(() => {
-        response.write('data: {"flight": "I768", "state": "landing"}');
-        response.write("\n\n");
-      }, 3000);
-
-      setTimeout(() => {
-        response.write('data: {"flight": "I768", "state": "landed"}');
-        response.write("\n\n");
-      }, 6000);
-    } else {
-      response.writeHead(404);
-      response.end();
-    }
-  })
-  .listen(5000);
-console.log("Server running at http://127.0.0.1:5000/");
+const http = require("http");  
+const PORT = 5000;  
+  
+http  
+  .createServer((request, response) => {  
+  
+    })  
+    .listen(PORT);  
+  
+console.log(`Server running at http://127.0.0.1:${PORT}/`);
 ```
 
-At the beginning of the file, we import the `http` module and we use its `createServer()` method to run a web server whose behaviour is described by the callback function passed as an argument. The callback function verifies that the requested URL is `/events` and only in this case initiates a response by sending a few HTTP headers. The headers sent by the server are very important in order to establish a live channel with the client.
+To make running our server easier, we are going to install [`nodemon`](https://github.com/remy/nodemon). `nodemon` is a tool that helps us develop Node.js based applications by automatically restarting the Node application when file changes are detected in the directory.
 
-In fact, the `keep-alive` value for the `Connection` header says the client to handle a permanent connection, that is a connection that doesn't end with the first bunch of data received.
+With `server` as our current working directory, let's quickly create a default `package.json` for our Node.js project by running the following command: 
 
-The `text/event-stream` value for the `Content-Type` header determines the way the client should interpret the data that it will receive. In practice, this value says to the client that we are implementing the Server-Sent Events protocol.
-
-Finally, the `Cache-Control` header asks the client not to store data into its local cache, so that data read by the client is really sent by the server.
-
-After sending these headers, the client using the `EventSource()` constructor will wait for events reporting newly available data. The rest of the function body schedules the execution of a few functions in order to simulate the change of a flight state. At each scheduled function execution, a string in the following form is sent to the client:
-
-```
-data: xxxxxxx
+```shell
+npm init -y
 ```
 
-The `xxxxxxx` represents the data to be sent to the client. In our case, we send a JSON string representing a flight. We can send multiple data lines in an event response, but the response must be closed by a double empty line. In other words, our event message could be like in the following schema:
+Once this command executes completely, let's install `nodemon` as a developer dependency by running this command:
+
+```shell
+npm install --save-dev nodemon
+```
+
+Now, let's open `package.json` and let's change the `start` script so that it uses the `nodemon` command instead of the `node` command:
+
+```json
+{  
+  "name": "server",  
+  "version": "1.0.0",  
+  "description": "",  
+  "main": "server.js",  
+  "scripts": {  
+    "test": "echo \"Error: no test specified\" && exit 1",  
+    "start": "nodemon server.js"  
+  },  
+  "keywords": [],  
+  "author": "",  
+  "license": "ISC",  
+  "devDependencies": {  
+    "nodemon": "^1.18.2"  
+  }  
+}
+```
+
+To run the server, let's issue this command in the shell:
+
+```shell
+npm start
+```
+
+We'll see the following output in the shell indicating that our server is running and that is under the control of `nodemon`:
+
+```shell
+[nodemon] starting `node server.js`
+Server running at http://127.0.0.1:5000/
+```
+
+Now, any time we make a change to `server.js`, our Node application will be automatically restarted.
+
+With a solid development workflow in place, let's build our server further. Within our `createServer` callback, we are going to create business logic that is run whenever a server request to `/events` is made: 
+
+```javascript
+// server/server.js
+
+const http = require("http");  
+const PORT = 5000;  
+  
+http  
+  .createServer((request, response) => {  
+    console.log(`Requested URL: ${request.url}`);  
+  
+    if (request.url.toLowerCase() === `/events`) {  
+      response.writeHead(200, {  
+        Connection: "keep-alive",  
+        "Content-Type": "text/event-stream",  
+        "Cache-Control": "no-cache"  
+  });  
+    }  
+  })  
+  .listen(PORT);  
+  
+console.log(`Server running at http://127.0.0.1:${PORT}/`);
+```
+
+The callback function verifies that the requested URL is `/events` and, only in such case, a response is sent with a few HTTP headers. The headers sent by the server are critical in order to establish a live channel with the client.
+
+The `keep-alive` value of the `Connection` header tells the client to establish a persistent connection: a connection that doesn't end when the first batch of data is received.
+
+The `text/event-stream` value of the `Content-Type` header determines the way the client should interpret the data that it receives. In practice, this value tells the client that we are implementing the Server-Sent Events protocol.
+
+Finally, the `Cache-Control` header asks the client not to store data into its local cache, so that data read by the client comes strictly from the server.
+
+A client can use the [`EventSource API`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) to wait for events coming from the server that report newly available data. 
+
+Let test our server connection by issuing a request to our server using the `curl` command in another shell window:
+
+```shell
+curl http://127.0.0.1:5000/events
+```
+
+In our server shell, we will see `Requested URL: /events` being output. In the `curl` shell, we see nothing being return yet. Let's now create an event stream to use as reply: 
+
+```javascript
+// server/server.js
+
+const http = require("http");  
+const PORT = 5000;  
+  
+http  
+  .createServer((request, response) => {  
+    console.log(`Requested URL: ${request.url}`);  
+  
+    if (request.url.toLowerCase() === `/events`) {  
+      response.writeHead(200, {  
+        Connection: "keep-alive",  
+        "Content-Type": "text/event-stream",  
+        "Cache-Control": "no-cache"  
+  });  
+  
+      setTimeout(() => {  
+        response.write('data: {"flight": "I768", "status": "landing"}');  
+        response.write("\n\n");  
+      }, 3000);  
+  
+      setTimeout(() => {  
+        response.write('data: {"flight": "I768", "status": "landed"}');  
+        response.write("\n\n");  
+      }, 6000);  
+    }  
+  })  
+  .listen(PORT);  
+  
+console.log(`Server running at http://127.0.0.1:${PORT}/`);
+```
+
+We use `setTimeout` to schedule the execution of a few functions in order to simulate a stream of flight `status` change events. This is possible because we never close the server connection. At each scheduled event execution, a string in the following form is sent to the client:
+
+```
+data: <DATA>
+```
+
+`<DATA>` represents the data to be sent to the client. In our case, we send a JSON string representing a flight update. We can send multiple data lines in an event response but **the response must be closed by a double empty line**. In other words, our event message could follow this schema to send two data objects:
 
 ```
 data: This is a message\n
@@ -463,11 +564,70 @@ data: A long message\n
 \n
 ```
 
-In order to execute the web server we created so far, let's type the following command in a shell window:
+Let test our server response again. Issue the `curl` command again:
 
 ```shell
-node server.js
+curl http://127.0.0.1:5000/events
 ```
+
+Observe how, after `6000` ms have elapsed, we have the following output in the `curl` shell:
+
+```shell
+data: {"flight": "I768", "status": "landing"}
+
+data: {"flight": "I768", "status": "landed"}
+
+```
+
+To complete our server code, let's add logic that responds to requests that do not match `/events`: 
+
+```javascript
+// server/server.js
+
+const http = require("http");  
+const PORT = 5000;  
+  
+http  
+  .createServer((request, response) => {  
+    console.log(`Requested URL: ${request.url}`);  
+  
+    if (request.url.toLowerCase() === `/events`) {  
+      response.writeHead(200, {  
+        Connection: "keep-alive",  
+        "Content-Type": "text/event-stream",  
+        "Cache-Control": "no-cache"  
+  });  
+  
+      setTimeout(() => {  
+        response.write('data: {"flight": "I768", "status": "landing"}');  
+        response.write("\n\n");  
+      }, 3000);  
+  
+      setTimeout(() => {  
+        response.write('data: {"flight": "I768", "status": "landed"}');  
+        response.write("\n\n");  
+      }, 6000);  
+    } else {  
+      response.writeHead(404);  
+      response.end();  
+    }  
+  })  
+  .listen(PORT);  
+  
+console.log(`Server running at http://127.0.0.1:${PORT}/`);
+```
+
+If `request.url.toLowerCase()` is not `/events`, we return a `404` error and close the connection. Let's test it out by running this command in the `curl` shell:
+
+```shell
+curl http://127.0.0.1:5000/flights
+```
+
+Notice that the shell has no output and immediately ends the connection.
+
+If you want to test this tiny API better, you can use a tool like [Postman](https://www.getpostman.com/) to better visualize the response.
+
+We are now ready to start connecting our client with our server. 
 
 ## Putting It All Together
 
