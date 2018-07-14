@@ -41,7 +41,7 @@ Before we dig into strategies for success, it's important to understand the issu
 Teams are generally focused on selecting and configuring their new system. Testing potential tools and comparing the models are generally more exciting and inspiring than the mechanics of lifting data out of the legacy package. If data is uploaded in its current state, any errors or irrelevant aspects could become amplified and increase the information's exposure to risk. Because of this, it's important to be sure your team is on the same page about the nuances of the process and has a specific roadmap marked with individual roles and responsibilities.
 
 ### Improperly Tracking Users
-It's critical to manage user identities and monitor for suspicious activity when you're migrating sensitive information. Companies that rely on consumer data in particular must validate all entries against new regulations — [GDPR](https://auth0.com/docs/compliance/gdpr/features-aiding-compliance/protect-user-data), for example, along with more specialized industry standards such as Sarbanes-Oxley (SOX) for financial institutions and the Health Insurance Portability and Accountability Act (HIPAA) for many healthcare providers.
+It's critical to manage user identities and monitor for suspicious activity when you're migrating sensitive information. Companies that rely on consumer data, in particular, must validate all entries against new regulations — [GDPR](https://auth0.com/docs/compliance/gdpr/features-aiding-compliance/protect-user-data), for example, along with more specialized industry standards such as Sarbanes-Oxley (SOX) for financial institutions and the Health Insurance Portability and Accountability Act (HIPAA) for many healthcare providers.
 
 ### Poor Communication of Updates
 Making sure your end users understand how you are securing their data after you've updated your apps is important for maintaining their trust. If you can't articulate what you are doing with their information, it's unlikely they will stick around. Documenting your work and developing a clear communication strategy are essential to making sure your data migration supports your company's overall goals for growth.
@@ -87,7 +87,7 @@ Because of the complexity and urgency of this task, many teams choose to outsour
 
 > [Source.](https://auth0.com/learn/cloud-identity-access-management/)
 
-In the Auth0 dashboard an administrator will have a clear view of users at any point. In addition, Auth0's identity platform offers enhanced options like multi-factor authentication, anomaly detection, and advanced logging. For example, if the administrator notices a certain user has a series of failed login attempts, they can [block access](https://auth0.com/docs/anomaly-detection) to investigate further. 
+In the Auth0 dashboard, an administrator will have a clear view of users at any point. In addition, Auth0's identity platform offers enhanced options like multi-factor authentication, anomaly detection, and advanced logging. For example, if the administrator notices a certain user has a series of failed login attempts, they can [block access](https://auth0.com/docs/anomaly-detection) to investigate further. 
 
 From a user perspective, this function is an invisible and painless part of their workflow. 
 
