@@ -45,6 +45,13 @@ In order to show how to use the Server-Sent Events, we are going to develop a si
 
 Here, we can find the flight arrival timetable that will automatically update when the status of a flight changes. In our demo application, we are going to simulate the flight status changes using scheduled events; however, this does not affect the realism and scope of our implementation.
 
+Our project is made of two parts:
+
+* A client, where our user interface lives.
+* A server, where an endpoint that sends server events to the client resides.
+
+Hence, to better organize our project, let's create a project folder named `flight-timetable`. This folder will act as our project root folder.
+
 So, let's start coding and discover how Server-Sent Events work.
 
 ## Starting to Build the React Client
@@ -55,7 +62,9 @@ As a first step, let's build our client application. To make things easier, we w
 npm install -g create-react-app
 ```
 
-This command will install `create-react-app` on our computer which will let us create the basic template of a React application by typing:
+This command will install `create-react-app` on our computer which will let us create the basic template of a React application.
+
+Ensure that the `flight-timetable` root folder is the current working directory and then type the following command in the shell to scaffold the foundation of our React application:
 
 ```shell
 create-react-app client
@@ -63,7 +72,7 @@ create-react-app client
 
 > **Note**: If you have `npm`>5.2 installed, you have `npx` available. `npx` allows you to run `create-react-app` without having to do a global install like so: `npx create-react-app client`. Try it out!
 
-After a moment, our project will be scaffolded. We will get a `client` folder with everything we need inside. The `src` subfolder contains the source code of our brand-new application. Our goal is to build our flight timetable application upon this basic React foundation.
+Once this command finishes, under the `flight-timetable` root folder, we will get a `client` folder with everything we need inside. Its `src` subfolder contains the source code of our brand-new application. Our goal is to build our flight timetable application upon this basic React foundation.
 
 ```javascript
 // client/src/App.js
