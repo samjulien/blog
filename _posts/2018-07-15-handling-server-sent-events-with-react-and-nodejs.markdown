@@ -33,7 +33,7 @@ related:
 
 The typical interaction between a browser and a web server has the browser requesting a resource and the web server providing a response. But how could we describe an event where the server is sending data to the client at any time without an explicit request? If such behavior is to be implemented using the HTTP protocol, it may seem impossible since HTTP only allows the client to request data from the server and not the opposite.
 
-Well, we can do that using our dear friend HTTP. We can use [Server-Sent Events](https://html.spec.whatwg.org/multipage/server-sent-events.html), also known as *SSE* or *Event Source*, a W3C standard that allows the server to push data to the client. This may sound like using that annoying polling we'd implement to get the progress status from a long-running server process, but thanks to SSE, we don't have to implement polling to wait for a response from the server. We don't need any complex or strange protocol, we can continue to use the standard HTTP.
+Well, we can do that using our dear friend HTTP. We can use [Server-Sent Events](https://html.spec.whatwg.org/multipage/server-sent-events.html), also known as _SSE_ or _Event Source_, a W3C standard that allows the server to push data to the client. This may sound like using that annoying polling we'd implement to get the progress status from a long-running server process, but thanks to SSE, we don't have to implement polling to wait for a response from the server. We don't need any complex or strange protocol, we can continue to use the standard HTTP.
 
 So let's take a look at how to use Server-Sent Events in a realistic application.
 
@@ -63,53 +63,26 @@ create-react-app client
 
 > **Note**: If you have `npm`>5.2 installed, you have `npx` available. `npx` allows you to run `create-react-app` without having to do a global install like so: `npx create-react-app client`. Try it out!
 
-After a few seconds, we will get a `client` folder with all we need inside it. In particular, the `src` subfolder contains the source code of our brand-new application. Our goal is to change the code of this basic React application and replace it with our flight timetable frontend application.
+After a moment, our project will be scaffolded. We will get a `client` folder with everything we need inside. The `src` subfolder contains the source code of our brand-new application. Our goal is to build our flight timetable application upon this basic React foundation.
 
-Since our application will show data in a tabular form, we will install a React component that simplifies the task of rendering data in a table: [React Table](https://react-table.js.org). To add this component to our application, we will type the following command in the terminal with the `client` folder as our current working directory:
+```javascript
+// client/src/App.js
 
-```shell
-npm install react-table
-```
-
-Now we are ready to change the application code. So, let's open the `App.js` file inside the `src` folder and let's replace its content with the following code:
-
-```react
-// src/App.js
-
-import React, { Component } from 'react';
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
-import { getInitialFlightData } from './DataProvider';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: getInitialFlightData()
-    };
-
-    this.columns = [{
-      Header: 'Origin',
-      accessor: 'origin'
-    }, {
-      Header: 'Flight',
-      accessor: 'flight'
-    }, {
-      Header: 'Arrival',
-      accessor: 'arrival'
-    }, {
-      Header: 'State',
-      accessor: 'state'
-    }];
-  }
-
   render() {
     return (
       <div className="App">
-        <ReactTable
-          data={this.state.data}
-          columns={this.columns}
-        />
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">Welcome to React</h1>
+        </header>
+        <p className="App-intro">
+          To get started, edit <code>src/App.js</code> and save to reload.
+        </p>
       </div>
     );
   }
@@ -118,77 +91,218 @@ class App extends Component {
 export default App;
 ```
 
-Here, we are importing the stuff we need to set up the flight timetable. In particular, in addition to standard React basic elements, we are importing the `ReactTable` component with its basic stylesheets and the `getInitialFlightData()` function defined in the `DataProvider` module that we are going to create in just a moment. This function provides our application with flight data that is used to initialize the `App` component state in the constructor. In the constructor, we also define the table's structure by mapping the flight properties to the table columns. This mapping consists of an array of objects like the following:
+There are some elements in `client/src/App.js` that we don't need, let's go ahead and clean it up:
 
-```react
-this.columns = [{
-    Header: 'Origin',
-    accessor: 'origin'
-  }, {
-    Header: 'Flight',
-    accessor: 'flight'
-  }, {
-    Header: 'Arrival',
-    accessor: 'arrival'
-  }, {
-    Header: 'State',
-    accessor: 'state'
-  }];
+```javascript
+// client/src/App.js
+
+import React, { Component } from "react";
+
+class App extends Component {
+  render() {
+    return <div className="App" />;
+  }
 }
+
+export default App;
 ```
-Each object has a `Header` property, representing the column's header, and an `accessor` property, representing the flight property whose value should be shown in that column. _React Table_ has many other options to define the table's structure, but `Header` and `accessor` are sufficient for our goal. 
 
-Finally, within the `render` method of `App` component, we include the `ReactTable` element and pass it the flight data and the columns as props.
+We should also remove the files that were connected with the lines of code that we just removed. Within the `src` subfolder, let's delete `App.css` and `logo.svg`. You can also remove `App.test.js` if you'd like.
 
-Now, within the `src` folder, let's create a file named `DataProvider.js` and populate it with the following code:
+We are going to need to hydrate our application with flight status data as mentioned earlier. Let's create a module that can provide us with such data. Within the `src` folder, let's create a file named `DataProvider.js` and populate it with the following code:
 
 ```javascript
 // src/DataProvider.js
 
 export function getInitialFlightData() {
-  return [{
-    origin: 'London',
-    flight: 'A123',
-    arrival: '08:15',
-    state: ''
-  }, {
-    origin: 'Berlin',
-    flight: 'D654',
-    arrival: '08:45',
-    state: ''
-  }, {
-    origin: 'New York',
-    flight: 'U213',
-    arrival: '09:05',
-    state: ''
-  }, {
-    origin: 'Buenos Aires',
-    flight: 'A987',
-    arrival: '09:30',
-    state: ''
-  }, {
-    origin: 'Rome',
-    flight: 'I768',
-    arrival: '10:10',
-    state: ''
-  }, {
-    origin: 'Tokyo',
-    flight: 'G119',
-    arrival: '10:35',
-    state: ''
-  }];
+  return [
+    {
+      departure: "London",
+      flight: "A123",
+      arrival: "08:15",
+      status: ""
+    },
+    {
+      departure: "Berlin",
+      flight: "D654",
+      arrival: "08:45",
+      status: ""
+    },
+    {
+      departure: "New York",
+      flight: "U213",
+      arrival: "09:05",
+      status: ""
+    },
+    {
+      departure: "Buenos Aires",
+      flight: "A987",
+      arrival: "09:30",
+      status: ""
+    },
+    {
+      departure: "Rome",
+      flight: "I768",
+      arrival: "10:10",
+      status: ""
+    },
+    {
+      departure: "Tokyo",
+      flight: "G119",
+      arrival: "10:35",
+      status: ""
+    }
+  ];
 }
 ```
 
-The module exports the `getInitialFlightData()` function that simply returns an array of flight data. In a real case, the function should request the data from the server, but the current implementation is enough for our purpose. 
+This module exports the `getInitialFlightData()` function that returns an array of flight data with each element representing a flight:
 
-Our application so far presents the flight data in tabular form. Let's check it out in the browser! To run the app, type the following command in the terminal with the `client` folder as the current working directory:
+```json
+{
+  "departure": "Rome",
+  "flight": "I768",
+  "arrival": "10:10",
+  "status": ""
+}
+```
+
+> Notice how each flight starts with a blank `status`.
+
+In a real scenario, the function should request the data from an API, but using the `DataProvider` module is enough for our learning objective.
+
+We now need to provide that data to our `App` component by initializing its state with the flight data that `getInitialFlightData` returns:
+
+```javascript
+// src/App.js
+
+import React, { Component } from "react";
+import { getInitialFlightData } from "./DataProvider";
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: getInitialFlightData()
+    };
+  }
+
+  render() {
+    return <div className="App" />;
+  }
+}
+
+export default App;
+```
+
+Since our application will present the flight data in tabular form, we will install a React component that simplifies the task of rendering data in a table: [React Table](https://react-table.js.org). To add this component to our application, we type the following command in the terminal with the `client` folder as our current working directory:
+
+```shell
+npm install react-table
+```
+
+Once that's installed, let's import `react-table` into our component and use it to present the data. `react-table` comes with a handy stylesheet that we can also important to add proper styling and structure to our table, saving us a lot of time:
+
+```javascript
+// src/App.js
+
+import React, { Component } from "react";
+import { getInitialFlightData } from "./DataProvider";
+
+import ReactTable from "react-table";
+import "react-table/react-table.css";
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: getInitialFlightData()
+    };
+  }
+
+  render() {
+    return <div className="App" />;
+  }
+}
+
+export default App;
+```
+
+So, how do we use `ReactTable`? `ReactTable` needs to be passed two important props: `data` and `columns`. As the name may imply, `data` represents any data that we want to show in the table. In our case, `data` would be the flight information we have stored in our `this.state.data`. However, `ReactTable` needs to map the provided data in table columns. To do so, we need to pass it an object that specifies how a provided data object maps into table columns. We can create this definition within our component through a `this.columns` property that maps a property of a flight data object into a `ReactTable` header. Check this out:
+
+```javascript
+// src/App.js
+
+import React, { Component } from "react";
+import { getInitialFlightData } from "./DataProvider";
+
+import ReactTable from "react-table";
+import "react-table/react-table.css";
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: getInitialFlightData()
+    };
+
+    this.columns = [
+      {
+        Header: "Departure",
+        accessor: "departure"
+      },
+      {
+        Header: "Flight",
+        accessor: "flight"
+      },
+      {
+        Header: "Arrival",
+        accessor: "arrival"
+      },
+      {
+        Header: "Status",
+        accessor: "status"
+      }
+    ];
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <ReactTable data={this.state.data} columns={this.columns} />
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+`this.columns` is an array whose elements are objects that define a column of `ReactTable`. Each column object has a `Header` and an `accessor` property. The `Header` is the title that we want to give to that column in our table. The `accessor` is the property name of a data object whose value we want to map to a `Header` column. For example, given the following object, the value of `departure`, which is "Rome", will go under the `Departure` table header, and so on:
+
+```json
+{
+  "departure": "Rome",
+  "flight": "I768",
+  "arrival": "10:10",
+  "status": ""
+}
+```
+
+`react-table` has many other options to define a table structure, but `Header` and `accessor` are sufficient for the scope of our flight status application.
+
+With this initial code in place, let's check it out in the browser! To run our app, let's type the following command in the terminal with the `client` folder as the current working directory:
 
 ```shell
 npm start
 ```
 
-After a few seconds, we should see in the browser the list of flights as shown in the picture above. If the browser doesn't open automatically, please open it and go to `http://localhost:3000`.
+The browser should open automatically; if not, please open it and go to <a href="http://localhost:3000" target="_blank">http://localhost:3000</a>. We should see a table of flights as shown in the picture below:
+
+Notice how nicely styled the table is and how we are provided with pagination and row expansion at the bottom. This is all courtesy of `ReactTable`.
 
 ## Getting the Server Events
 
@@ -250,7 +364,7 @@ class App extends Component {
   componentDidMount() {
     this.eventSource.onmessage = (e) => this.updateFlightState(JSON.parse(e.data));
   }
-  
+
   updateFlightState(flightState) {
     let newData = this.state.data.map((item) => {
       if (item.flight === flightState.flight) {
@@ -281,43 +395,40 @@ As we can see, in the `componentDidMount()` method an event handler has been add
 
 ## Building the Server
 
-The server-side of our application is a simple *Node.js* web server responding to requests submitted to the *events* endpoint. To implement it, let's create a `server` folder at the same level of the `client` folder of the React application. Within the `server` folder, let's create the `server.js` file and put the following code inside it:
+The server-side of our application is a simple _Node.js_ web server responding to requests submitted to the _events_ endpoint. To implement it, let's create a `server` folder at the same level of the `client` folder of the React application. Within the `server` folder, let's create the `server.js` file and put the following code inside it:
 
 ```javascript
 // server.js
 
-const http = require('http');
+const http = require("http");
 
-http.createServer((request, response) => {
-  console.log("Requested url: " + request.url);
-  
-  if (request.url.toLowerCase() == "/events") {
-    response.writeHead(200, {
-      'Connection': 'keep-alive',
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache'
-    });
-	
-    setTimeout(() => {
-      response.write(
-        'data: {"flight": "I768", "state": "landing"}'
-      );
-      response.write('\n\n');
-    }, 3000);	
-    
-    setTimeout(() => {
-      response.write(
-        'data: {"flight": "I768", "state": "landed"}'
-      );
-      response.write('\n\n');
-    }, 6000);
-	
-  } else {
-    response.writeHead(404);
-    response.end();
-  }
-}).listen(5000);
-console.log('Server running at http://127.0.0.1:5000/');
+http
+  .createServer((request, response) => {
+    console.log("Requested url: " + request.url);
+
+    if (request.url.toLowerCase() == "/events") {
+      response.writeHead(200, {
+        Connection: "keep-alive",
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache"
+      });
+
+      setTimeout(() => {
+        response.write('data: {"flight": "I768", "state": "landing"}');
+        response.write("\n\n");
+      }, 3000);
+
+      setTimeout(() => {
+        response.write('data: {"flight": "I768", "state": "landed"}');
+        response.write("\n\n");
+      }, 6000);
+    } else {
+      response.writeHead(404);
+      response.end();
+    }
+  })
+  .listen(5000);
+console.log("Server running at http://127.0.0.1:5000/");
 ```
 
 At the beginning of the file, we import the `http` module and we use its `createServer()` method to run a web server whose behaviour is described by the callback function passed as an argument. The callback function verifies that the requested URL is `/events` and only in this case initiates a response by sending a few HTTP headers. The headers sent by the server are very important in order to establish a live channel with the client.
@@ -353,7 +464,7 @@ node server.js
 
 So, we built the React client and the Node.js server and want they communicate with each other. However, they run on different domains: the React client runs on http://localhost:3000 domain and the Node.js server runs on http://localhost:5000 domain.
 
-This means that the JavaScript code of the React client running on your browser cannot make HTTP requests to the Node.js server, due to the [same origin policy](https://en.wikipedia.org/wiki/Same-origin_policy) applied by the browser itself. 
+This means that the JavaScript code of the React client running on your browser cannot make HTTP requests to the Node.js server, due to the [same origin policy](https://en.wikipedia.org/wiki/Same-origin_policy) applied by the browser itself.
 
 We could get around the problem by simply adding a `proxy` value in the `package.json` file, as said in the [create-react-app documentation](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#proxying-api-requests-in-development). However, due to a [known issue](https://github.com/facebook/create-react-app/issues/3391), currently this workaround is not applicable.
 
@@ -362,12 +473,12 @@ So, in order to make the client and server to communicate, we need to enable COR
 ```javascript
 // server.js
 
-    response.writeHead(200, {
-      'Connection': 'keep-alive',
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Access-Control-Allow-Origin': '*'
-    });
+response.writeHead(200, {
+  Connection: "keep-alive",
+  "Content-Type": "text/event-stream",
+  "Cache-Control": "no-cache",
+  "Access-Control-Allow-Origin": "*"
+});
 ```
 
 The asterisk assigned to the `Access-Control-Allow-Origin` header indicates that any client is authorized to access this URL. It may not be the desired solution in a production environment. In fact, in the production environment, we should adopt a different approach, such as put the two applications under the same domain, by using a reverse proxy, or by enabling [CORS](https://auth0.com/docs/cross-origin-authentication) selectively, that is authorizing only specific domains.
@@ -375,7 +486,7 @@ The asterisk assigned to the `Access-Control-Allow-Origin` header indicates that
 Once you have enabled CORS on the Node.js server, we should change the URL passed to the `EventSource()` constructor. Now the `EventSource` object initialization in the React client should look like the following:
 
 ```javascript
-this.eventSource = new EventSource('http://localhost:5000/events');
+this.eventSource = new EventSource("http://localhost:5000/events");
 ```
 
 Now all is ready! Run the server then launch the client application. After a few seconds we should see your browser showing something like the following:
@@ -393,54 +504,44 @@ We could think of using the `data` property of the event to specify a distinguis
 ```javascript
 // server.js
 
-const http = require('http');
+const http = require("http");
 
-http.createServer((request, response) => {
-  console.log("Requested url: " + request.url);
-  
-  if (request.url.toLowerCase() == "/events") {
-    response.writeHead(200, {
-      'Connection': 'keep-alive',
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Access-Control-Allow-Origin': '*'
-    });
-	
-    setTimeout(() => {
-	  response.write(
-        'event: flightStateUpdate\n'
-      );
-      response.write(
-        'data: {"flight": "I768", "state": "landing"}'
-      );
-      response.write('\n\n');
-    }, 3000);	
-    
-    setTimeout(() => {
-	  response.write(
-        'event: flightStateUpdate\n'
-      );
-      response.write(
-        'data: {"flight": "I768", "state": "landed"}'
-      );
-      response.write('\n\n');
-    }, 6000);
-	
-    setTimeout(() => {
-	  response.write(
-        'event: flightRemoval\n'
-      );
-      response.write(
-        'data: {"flight": "I768"}'
-      );
-      response.write('\n\n');
-    }, 9000);
-  } else {
-    response.writeHead(404);
-    response.end();
-  }
-}).listen(5000);
-console.log('Server running at http://127.0.0.1:5000/');
+http
+  .createServer((request, response) => {
+    console.log("Requested url: " + request.url);
+
+    if (request.url.toLowerCase() == "/events") {
+      response.writeHead(200, {
+        Connection: "keep-alive",
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Access-Control-Allow-Origin": "*"
+      });
+
+      setTimeout(() => {
+        response.write("event: flightStateUpdate\n");
+        response.write('data: {"flight": "I768", "state": "landing"}');
+        response.write("\n\n");
+      }, 3000);
+
+      setTimeout(() => {
+        response.write("event: flightStateUpdate\n");
+        response.write('data: {"flight": "I768", "state": "landed"}');
+        response.write("\n\n");
+      }, 6000);
+
+      setTimeout(() => {
+        response.write("event: flightRemoval\n");
+        response.write('data: {"flight": "I768"}');
+        response.write("\n\n");
+      }, 9000);
+    } else {
+      response.writeHead(404);
+      response.end();
+    }
+  })
+  .listen(5000);
+console.log("Server running at http://127.0.0.1:5000/");
 ```
 
 While composing the response, we added a new `event` string before the `data` string. The `event` keyword helps us to specify the type of event you are sending to the client. In the example shown above, we indicated the `filghtStateUpdate` value for the previously existing events and added a new event with the `flightRemoval` value for `event` keyword. As we can easily imagine, we are saying to our client that some events concern the update of the flight's state and some others the removal of the flight. We will expect that the client will perform different actions for different types of events.
@@ -463,7 +564,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.eventSource.addEventListener('flightStateUpdate', 
+    this.eventSource.addEventListener('flightStateUpdate',
       (e) => this.updateFlightState(JSON.parse(e.data)));
     this.eventSource.addEventListener('flightRemoval',
       (e) => this.removeFlight(JSON.parse(e.data)));
@@ -499,7 +600,6 @@ class App extends Component {
 }
 
 export default App;
-
 ```
 
 As we can see, the body of the `componentDidMount()` method has no longer the assignment of the event handler to the `onmessage` property. Now we are using the `addEventListener()` method in order to assign an event handler to a specific event. In this way, we are able to easily assign a specific event handler to each event generated by the server like it was generated by any standard HTML element.
@@ -541,39 +641,41 @@ Closing the event stream on the client doesn't automatically closes the connecti
 ```javascript
 // server.js
 
-const http = require('http');
+const http = require("http");
 
-http.createServer((request, response) => {
-  console.log(`Request url: ${request.url}`);
+http
+  .createServer((request, response) => {
+    console.log(`Request url: ${request.url}`);
 
-  const eventHistory = [];
+    const eventHistory = [];
 
-  request.on('close', () => {
-    closeConnection(response);
-  });
-
-  if (request.url.toLowerCase() === '/events') {
-    response.writeHead(200, {
-      'Connection': 'keep-alive',
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Access-Control-Allow-Origin': '*'
+    request.on("close", () => {
+      closeConnection(response);
     });
 
-  //Event generation code
-  //..
-  } else {
-    response.writeHead(404);
-    response.end();  
-  }
-}).listen(5000, () => {
-  console.log('Server running at http://127.0.0.1:5000/');
-});
+    if (request.url.toLowerCase() === "/events") {
+      response.writeHead(200, {
+        Connection: "keep-alive",
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Access-Control-Allow-Origin": "*"
+      });
+
+      //Event generation code
+      //..
+    } else {
+      response.writeHead(404);
+      response.end();
+    }
+  })
+  .listen(5000, () => {
+    console.log("Server running at http://127.0.0.1:5000/");
+  });
 
 function closeConnection(response) {
   if (!response.finished) {
     response.end();
-    console.log('Stopped sending events.');
+    console.log("Stopped sending events.");
   }
 }
 ```
@@ -583,33 +685,25 @@ The `request.on()` method catches the `close` request and executes the `closeCon
 Since our server event generators are scheduled by using `setTimeout()`, it could happen that an attempt to send an event to the client may be made after the connection has been closed, raising an exception. We can avoid this by checking if the connection is still active, as shown in the following example:
 
 ```javascript
-    setTimeout(() => {
-      if (!response.finished) {
-	    response.write(
-          'event: flightStateUpdate\n'
-        );
-        response.write(
-          'data: {"flight": "I768", "state": "landing"}'
-        );
-        response.write('\n\n');
-      }
-    }, 3000);	
+setTimeout(() => {
+  if (!response.finished) {
+    response.write("event: flightStateUpdate\n");
+    response.write('data: {"flight": "I768", "state": "landing"}');
+    response.write("\n\n");
+  }
+}, 3000);
 ```
 
 When the connection closure has to be originated by the server, it will be done by invoking the `response.end()` method, as seen before. Also, the client should be informed about the closure, so that it can free resources on its side. What usually happens is the generation of a specific event that delegates to the client to request the connection closing. For example, our server could simply generate a `closedConnection` event as follows:
 
 ```javascript
-   setTimeout(() => {
-      if (!response.finished) {
-	    response.write(
-          'event: closedConnection\n'
-        );
-        response.write(
-          'data: '
-        );
-        response.write('\n\n');
-      }
-    }, 3000);
+setTimeout(() => {
+  if (!response.finished) {
+    response.write("event: closedConnection\n");
+    response.write("data: ");
+    response.write("\n\n");
+  }
+}, 3000);
 ```
 
 This event should be handled by the client as in the following:
@@ -628,7 +722,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.eventSource.addEventListener('flightStateUpdate', 
+    this.eventSource.addEventListener('flightStateUpdate',
       (e) => this.updateFlightState(JSON.parse(e.data)));
     this.eventSource.addEventListener('flightRemoval',
       (e) => this.removeFlight(JSON.parse(e.data)));
@@ -660,9 +754,9 @@ It assigns the `stopUpdates()` method to the `closedConnection` event and starts
 
 ## Handling Connection Recovery
 
-So far we built a complete event system management: we are able to get different types of events pushed by the server and to control the end of the event stream. But what happens if the client loses some event due to network issues? Of course, it depends on the specific application. In some situations, we may ignore the loss of some event, in some others we can't. 
+So far we built a complete event system management: we are able to get different types of events pushed by the server and to control the end of the event stream. But what happens if the client loses some event due to network issues? Of course, it depends on the specific application. In some situations, we may ignore the loss of some event, in some others we can't.
 
-Let's consider, for example, the event stream we implemented so far. If a network issue happens and the client loses the `flightStateUpdate` event that puts the flight into the landing state, it could not be a big problem. Simply the user will not be able to see the landing phase on the timetable, but when the connection will be restored the timetable will provide correct information with the subsequent states.  However, if the network issue happens immediately after the flight enters in the landing state and the connection is restored after the `flightRemoval` event, we have an issue: the flight will remain in the landing state forever and we need to handle this bad situation.
+Let's consider, for example, the event stream we implemented so far. If a network issue happens and the client loses the `flightStateUpdate` event that puts the flight into the landing state, it could not be a big problem. Simply the user will not be able to see the landing phase on the timetable, but when the connection will be restored the timetable will provide correct information with the subsequent states. However, if the network issue happens immediately after the flight enters in the landing state and the connection is restored after the `flightRemoval` event, we have an issue: the flight will remain in the landing state forever and we need to handle this bad situation.
 
 The Server-Sent Events protocol help us by providing a mechanism to identify events and to restore a dropped connection. Let's try to explain.
 
@@ -671,7 +765,8 @@ When the server generates an event, we have the ability to assign an identifier 
 ```javascript
 setTimeout(() => {
   if (!response.finished) {
-    const eventString = 'id: 1\nevent: flightStateUpdate\ndata: {"flight": "I768", "state": "landing"}\n\n';
+    const eventString =
+      'id: 1\nevent: flightStateUpdate\ndata: {"flight": "I768", "state": "landing"}\n\n';
     response.write(eventString);
   }
 }, 3000);
@@ -686,40 +781,43 @@ Let's implement this strategy in our server. With a bit of refactoring, the foll
 ```javascript
 // server.js
 
-const http = require('http');
+const http = require("http");
 
-http.createServer((request, response) => {
-  console.log(`Request url: ${request.url}`);
+http
+  .createServer((request, response) => {
+    console.log(`Request url: ${request.url}`);
 
-  const eventHistory = [];
+    const eventHistory = [];
 
-  request.on('close', () => {
-    closeConnection(response);
-  });
-
-  if (request.url.toLowerCase() === '/events') {
-    response.writeHead(200, {
-      'Connection': 'keep-alive',
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Access-Control-Allow-Origin': '*'
+    request.on("close", () => {
+      closeConnection(response);
     });
 
-    checkConnectionToRestore(request, response, eventHistory);
+    if (request.url.toLowerCase() === "/events") {
+      response.writeHead(200, {
+        Connection: "keep-alive",
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Access-Control-Allow-Origin": "*"
+      });
 
-    sendEvents(response, eventHistory);
-  } else {
-    response.writeHead(404);
-    response.end();  
-  }
-}).listen(5000, () => {
-  console.log('Server running at http://127.0.0.1:5000/');
-});
+      checkConnectionToRestore(request, response, eventHistory);
+
+      sendEvents(response, eventHistory);
+    } else {
+      response.writeHead(404);
+      response.end();
+    }
+  })
+  .listen(5000, () => {
+    console.log("Server running at http://127.0.0.1:5000/");
+  });
 
 function sendEvents(response, eventHistory) {
   setTimeout(() => {
     if (!response.finished) {
-      const eventString = 'id: 1\nevent: flightStateUpdate\ndata: {"flight": "I768", "state": "landing"}\n\n';
+      const eventString =
+        'id: 1\nevent: flightStateUpdate\ndata: {"flight": "I768", "state": "landing"}\n\n';
       response.write(eventString);
       eventHistory.push(eventString);
     }
@@ -727,7 +825,8 @@ function sendEvents(response, eventHistory) {
 
   setTimeout(() => {
     if (!response.finished) {
-      const eventString = 'id: 2\nevent: flightStateUpdate\ndata: {"flight": "I768", "state": "landed"}\n\n';
+      const eventString =
+        'id: 2\nevent: flightStateUpdate\ndata: {"flight": "I768", "state": "landed"}\n\n';
       response.write(eventString);
       eventHistory.push(eventString);
     }
@@ -735,7 +834,8 @@ function sendEvents(response, eventHistory) {
 
   setTimeout(() => {
     if (!response.finished) {
-      const eventString = 'id: 3\nevent: flightRemoval\ndata: {"flight": "I768"}\n\n';
+      const eventString =
+        'id: 3\nevent: flightRemoval\ndata: {"flight": "I768"}\n\n';
       response.write(eventString);
       eventHistory.push(eventString);
     }
@@ -743,7 +843,7 @@ function sendEvents(response, eventHistory) {
 
   setTimeout(() => {
     if (!response.finished) {
-      const eventString = 'id: 4\nevent: closedConnection\ndata: \n\n';
+      const eventString = "id: 4\nevent: closedConnection\ndata: \n\n";
       eventHistory.push(eventString);
     }
   }, 12000);
@@ -752,17 +852,17 @@ function sendEvents(response, eventHistory) {
 function closeConnection(response) {
   if (!response.finished) {
     response.end();
-    console.log('Stopped sending events.');
+    console.log("Stopped sending events.");
   }
 }
 
 function checkConnectionToRestore(request, response, eventHistory) {
-  if (request.headers['last-event-id']) {
-    const eventId = parseInt(request.headers['last-event-id']);
+  if (request.headers["last-event-id"]) {
+    const eventId = parseInt(request.headers["last-event-id"]);
 
-    eventsToReSend = eventHistory.filter((e) => e.id > eventId);
+    eventsToReSend = eventHistory.filter(e => e.id > eventId);
 
-    eventsToReSend.forEach((e) => {
+    eventsToReSend.forEach(e => {
       if (!response.finished) {
         response.write(e);
       }
@@ -780,7 +880,8 @@ We can see that now each time an event is sent to the client, it is also stored 
 ```javascript
 setTimeout(() => {
   if (!response.finished) {
-    const eventString = 'id: 1\nevent: flightStateUpdate\ndata: {"flight": "I768", "state": "landing"}\n\n';
+    const eventString =
+      'id: 1\nevent: flightStateUpdate\ndata: {"flight": "I768", "state": "landing"}\n\n';
     response.write(eventString);
     eventHistory.push(eventString);
   }
@@ -810,7 +911,7 @@ This completes and makes more robust our system.
 
 According to [caniuse.com](https://caniuse.com/#search=server%20sent%20events), Server-Sent Events are currently supported by all major browsers but Internet Explorer, Edge and Opera Mini. Although [supporting them in Edge is under consideration](https://developer.microsoft.com/en-us/microsoft-edge/platform/status/serversenteventseventsource/), the lack of universal support forces us to use polyfills, such as [Remy Sharp's EventSource.js](https://github.com/remy/polyfills/blob/master/EventSource.js) or [Yaffle's EventSource](https://github.com/Yaffle/EventSource) or [AmvTek's EventSource](https://github.com/amvtek/EventSource).
 
-Using these polyfills is very simple. Here is an example of using AmvTek's polyfill, but using the other ones is not so different. In order to add AmvTek's EventSource polyfill to our React client application, we need to install it via `npm`, as shown below: 
+Using these polyfills is very simple. Here is an example of using AmvTek's polyfill, but using the other ones is not so different. In order to add AmvTek's EventSource polyfill to our React client application, we need to install it via `npm`, as shown below:
 
 ```shell
 npm install eventsource-polyfill
