@@ -101,234 +101,244 @@ The default template needs some adjustments. For the authentication process, we 
 Once the NuGet package is installed, proper information will be displayed in the Logs console.
 
 ### Signing Up to Auth0
-An Auth0 account is available for free. To sign up go to [Auth0 website](https://auth0.com/) and click "Sing Up" button on the top. You can either sign up with standard way using e-mail and password or with identity provider like Microsoft or Github. Once you sign in dashboard is available.
 
-### Creating an Auth0 API
-An Authentication API exposes Auth0 identity functionality, as well as those of supported identity protocols (such as OpenID Connect, OAuth, and SAML). The Auth0 API application can be created in the dashboard. Open "APIs" tab from the left and click "CREATE API" button. In the dialog you have to provide name of the new API, identifier and select signing alghoritm (in this case RS256) should be selected. Click "Create" button and after few seconds you should see your API in the dashboard:
+As you are going to use Auth0 to handle authentication, you will have to sign up to it. If you don't have an account yet, you can <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free one here</a>.
+
+### Creating an Auth0 API for Azure Functions
+
+To represent your Azure Functions on Auth0, you will have to create an Auth0 API. So, open [the "APIs" section](https://manage.auth0.com/#/apis) and click on the "Create API" section. Auth0 will show you a dialog where you will have to provide name for your new API (you can input something like "Microsoft Azure Function", an identifier (in this case, you can input something like `https://my-azure-function`, you will need it later), and a signing alghoritm (you can leave this as `RS256`). Then, click the "Create" button and, after a few seconds, you should see your API in the dashboard:
 
 ![Created API in the dashboard](https://github.com/Daniel-Krzyczkowski/guest-writer/blob/master/articles/images/auth0_5.PNG)
 
-Click its name and open "Quick Start" tab and copy "audience" and "issuer" from the sample source code presented. You will use these values in the Azure Function source code to validate tokens.
+Click its name and open "Quick Start" tab to copy "audience" and "issuer" from the sample source code presented. You will use these values in the Azure Function source code [to validate `access_tokens`](https://auth0.com/docs/tokens/access-token).
 
 ### Developing the Azure Function
-Access to the Function App will be secured with the Auth0. User has to authenticate in the Xamarin Forms application and then send request with authorization token to the function. Here OpenID Connect is used to verify user identity and once its confirmed response with greeting is returned.
-Open "run.csx" file from the "View files" tab. This is the place where function source code should be placed. Lets discuss it.
 
-Below AuthenticationService class source code is presented which instance is used to get access token from Auth0:
+As mentioned, access to the Azure Function will be secured by Auth0. As such, users have to authenticate in the Xamarin Forms application and then send request with the `access_token` to the function. Here, OpenID Connect will be used to verify user identity and, once it's confirmed, a response with greeting will be returned.
+
+So, now, you will have to open the `run.csx` file from the "View files" tab on you Azure dashboard. This is the place where the function source code should be placed. Let's discuss it.
+
+Below, you can see the `AuthenticationService` class source code which will be used to get validate the access token users retrieve from Auth0:
 
 ```C#
 public static class AuthenticationService
 {
-        private static readonly IConfigurationManager<OpenIdConnectConfiguration> _configurationManager;
+  private static readonly IConfigurationManager<OpenIdConnectConfiguration> _configurationManager;
 
-        private static readonly string ISSUER = ""; //From Auth0 portal, ex: https://devisland.eu.auth0.com/
-        private static readonly string AUDIENCE = ""; // From Auth0 portal, ex: devisland
+  private static readonly string ISSUER = ""; //From Auth0 portal, ex: https://devisland.eu.auth0.com/
+  private static readonly string AUDIENCE = ""; // From Auth0 portal, ex: my-azure-function
 
-        static AuthenticationService()
-        {
-            var documentRetriever = new HttpDocumentRetriever { RequireHttps = ISSUER.StartsWith("https://") };
+  static AuthenticationService()
+  {
+    var documentRetriever = new HttpDocumentRetriever { RequireHttps = ISSUER.StartsWith("https://") };
 
-            _configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                $"{ISSUER}.well-known/openid-configuration",
-                new OpenIdConnectConfigurationRetriever(),
-                documentRetriever
-            );
-        }
+    _configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
+      $"{ISSUER}.well-known/openid-configuration",
+      new OpenIdConnectConfigurationRetriever(),
+      documentRetriever
+    );
+  }
 
-        public static async Task<ClaimsPrincipal> ValidateTokenAsync(string bearerToken, TraceWriter log)
-        {
-            ClaimsPrincipal validationResult = null;
-            short retry = 0;
-            while(retry <=0 && validationResult == null)
-            {
-                try
-                {
-                var openIdConfig = await _configurationManager.GetConfigurationAsync(CancellationToken.None);
+  public static async Task<ClaimsPrincipal> ValidateTokenAsync(string bearerToken, TraceWriter log)
+  {
+    ClaimsPrincipal validationResult = null;
+    short retry = 0;
+    while(retry <=0 && validationResult == null)
+    {
+      try
+      {
+        var openIdConfig = await _configurationManager.GetConfigurationAsync(CancellationToken.None);
 
-                    TokenValidationParameters validationParameters =
-                        new TokenValidationParameters
-                        {
-                            ValidIssuer = ISSUER,
-                            ValidAudiences = new[] { AUDIENCE },
-                            IssuerSigningKeys = openIdConfig.SigningKeys
-                        };
+        TokenValidationParameters validationParameters =
+          new TokenValidationParameters
+          {
+              ValidIssuer = ISSUER,
+              ValidAudiences = new[] { AUDIENCE },
+              IssuerSigningKeys = openIdConfig.SigningKeys
+          };
 
-                    SecurityToken validatedToken;
-                    JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-                    validationResult = handler.ValidateToken(bearerToken, validationParameters, out validatedToken);
-                    
-                    
-                    log.Info($"Token is validated. User Id {validationResult.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value}");
+        SecurityToken validatedToken;
+        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+        validationResult = handler.ValidateToken(bearerToken, validationParameters, out validatedToken);
+        
+        
+        log.Info($"Token is validated. User Id {validationResult.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value}");
 
-                    return validationResult;
-                }
-                catch (SecurityTokenSignatureKeyNotFoundException)
-                {
-                    log.Info("SecurityTokenSignatureKeyNotFoundException exception thrown. Refreshing configuration...");
-                    _configurationManager.RequestRefresh();
-                    retry ++;
-                }
-                catch (SecurityTokenException)
-                {
-                    log.Info("SecurityTokenException exception throwns. One more attempt...");
-                     return null;    
-                }
-            }
-            return validationResult;
-        }  
+        return validationResult;
+      }
+      catch (SecurityTokenSignatureKeyNotFoundException)
+      {
+        log.Info("SecurityTokenSignatureKeyNotFoundException exception thrown. Refreshing configuration...");
+        _configurationManager.RequestRefresh();
+        retry ++;
+      }
+      catch (SecurityTokenException)
+      {
+        log.Info("SecurityTokenException exception throwns. One more attempt...");
+        return null;    
+      }
+    }
+    return validationResult;
+  }  
 }
 ```
-Lets describe above code functionality. First of all Issuer and audience values have to be filled. You can obtain them in the Auth0 dashboard:
+
+Let's describe the above code functionality. First of all, the `Issuer` and `Audience` values have to be filled. You can obtain them from your Auth0 dashboard:
 
 ```C#
 private static readonly string ISSUER = ""; //From Auth0 portal, ex: https://devisland.eu.auth0.com/
-private static readonly string AUDIENCE = ""; // From Auth0 portal, ex: devisland
+private static readonly string AUDIENCE = ""; // From Auth0 portal, ex: my-azure-function
 ```
-To verify token send to the function you have to use the ConfigurationManager class which uses OpenId configuration retrieved from the Auth0. ConfigurationManager instance is created in the constructor:
 
+To verify tokens send to the function you have to use the `ConfigurationManager` class which uses OpenId configuration retrieved from Auth0. This `ConfigurationManager` instance is created in the constructor:
 
 ```C#
 static AuthenticationService()
-        {
-            var documentRetriever = new HttpDocumentRetriever { RequireHttps = ISSUER.StartsWith("https://") };
+{
+  var documentRetriever = new HttpDocumentRetriever { RequireHttps = ISSUER.StartsWith("https://") };
 
-            _configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                $"{ISSUER}.well-known/openid-configuration",
-                new OpenIdConnectConfigurationRetriever(),
-                documentRetriever
-            );
-        }
+  _configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
+    $"{ISSUER}.well-known/openid-configuration",
+    new OpenIdConnectConfigurationRetriever(),
+    documentRetriever
+  );
+}
 ```
-ValidateTokenAsync method is responsible for token verification. Validation is done through the "JwtSecurityTokenHandler" instance using OpenId configuration retrieved from the Auth0. Please note that catch clausule is used to handle the "SecurityTokenSignatureKeyNotFoundException" exception. It is required to refresh token when the issuer changed its signing keys:
 
+The `ValidateTokenAsync` method is responsible for the token verification. Validation is done through the `JwtSecurityTokenHandler` instance using OpenId configuration retrieved from the Auth0. Please, note that the catch clause is used to handle the "SecurityTokenSignatureKeyNotFoundException" exception. It is required to refresh token when the issuer changed its signing keys:
 
 ```C#
-        public static async Task<ClaimsPrincipal> ValidateTokenAsync(string bearerToken, TraceWriter log)
+public static async Task<ClaimsPrincipal> ValidateTokenAsync(string bearerToken, TraceWriter log)
+{
+  ClaimsPrincipal validationResult = null;
+  short retry = 0;
+  while(retry <=0 && validationResult == null)
+  {
+    try
+    {
+    var openIdConfig = await _configurationManager.GetConfigurationAsync(CancellationToken.None);
+
+      TokenValidationParameters validationParameters =
+        new TokenValidationParameters
         {
-            ClaimsPrincipal validationResult = null;
-            short retry = 0;
-            while(retry <=0 && validationResult == null)
-            {
-                try
-                {
-                var openIdConfig = await _configurationManager.GetConfigurationAsync(CancellationToken.None);
+            ValidIssuer = ISSUER,
+            ValidAudiences = new[] { AUDIENCE },
+            IssuerSigningKeys = openIdConfig.SigningKeys
+        };
 
-                    TokenValidationParameters validationParameters =
-                        new TokenValidationParameters
-                        {
-                            ValidIssuer = ISSUER,
-                            ValidAudiences = new[] { AUDIENCE },
-                            IssuerSigningKeys = openIdConfig.SigningKeys
-                        };
+      SecurityToken validatedToken;
+      JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+      validationResult = handler.ValidateToken(bearerToken, validationParameters, out validatedToken);
+      
+      
+      log.Info($"Token is validated. User Id {validationResult.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value}");
 
-                    SecurityToken validatedToken;
-                    JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-                    validationResult = handler.ValidateToken(bearerToken, validationParameters, out validatedToken);
-                    
-                    
-                    log.Info($"Token is validated. User Id {validationResult.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value}");
-
-                    return validationResult;
-                }
-                catch (SecurityTokenSignatureKeyNotFoundException)
-                {
-                    log.Info("SecurityTokenSignatureKeyNotFoundException exception occurred. Refreshing configuration...");
-                    _configurationManager.RequestRefresh();
-                    retry ++;
-                }
-                catch (SecurityTokenException)
-                {
-                    log.Info("SecurityTokenException exception occurred. One more attepmt...");
-                     return null;    
-                }
-            }
-            return validationResult;
-        } 
+      return validationResult;
+    }
+    catch (SecurityTokenSignatureKeyNotFoundException)
+    {
+      log.Info("SecurityTokenSignatureKeyNotFoundException exception occurred. Refreshing configuration...");
+      _configurationManager.RequestRefresh();
+      retry ++;
+    }
+    catch (SecurityTokenException)
+    {
+      log.Info("SecurityTokenException exception occurred. One more attepmt...");
+        return null;    
+    }
+  }
+  return validationResult;
+} 
 ```
-Every Function App has the "Run" method which is exectued once function is called - in our case this is the HTTP request:
+
+Every Azure Function has the `Run` method which is executed once the function is called (in our case this happens through HTTP requests):
 
 ```C#
 public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceWriter log)
 {
-    log.Info("C# HTTP trigger function processed a request.");
+  log.Info("C# HTTP trigger function processed a request.");
 
-     var authorizationHeader  =  req.Headers.GetValues("Authorization").FirstOrDefault();
-     log.Info("Validating token: " + authorizationHeader);
+  var authorizationHeader  =  req.Headers.GetValues("Authorization").FirstOrDefault();
+  log.Info("Validating token: " + authorizationHeader);
 
-     if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer"))
+  if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer"))
+  {
+    string bearerToken = authorizationHeader.Substring("Bearer ".Length).Trim();
+    log.Info("Got token: " + bearerToken);
+    ClaimsPrincipal principal;
+    if ((principal = await AuthenticationService.ValidateTokenAsync(bearerToken, log)) == null)
     {
-        string bearerToken = authorizationHeader.Substring("Bearer ".Length).Trim();
-        log.Info("Got token: " + bearerToken);
-            ClaimsPrincipal principal;
-            if ((principal = await AuthenticationService.ValidateTokenAsync(bearerToken, log)) == null)
-            {
-                log.Info("The authorization token is not valid.");
-                return req.CreateResponse(HttpStatusCode.Unauthorized, "The authorization token is not valid.");
-            }
+      log.Info("The authorization token is not valid.");
+      return req.CreateResponse(HttpStatusCode.Unauthorized, "The authorization token is not valid.");
     }
-    else 
-    {
-        return req.CreateResponse(HttpStatusCode.Unauthorized, "The authorization header is either empty or isn't Bearer.");
-    }
+  }
+  else 
+  {
+    return req.CreateResponse(HttpStatusCode.Unauthorized, "The authorization header is either empty or isn't Bearer.");
+  }
 
+  string name = req.GetQueryNameValuePairs()
+    .FirstOrDefault(q => string.Compare(q.Key, "name", true) == 0)
+    .Value;
 
-    string name = req.GetQueryNameValuePairs()
-        .FirstOrDefault(q => string.Compare(q.Key, "name", true) == 0)
-        .Value;
+  if (name == null)
+  {
+    dynamic data = await req.Content.ReadAsAsync<object>();
+    name = data?.name;
+  }
 
-    if (name == null)
-    {
-        dynamic data = await req.Content.ReadAsAsync<object>();
-        name = data?.name;
-    }
-
-    return name == null
-        ? req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name on the query string or in the request body")
-        : req.CreateResponse(HttpStatusCode.OK, "Hello " + name + "!" +" Greetings from Azure Function secured with Auth0");
+  return name == null
+    ? req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name on the query string or in the request body")
+    : req.CreateResponse(HttpStatusCode.OK, "Hello " + name + "!" +" Greetings from Azure Function secured with Auth0");
 }
 ```
-Lets describe above code functionality. Firstly bearer token is retrieved from the HTTP request header. If its empty function returns 401 unauthorized HTTP status. When token is attached to the request the AuthenticationService instance verifies if token is valid:
+
+Let's describe the code above. Firstly, the bearer token (the `access_token`) is retrieved from an HTTP request header (`Authorization`. If it's empty, this function returns the 401 unauthorized HTTP status. When a token is attached to the request, the `AuthenticationService` instance verifies if token is valid:
 
 ```C#
- var authorizationHeader  =  req.Headers.GetValues("Authorization").FirstOrDefault();
-     log.Info("Validating token: " + authorizationHeader);
+  var authorizationHeader  =  req.Headers.GetValues("Authorization").FirstOrDefault();
+  log.Info("Validating token: " + authorizationHeader);
 
-     if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer"))
+  if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer"))
+  {
+    string bearerToken = authorizationHeader.Substring("Bearer ".Length).Trim();
+    log.Info("Got token: " + bearerToken);
+    ClaimsPrincipal principal;
+    if ((principal = await AuthenticationService.ValidateTokenAsync(bearerToken, log)) == null)
     {
-        string bearerToken = authorizationHeader.Substring("Bearer ".Length).Trim();
-        log.Info("Got token: " + bearerToken);
-            ClaimsPrincipal principal;
-            if ((principal = await AuthenticationService.ValidateTokenAsync(bearerToken, log)) == null)
-            {
-                log.Info("The authorization token is not valid.");
-                return req.CreateResponse(HttpStatusCode.Unauthorized, "The authorization token is not valid.");
-            }
+      log.Info("The authorization token is not valid.");
+      return req.CreateResponse(HttpStatusCode.Unauthorized, "The authorization token is not valid.");
     }
-    else 
-    {
-        return req.CreateResponse(HttpStatusCode.Unauthorized, "The authorization header is either empty or isn't Bearer.");
-    }
+  }
+  else 
+  {
+    return req.CreateResponse(HttpStatusCode.Unauthorized, "The authorization header is either empty or isn't Bearer.");
+  }
 ```
-Please note that we are using logger here to display information in the Logs console.
-Once token is verified and valid function code retrieves name parameter from the query string. If its not empty greeting text string is created and returned with HTTP status 200:
 
+> Note that we are using `logger` here to display information in the Logs console.
+
+Then, once the token is verified, this function retrieves the name parameter from the query string. If it's not empty, a greeting text string is created and returned with HTTP status 200:
 
 ```C#
 string name = req.GetQueryNameValuePairs()
-        .FirstOrDefault(q => string.Compare(q.Key, "name", true) == 0)
-        .Value;
+    .FirstOrDefault(q => string.Compare(q.Key, "name", true) == 0)
+    .Value;
 
-    if (name == null)
-    {
-        dynamic data = await req.Content.ReadAsAsync<object>();
-        name = data?.name;
-    }
+  if (name == null)
+  {
+    dynamic data = await req.Content.ReadAsAsync<object>();
+    name = data?.name;
+  }
 
-    return name == null
-        ? req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name on the query string or in the request body")
-        : req.CreateResponse(HttpStatusCode.OK, "Hello " + name + "!" +" Greetings from Azure Function secured with Auth0");
+  return name == null
+    ? req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name on the query string or in the request body")
+    : req.CreateResponse(HttpStatusCode.OK, "Hello " + name + "!" +" Greetings from Azure Function secured with Auth0");
 ```
-The Function app is available under specific URL address. You can find it once cliced "Get function URL" button on the top. It should look like the one presented below:
+
+And that's it. This is how your serverless function works.
+
+Now, as you may know, the Azure Function is available under an specific URL address. You can find it by clicking on the "Get function URL" button on the top of it. It should look like the one presented below:
 
 [https://auth0securedfunction.azurewebsites.net/api/Auth0FunctionApp](https://auth0securedfunction.azurewebsites.net/api/Auth0FunctionApp)
 
