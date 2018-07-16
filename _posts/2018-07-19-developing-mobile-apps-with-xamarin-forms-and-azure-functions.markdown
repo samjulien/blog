@@ -26,7 +26,7 @@ related:
 - 2018-07-12-building-an-audio-player-app-with-ionic-angular-rxjs-and-ngrx
 ---
 
-**TL;DR** The Microsoft Azure Functions is a solution which enables developers running small pieces of code - functions in the cloud without worrying about a whole application or the infrastructure to run it. They can be used as a backend for web or mobile applications. In this article we will present how to access an Azure Function secured by Auth0 from a Xamarin Forms application.
+**TL;DR:** The Microsoft Azure Functions is a solution which enables developers running small serverless pieces of code (functions in the cloud) without worrying about a whole application or the infrastructure to run it. They can be used as a backend for web or mobile applications. In this article, we will present how to access an Azure Function secured by Auth0 from a Xamarin Forms application.
 
 ---
 
