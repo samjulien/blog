@@ -31,14 +31,18 @@ related:
 ---
 
 ## Introducing Microsoft Azure Cloud Platform
-The Microsoft Azure is cloud platform which provides components to quickly create, implement and manage cloud solutions. 
-It offers wide range of application, computing, warehouse, network services and supports all three models of cloud services: 
-* [Infrastructure as a Service (IaaS)](https://azure.microsoft.com/en-us/overview/what-is-iaas)
-* [Platform as a Service (PaaS)](https://azure.microsoft.com/en-us/overview/what-is-paas)
-* [Software as a Service (SaaS)](https://azure.microsoft.com/en-us/overview/what-is-saas)
 
-The Microsoft Azure is available through [web portal](https://portal.azure.com/) where all mentioned components can be created and configured. In this article we will go through Azure Functions - solution in PaaS model which enables developers running small pieces of code without bothering about whole application or the infrastructure to run it.
-Creating Azure account is free of charge but you have to provide credit card information. There will be no charge, except for a temporary authorisation hold. Microsoft offers $200 credit for start to explore services for 30 days. If you decide not to upgrade at the end of 30 days or once you've used up your $200 credit, any products you’ve deployed will be decommissioned and you won’t be able to access them. You will not be charged and you can always upgrade your subscription.
+Microsoft Azure is a platform which provides components to quickly create, implement, and manage cloud solutions. It offers wide range of application, computing, warehouse, network services, and supports all three models of cloud services: 
+
+* [Infrastructure as a Service (IaaS)](https://azure.microsoft.com/en-us/overview/what-is-iaas);
+* [Platform as a Service (PaaS)](https://azure.microsoft.com/en-us/overview/what-is-paas);
+* and [Software as a Service (SaaS)](https://azure.microsoft.com/en-us/overview/what-is-saas).
+
+Microsoft Azure is available through a [web portal](https://portal.azure.com/) where all mentioned components can be created and configured. In this article, we will use Azure Functions: a PaaS solution that enables developers running small pieces of code without bothering about whole application or the infrastructure to run it.
+
+Creating an Azure account is free of charge but you have to provide some credit card information. There will be no charge, except for a temporary authorisation hold. Microsoft offers $200 credit for start to explore services for 30 days.
+
+If you decide not to upgrade at the end of 30 days or once you've used up your $200 credit, any products you’ve deployed will be decommissioned and you won’t be able to access them. You will not be charged and you can always upgrade your subscription.
 
 ## Using Azure Functions as a Serverless Backend
 There are many cases where Azure Functions can be used like systems integration, data processing or building simple APIs and microservices. The Microsoft Azure cloud platform provides different initial templates for Azure Functions. Below there are some examples of them:
