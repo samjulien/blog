@@ -21,6 +21,7 @@ tags:
 - auth0
 - hybrid
 related:
-- 2017-08-08-ionic-framework-how-to-get-started
-- 2016-02-18-ionic-2-authentication-how-to-secure-your-mobile-app-with-jwt
+- 2017-03-10-using-serverless-azure-functions-with-auth0-and-google-apis
+- 2016-03-28-xamarin-authentication-and-cross-platform-app-development
+- 2018-07-12-building-an-audio-player-app-with-ionic-angular-rxjs-and-ngrx
 ---
