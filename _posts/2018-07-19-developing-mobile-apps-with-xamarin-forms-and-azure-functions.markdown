@@ -45,12 +45,14 @@ Creating an Azure account is free of charge but you have to provide some credit 
 If you decide not to upgrade at the end of 30 days or once you've used up your $200 credit, any products you’ve deployed will be decommissioned and you won’t be able to access them. You will not be charged and you can always upgrade your subscription.
 
 ## Using Azure Functions as a Serverless Backend
-There are many cases where Azure Functions can be used like systems integration, data processing or building simple APIs and microservices. The Microsoft Azure cloud platform provides different initial templates for Azure Functions. Below there are some examples of them:
-* [HTTPTrigger](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook) - Triggers the execution of Function code by using an HTTP request
-* [TimerTrigger](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-timer) - Executes cleanup or other batch tasks on a predefined schedule
-* [QueueTrigger](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue) - Respond to messages as they arrive in an Azure Storage queue
 
-In this article we will use HTTPTrigger template to create Azure Function. It will be secured by Auth0 so before accessing it authentication will be required. Users will authenticate in Xamarin Forms application conntected to this Function.
+There are many cases where Azure Functions can be used. For example, they can be used to integrate different systems, for data processing, or to build simple APIs and microservices. The Microsoft Azure cloud platform provides different initial templates for Azure Functions. Below there are some examples of them:
+
+* [HTTPTrigger](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook)—Triggers the execution of a function code on HTTP requests.
+* [TimerTrigger](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-timer)—Executes cleanup or other batch tasks on a predefined interval.
+* [QueueTrigger](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue)—Respond to messages as they arrive in an Azure Storage queue.
+
+In this article, we will use the HTTPTrigger template to create our Azure Function. This function will be secured by Auth0 so, before accessing it, users will have to authenticate. These users will use (and authenticate through) a Xamarin Forms application which will then submit requests to our Azure Function.
 
 ## Creating Azure Functions
 You can create the Azure Function in the [Azure portal](https://portal.azure.com/). Follow below steps to create new Azure Function with HTTPTrigger template:
