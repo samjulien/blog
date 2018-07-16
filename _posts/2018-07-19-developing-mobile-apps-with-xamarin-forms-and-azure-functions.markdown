@@ -82,7 +82,8 @@ After a short time the Function App will be created and notification will show u
 Another blade with templates will be displayed. From there, choose "HTTPTrigger C#" template, fill the _name_ field with "Auth0FunctionApp" and change authorization level to "Anonymous". After few seconds, the HTTPTrigger function will be ready for you.
 
 ### Scaffolding the Project
-Default template needs some adjustments. Nuget packages are supported by the Function Apps. For an authentication process we will use **Microsoft.IdentityModel.Protocols.OpenIdConnect** NuGet package. Open "View files" tab on the right and click "Add" button. You have to create new json file which will contain information about required NuGet packages. Type "project.json" as the file name and click "Enter". Once file is created you have to define its structure so paste below code and click "Save" button:
+
+The default template needs some adjustments. For the authentication process, we will use [the **Microsoft.IdentityModel.Protocols.OpenIdConnect** NuGet package](https://www.nuget.org/packages/Microsoft.IdentityModel.Protocols.OpenIdConnect/). So, open the "View files" tab on the right and click the "Add" button. You will have to create new json file which will contain information about the required NuGet packages. Type "project.json" as the file name and hit "Enter". Once the file is created, you have to define its structure. So, paste the following code and click on the "Save" button:
 
 
 ```C#
@@ -96,7 +97,8 @@ Default template needs some adjustments. Nuget packages are supported by the Fun
    }
 }
 ```
-Once NuGet package is installed proper information is displayed in the Logs console.
+
+Once the NuGet package is installed, proper information will be displayed in the Logs console.
 
 ### Signing Up to Auth0
 An Auth0 account is available for free. To sign up go to [Auth0 website](https://auth0.com/) and click "Sing Up" button on the top. You can either sign up with standard way using e-mail and password or with identity provider like Microsoft or Github. Once you sign in dashboard is available.
