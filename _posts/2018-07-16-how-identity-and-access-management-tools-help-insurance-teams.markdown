@@ -2,7 +2,7 @@
 layout: post
 title: How the Right IAM Tools Will Help Insurance Teams Make the Shift to Digital
 description: "Insurers know that digital transformation is coming. To stand out from your peers, adopt identity and access management for a secure experience that customers can trust."
-date: 2018-05-25 17:47
+date: 2018-07-16 12:30
 category: Growth, Security
 is_non-tech: true
 author:
@@ -11,8 +11,8 @@ author:
   mail: gonto@auth0.com
   avatar: https://www.gravatar.com/avatar/df6c864847fba9687d962cb80b482764??s=60
 design:
-  bg_color: "#222228"
-  image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
+  bg_color: "#1a587e"
+  image: https://cdn.auth0.com/blog/how-the-right-identity-and-access-management-tools-will-help-insurance-teams-make-the-shift-to-digital/iam-insurance-digital-transformation-logo.png
 tags:
   - digital-transformation
   - iam
@@ -22,6 +22,14 @@ related:
   - 2018-03-09-3-reasons-your-data-integration-plan-is-important
   - 2018-05-21-digital-success-through-customer-identity-and-access-management
 ---
+
+<div class="alert alert-info alert-icon">
+  <i class="icon-budicon-500"></i>
+  <strong>Forrester Consulting analysis determines that using Auth0 can yield a 548% ROI and $3.7M in identity-related savings. Read the full report: <a href="https://resources.auth0.com/forrester-tei-research-case-study/">Total Economic Impact of Auth0</a>.</strong>
+</div>
+
+---
+
 
 Insurers know that implementing digital changes have the potential to benefit them long term. A recent [McKinsey study](https://www.mckinsey.com/business-functions/digital-mckinsey/our-insights/making-digital-strategy-a-reality-in-insurance) found that insurers that digitized their processes eliminated 30 to 50 percent of the human service costs. The top quartile of those surveyed achieved 2X the growth of their peers.
 
