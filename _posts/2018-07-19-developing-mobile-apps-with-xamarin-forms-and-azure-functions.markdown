@@ -55,30 +55,31 @@ There are many cases where Azure Functions can be used. For example, they can be
 In this article, we will use the HTTPTrigger template to create our Azure Function. This function will be secured by Auth0 so, before accessing it, users will have to authenticate. These users will use (and authenticate through) a Xamarin Forms application which will then submit requests to our Azure Function.
 
 ## Creating Azure Functions
-You can create the Azure Function in the [Azure portal](https://portal.azure.com/). Follow below steps to create new Azure Function with HTTPTrigger template:
 
-1. Click "Create a resource" button in the left top corner
-2. Type "Function app" in the search window
-3. Select "Function app" from the list
-4. Click "Create" button
+You can create the Azure Function in the [Azure portal](https://portal.azure.com/). Follow the steps below to create new Azure Function with HTTPTrigger template:
+
+1. Click the "Create a resource" button in the left top corner.
+2. Type "Function app" in the search window.
+3. Select "Function app" from the list.
+4. Click the "Create" button.
 
 In this step, you have to provide few details:
 
-* App name - name of the function app, can be "auth0functionapp" (in my case it was "auth0securedfunction") - name has to be unique.
-* Subscription - your active Microsfot Azure subscription selcted
-* Resource group - group where function app will be located, here select "Create new" and type "function-app-rg"
-* OS - host operating system where function code will be executed, here select "Windows"
-* Hosting plan - should be set as "Consumption Plan" so you pay only for the number of executions
-* Location - it is good to create app in your region so find your region on the list
-* Storage - some functionality connected with function apps requires storage, select "Create new" and leave the name as it is
+* _App name_: This will be the name of the function app. You can add something like "auth0-function-app". In my case, I used "auth0securedfunction" but you can't use the same as the name has to be unique.
+* _Subscription_: This is the type of the subcscription that you have.
+* _Resource group_: This will be the group where function app will be located. You can select "Create new" and type "function-app-rg".
+* _OS_: As the host operating system, you can select "Windows".
+* _Hosting plan_: You can set it as "Consumption Plan" so you pay only for the number of executions.
+* _Location_: It is a good idea to create the function in a region near you.
+* _Storage_: Some functionalities connected with Azure Functions require storage. You can just select "Create new" and leave the name as it is.
 
-Once you fill all required, information click "Create" button.
+Once you fill all the required information click the "Create" button.
 
-After short time the Function App should be created and notification shows up. Select "Function App" from the left bar. Blade with created function app should appear. Expand it and move mouse cursor on the "Functions" header and click "+" button. 
+After a short time the Function App will be created and notification will show up. After that, select "Function App" from the left bar. A blade with the created function app should appear. Expand it and move mouse cursor on the "Functions" header and click the "+" button. 
 
 ![Add new function app](https://github.com/Daniel-Krzyczkowski/guest-writer/blob/master/articles/images/auth0_4.png)
 
-New blade with templates will be displayed. Choose "HTTPTrigger C#" template, fill name field with "Auth0FunctionApp" value and change authorization level to "Anonymous". After few seconds HTTPTrigger function is ready for the further implementation.
+Another blade with templates will be displayed. From there, choose "HTTPTrigger C#" template, fill the _name_ field with "Auth0FunctionApp" and change authorization level to "Anonymous". After few seconds, the HTTPTrigger function will be ready for you.
 
 ### Scaffolding the Project
 Default template needs some adjustments. Nuget packages are supported by the Function Apps. For an authentication process we will use **Microsoft.IdentityModel.Protocols.OpenIdConnect** NuGet package. Open "View files" tab on the right and click "Add" button. You have to create new json file which will contain information about required NuGet packages. Type "project.json" as the file name and click "Enter". Once file is created you have to define its structure so paste below code and click "Save" button:
