@@ -802,7 +802,7 @@ Then, after authenticating yourself, you will be redirected to a screen like thi
 
 ![Xamarin Forms application and Azure Functions communicating.](https://cdn.auth0.com/blog/xamarin-azure-functions/xamarin-application-communicating-with-azure-functions.png)
 
-{% include tweet_quote.html quote_text="I just built an application with Xamarin Forms and Microsoft Azure." %}
+{% include tweet_quote.html quote_text="I just built a mobile application with Xamarin Forms that communicates with an Azure Function." %}
 
 ## Summary
 
