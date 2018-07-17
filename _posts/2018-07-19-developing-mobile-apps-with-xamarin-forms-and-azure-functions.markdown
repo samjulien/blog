@@ -344,32 +344,35 @@ Now, as you may know, the Azure Function is available under an specific URL addr
 
 You will use this URL in the Xamarin Forms application so copy it for the further usage.
 
-## Creating Xamarin Forms
-Xamarin platform provides possibility to create cross-platform mobile applications with .NET C#. In this case we decided to use [Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms) approach to create iOS, Android and Universal Windows Platform applications. Open Visual Studio 2017 and create new Xamarin Forms application project:
+## Creating a Xamarin Forms Application
+
+Xamarin platform provides possibility to create cross-platform mobile applications with .NET C#. In this case, we decided to use [Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms) approach to create iOS, Android, and Universal Windows Platform (UWP) applications. So, open Visual Studio 2017 and create new Xamarin Forms application project:
 
 > Remember to select Mobile development with .NET during Visual Studio 2017 installation so you can access Xamarin cross-platform project templates.
 
 ![Xamarin Forms project template](https://github.com/Daniel-Krzyczkowski/guest-writer/blob/master/articles/images/auth0_8.png)
 
-After a while Xamarin Forms application solution is ready. Please note that there are four projects:
+After a while, a Xamarin Forms application solution will be ready. Please note that there are four projects:
+
 * iOS application project
 * Android application project
 * UWP application project
 * Core project
 
-First three project contains specific platform code and Core project where common logic should be placed to share.
+First three projects contains specific platform code and the Core project is where common logic (shared by other platform specific projects) should be placed.
 
 ### Bootstrapping the Xamarin Forms Project
-Once Xamarin Forms application project is ready you need to install below NuGet packages:
 
-* [**Auth0.OidcClient.Android**](https://www.nuget.org/packages/Auth0.OidcClient.Android/) NuGet package in Android application project
-* [**Auth0.OidcClient.iOS**](https://www.nuget.org/packages/Auth0.OidcClient.ios/) NuGet package in iOS application project
-* [**Auth0.OidcClient.UWP**](https://www.nuget.org/packages/Auth0.OidcClient.UWP) NuGet package in UWP application project
-* [**RestSharp**](https://www.nuget.org/packages/RestSharp/) NuGet package in Core project
+Once your Xamarin Forms application project is ready, you will need to install the following NuGet packages:
 
-**Auth0.OidcClient** package provides authentication functionality so users can sign in or sign up in the Xamarin Forms application.
+* [**Auth0.OidcClient.Android**](https://www.nuget.org/packages/Auth0.OidcClient.Android/): the NuGet package to integrate with Auth0 in Android application projects.
+* [**Auth0.OidcClient.iOS**](https://www.nuget.org/packages/Auth0.OidcClient.ios/): the NuGet package to integrate with Auth0 in iOS application projects.
+* [**Auth0.OidcClient.UWP**](https://www.nuget.org/packages/Auth0.OidcClient.UWP): the NuGet package to integrate with Auth0 in UWP application projects.
+* [**RestSharp**](https://www.nuget.org/packages/RestSharp/) a NuGet package that handles simple REST and HTTP API Client.
 
-**RestSharp** package is used to provide functionality connected with sending HTTP requests and handling responses from the Azure Function application.
+All **Auth0.OidcClient** packages provide authentication functionality so users can sign in or sign up through Xamarin Forms applications.
+
+The **RestSharp** package will be used to provide functionality connected with sending HTTP requests and handling responses from the Azure Function application.
 
 Project structure is ready.
 
