@@ -6,8 +6,8 @@ longdescription: ""
 date: 2018-07-18 8:30
 category: Technical Guide, Architecture, Backend, Data
 design: 
-  bg_color: "#1A1A1A"
-  image: ""
+  bg_color: "#4E2420"
+  image: 
 author:
   name: Dan Arias
   url: http://twitter.com/getDanArias
@@ -26,6 +26,7 @@ tags:
   - session-storage
   - authentication
 related:
+  - 
 ---
 
 ## What's Redis?
@@ -130,3 +131,23 @@ OSX/Linux:
 ```
 
 We need to restart our shell for these changes to take effect. Once we do that, we are ready to start running Redis.
+
+## Running Redis
+
+### Starting Redis
+
+### How to Check if Redis is Working
+
+## Strings
+
+## Lists
+
+## Sets
+
+## Ordered Sets
+
+## Hashes
+
+## Using Redis Session Storage
+
+## Auth0 Aside
