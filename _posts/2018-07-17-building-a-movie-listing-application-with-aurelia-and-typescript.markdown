@@ -10,9 +10,8 @@ author:
   mail: elkdanger@gmail.com
   avatar: https://en.gravatar.com/userimage/3841188/bc8fc1f1ebb326d59bab456cac894bdf.jpeg
 design:
-  bg_color: "#646F71"
-  image: https://cdn.auth0.com/blog/aurelia-logo.png
-  image_size: "70%"
+  bg_color: "#6E4D9A"
+  image: https://cdn.auth0.com/blog/logos/aurelia.png
 tags:
 - aurelia
 - spa
