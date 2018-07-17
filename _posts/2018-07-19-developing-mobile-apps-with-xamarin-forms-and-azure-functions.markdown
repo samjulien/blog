@@ -81,7 +81,7 @@ Once you fill all the required information click the "Create" button.
 
 After a short time, the Function App will be created and notification will show up. After that, select "Function App" from the left bar. A blade with the created function app should appear. Expand it and move the mouse cursor on the "Functions" header and click the "+" button. 
 
-![Add new function app](https://github.com/Daniel-Krzyczkowski/guest-writer/blob/master/articles/images/auth0_4.png)
+![Creating an Azure Function](https://cdn.auth0.com/blog/xamarin-azure-functions/creating-an-azure-function.png)
 
 Another blade with templates will be displayed. From there, choose "HTTPTrigger C#" template, fill the _name_ field with "Auth0FunctionApp" and change authorization level to "Anonymous". After a few seconds, the HTTPTrigger function will be ready for you.
 
@@ -110,11 +110,9 @@ As you are going to use Auth0 to handle authentication, you will have to sign up
 
 ### Creating an Auth0 API for Azure Functions
 
-To represent your Azure Functions on Auth0, you will have to create an Auth0 API. So, open [the "APIs" section](https://manage.auth0.com/#/apis) and click on the "Create API" section. Auth0 will show you a dialog where you will have to provide name for your new API (you can input something like "Microsoft Azure Function", an identifier (in this case, you can input something like `https://my-azure-function`, you will need it later), and a signing algorithm (you can leave this as `RS256`). Then, click the "Create" button and, after a few seconds, you should see your API in the dashboard:
+To represent your Azure Functions on Auth0, you will have to create an Auth0 API. So, open [the "APIs" section](https://manage.auth0.com/#/apis) and click on the "Create API" section. Auth0 will show you a dialog where you will have to provide name for your new API (you can input something like "Microsoft Azure Function", an identifier (in this case, you can input something like `https://my-azure-function`, you will need it later), and a signing algorithm (you can leave this as `RS256`). Then, click the "Create" button and, after a few seconds, you will be redirected to the _Quick Start_ section of the API just created. From there, you can click on the _Settings_ tab to copy the _Identifier_ (also known as audience) of the API. You will use this value in the Azure Function source code [to validate `access_tokens`](https://auth0.com/docs/tokens/access-token).
 
-![Created API in the dashboard](https://github.com/Daniel-Krzyczkowski/guest-writer/blob/master/articles/images/auth0_5.PNG)
-
-Click its name and open "Quick Start" tab to copy "audience" and "issuer" from the sample source code presented. You will use these values in the Azure Function source code [to validate `access_tokens`](https://auth0.com/docs/tokens/access-token).
+![Creating an Auth0 API to represent the Azure Function](https://cdn.auth0.com/blog/xamarin-azure-function/creating-an-auth0-api.png)
 
 ### Developing the Azure Function
 
@@ -354,14 +352,14 @@ Xamarin platform provides the possibility to create cross-platform mobile applic
 
 > Remember to select Mobile development with .NET during Visual Studio 2017 installation so you can access Xamarin cross-platform project templates.
 
-![Xamarin Forms project template](https://github.com/Daniel-Krzyczkowski/guest-writer/blob/master/articles/images/auth0_8.png)
+![Xamarin Forms Project Template](https://cdn.auth0.com/blog/xamarin-azure-function/xamarin-forms-project-template.png)
 
 After a while, a Xamarin Forms application solution will be ready. Please note that there are four projects:
 
-* iOS application project
-* Android application project
-* UWP application project
-* Core project
+* iOS application project;
+* Android application project;
+* UWP application project;
+* and the Core project.
 
 The first three projects contain specific platform code and the Core project is where common logic (shared by other platform specific projects) should be placed.
 
