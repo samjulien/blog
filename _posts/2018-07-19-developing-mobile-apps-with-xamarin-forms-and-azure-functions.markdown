@@ -26,7 +26,7 @@ related:
 - 2018-07-12-building-an-audio-player-app-with-ionic-angular-rxjs-and-ngrx
 ---
 
-**TL;DR:** The Microsoft Azure Functions is a solution which enables developers running small serverless pieces of code (functions in the cloud) without worrying about a whole application or the infrastructure to run it. They can be used as a backend for web or mobile applications. In this article, we will present how to access an Azure Function secured by Auth0 from a Xamarin Forms application.
+**TL;DR:** The Microsoft Azure Functions is a solution which enables developers running small serverless pieces of code (functions in the cloud) without worrying about a whole application or the infrastructure to run it. They can be used as a backend for web or mobile applications. In this article, we will present how to access an Azure Function secured by Auth0 from a Xamarin Forms application. If needed, you can also check [this GitHub repository to get more information](https://github.com/Daniel-Krzyczkowski/MicrosoftAzure/tree/master/Auth0AzureFunction).
 
 ---
 
@@ -721,9 +721,10 @@ namespace Auth0XamarinForms.UWP.Services
 That's it. Now you have implemented user authentication in the different projects (iOS, Android, and UWP) of your Xamarin Forms app and you are ready to integrate both your mobile app with your Azure Function.
 
 ## Integrating Xamarin Forms and Azure Functions
-Once application user interface is ready we have to integrate it to the Azure Function App.
 
-Open the Core project (where pages for the application are located) and inside the "Services" folder add new class called "AzureFunctionDataService" - this class implements the "IAuthenticationService" interface - please note that you are using Dependency Injection to register it. In the "GetGreeting" method "AuthenticationResult" parameter should be passed. RestSharp library is used to make HTTP request to the Azure Function App. When token is valid greetings from the Function App is returned:
+Once the application user interface is ready, we have to integrate it to your Azure Function.
+
+So, open the core project (where the pages of your application are located) and, inside the `Services` folder, add a new class called `AzureFunctionDataService`. This class will implement the `IAuthenticationService` interface (note that you are using Dependency Injection to register it). Then, in the `GetGreeting` method the `AuthenticationResult` parameter should be passed. In this case, the _RestSharp_ library is used to make HTTP requests to your Azure Function. When a valid token is passed in these requests, a greetings message from your Azure Function is returned:
 
 ```C#
 [assembly: Dependency(typeof(AzureFunctionDataService))]
@@ -755,45 +756,50 @@ namespace Auth0XamarinForms.Core.Services
             return responseContent;
         }
     }
+}
 ```
 
-Finally you have to connect logic with user interface. Open "LoginPage.xaml.cs". In the "Login_Clicked" method IAuthenticationService implementation is called to handle authentication. If suceeded IAzureFunctionDataService instance is invoked to send request with access token to the Azure Function App. If token is valid Function returns greetings and user avatar.
+Finally, you have to connect everything together in the user interface. So, open the `LoginPage.xaml.cs` and, in the `Login_Clicked` method, you will call `IAuthenticationService` to handle the authentication. If succeeded, the `IAzureFunctionDataService` instance is invoked to send requests with the access token to your Azure Function. After that, the Azure Function will return a greetings message and the user's avatar will be shown:
 
 ```C#
-        private async void Login_Clicked(object sender, EventArgs e)
-        {
-            var authenticationService = DependencyService.Get<IAuthenticationService>();
-            var authenticationResult = await authenticationService.Authenticate();
+private async void Login_Clicked(object sender, EventArgs e)
+{
+    var authenticationService = DependencyService.Get<IAuthenticationService>();
+    var authenticationResult = await authenticationService.Authenticate();
 
-            if (!authenticationResult.IsError)
-            {
-                var azureFunctionDataService = DependencyService.Get<IAzureFunctionDataService>();
-                var dataFromAzureFunction = await azureFunctionDataService.GetGreeting(authenticationResult);
-                if (!string.IsNullOrEmpty(dataFromAzureFunction))
-                    Navigation.PushAsync(new MainPage(dataFromAzureFunction, authenticationResult));
-                else
-                    MainPageLabel.Text = "Cannot retrieve data from Azure Function. Please check configuration";
-            }
-        }
+    if (!authenticationResult.IsError)
+    {
+        var azureFunctionDataService = DependencyService.Get<IAzureFunctionDataService>();
+        var dataFromAzureFunction = await azureFunctionDataService.GetGreeting(authenticationResult);
+        if (!string.IsNullOrEmpty(dataFromAzureFunction))
+            Navigation.PushAsync(new MainPage(dataFromAzureFunction, authenticationResult));
+        else
+            MainPageLabel.Text = "Cannot retrieve data from Azure Function. Please check configuration";
+    }
+}
 ```
-Avatar and greetings are displayed on the Main Page:
+
+To display the users' avatar and the greetings message, you will have to update the `MainPage` method as follows:
 
 ```C#
 public MainPage(string greetingFromAzureFunction, AuthenticationResult authenticationResult)
-  {
-	InitializeComponent();
-        GreetingLabel.Text = greetingFromAzureFunction;
-        UserImage.Source = authenticationResult.UserClaims.FirstOrDefault(c => c.Type == "picture")?.Value;
-   }
+{
+InitializeComponent();
+    GreetingLabel.Text = greetingFromAzureFunction;
+    UserImage.Source = authenticationResult.UserClaims.FirstOrDefault(c => c.Type == "picture")?.Value;
+}
 ```
 
-Final application should look like below:
+And that's it. If you run your application now, you see something like the following:
 
-![Xamarin Forms project template](https://github.com/Daniel-Krzyczkowski/guest-writer/blob/master/articles/images/auth0_9.png)
+![Developing a mobile application with Xamarin Forms and Azure Function](https://cdn.auth0.com/blog/xamarin-azure-functions/xamarin-application-running.png)
 
-![Xamarin Forms project template](https://github.com/Daniel-Krzyczkowski/guest-writer/blob/master/articles/images/auth0_10.png)
+Then, after authenticating yourself, you will be redirected to a screen like this:
 
-![Xamarin Forms project template](https://github.com/Daniel-Krzyczkowski/guest-writer/blob/master/articles/images/auth0_11.png)
+![Xamarin Forms application and Azure Functions communicating.](https://cdn.auth0.com/blog/xamarin-azure-functions/xamarin-application-communicating-with-azure-functions.png)
 
 ## Summary
-This application tutorial was created to get you started with the Auth0 authentication in the Azure Function Application and Xamarin Forms cross-platform application. You should know now what the Microsoft Azure cloud platform is and how to use it to create servless Function App. You can find the source code with step by step description in my [GitHub repository](https://github.com/Daniel-Krzyczkowski/MicrosoftAzure/tree/master/Auth0AzureFunction). I encourage you to explore the Azure platform so you can find many interesting and helpful services.
+
+In this tutorial, you learned how to build a simple Xamarin Forms application that communicates with a serverless Azure Function. Both applications built throughout the article (the mobile app and the serverless function) are quite simple, but they give you enough knowledge to build more-complex applications while following an approach that is modern and secure at the same time.
+
+If you have trouble while following the article you can always check [the original GitHub repository that I've created while writing](https://github.com/Daniel-Krzyczkowski/MicrosoftAzure/tree/master/Auth0AzureFunction) and you can get in touch through the comments section down below.
