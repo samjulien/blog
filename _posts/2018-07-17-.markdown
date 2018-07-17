@@ -29,6 +29,8 @@ related:
 
 If you would like to follow along, the source code for this article is [available on GitHub.com](https://github.com/elkdanger/movielist). There is also an [online demo application](https://movies.elkdanger.co.uk) if you'd like to play around with what we're going to build here.
 
+{% include tweet_quote.html quote_text="Learn how to use Aurelia to build a movie listing application with ease." %}
+
 ---
 
 If, like me, you're always picking up on new movies that you need to watch, but never have the time for — or forget what they were — then this app is for you! Today we're going to build a movie—tracker app that lets you keep a record of those movies that you want to watch without having to remember what they were. Here's a breakdown of the things we'll achieve in this article:
@@ -40,9 +42,9 @@ If, like me, you're always picking up on new movies that you need to watch, but 
 
 To illustrate, here's what this will look like once it's done:
 
-![User's watchlist screenshot](https://res.cloudinary.com/dbec78owc/image/upload/c_scale,w_1280/v1528669670/watchlist-1.png)
+![User's watchlist screenshot](https://cdn.auth0.com/blog/aurelia-movies/watch-list.png)
 
-![Popular movies screenshot](https://res.cloudinary.com/dbec78owc/image/upload/c_scale,w_1280/v1528665819/movies-3.png)
+![Popular movies screenshot](https://cdn.auth0.com/blog/aurelia-movies/popular-movies-screenshot.png)
 
 ## A brief intro to Aurelia
 
@@ -150,12 +152,10 @@ In this case we're going to replace it with some basic navigation markup and com
 
   <nav class="navbar navbar-expand navbar-dark bg-primary justify-content-between">
     <span class="navbar-brand mb-0 h1" href="#">${appTitle}</span>
-    
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
     </div>    
 
@@ -866,7 +866,7 @@ To do this, you first need to [sign up for a free Auth0 account](https://auth0.c
 
 From this page, click 'Create application'. On the next page, enter a name for your app (I called mine 'Movielist') and for the 'application type', select 'Single Web Page Applications:
 
-![Creating an Auth0 application](https://res.cloudinary.com/dbec78owc/image/upload/v1528922049/movielist-auth0-1.png)
+![Creating an Auth0 application](https://cdn.auth0.com/blog/aurelia-movies/creating-an-auth0-application.png)
 
 Next, click the 'Create' button. On the next screen, select the 'Settings' tab, and scroll to the 'Allowed Callback URLs' field. In this box, insert the following value:
 
@@ -1302,6 +1302,8 @@ export class Header {
 ```
 
 With this in place, you will be able to log out of the application and all of the 'Add' and 'Remove' buttons on each movie will update to reflect the change in auth state.
+
+{% include tweet_quote.html quote_text="I just built a movie listing application with Aurelia." %}
 
 ## Summary and next steps
 
