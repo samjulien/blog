@@ -28,6 +28,8 @@ related:
 
 **TL;DR:** The Microsoft Azure Functions is a solution which enables developers running small serverless pieces of code (functions in the cloud) without worrying about a whole application or the infrastructure to run it. They can be used as a backend for web or mobile applications. In this article, we will present how to access an Azure Function secured by Auth0 from a Xamarin Forms application. If needed, you can also check [this GitHub repository to get more information](https://github.com/Daniel-Krzyczkowski/MicrosoftAzure/tree/master/Auth0AzureFunction).
 
+{% include tweet_quote.html quote_text="Learn how to build modern applications with Xamarin Forms and Azure Functions." %}
+
 ---
 
 ## Introducing Microsoft Azure Cloud Platform
@@ -53,6 +55,8 @@ There are many cases where Azure Functions can be used. For example, they can be
 * [QueueTrigger](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue)—Respond to messages as they arrive in an Azure Storage queue.
 
 In this article, we will use the _HTTPTrigger_ template to create our Azure Function. This function will be secured by Auth0 so, before accessing it, users will have to authenticate. These users will use (and authenticate through) a Xamarin Forms application which will then submit requests to our Azure Function.
+
+{% include tweet_quote.html quote_text="Azure Functions enables developers running small pieces of code without bothering about the whole application or the infrastructure to run it." %}
 
 ## Creating Azure Functions
 
@@ -797,6 +801,8 @@ And that's it. If you run your application now, you see something like the follo
 Then, after authenticating yourself, you will be redirected to a screen like this:
 
 ![Xamarin Forms application and Azure Functions communicating.](https://cdn.auth0.com/blog/xamarin-azure-functions/xamarin-application-communicating-with-azure-functions.png)
+
+{% include tweet_quote.html quote_text="I just built an application with Xamarin Forms and Microsoft Azure." %}
 
 ## Summary
 
