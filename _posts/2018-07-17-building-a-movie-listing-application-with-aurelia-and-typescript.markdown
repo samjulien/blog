@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Building a Movie Listing Application with Aurelia and TypeScript"
-description: "In this article, you will learn how to build a movie listing application using TypeScript and the Aurelia framework."
+description: "Learn how to build a movie watch list demo application using TypeScript, the Aurelia framework, and user authentication with Auth0."
 date: 2018-07-17 08:30
 category: Technical Guide, Frontend, Aurelia
 author:
@@ -25,7 +25,7 @@ related:
 - 2018-02-06-developing-games-with-react-redux-and-svg-part-1
 ---
 
-**TL;DR:** In this article, we're going to use the [Aurelia JavaScript framework](https://aurelia.io) to build a TypeScript application that lets you search for movies or pick from a list of current popular movies, and add them to a 'watch later' list. We're also going to use Auth0 to require authentication for movie list management.
+**TL;DR:** In this article, we're going to use the [Aurelia JavaScript framework](https://aurelia.io/) to build a TypeScript application that lets you search for movies or pick from a list of current popular movies, and add them to a 'watch later' list. We're also going to use Auth0 to require authentication for movie list management.
 
 If you would like to follow along, the source code for this article is [available on GitHub.com](https://github.com/elkdanger/movielist). There is also an [online demo application](https://movies.elkdanger.co.uk) if you'd like to play around with what we're going to build here.
 
@@ -35,16 +35,16 @@ If you would like to follow along, the source code for this article is [availabl
 
 If, like me, you're always picking up on new movies that you need to watch, but never have the time for — or forget what they were — then this app is for you! Today we're going to build a movie—tracker app that lets you keep a record of those movies that you want to watch without having to remember what they were. Here's a breakdown of the things we'll achieve in this article:
 
-* We'll use the [Aurelia JavaScript framework](https://aurelia.io) and its [CLI](https://aurelia.io/docs/build-systems/aurelia-cli/) to generate a new Aurelia application that uses [TypeScript](https://www.typescriptlang.org/) and [Webpack](https://webpack.js.org/)
+* We'll use the [Aurelia JavaScript framework](https://aurelia.io/) and its [CLI](https://aurelia.io/docs/build-systems/aurelia-cli/) to generate a new Aurelia application that uses [TypeScript](https://www.typescriptlang.org/) and [Webpack](https://webpack.js.org/)
 * Our app will have three screens — the list of movies we've added (our "watch list"), a list of currently trending movies, and a search results page
-* We'll connect to the [The Movie DB](https://www.themoviedb.org) to get our movie information
-* We'll protect the feature to add a movie to your watch list behind an Auth0 login, and also add the ability to log out of your application
+* We'll connect to the [The Movie DB](https://www.themoviedb.org/) to get our movie information
+* We'll protect the feature to add a movie to your watch list behind an Auth0 login, and also add the ability to log in and out of your application
 
 To illustrate, here's what this will look like once it's done:
 
-![User's watchlist screenshot](https://cdn.auth0.com/blog/aurelia-movies/watch-list.png)
+![User's watchlist demo app screenshot](https://cdn.auth0.com/blog/aurelia-movies/watch-list.png)
 
-![Popular movies screenshot](https://cdn.auth0.com/blog/aurelia-movies/popular-movies-screenshot.png)
+![Popular movies demo app screenshot](https://cdn.auth0.com/blog/aurelia-movies/popular-movies-screenshot.png)
 
 ## A brief intro to Aurelia
 
@@ -120,13 +120,13 @@ One thing I would like you to do is remove the `test` folder. While I'm an avid 
 
 Before we get started on the meat of the application build, let's have a quick look at the API that is going to drive the whole project.
 
-[The Movie DB](https://themoviedb.org) is a huge database of information about movies and TV shows where you can retrieve names, overviews, ratings, cast and poster images. You can also get collections of popular movies and TV shows, some of which we'll be using here.
+The Movie DB is a huge database of information about movies and TV shows where you can retrieve names, overviews, ratings, cast and poster images. You can also get collections of popular movies and TV shows, some of which we'll be using here.
 
 To get started, you will need to create a free account and apply for an API key. The application is instant, but you do need to give them some basic information about why you want the key and what you're going to use it for. You can do this by going to your account settings page once you've created your account, and going to the 'API' tab. There, [you can click on the _request a Developer API key_ option](https://www.themoviedb.org/settings/api/request) and accept the terms of use. You will find out that the form is quite extensive but don't worry, the validation process occurs instantly.
 
 We won't quite need it yet, but keep a mental note of where to get this key from later when we start putting in the classes we need in order to communicate with the API.
 
-## Starting out
+## Start building the demo app
 
 Let's get writing our app. The first thing we're going to do is configure the main application window with some default styles and get the header into place.
 
@@ -1052,7 +1052,7 @@ export class Callback {
 
 Here is where we invoke the call to `handleAuthentication()` and where the auth session is created, completing the round—trip which enables the user to log into our application.
 
-## Creating the watch list
+## Creating the movie watch list
 
 Now we can get to the meat of the application: adding movies to a 'watch list'. This will involve:
 
