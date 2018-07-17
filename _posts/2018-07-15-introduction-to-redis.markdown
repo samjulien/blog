@@ -6,7 +6,7 @@ longdescription: ""
 date: 2018-07-18 8:30
 category: Technical Guide, Architecture, Backend, Data
 design: 
-  bg_color: "#4E2420"
+  bg_color: "#1A1A1A"
   image: 
 author:
   name: Dan Arias
@@ -48,6 +48,8 @@ In this blog post, let's explore the basic data structures that come with Redis.
 The first thing that we need to do is install Redis. If you have it already running in your system, feel free to skip this part of the post.
 
 The [Redis documentation](https://redis.io/topics/quickstart#installing-redis) recommends installing Redis by compiling it from sources as Redis has no dependencies other than a working `GCC compiler` and `libc`. We can either download the latest Redis tarball from [`redis.io`](https://redis.io/), or we can use a special URL that always points to the latest stable Redis version: [`http://download.redis.io/redis-stable.tar.gz`](http://download.redis.io/redis-stable.tar.gz).
+
+> **Windows users**: The Redis project does not officially support Windows. But, if you are running Windows 10, you can [Install the Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) to install and run Redis. When you have the Windows Subsystem for Linux up and running, please follow any steps in this post that apply to Linux (when specified) from within your Linux shell.
 
 To compile Redis follow these simple steps:
 
