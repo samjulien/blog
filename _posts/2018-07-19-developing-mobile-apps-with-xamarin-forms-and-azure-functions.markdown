@@ -387,71 +387,88 @@ After inserting the name and choosing the type of the application, click on the 
 ![Creating a Native Application for Xamarin Forms in the Auth0 Dashboard](https://cdn.auth0.com/blog/xamarin-azure-functions/creating-auth0-application.png)
 
 ### Developing the Xamarin Forms App
-Lets start from adding new falder called "Config" in the Core project. Inside it you will place two static classes:
-* AuthenticationConfig - class which contains Auth0 configuration (audience, client ID and domain retrieved from the Auth0 dashboard)
-* AzureConfig - class which contains Azure Function App URL
+
+Let's start from adding new folder called `Config` in the project root directory. Inside this folder, you will place two static classes:
+* `AuthenticationConfig`: a class which will contain your Auth0 configuration (i.e. the audience, the client ID, the and domain retrieved from your Auth0 dashboard).
+* `AzureConfig`: a class which will contain the URL of the Azure Function before.
+
+So, after creating a file for your `AuthenticationConfig` class, open this file and insert the following code inside it:
 
 ```C#
-    public static class AuthenticationConfig
-    {
-        public const string Domain = ""; // Domain from Auth0 portal
-        public const string ClientId = ""; // ClientId from Auth0 portal
-        public const string Audience = ""; // Audience from Auth0 portal
-    }
+public static class AuthenticationConfig
+{
+    public const string Domain = ""; // Domain from Auth0 portal
+    public const string ClientId = ""; // ClientId from Auth0 portal
+    public const string Audience = ""; // Audience from Auth0 portal
+}
 ```
+
+Now, you will have to populate the fields above with the correct values. Both the `Domain` and `ClientId` fields can be populated with the info that you find in the Auth0 Application that you just created. The `Audience` will be the identifier of the Auth0 API that you created a few moments (e.g. `https://my-azure-function`). If you don't remember, go to the _APIs_ section of your dashboard and check the value that you entered while creating you API.
+
+After that, open the file created for the `AzureConfig` class and insert the following:
 
 ```C#
-    public static class AzureConfig
-    {
-        public const string AzureFunctionUrl = ""; // Azure Function URL from Azure Portal. ex: https://auth0securedfunctionapp.azurewebsites.net/api/Auth0AzureFunction
-    }
+public static class AzureConfig
+{
+    public const string AzureFunctionUrl = ""; // Azure Function URL from Azure Portal. ex: https://auth0securedfunctionapp.azurewebsites.net/api/Auth0AzureFunction
+}
 ```
-Now lets add "Model" folder and create the "AuthenticationResult" class inside it. Instance of this class will contain information about authentication result including Id Token, Access Token and Claims:
+
+Be sure to input the URL of your Azure Function in the `AzureFunctionUrl` field.
+
+Now, lets create a folder called `Model` and then create a class called `AuthenticationResult` inside it. Instances of this class will contain information about authentication result including `IdToken`, `AccessToken` and `Claims`:
 
 ```C#
-    public class AuthenticationResult
+public class AuthenticationResult
+{
+    public string IdToken { get; set; }
+
+    public string AccessToken { get; set; }
+
+    public IEnumerable<Claim> UserClaims { get; set; }
+
+    public bool IsError { get; }
+
+    public string Error { get; }
+
+
+    public AuthenticationResult() { }
+
+    public AuthenticationResult(bool isError, string error)
     {
-        public string IdToken { get; set; }
-
-        public string AccessToken { get; set; }
-
-        public IEnumerable<Claim> UserClaims { get; set; }
-
-        public bool IsError { get; }
-
-        public string Error { get; }
-
-
-        public AuthenticationResult() { }
-
-        public AuthenticationResult(bool isError, string error)
-        {
-            IsError = isError;
-            Error = error;
-        }
+        IsError = isError;
+        Error = error;
     }
+}
 ```
-In the next step, add folder called "Services" and folder "Interfaces" inside it. Inside this folder there will be two interfaces:
-* IAuthenticationService - interface with the "Authenticate" method and the "AuthenticationResult" property - this interface will be implemented in each platform project: Android, iOS and UWP
-* IAzureFunctionDataService - interface with the "GetGreeting" method which will be implemented to obtain greeting from Azure Function App once user is authenticated
+
+As the next step, you will have to create a new folder called `Services` and a new folder called `Interfaces` inside it. Inside this last folder you will create two interfaces:
+
+* `IAuthenticationService`: an interface with the `Authenticate` method and the `AuthenticationResult` property. This interface will be implemented in each platform project: Android, iOS, and UWP.
+* `IAzureFunctionDataService`: an interface with the `GetGreeting` method which will be implemented to obtain greetings from your Azure Function once the user is authenticated.
+
+So, open the file for the `IAuthenticationService` interface and insert this:
 
 ```C#
-    public interface IAuthenticationService
-    {
-        Task<AuthenticationResult> Authenticate();
-        AuthenticationResult AuthenticationResult { get; }
-    }
+public interface IAuthenticationService
+{
+    Task<AuthenticationResult> Authenticate();
+    AuthenticationResult AuthenticationResult { get; }
+}
 ```
+
+After that, open the file for the `IAzureFunctionDataService` and insert this:
 
 ```C#
-    public interface IAzureFunctionDataService
-    {
-        Task<string> GetGreeting(AuthenticationResult authenticationResult);
-    }
+public interface IAzureFunctionDataService
+{
+    Task<string> GetGreeting(AuthenticationResult authenticationResult);
+}
 ```
-Now its time to implement simple user interface of the application. Create "Pages" folder in the Core project and then add two content pages: "LoginPage" and "MainPage". To achieve this right click on the folder, select "Add" then "New item" and select "Content Page".
 
-Here is the source code for the "LoginPage.xaml" file. There is image on the top, label below with text "Welcome to Xamarin.Forms with Auth0!" and login button below:
+Now it's time to implement the user interface of the application. So, create a folder called `Pages` in the Core project and then add two content pages: `LoginPage` and `MainPage`. To achieve, this right click on the folder, select "Add" then "New item" and select "Content Page".
+
+Here is the source code for the `LoginPage.xaml` file. As you can see, there is an image on the top, a label below it with the "Welcome to Xamarin.Forms with Auth0!" text and a login button below:
 
 ```C#
 <?xml version="1.0" encoding="utf-8" ?>
@@ -467,7 +484,8 @@ Here is the source code for the "LoginPage.xaml" file. There is image on the top
     </ContentPage.Content>
 </ContentPage>
 ```
-Here is the source code for the "MainPage.xaml" file. Once user authenticate profile picture and greetings from Azure Function App is displayed:
+
+Here is the source code for the `MainPage.xaml` file. Once your users authenticate, their profile picture and a greetings message from your Azure Function will be displayed:
 
 ```C#
 <?xml version="1.0" encoding="utf-8" ?>
@@ -483,13 +501,14 @@ Here is the source code for the "MainPage.xaml" file. Once user authenticate pro
 
 </ContentPage>
 ```
-Now as mentioned earlier in the article "IAuthenticationService" interface has to be implemented in each platfrom project - iOS, Android and Universal Windows Platform.
 
-**Android application project**
+Now, as mentioned earlier in the article, you will need to implement the `IAuthenticationService` interface in each platform project (i.e. iOS, Android, and Universal Windows Platform).
 
-Inside "Services" folder create new class called "AuthenticationService". This class will be responsible for handling authentication on Android platform. Please note that dependency injection is used to regiseter "IAuthenticationService" implementation.
+#### **Authenticating Users on the Android Application Project**
 
-Dedicated class provided by Auth0 called "Auth0Client" handles authentication so you are using its instance here in the "Authenticate" method. If authentication reult is success you have Id Token, Access Token and User Claims:
+Inside the `Services` folder, create a new class called `AuthenticationService`. This class will be responsible for handling the authentication process on Android. Please note that you will using dependency injection to register the `IAuthenticationService` implementation.
+
+Also, notice that a dedicated class provided by Auth0 (which is called `Auth0Client`) will handle the authentication. As such, you are using its instance in the `Authenticate` method below. If the authentication result is successful, you will have an `IdToken`, an `AccessToken` and a `UserClaims`:
 
 ```C#
 [assembly: Dependency(typeof(AuthenticationService))]
@@ -531,46 +550,50 @@ namespace Auth0XamarinForms.Droid.Services
             return authenticationResult;
         }
     }
+}
 ```
 
-Now in "MainActivity" class you have to add IntentFilter so the application nows when Auth0 authentication dialog is closed once user authenticated:
+Now in the `MainActivity` class, you have to add an `IntentFilter` so the application knows when the Auth0 authentication dialog is closed once users authenticate:
 
 ```C#
-    [Activity(Label = "Auth0XamarinForms", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    [IntentFilter(
-    new[] { Intent.ActionView },
-    Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable },
-    DataScheme = "", // App package name, ex: com.devisland.Auth0XamarinForms
-    DataHost = "", // Auth0 domain, ex: devisland.eu.auth0.com
-    DataPathPrefix = "/android/YOUR_ANDROID_PACKAGE_NAME/callback")]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+[Activity(Label = "Auth0XamarinForms", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+[IntentFilter(
+new[] { Intent.ActionView },
+Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable },
+DataScheme = "", // App package name, ex: com.devisland.Auth0XamarinForms
+DataHost = "", // Auth0 domain, ex: devisland.eu.auth0.com
+DataPathPrefix = "/android/YOUR_ANDROID_PACKAGE_NAME/callback")]
+public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+{
+    protected override void OnCreate(Bundle bundle)
     {
-        protected override void OnCreate(Bundle bundle)
-        {
-            TabLayoutResource = Resource.Layout.Tabbar;
-            ToolbarResource = Resource.Layout.Toolbar;
+        TabLayoutResource = Resource.Layout.Tabbar;
+        ToolbarResource = Resource.Layout.Toolbar;
 
-            base.OnCreate(bundle);
+        base.OnCreate(bundle);
 
-            global::Xamarin.Forms.Forms.Init(this, bundle);
-            LoadApplication(new App());
-        }
-
-        protected override void OnNewIntent(Intent intent)
-        {
-            base.OnNewIntent(intent);
-
-            Auth0.OidcClient.ActivityMediator.Instance.Send(intent.DataString);
-        }
+        global::Xamarin.Forms.Forms.Init(this, bundle);
+        LoadApplication(new App());
     }
+
+    protected override void OnNewIntent(Intent intent)
+    {
+        base.OnNewIntent(intent);
+
+        Auth0.OidcClient.ActivityMediator.Instance.Send(intent.DataString);
+    }
+}
 ```
 
-Android application project is ready.
+> **Note:** You will have to replace `YOUR_ANDROID_PACKAGE_NAME` in the code snippet above with your own Android package name. [If you don't know what is your package name, check this](https://forums.xamarin.com/discussion/47408/what-is-my-android-package-name).
 
-**iOS application project**
+After that, you will have finished creating your Android Application Project.
 
-Inside "Services" folder create new class called "AuthenticationService". This class will be responsible for handling authentication on Android platform. Please note that dependency injection is used to regiseter "IAuthenticationService" implementation.
-This class looks exactly the same as in Android project but different NuGet package is used - "Auth0.OidcClient.iOS":
+#### **Authenticating Users on the iOS Application Project**
+
+Now, inside `Services` folder, create new class called `AuthenticationService`. This class will be responsible for handling the authentication on the iOS platform.  Please note that you will using dependency injection to register the `IAuthenticationService` implementation.
+
+This class looks exactly the same as in your Android project but here you are using a different NuGet package: `Auth0.OidcClient.iOS`.
 
 ```C#
 [assembly: Dependency(typeof(AuthenticationService))]
@@ -612,18 +635,21 @@ namespace Auth0XamarinForms.iOS.Services
             return authenticationResult;
         }
     }
+}
 ```
-Now in "AppDelegate" class you have to override "OpenUrl" method to handle Auth0 dialog opened in the SFSafariViewController:
+
+Now, in the `AppDelegate` class, you have to override the `OpenUrl` method to handle Auth0 dialog opened in the `SFSafariViewController`:
 
 ```C#
-        public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
-        {
-            ActivityMediator.Instance.Send(url.AbsoluteString);
+public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+{
+    ActivityMediator.Instance.Send(url.AbsoluteString);
 
-            return true;
-        }
+    return true;
+}
 ```
-One more thing - you have to add "CFBundleURLTypes" key in the "info.plist" file so applciation to enable Auth0 login in SFSafariViewController:
+
+One more thing, you have to add `CFBundleURLTypes` key in the `info.plist` file so your application is able to use Auth0 to login through `SFSafariViewController`:
 
 ```C#
 <key>CFBundleURLTypes</key>
@@ -641,9 +667,13 @@ One more thing - you have to add "CFBundleURLTypes" key in the "info.plist" file
 </array>
 ```
 
-**UWP application project**
+Be sure to replace `YOUR_APPLICATION_PACKAGE_IDENTIFIER` with the Bundle Identifier for your application, such as `com.mycompany.myapplication`.
 
-The last project is UWP application. Again inside "Services" folder create "AuthenticationService" class:
+After that, your iOS application will be ready.
+
+#### **Authenticating Users on the UWP Application Project**
+
+The last project to update is the UWP application. Again, inside the `Services` folder of this project, create the `AuthenticationService` class and insert the following code:
 
 ```C#
 [assembly: Dependency(typeof(AuthenticationService))]
@@ -685,9 +715,10 @@ namespace Auth0XamarinForms.UWP.Services
             return authenticationResult;
         }
     }
+}
 ```
 
-Done. Now you have implementation for user authentication in the Xamarin Forms application.
+That's it. Now you have implemented user authentication in the different projects (iOS, Android, and UWP) of your Xamarin Forms app and you are ready to integrate both your mobile app with your Azure Function.
 
 ## Integrating Xamarin Forms and Azure Functions
 Once application user interface is ready we have to integrate it to the Azure Function App.
