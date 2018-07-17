@@ -365,23 +365,26 @@ First three projects contains specific platform code and the Core project is whe
 
 Once your Xamarin Forms application project is ready, you will need to install the following NuGet packages:
 
-* [**Auth0.OidcClient.Android**](https://www.nuget.org/packages/Auth0.OidcClient.Android/): the NuGet package to integrate with Auth0 in Android application projects.
-* [**Auth0.OidcClient.iOS**](https://www.nuget.org/packages/Auth0.OidcClient.ios/): the NuGet package to integrate with Auth0 in iOS application projects.
-* [**Auth0.OidcClient.UWP**](https://www.nuget.org/packages/Auth0.OidcClient.UWP): the NuGet package to integrate with Auth0 in UWP application projects.
-* [**RestSharp**](https://www.nuget.org/packages/RestSharp/) a NuGet package that handles simple REST and HTTP API Client.
+* [**Auth0.OidcClient.Android**](https://www.nuget.org/packages/Auth0.OidcClient.Android/): you will use this NuGet package to integrate Auth0 in your Android application.
+* [**Auth0.OidcClient.iOS**](https://www.nuget.org/packages/Auth0.OidcClient.ios/): you will use this NuGet package to integrate Auth0 in your iOS application.
+* [**Auth0.OidcClient.UWP**](https://www.nuget.org/packages/Auth0.OidcClient.UWP): you will use this NuGet package to integrate Auth0 in your UWP application.
+* [**RestSharp**](https://www.nuget.org/packages/RestSharp/): you will use this NuGet package to issue HTTP requests to your serverless Azure Function.
 
-All **Auth0.OidcClient** packages provide authentication functionality so users can sign in or sign up through Xamarin Forms applications.
+All **Auth0.OidcClient** packages provide authentication functionality so users can sign in or sign up through your Xamarin Forms applications.
 
-The **RestSharp** package will be used to provide functionality connected with sending HTTP requests and handling responses from the Azure Function application.
+The **RestSharp** package will be used to connect your Xamarin Forms apps with you serverless Azure Functions through HTTP requests and to handle the responses.
 
-Project structure is ready.
+After installing these packages, your project structure will be ready.
 
 ### Creating an Auth0 Application
-An Auth0 Application represents your application in Auth0. You first need to define the Application in Auth0 to then be able to add authentication in Xamarin Forms application. You can do it in the Auth0 dashboard. Open "Applications" tab from the left and click "CREATE APPLICATION" button. In the dialog you have to provide name of the new application, and choose application type - in this case "Native". Click "Create" button and after few seconds you should see created application in the dashboard:
 
-![Created Native application in the dashboard](https://github.com/Daniel-Krzyczkowski/guest-writer/blob/master/articles/images/auth0_7.PNG)
+An Auth0 Application represents your client apps (in this case a mobile app) on Auth0. So, first, you will need to define the Application on Auth0 to then be able to add authentication in your Xamarin Forms application.
 
-Open the "Settings" tab and copy the "Domain" and "Client ID" values. You will use them in the Xamarin Forms application project.
+To create an Auth0 Application, go to [the _Applications_ section of your Auth0 dashboard](https://manage.auth0.com/#/applications) and click on the _Create Application_ button. In the dialog that the dashboard presents, you have to provide name of the new application and choose an application type. For the name, you can add something like "Xamarin Forms App" and for the type you will have to select _Native_.
+
+After inserting the name and choosing the type of the application, click on the _Create_ button and, after few seconds, you should be redirected to the _Quick Start_ section of your new application. From there, click on the _Setting_ tab and leave the page open. Soon, you will need to copy the _Domain_ and _Client ID_ values to use in the Xamarin Forms application project.
+
+![Creating a Native Application for Xamarin Forms in the Auth0 Dashboard](https://cdn.auth0.com/blog/xamarin-azure-functions/creating-auth0-application.png)
 
 ### Developing the Xamarin Forms App
 Lets start from adding new falder called "Config" in the Core project. Inside it you will place two static classes:
