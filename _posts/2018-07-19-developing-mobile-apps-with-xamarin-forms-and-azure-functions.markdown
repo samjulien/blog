@@ -323,7 +323,7 @@ Let's describe the code above. Firstly, the bearer token (the `access_token`) is
 Then, once the token is verified, this function retrieves the name parameter from the query string. If it's not empty, a greeting text string is created and returned with HTTP status 200:
 
 ```C#
-string name = req.GetQueryNameValuePairs()
+  string name = req.GetQueryNameValuePairs()
     .FirstOrDefault(q => string.Compare(q.Key, "name", true) == 0)
     .Value;
 
