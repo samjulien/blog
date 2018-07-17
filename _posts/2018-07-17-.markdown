@@ -1,0 +1,26 @@
+---
+layout: post
+title: "Building a Movie Listing Application with Aurelia and TypeScript"
+description: "In this article, you will learn how to build a movie listing application using TypeScript and the Aurelia framework."
+date: 2018-07-17 08:30
+category: Technical Guide, Frontend, Aurelia
+author:
+  name: Steve Hobbs
+  url: https://stevescodingblog.co.uk
+  mail: elkdanger@gmail.com
+  avatar: https://en.gravatar.com/userimage/3841188/bc8fc1f1ebb326d59bab456cac894bdf.jpeg
+design:
+  bg_color: "#646F71"
+  image: https://cdn.auth0.com/blog/aurelia-logo.png
+  image_size: "70%"
+tags:
+- aurelia
+- spa
+- typescript
+- auth0
+- movie-list
+- frontend
+related:
+- 2018-03-29-vuejs-kanban-board-the-development-process
+- 2018-02-06-developing-games-with-react-redux-and-svg-part-1
+---
