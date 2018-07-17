@@ -32,15 +32,15 @@ related:
 
 ## Introducing Microsoft Azure Cloud Platform
 
-Microsoft Azure is a platform which provides components to quickly create, implement, and manage cloud solutions. It offers wide range of application, computing, warehouse, network services, and supports all three models of cloud services: 
+Microsoft Azure is a platform which provides components to quickly create, implement, and manage cloud solutions. It offers a wide range of application, computing, warehouse, network services, and supports all three models of cloud services: 
 
 * [Infrastructure as a Service (IaaS)](https://azure.microsoft.com/en-us/overview/what-is-iaas);
 * [Platform as a Service (PaaS)](https://azure.microsoft.com/en-us/overview/what-is-paas);
 * and [Software as a Service (SaaS)](https://azure.microsoft.com/en-us/overview/what-is-saas).
 
-Microsoft Azure is available through a [web portal](https://portal.azure.com/) where all mentioned components can be created and configured. In this article, we will use Azure Functions: a PaaS solution that enables developers running small pieces of code without bothering about whole application or the infrastructure to run it.
+Microsoft Azure is available through a [web portal](https://portal.azure.com/) where all mentioned components can be created and configured. In this article, we will use Azure Functions: a PaaS solution that enables developers running small pieces of code without bothering about the whole application or the infrastructure to run it.
 
-Creating an Azure account is free of charge but you have to provide some credit card information. There will be no charge, except for a temporary authorisation hold. Microsoft offers $200 credit for start to explore services for 30 days.
+Creating an Azure account is free of charge but you have to provide some credit card information. There will be no charge, except for a temporary authorization hold. Microsoft offers $200 credit for starting to explore services for 30 days.
 
 If you decide not to upgrade at the end of 30 days or once you've used up your $200 credit, any products you’ve deployed will be decommissioned and you won’t be able to access them. You will not be charged and you can always upgrade your subscription.
 
@@ -52,11 +52,11 @@ There are many cases where Azure Functions can be used. For example, they can be
 * [TimerTrigger](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-timer)—Executes cleanup or other batch tasks on a predefined interval.
 * [QueueTrigger](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue)—Respond to messages as they arrive in an Azure Storage queue.
 
-In this article, we will use the HTTPTrigger template to create our Azure Function. This function will be secured by Auth0 so, before accessing it, users will have to authenticate. These users will use (and authenticate through) a Xamarin Forms application which will then submit requests to our Azure Function.
+In this article, we will use the _HTTPTrigger_ template to create our Azure Function. This function will be secured by Auth0 so, before accessing it, users will have to authenticate. These users will use (and authenticate through) a Xamarin Forms application which will then submit requests to our Azure Function.
 
 ## Creating Azure Functions
 
-You can create the Azure Function in the [Azure portal](https://portal.azure.com/). Follow the steps below to create new Azure Function with HTTPTrigger template:
+You can create the Azure Function in the [Azure portal](https://portal.azure.com/). Follow the steps below to create new Azure Function with _HTTPTrigger_ template:
 
 1. Click the "Create a resource" button in the left top corner.
 2. Type "Function app" in the search window.
@@ -65,8 +65,8 @@ You can create the Azure Function in the [Azure portal](https://portal.azure.com
 
 In this step, you have to provide few details:
 
-* _App name_: This will be the name of the function app. You can add something like "auth0-function-app". In my case, I used "auth0securedfunction" but you can't use the same as the name has to be unique.
-* _Subscription_: This is the type of the subcscription that you have.
+* _App name_: This will be the name of the Azure Function. You can add something like "auth0-function-app". In my case, I used "auth0securedfunction" but you can't use the same as the name has to be unique.
+* _Subscription_: This is the type of the subscription that you have.
 * _Resource group_: This will be the group where function app will be located. You can select "Create new" and type "function-app-rg".
 * _OS_: As the host operating system, you can select "Windows".
 * _Hosting plan_: You can set it as "Consumption Plan" so you pay only for the number of executions.
@@ -75,15 +75,15 @@ In this step, you have to provide few details:
 
 Once you fill all the required information click the "Create" button.
 
-After a short time the Function App will be created and notification will show up. After that, select "Function App" from the left bar. A blade with the created function app should appear. Expand it and move mouse cursor on the "Functions" header and click the "+" button. 
+After a short time, the Function App will be created and notification will show up. After that, select "Function App" from the left bar. A blade with the created function app should appear. Expand it and move the mouse cursor on the "Functions" header and click the "+" button. 
 
 ![Add new function app](https://github.com/Daniel-Krzyczkowski/guest-writer/blob/master/articles/images/auth0_4.png)
 
-Another blade with templates will be displayed. From there, choose "HTTPTrigger C#" template, fill the _name_ field with "Auth0FunctionApp" and change authorization level to "Anonymous". After few seconds, the HTTPTrigger function will be ready for you.
+Another blade with templates will be displayed. From there, choose "HTTPTrigger C#" template, fill the _name_ field with "Auth0FunctionApp" and change authorization level to "Anonymous". After a few seconds, the HTTPTrigger function will be ready for you.
 
 ### Scaffolding the Project
 
-The default template needs some adjustments. For the authentication process, we will use [the **Microsoft.IdentityModel.Protocols.OpenIdConnect** NuGet package](https://www.nuget.org/packages/Microsoft.IdentityModel.Protocols.OpenIdConnect/). So, open the "View files" tab on the right and click the "Add" button. You will have to create new json file which will contain information about the required NuGet packages. Type "project.json" as the file name and hit "Enter". Once the file is created, you have to define its structure. So, paste the following code and click on the "Save" button:
+The default template needs some adjustments. For the authentication process, we will use [the **Microsoft.IdentityModel.Protocols.OpenIdConnect** NuGet package](https://www.nuget.org/packages/Microsoft.IdentityModel.Protocols.OpenIdConnect/). So, open the "View files" tab on the right and click the "Add" button. You will have to create a new JSON file which will contain information about the required NuGet packages. Type `project.json` as the file name and hit "Enter". Once the file is created, you have to define its structure. So, paste the following code and click on the "Save" button:
 
 
 ```C#
@@ -106,7 +106,7 @@ As you are going to use Auth0 to handle authentication, you will have to sign up
 
 ### Creating an Auth0 API for Azure Functions
 
-To represent your Azure Functions on Auth0, you will have to create an Auth0 API. So, open [the "APIs" section](https://manage.auth0.com/#/apis) and click on the "Create API" section. Auth0 will show you a dialog where you will have to provide name for your new API (you can input something like "Microsoft Azure Function", an identifier (in this case, you can input something like `https://my-azure-function`, you will need it later), and a signing alghoritm (you can leave this as `RS256`). Then, click the "Create" button and, after a few seconds, you should see your API in the dashboard:
+To represent your Azure Functions on Auth0, you will have to create an Auth0 API. So, open [the "APIs" section](https://manage.auth0.com/#/apis) and click on the "Create API" section. Auth0 will show you a dialog where you will have to provide name for your new API (you can input something like "Microsoft Azure Function", an identifier (in this case, you can input something like `https://my-azure-function`, you will need it later), and a signing algorithm (you can leave this as `RS256`). Then, click the "Create" button and, after a few seconds, you should see your API in the dashboard:
 
 ![Created API in the dashboard](https://github.com/Daniel-Krzyczkowski/guest-writer/blob/master/articles/images/auth0_5.PNG)
 
@@ -114,7 +114,7 @@ Click its name and open "Quick Start" tab to copy "audience" and "issuer" from t
 
 ### Developing the Azure Function
 
-As mentioned, access to the Azure Function will be secured by Auth0. As such, users have to authenticate in the Xamarin Forms application and then send request with the `access_token` to the function. Here, OpenID Connect will be used to verify user identity and, once it's confirmed, a response with greeting will be returned.
+As mentioned, access to the Azure Function will be secured by Auth0. As such, users have to authenticate in the Xamarin Forms application to then send requests with the `access_token` to the function. Here, OpenID Connect will be used to verify user identity and, once it's confirmed, a response with greeting will be returned.
 
 So, now, you will have to open the `run.csx` file from the "View files" tab on you Azure dashboard. This is the place where the function source code should be placed. Let's discuss it.
 
@@ -243,7 +243,7 @@ public static async Task<ClaimsPrincipal> ValidateTokenAsync(string bearerToken,
     }
     catch (SecurityTokenException)
     {
-      log.Info("SecurityTokenException exception occurred. One more attepmt...");
+      log.Info("SecurityTokenException exception occurred. One more attempt...");
         return null;    
     }
   }
@@ -293,7 +293,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 }
 ```
 
-Let's describe the code above. Firstly, the bearer token (the `access_token`) is retrieved from an HTTP request header (`Authorization`. If it's empty, this function returns the 401 unauthorized HTTP status. When a token is attached to the request, the `AuthenticationService` instance verifies if token is valid:
+Let's describe the code above. Firstly, the bearer token (the `access_token`) is retrieved from an HTTP request header (`Authorization`. If it's empty, this function returns the 401 unauthorized HTTP status. When a token is attached to the request, the `AuthenticationService` instance verifies if the token is valid:
 
 ```C#
   var authorizationHeader  =  req.Headers.GetValues("Authorization").FirstOrDefault();
@@ -338,7 +338,7 @@ string name = req.GetQueryNameValuePairs()
 
 And that's it. This is how your serverless function works.
 
-Now, as you may know, the Azure Function is available under an specific URL address. You can find it by clicking on the "Get function URL" button on the top of it. It should look like the one presented below:
+Now, as you may know, the Azure Function is available under a specific URL address. You can find it by clicking on the "Get function URL" button at the top of it. It should look like the one presented below:
 
 [https://auth0securedfunction.azurewebsites.net/api/Auth0FunctionApp](https://auth0securedfunction.azurewebsites.net/api/Auth0FunctionApp)
 
@@ -346,7 +346,7 @@ You will use this URL in the Xamarin Forms application so copy it for the furthe
 
 ## Creating a Xamarin Forms Application
 
-Xamarin platform provides possibility to create cross-platform mobile applications with .NET C#. In this case, we decided to use [Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms) approach to create iOS, Android, and Universal Windows Platform (UWP) applications. So, open Visual Studio 2017 and create new Xamarin Forms application project:
+Xamarin platform provides the possibility to create cross-platform mobile applications with .NET C#. In this case, we decided to use [Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms) approach to create the iOS, Android, and Universal Windows Platform (UWP) applications. So, open Visual Studio 2017 and create new Xamarin Forms application project:
 
 > Remember to select Mobile development with .NET during Visual Studio 2017 installation so you can access Xamarin cross-platform project templates.
 
@@ -359,7 +359,7 @@ After a while, a Xamarin Forms application solution will be ready. Please note t
 * UWP application project
 * Core project
 
-First three projects contains specific platform code and the Core project is where common logic (shared by other platform specific projects) should be placed.
+The first three projects contain specific platform code and the Core project is where common logic (shared by other platform specific projects) should be placed.
 
 ### Bootstrapping the Xamarin Forms Project
 
@@ -380,7 +380,7 @@ After installing these packages, your project structure will be ready.
 
 An Auth0 Application represents your client apps (in this case a mobile app) on Auth0. So, first, you will need to define the Application on Auth0 to then be able to add authentication in your Xamarin Forms application.
 
-To create an Auth0 Application, go to [the _Applications_ section of your Auth0 dashboard](https://manage.auth0.com/#/applications) and click on the _Create Application_ button. In the dialog that the dashboard presents, you have to provide name of the new application and choose an application type. For the name, you can add something like "Xamarin Forms App" and for the type you will have to select _Native_.
+To create an Auth0 Application, go to [the _Applications_ section of your Auth0 dashboard](https://manage.auth0.com/#/applications) and click on the _Create Application_ button. In the dialog that the dashboard presents, you have to provide the name of the new application and choose an application type. For the name, you can add something like "Xamarin Forms App" and for the type you will have to select _Native_.
 
 After inserting the name and choosing the type of the application, click on the _Create_ button and, after few seconds, you should be redirected to the _Quick Start_ section of your new application. From there, click on the _Setting_ tab and leave the page open. Soon, you will need to copy the _Domain_ and _Client ID_ values to use in the Xamarin Forms application project.
 
@@ -388,7 +388,7 @@ After inserting the name and choosing the type of the application, click on the 
 
 ### Developing the Xamarin Forms App
 
-Let's start from adding new folder called `Config` in the project root directory. Inside this folder, you will place two static classes:
+Let's start by adding a new folder called `Config` in the project root directory. Inside this folder, you will place two static classes:
 * `AuthenticationConfig`: a class which will contain your Auth0 configuration (i.e. the audience, the client ID, the and domain retrieved from your Auth0 dashboard).
 * `AzureConfig`: a class which will contain the URL of the Azure Function before.
 
@@ -403,7 +403,7 @@ public static class AuthenticationConfig
 }
 ```
 
-Now, you will have to populate the fields above with the correct values. Both the `Domain` and `ClientId` fields can be populated with the info that you find in the Auth0 Application that you just created. The `Audience` will be the identifier of the Auth0 API that you created a few moments (e.g. `https://my-azure-function`). If you don't remember, go to the _APIs_ section of your dashboard and check the value that you entered while creating you API.
+Now, you will have to populate the fields above with the correct values. Both the `Domain` and `ClientId` fields can be populated with the info that you find in the Auth0 Application that you just created. The `Audience` will be the identifier of the Auth0 API that you created a few moments (e.g. `https://my-azure-function`). If you don't remember, go to the _APIs_ section of your dashboard and check the value that you entered while creating your API.
 
 After that, open the file created for the `AzureConfig` class and insert the following:
 
@@ -416,7 +416,7 @@ public static class AzureConfig
 
 Be sure to input the URL of your Azure Function in the `AzureFunctionUrl` field.
 
-Now, lets create a folder called `Model` and then create a class called `AuthenticationResult` inside it. Instances of this class will contain information about authentication result including `IdToken`, `AccessToken` and `Claims`:
+Now, let's create a folder called `Model` and then create a class called `AuthenticationResult` inside it. Instances of this class will contain information about the authentication result including `IdToken`, `AccessToken` and `Claims`:
 
 ```C#
 public class AuthenticationResult
@@ -506,7 +506,7 @@ Now, as mentioned earlier in the article, you will need to implement the `IAuthe
 
 #### **Authenticating Users on the Android Application Project**
 
-Inside the `Services` folder, create a new class called `AuthenticationService`. This class will be responsible for handling the authentication process on Android. Please note that you will using dependency injection to register the `IAuthenticationService` implementation.
+In the `Services` folder, create a new class called `AuthenticationService`. This class will be responsible for handling the authentication process on Android. Please note that you will be using dependency injection to register the `IAuthenticationService` implementation.
 
 Also, notice that a dedicated class provided by Auth0 (which is called `Auth0Client`) will handle the authentication. As such, you are using its instance in the `Authenticate` method below. If the authentication result is successful, you will have an `IdToken`, an `AccessToken` and a `UserClaims`:
 
@@ -591,7 +591,7 @@ After that, you will have finished creating your Android Application Project.
 
 #### **Authenticating Users on the iOS Application Project**
 
-Now, inside `Services` folder, create new class called `AuthenticationService`. This class will be responsible for handling the authentication on the iOS platform.  Please note that you will using dependency injection to register the `IAuthenticationService` implementation.
+Now, inside the `Services` folder, create a new class called `AuthenticationService`. This class will be responsible for handling the authentication on the iOS platform.  Please note that you will be using dependency injection to register the `IAuthenticationService` implementation.
 
 This class looks exactly the same as in your Android project but here you are using a different NuGet package: `Auth0.OidcClient.iOS`.
 
@@ -722,9 +722,9 @@ That's it. Now you have implemented user authentication in the different project
 
 ## Integrating Xamarin Forms and Azure Functions
 
-Once the application user interface is ready, we have to integrate it to your Azure Function.
+Once the application user interface is ready, we have to integrate it into your Azure Function.
 
-So, open the core project (where the pages of your application are located) and, inside the `Services` folder, add a new class called `AzureFunctionDataService`. This class will implement the `IAuthenticationService` interface (note that you are using Dependency Injection to register it). Then, in the `GetGreeting` method the `AuthenticationResult` parameter should be passed. In this case, the _RestSharp_ library is used to make HTTP requests to your Azure Function. When a valid token is passed in these requests, a greetings message from your Azure Function is returned:
+So, open the core project (where the pages of your application are located) and, inside the `Services` folder, add a new class called `AzureFunctionDataService`. This class will implement the `IAuthenticationService` interface (note that you are using Dependency Injection to register it). Then, in the `GetGreeting` method, the `AuthenticationResult` parameter should be passed. In this case, the _RestSharp_ library is used to make HTTP requests to your Azure Function. When a valid token is passed in these requests, a greetings message from your Azure Function is returned:
 
 ```C#
 [assembly: Dependency(typeof(AzureFunctionDataService))]
