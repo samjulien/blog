@@ -484,6 +484,213 @@ For the scope of this post, we are going to focus on all the Redis types except 
 
 ## Lists
 
+A list is a sequence of ordered elements. For example, `1 2 4 5 6 90 19 3` is a list of numbers. In Redis, it's important to note that lists are implemented as [linked lists](https://en.wikipedia.org/wiki/Linked_list). This has some important implications regarding performance. It is fast to add elements to the head and tail of the list but it's slower to search for elements within the list as we do not have indexed access to the elements (like we do in an array).
+
+A list is created by using a Redis command that pushes data followed by a key name. There are two commands that we can use: `RPUSH` and `LPUSH`.
+
+### RPUSH
+
+[`RPUSH`](https://redis.io/commands/rpush) inserts a new element at the end of the list (at the tail):
+
+```shell
+RPUSH key value [value ...]
+```
+
+Let's create an `engineers` key that represents a list:
+
+```shell
+RPUSH engineers "Alice"
+// 1
+RPUSH engineers "Bob"
+// 2
+RPUSH engineers "Carmen"
+// 3
+```
+
+Each time we insert an element, Redis replies with the length of the list after that insertion. We would expect the `users` list to resemble this: 
+
+```shell
+Alice Bob Carmen
+```
+
+
+How can we verify that? We can use the `LRANGE` command.
+
+### LRANGE
+
+`LRANGE` returns a subset of the list based on a specified start and stop index. Although these indexes are zero-based, they are no the same as array indexes. Given a full list, they simply indicate where to partition the list: make a slice from here (start) to here (stop):
+
+```shell
+LRANGE key start stop
+```
+
+To see the full list, we can use a neat trick: go from `0` to the element just before it, `-1`.
+
+```shell
+LRANGE engineers 0 -1
+```
+
+Redis returns:
+
+```shell
+1) "Alice"
+2) "Bob"
+3) "Carmen"
+```
+
+The index `-1` will always represent the last element in the list.
+
+To get the first two elements of `engineers` we can issue the following command:
+
+```shell
+LRANGE engineers 0 1
+```
+
+### LPUSH
+
+[`LPUSH`](https://redis.io/commands/lpush) behaves the same as `RPUSH` except that it inserts the element at the front of the list (at the header):
+
+```shell
+LPUSH key value [value ...]
+```
+
+Let's insert `Daniel` at the front of the `engineers` list:
+
+```shell
+LPUSH engineers "Daniel"
+// 4
+```
+
+We now have four engineers. Let's verify that the order is correct:
+
+```shell
+LRANGE engineers 0 -1
+```
+
+Redis replies with:
+
+```shell
+1) "Daniel"
+2) "Alice"
+3) "Bob"
+4) "Carmen"
+```
+
+It's the same list we had before but with `"Daniel"` as the first element, which is exactly what was expected.
+
+### Multiple Element Insertions
+
+We saw in the signatures of `RPUSH` and `LPUSH` that we can insert more than one element through each command. Let's see that in action.
+
+Based on our existing `engineers` list, let's issue this command:
+
+```shell
+RPUSH engineers "Eve" "Francis" "Gary"
+// 7
+```
+
+Since we are inserting them at the end of the list, we expect these three new elements to show up in the same order in which they are listed as arguments. Let's verify:
+
+```shell
+LRANGE engineers 0 -1
+```
+
+To what Redis returns:
+
+```shell
+1) "Daniel"
+2) "Alice"
+3) "Bob"
+4) "Carmen"
+5) "Eve"
+6) "Francis"
+7) "Gary"
+```
+
+What about if we do the same with `LPUSH`:
+
+```shell
+LPUSH engineers "Hugo" "Ivan" "Jess"
+// 10
+```
+
+Will Redis insert these three new elements one by one or will it insert them as a bundle, all three at once?
+
+Let's see:
+
+```shell
+LRANGE 0 -1
+```
+
+Reply:
+
+```shell
+ 1) "Jess"
+ 2) "Ivan"
+ 3) "Hugo"
+ 4) "Daniel"
+ 5) "Alice"
+ 6) "Bob"
+ 7) "Carmen"
+ 8) "Eve"
+ 9) "Francis"
+10) "Gary"
+```
+
+When listing multiple arguments for `LPUSH` and `RPUSH`, Redis inserts the elements one by one, thus, `"Hugo"`, `"Ivan"`, and `"Jess"` appear in the reverse order from which they were listed as arguments.
+
+### LLEN
+
+We can find the length of a list at any time by using the [`LLEN`](https://redis.io/commands/llen) command:
+
+```shell
+LLEN key
+```
+
+Let's verify that the length of `engineers` is indeed `10`:
+
+```shell
+LLEN engineers
+```
+
+Redis replies with `(integer) 10`. Perfect.
+
+### Removing Elements from a Redis List
+
+Similar to how we can "pop" elements in arrays, we can pop an element from the head or the tail of a Redis list.
+
+[`LPOP`](https://redis.io/commands/lpop) removes and returns the first element of the list:
+
+```shell
+LPOP key
+```
+
+We can use it to remove `"Jess"`, the first element, from the list:
+
+```shell
+LPOP engineers
+```
+
+Redis indeed replies with `"Jess"` to indicate it is the element that was removed.
+
+[`RPOP`](https://redis.io/commands/rpop) removes and returns the last element of the list:
+
+```shell
+RPOP key
+```
+
+It's time to say goodbye to `"Gary"`, the last element of the list:
+
+```shell
+RPOP engineers
+```
+
+The reply from Redis is `"Gary"`.
+
+It's very useful to be able to get the element that was removed from the list as we may want to do something special with it.
+
+Redis lists are implemented as linked lists because its engineering team envisioned that for a database system [it is crucial to be able to add elements to a very long list in a very fast way](https://redis.io/topics/data-types-intro).
+
 ## Sets
 
 ## Ordered Sets
