@@ -91,7 +91,7 @@ OSX/Linux:
 cd redis-stable
 ```
 
-- Compile Redis by typing:
+- Compile Redis:
 
 OSX/Linux:
 
@@ -99,7 +99,21 @@ OSX/Linux:
 make
 ```
 
-- Test that the build works correctly by typing:
+> If the `make` package is not installed in your system, please follow the instructions provided by the CLI to install it. For a fresh installation of Ubuntu, for example, you may want to run the following commands to update the package manager and install core packages:
+
+Ubuntu:
+
+```shell
+sudo apt update
+sudo apt upgrade
+sudo apt install build-essential
+sudo apt-get install tcl8.5
+make
+```
+
+`tcl` 8.5 or newer is needed to run the Redis test in the next step.
+
+- Test that the build works correctly:
 
 OSX/Linux:
 
