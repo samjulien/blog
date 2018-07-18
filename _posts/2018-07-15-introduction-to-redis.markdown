@@ -324,7 +324,7 @@ With just three commands, `SET`, `GET`, and `DEL`, we are able to comply with th
 
 ### Wrapping Strings with Quotation Marks
 
-Notice something curious: we did not have to put quotation marks around a single string value we wanted to store. `SET framework angular` and `SET framework "angular"` are both accepted by Redis as an operation to store the string `"angular"` as the value of the key `framework`. 
+Notice something curious: we did not have to put quotation marks around a single string value we wanted to store. `SET framework angular` and `SET framework "angular"` are both accepted by Redis as an operation to store the string `"angular"` as the value of the key `framework`.
 
 Redis automatically wraps single string arguments in quotation marks. Since both key and value are strings, the same applies for the key name. We could have used `SET "framework" angular` and it would have worked as well. However, if we plan to use more than one string as the key or value, we do need to wrap the strings in quotation marks:
 
@@ -378,7 +378,69 @@ This time, the reply is `(integer) 1`. Great!
 
 We can use `SETNX` to prevent us from mutating data accidentally.
 
-Now that we can perform basic data manipulation in Redis, let's learn how some commands are atomic.
+## Expiring Keys
+
+When creating a key with Redis, we can specify how long that key should stay stored in memory. Using the [`EXPIRE`](https://redis.io/commands/expire) command, we can set a timeout on a key and have the key be automatically deleted once the timeout expires:
+
+```shell
+EXPIRE key seconds
+```
+
+Let's create a `notification` key that we want to delete after 30 seconds:
+
+```
+SET notification "Anomaly detected"
+EXPIRE notification 30
+```
+
+This schedules the `notification` key to be deleted in 30 seconds. We could look at a clock and check after 30 seconds have elapsed if `notification` is still available but we don't have to do that! Redis offers the [`TTL`](https://redis.io/commands/ttl) command that tells us how many seconds a key has left before it expires and gets deleted:
+
+```shell
+TTL key
+```
+
+It's possible that more than 30 seconds have already passed so let's try the above example again, but this time calling `TTL` as soon as we execute `EXPIRE`:
+
+```shell
+SET notification "Anomaly detected"
+EXPIRE notification 30
+TTL notification
+```
+
+Redis replied with `(integer) 27` to me, indicating that `notification` is still available for 27 more seconds. Let's wait a bit and run `TTL` again:
+
+```shell
+TTL notification
+```
+
+This time, Redis replied with `(integer) -2`. Starting with Redis 2.8, `TTL` returns:
+
+- The timeout left in seconds.
+- `-2` if the key doesn't exist (either it has not been created or it was deleted).
+- `-1` if the key exists but has no expiry set.
+
+I made sure that 30 seconds had passed so `-2` was expected. Let's see the error message when the key exists but has no expiry set:
+
+```
+SET dialog "Continue?"
+TTL dialog
+```
+
+As expected, with no expiry set, Redis replies with `(integer) -1`.
+
+It's important to note that we can reset the timeout by using `SET` with the key again:
+
+```
+SET notification "Anomaly detected"
+EXPIRE notification 30
+TTL notification
+// (integer) 27
+SET notification "No anomaly detected"
+TTL notification
+// (integer) -1
+```
+
+We learned earlier that using `SET` is the same as creating the key again, which for Redis also involves resetting any timeouts currently assigned to it.
 
 ## Redis Data Types
 
