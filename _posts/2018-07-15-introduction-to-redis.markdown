@@ -486,7 +486,7 @@ For the scope of this post, we are going to focus on all the Redis types except 
 
 A list is a sequence of ordered elements. For example, `1 2 4 5 6 90 19 3` is a list of numbers. In Redis, it's important to note that lists are implemented as [linked lists](https://en.wikipedia.org/wiki/Linked_list). This has some important implications regarding performance. It is fast to add elements to the head and tail of the list but it's slower to search for elements within the list as we do not have indexed access to the elements (like we do in an array).
 
-A list is created by using a Redis command that pushes data followed by a key name. There are two commands that we can use: `RPUSH` and `LPUSH`.
+A list is created by using a Redis command that pushes data followed by a key name. There are two commands that we can use: `RPUSH` and `LPUSH`. If the key doesn't exist, these commands will return a new list with the passed arguments as elements. If the key already exists or it is not a list, an error is returned.
 
 ### RPUSH
 
@@ -692,6 +692,138 @@ It's very useful to be able to get the element that was removed from the list as
 Redis lists are implemented as linked lists because its engineering team envisioned that for a database system [it is crucial to be able to add elements to a very long list in a very fast way](https://redis.io/topics/data-types-intro).
 
 ## Sets
+
+In Redis, a set is similar to a list except that it doesn't keep any specific order for its elements and each element must be unique.
+
+### SADD
+
+We create a set by using the [`SADD`](https://redis.io/commands/sadd) command that adds the specified members to the key:
+
+```shell
+SADD key member [member ...]
+```
+
+Specified members that are already part of the set are ignored. If the key doesn't exist, a new set is created and the unique specified members are added. If the key already exists or it is not a set, an error is returned.
+
+Let's create a `languages` set:
+
+```shell
+SADD languages "english"
+// 1
+SADD languages "spanish"
+// 1
+SADD languages "french"
+// 1
+```
+
+In this case, on each set addition Redis returns the number of members that were added with the `SADD` command, not the size of the set. Let's see this in action:
+
+```shell
+SADD languages "chinese" "japanese" "german"
+// 3
+SADD languages "english"
+// 0
+```
+
+The first command returned `3` as we were adding three unique members to the set. The second command returned `0` as `"english"` was already a member of the set.
+
+### SREM
+
+We can remove members from a set by using the [`SREM`](https://redis.io/commands/srem) command:
+
+```shell
+SREM key member [member ...]
+```
+
+We can remove one or more members at the same time:
+
+```shell
+SREM languages "english" "french"
+// 2
+SREM languages "german"
+// 0
+```
+
+`SREM` returns the number of members that were removed.
+
+### SISMEMBER
+
+To verify that a member is part of a set, we can use the [`SISMEMBER`](https://redis.io/commands/sismember) command:
+
+```shell
+SISMEMBER key member
+```
+
+If the member is part of the set, this command returns `1`; otherwise, it returns `0`:
+
+```shell
+SISMEMBER languages "spanish"
+// 1
+SISMEMBER languages "german"
+// 0
+```
+
+Since we removed `"german"` in the last section, we get `0`. 
+
+### SMEMBERS
+
+To show all the members that exist in a set, we can use the [`SMEMBERS`](https://redis.io/commands/smembers) command:
+
+```shell
+SMEMBERS key
+```
+
+Let's see what language values we currently have in the `languages` set:
+
+```shell
+SMEMBERS languages
+```
+
+Redis returns:
+
+```shell
+1) "chinese"
+2) "japanese"
+3) "spanish"
+```
+
+As sets are not ordered, Redis is free to [return the elements in any order at every call](https://redis.io/topics/data-types-intro). They have no guarantees about element ordering.
+
+### SUNION
+
+Something really powerful that we can do with sets very fast is to combine them using the [`SUNION`](https://redis.io/commands/sunion) command:
+
+```shell
+SUNION key [key ...]
+```
+
+Each argument to `SUNION` represents a set that we can merge into a larger set. It is important to notice that any overlapping members will be listed once.
+
+To see this in action, let's first create an `ancient-languages` set:
+
+```shell
+SADD ancient-languages "greek"
+SADD ancient-languages "latin"
+SMEMBERS ancient-languages
+```
+
+Now, let's create a union of `languages` and `ancient-languages` to see all of them at once:
+
+```shell
+SUNION languages ancient-languages
+```
+
+We get the following reply:
+
+```shell
+1) "greek"
+2) "spanish"
+3) "japanese"
+4) "chinese"
+5) "latin"
+```
+
+If we pass to `SUNION` a key that doesn't exist, it considers that key to be an empty set (a set that has nothing in it).
 
 ## Ordered Sets
 
