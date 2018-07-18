@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Cloud-Scale Thinking from Day One for Your SaaS Product"
-description: "Learn that, by relying on battle-tested solutions, your engineers can focus on what matter the most to your company, the unique features of your SaaS product."
+description: "Learn how relying on battle-tested solutions allows your engineers to focus on what matters most to your company — the unique features of your SaaS product."
 date: 2018-07-26 12:30
 category: Growth, Identity
 is_non-tech: true
@@ -30,6 +30,8 @@ related:
 </div>
 
 ---
+
+**TL;DR**: In this article, we will explore some of the key technical considerations you have to make while building highly-scalable SaaS products. The idea is to show that it's better to use reliable PaaS (Platform as a Service) vendors available in the market instead of utilizing your valuable engineering resources on infrastructure requirements. As you will learn, this will make your engineers available to focus on what matters the most, the key features of your project.
 
 {% include asides/about-auth0.markdown %}
 
