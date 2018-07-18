@@ -6,8 +6,8 @@ longdescription: ""
 date: 2018-07-18 8:30
 category: Technical Guide, Architecture, Backend, Data
 design: 
-  bg_color: "#1A1A1A"
-  image: 
+  bg_color: "#4E0F08"
+  image: https://cdn.auth0.com/blog/logos/redis-icon-logo.png
 author:
   name: Dan Arias
   url: http://twitter.com/getDanArias
@@ -379,7 +379,6 @@ This time, the reply is `(integer) 1`. Great!
 We can use `SETNX` to prevent us from mutating data accidentally.
 
 Now that we can perform basic data manipulation in Redis, let's learn how some commands are atomic.
-
 
 ## Redis Data Types
 
