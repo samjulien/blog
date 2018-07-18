@@ -29,7 +29,7 @@ related:
   <img style="margin: 40px 0 10px 0;" src="https://cdn.auth0.com/blog/beach-reads/beach-reads-auziros-auth0.png" alt="Beach Reads Recommended by Auziros">
   <figcaption style="text-align: left;">
   <p style="font-size: 14px; line-height: 22px; margin-bottom: 10px;">
-    Yvonne Wilson, Senior Director, Governance, Risk & Compliance at Auth0, digs into the setting of Auth0’s 2018 company-wide offsite at the [Westin Playa Bonita Hotel](http://www.starwoodhotels.com/westin/property/overview/index.html?propertyID=3386&language=en_US) in Panama.
+    Yvonne Wilson, Customer Success - Senior Architect at Auth0, digs into the setting of Auth0’s 2018 company-wide offsite at the [Westin Playa Bonita Hotel](http://www.starwoodhotels.com/westin/property/overview/index.html?propertyID=3386&language=en_US) in Panama.
      <p style="font-size: 14px; line-height: 10px; font-style: italic;">Auth0 photo/[Márton Áts](http://www.martonats.com/)</p>
   </p>
     </figcaption>
