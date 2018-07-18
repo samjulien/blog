@@ -60,6 +60,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/react.png
 ```
 
+### Redis
+
+```
+  bg_color: "#4E0F08"
+  image: https://cdn.auth0.com/blog/logos/redis-icon-logo.png
+```
+
 ### Spring Boot
 
 ```
