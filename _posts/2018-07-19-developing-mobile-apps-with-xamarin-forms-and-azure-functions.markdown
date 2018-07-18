@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Developing Mobile Apps with Xamarin Forms and Azure Functions"
-description: "Learn how to use Xamarin Forms and Microsoft Azure Functions to develop mobile apps that are supported by serverless functions."
+description: "In this tutorial, learn how to use Xamarin Forms and Microsoft Azure Functions to develop mobile apps that are supported by serverless functions."
 date: 2018-07-19 08:30
 category: Technical Guide, Mobile, Xamarin Forms
 author:
@@ -28,7 +28,7 @@ related:
 
 **TL;DR:** The Microsoft Azure Functions is a solution which enables developers running small serverless pieces of code (functions in the cloud) without worrying about a whole application or the infrastructure to run it. They can be used as a backend for web or mobile applications. In this article, we will present how to access an Azure Function secured by Auth0 from a Xamarin Forms application. If needed, you can also check [this GitHub repository to get more information](https://github.com/Daniel-Krzyczkowski/MicrosoftAzure/tree/master/Auth0AzureFunction).
 
-{% include tweet_quote.html quote_text="Learn how to build modern applications with Xamarin Forms and Azure Functions." %}
+{% include tweet_quote.html quote_text="Learn how to develop modern applications with Xamarin Forms and Azure Functions." %}
 
 ---
 
@@ -81,7 +81,7 @@ Once you fill all the required information click the "Create" button.
 
 After a short time, the Function App will be created and notification will show up. After that, select "Function App" from the left bar. A blade with the created function app should appear. Expand it and move the mouse cursor on the "Functions" header and click the "+" button. 
 
-![Creating an Azure Function](https://cdn.auth0.com/blog/xamarin-azure-functions/creating-an-azure-function.png)
+![Creating an Azure Function in the portal](https://cdn.auth0.com/blog/xamarin-azure-functions/creating-an-azure-function.png)
 
 Another blade with templates will be displayed. From there, choose "HTTPTrigger C#" template, fill the _name_ field with "Auth0FunctionApp" and change authorization level to "Anonymous". After a few seconds, the HTTPTrigger function will be ready for you.
 
@@ -110,7 +110,7 @@ As you are going to use Auth0 to handle authentication, you will have to sign up
 
 ### Creating an Auth0 API for Azure Functions
 
-To represent your Azure Functions on Auth0, you will have to create an Auth0 API. So, open [the "APIs" section](https://manage.auth0.com/#/apis) and click on the "Create API" section. Auth0 will show you a dialog where you will have to provide name for your new API (you can input something like "Microsoft Azure Function", an identifier (in this case, you can input something like `https://my-azure-function`, you will need it later), and a signing algorithm (you can leave this as `RS256`). Then, click the "Create" button and, after a few seconds, you will be redirected to the _Quick Start_ section of the API just created. From there, you can click on the _Settings_ tab to copy the _Identifier_ (also known as audience) of the API. You will use this value in the Azure Function source code [to validate `access_tokens`](https://auth0.com/docs/tokens/access-token).
+To represent your Azure Functions on Auth0, you will have to create an Auth0 API. So, open [the "APIs" section](https://manage.auth0.com/#/apis) and click on the "Create API" section. Auth0 will show you a dialog where you will have to provide name for your new API (you can input something like "Microsoft Azure Function", an identifier (in this case, you can input something like `https://my-azure-function`, you will need it later), and a signing algorithm (you can leave this as `RS256`). Then, click the "Create" button and, after a few seconds, you will be redirected to the _Quick Start_ section of the API just created. From there, you can click on the _Settings_ tab to copy the _Identifier_ (also known as audience) of the API. You will use this value in the Azure Function source code to [validate `access_tokens`](https://auth0.com/docs/tokens/access-token).
 
 ![Creating an Auth0 API to represent the Azure Function](https://cdn.auth0.com/blog/xamarin-azure-function/creating-an-auth0-api.png)
 
@@ -348,7 +348,7 @@ You will use this URL in the Xamarin Forms application so copy it for the furthe
 
 ## Creating a Xamarin Forms Application
 
-Xamarin platform provides the possibility to create cross-platform mobile applications with .NET C#. In this case, we decided to use [Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms) approach to create the iOS, Android, and Universal Windows Platform (UWP) applications. So, open Visual Studio 2017 and create new Xamarin Forms application project:
+Xamarin platform provides the possibility to create cross-platform mobile applications with .NET C#. In this case, we decided to use [Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/) approach to create the iOS, Android, and Universal Windows Platform (UWP) applications. So, open Visual Studio 2017 and create a new Xamarin Forms application project:
 
 > Remember to select Mobile development with .NET during Visual Studio 2017 installation so you can access Xamarin cross-platform project templates.
 
@@ -794,16 +794,16 @@ InitializeComponent();
 
 And that's it. If you run your application now, you see something like the following:
 
-![Developing a mobile application with Xamarin Forms and Azure Function](https://cdn.auth0.com/blog/xamarin-azure-functions/xamarin-application-running.png)
+![Demo mobile application developed with Xamarin Forms and Azure Function](https://cdn.auth0.com/blog/xamarin-azure-functions/xamarin-application-running.png)
 
 Then, after authenticating yourself, you will be redirected to a screen like this:
 
-![Xamarin Forms application and Azure Functions communicating.](https://cdn.auth0.com/blog/xamarin-azure-functions/xamarin-application-communicating-with-azure-functions.png)
+![Xamarin Forms application authenticated and communicating with Azure Functions](https://cdn.auth0.com/blog/xamarin-azure-functions/xamarin-application-communicating-with-azure-functions.png)
 
-{% include tweet_quote.html quote_text="I just built a mobile application with Xamarin Forms that communicates with an Azure Function." %}
+{% include tweet_quote.html quote_text="I just developed a mobile application with Xamarin Forms that communicates with an Azure Function." %}
 
 ## Summary
 
-In this tutorial, you learned how to build a simple Xamarin Forms application that communicates with a serverless Azure Function. Both applications built throughout the article (the mobile app and the serverless function) are quite simple, but they give you enough knowledge to build more-complex applications while following an approach that is modern and secure at the same time.
+In this tutorial, you learned how to develop a simple Xamarin Forms application that communicates with a serverless Azure Function. Both applications built throughout the article (the mobile app and the serverless function) are quite simple, but they give you enough knowledge to build more-complex applications while following an approach that is modern and secure at the same time.
 
 If you have trouble while following the article you can always check [the original GitHub repository that I've created while writing](https://github.com/Daniel-Krzyczkowski/MicrosoftAzure/tree/master/Auth0AzureFunction) and you can get in touch through the comments section down below.
