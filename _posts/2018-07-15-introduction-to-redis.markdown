@@ -152,6 +152,38 @@ We need to restart our shell for these changes to take effect. Once we do that, 
 
 ### Starting Redis
 
+The easiest way to start the Redis server is by running the `redis-server` command. In a fresh shell window, type:
+
+```shell
+redis-server
+```
+
+If everything is working as expected, the shell will receive as outline a giant ASCII Redis logo that shows the Redis version installed, the running mode, the `port` where the server is running and it's `PID` ([process identification number](http://www.linfo.org/pid.html)).
+
+````shell
+                _._
+           _.-``__ ''-._
+      _.-``    `.  `_.  ''-._           Redis 4.0.10 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6379
+ |    `-._   `._    /     _.-'    |     PID: 22394
+  `-._    `-._  `-./  _.-'    _.-'
+ |`-._`-._    `-.__.-'    _.-'_.-'|
+ |    `-._`-._        _.-'_.-'    |           http://redis.io
+  `-._    `-._`-.__.-'_.-'    _.-'
+ |`-._`-._    `-.__.-'    _.-'_.-'|
+ |    `-._`-._        _.-'_.-'    |
+  `-._    `-._`-.__.-'_.-'    _.-'
+      `-._    `-.__.-'    _.-'
+          `-._        _.-'
+              `-.__.-'
+````
+
+We started Redis without any explicit configuration file; therefore, we'll be using the internal default configuration. This is acceptable for the scope of this blog post: understanding and using the basic Redis data structures.
+
+As a first step, we always need to get the Redis server running as the CLI and other services depend on it to work.
+
 ### How to Check if Redis is Working
 
 ## Strings
