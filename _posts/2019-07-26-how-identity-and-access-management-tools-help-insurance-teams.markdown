@@ -43,11 +43,11 @@ Before going into the details, I need to give you a short background of Document
 
 ![Using Document360, you can easily build product documentation.](https://document360.io/wp-content/uploads/2018/02/document360_logo.png)
  
-When the idea for Document360 was conceived in the end of 2017, one of the key decisions we have made was to build a solution to scale to unlimited users without any architectural changes. This means that the product have to serve 500 customers today and it shouldn't suffer big architectural changes to serve 500,000 customers in a few years down the line.
+When the idea for Document360 was conceived at the end of 2017, one of the key decisions we have made was to build a solution to scale to unlimited users without any architectural changes. This means that the product has to serve 500 customers today and it shouldn't suffer big architectural changes to serve 500,000 customers in a few years down the line.
  
 Architecturally, this requires a different level of thinking and infrastructure requirements when you are designing a system that's capable of 500 customers and 500k customers. You need to be careful you are not over-engineering the solution, which will end up being difficult to manage and very expensive.
  
-For example,let's say you have the requirement to pick a video file from a storage location to do some processing (like creating a transcript) and to store the result in third-party storage location. When you are looking at processing 5 video messages per day, the solution is pretty simple, but imagine if you are YouTube or Wistia and need to process 100,000+ videos per day. Then, this single piece of functionality will require significant architecture and infrastructure investment.
+For example, let's say you have the requirement to pick a video file from a storage location to do some processing (like creating a transcript) and to store the result in a third-party storage location. When you are looking at processing 5 video messages per day, the solution is pretty simple, but imagine if you are YouTube or Wistia and need to process 100,000+ videos per day. Then, this single piece of functionality will require significant architecture and infrastructure investment.
  
 If you do not plan correctly and decide to build scalable components yourself, your valuable software engineering time will be spent on creating basic versions of those functionalities. The cloud Platform-as-a-Service (PaaS) market has evolved significantly in the past 5-8 years and, today, there is a specialized offering for each piece of the puzzle. It might be a smart move to pick the required Lego blocks and assemble it together rather than building everything yourself.
 
@@ -61,7 +61,7 @@ For Document360, there are five core pieces of the product that required cloud-s
 4. a search engine;
 5. and data storage.
 
-Before going into identity management, which is core of this article, let's quickly take a brief look on the background about other scalable parts of the architecture.
+Before going into identity management, which is the core of this article, let's quickly take a brief look at the background about other scalable parts of the architecture.
 
 ### User-Facing and Technical-Writer-Facing Web Apps
  
@@ -69,7 +69,7 @@ These web applications are straightforward requirements. Both applications shoul
 
 ### Search Engine
  
-For any self-service knowledge base product, a good search engine is the key. These days, people do not navigate through your structure, they will just go and hit that big search box to look out for answers. We need to make sure the search feature is robust and, again, scalable  when 1000's of customers arrive. There is no point on building this inhouse. As such, we decided to go with [Algolia as our search provider](https://www.algolia.com/).
+For any self-service knowledge base product, a good search engine is the key. These days, people do not navigate through your structure, they will just go and hit that big search box to look out for answers. We need to make sure the search feature is robust and, again, scalable when 1000's of customers arrive. There is no point in building this in-house. As such, we decided to go with [Algolia as our search provider](https://www.algolia.com/).
 
 ### Data Storage
  
@@ -85,18 +85,18 @@ Out of the five core areas of Document360, getting the initial authentication pa
 
 There are few reasons why we decided to use Auth0 instead of custom building our own identity providers:
 
-- **Enterprise-Ready**: Even though capturing credentials (username/password), validating them against your database, and issuing a validation token might look like a simple task, soon, everything get complicated when you look at the scale factor. [It would have taken months for our developers to build an identity solution that were somewhat similar to what Auth0 provide](https://auth0.com/b2c-customer-identity-management). More than that, it would take years to reach the level of quality and security of what Auth0 can provide.
-- **Hack-Proof**: These days, when you are building a SaaS product like Document360, you need to worry about the DDOS attack and identity hacking. Every now and then, there is something on the news saying that one of the top website was hacked. As such, it's not worthing the risk for us to do it ourselves. [A product like Auth0, where they deal with billions of identity validation every day, will be better equipped than any in-house solution that we come up with](https://auth0.com/security).
-- **Trivial to add more providers**: Initially, we are starting with a standard username/password for identity verification.However, our plan in later stages is to support more identity/single sign on capabilities. By using Auth0, we can rest assured that, when the time comes, we will be able to [easily support other identity providers like Azure Active Directory, LDAP,and social identities (like Facebook, Google, LinkedIn etc)](https://auth0.com/docs/identityproviders). With Auth0, this is more of trivial configuration change rather than spending weeks building support for new identity providers.
+- **Enterprise-Ready**: Even though capturing credentials (username/password), validating them against your database, and issuing a validation token might look like a simple task, soon, everything get complicated when you look at the scale factor. [It would have taken months for our developers to build an identity solution that was somewhat similar to what Auth0 provide](https://auth0.com/b2c-customer-identity-management). More than that, it would take years to reach the level of quality and security of what Auth0 can provide.
+- **Hack-Proof**: These days, when you are building a SaaS product like Document360, you need to worry about the DDOS attack and identity hacking. Every now and then, there is something on the news saying that one of the top websites was hacked. As such, it's not worthing the risk for us to do it ourselves. [A product like Auth0, where they deal with billions of identity validation every day, will be better equipped than any in-house solution that we come up with](https://auth0.com/security).
+- **Trivial to add more providers**: Initially, we are starting with a standard username/password for identity verification. However, our plan in later stages is to support more identity/single sign-on capabilities. By using Auth0, we can rest assured that, when the time comes, we will be able to [easily support other identity providers like Azure Active Directory, LDAP, and social identities (like Facebook, Google, LinkedIn etc)](https://auth0.com/docs/identityproviders). With Auth0, this is more of a trivial configuration change rather than spending weeks building support for new identity providers.
 - **Low cost**: If we put together the total investment required to build and manage an identity solution, we would be amazed. The effort and the investment will all add up pretty quickly because you will need specialized engineering resources blocked just for this feature and for the infrastructure requirement. [By using Auth0, we just end paying based on our usage](https://auth0.com/pricing). That is, we pay more when we make more money.
-- **Rules trigger on identity**: This is one of the cool features we take advantage of at Auth0.We have requirements like, whenever a new user signup ,we need to notify the sales team. With Auth0, we achieved this by plugging in [the Zapier integration after a successful authentication](https://auth0.com/rules/zapier-new-user). This was trivial.
+- **Rules trigger on identity**: This is one of the cool features we take advantage of at Auth0. We have requirements like, whenever a new user signup, we need to notify the sales team. With Auth0, we achieved this by plugging in [the Zapier integration after a successful authentication](https://auth0.com/rules/zapier-new-user). This was trivial.
 - **Single Sign-On**: In the Document360 case, we have two different web portals. One for where the Technical writers produce knowledge base content and another one for user/customer facing website (public or private). When the customer decides to go private, then [a seamless Single Sign-On experience](https://auth0.com/docs/sso/current) is required between both the portals. This is achieved seamlessly using Auth0.
 
 {% include tweet_quote.html quote_text="By using Auth0, we just end paying based on our usage. That is, we pay more when we make more money." %}
 
 ## Summary
 
-If you are building a SaaS product today, you really shouldn't think about building things yourself. The modern way of building stuff is all about assembling the best solutions in the industry together and constructing a solid application. That's exactly what we have done in our case. The core parts of the business are running with the help of great products in the market and we more or less like an orchestrator to assemble and create a beautiful music out of all these talents.
+If you are building a SaaS product today, you really shouldn't think about building things yourself. The modern way of building stuff is all about assembling the best solutions in the industry together and constructing a solid application. That's exactly what we have done in our case. The core parts of the business are running with the help of great products in the market and we act more or less like an orchestrator to assemble and create a beautiful music out of all these talents.
 
 {% include asides/about-auth0.markdown %}
 
