@@ -43,6 +43,8 @@ At Auth0, our Site Reliability Engineering (SRE) Team uses Redis for caching:
 
 In this blog post, let's explore the basic data structures that come with Redis.
 
+{% include tweet_quote.html quote_text="Redis is a key-value store that let us store some data, the value, inside a key. It offers ultra-fast performance to satisfy demanding real-time applications like video games 🎮." %}
+
 ## Installing Redis
 
 The first thing that we need to do is install Redis. If you have it already running in your system, feel free to skip this part of the post.
