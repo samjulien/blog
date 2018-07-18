@@ -194,7 +194,7 @@ redis-cli ping
 
 If everything is working well, we should get `PONG` as a reply in the shell.
 
-When we issued `redis-cli ping`, we invoked the `redis-cli` executable follow by a command name, `ping`. A command name and its arguments are sent to the Redis instance running on `localhost:6379` for it to be processed and send a reply. 
+When we issued `redis-cli ping`, we invoked the `redis-cli` executable follow by a command name, `ping`. A command name and its arguments are sent to the Redis instance running on `localhost:6379` for it to be processed and send a reply.
 
 The host and port of the instance can be changed. Use the `--help` option to check all the commands that can be used with `redis-cli`:
 
@@ -205,6 +205,40 @@ redis-cli --help
 If we run `redis-cli` without any arguments, the program will start in interactive mode. Similar to the [Read–Eval–Print Loop (REPL)](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) of programming languages like Python, we can type different Redis commands in the shell and get a reply from the Redis instance. What those commands are and what they do is the core learning objective of this post!
 
 Let's start first by learning about the data types present in Redis. After that, we'll start learning some commands that allow us to interact with basic data structures.
+
+## Redis Data Types
+
+Far from being a plain key-value store, Redis is an actual **data structure server** that supports different kinds of values. Traditionally, key-value stores allow us to map a string key to a string value and nothing else. In Redis, the string key can be mapped to more than just a simple string. A varied range of complex data structures can become the value of a string key. Let's look at these types at a high level. We'll explore each type in detail in subsequent sections.
+
+- **Binary-safe strings**
+
+The most basic kind of Redis value. Being "binary-safe" means that the string can contain any type of data represented as a string: PNG images or serialized objects, for example.
+
+- **Lists**
+
+In essence, Redis lists are linked lists. They are collections of string elements that are sorted based on the order that they were inserted.
+
+- **Sets**
+
+They represent collections of unique and unsorted string elements.
+
+- **Sorted sets**
+
+Like sets, they represent a collection of unique string elements; however, each string element is linked to a floating number value, referred to as the element **score**. When querying the sorted set, the elements are always taken sorted by their score, which enables us to consistently present a range of data from the set.
+
+- **Hashes**
+
+These are maps made up of string fields linked to string values.
+
+- **Bit arrays**
+
+Also known as bitmaps. They let us handle string values as if they were an array of bits.
+
+- **HyperLogLogs**
+
+A probabilistic data structure used to estimate the cardinality of a set.
+
+For the scope of this post, we are going to focus on all the Redis types except bitmaps and hyperloglogs that we'll be visiting on a future post handling an advanced Redis use case. Being a data structure server, we can also refer to the data types as data structures.
 
 ## Strings
 
