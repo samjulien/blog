@@ -186,6 +186,26 @@ As a first step, we always need to get the Redis server running as the CLI and o
 
 ### How to Check if Redis is Working
 
+As noted in the Redis docs, external programs talk to Redis using a [TCP socket and a Redis specific protocol](https://redis.io/topics/quickstart#check-if-redis-is-working). The Redis protocol is implemented by Redis client libraries written in many programming languages, like JavaScript. But we don't need to use a client library directly to interact with Redis. We can use the `redis-cli` to send a command to it directly. To test that Redis is working properly, let's send it the `ping` command. Open a new shell window and execute the following command:
+
+```shell
+redis-cli ping
+```
+
+If everything is working well, we should get `PONG` as a reply in the shell.
+
+When we issued `redis-cli ping`, we invoked the `redis-cli` executable follow by a command name, `ping`. A command name and its arguments are sent to the Redis instance running on `localhost:6379` for it to be processed and send a reply. 
+
+The host and port of the instance can be changed. Use the `--help` option to check all the commands that can be used with `redis-cli`:
+
+```shell
+redis-cli --help
+```
+
+If we run `redis-cli` without any arguments, the program will start in interactive mode. Similar to the [Read–Eval–Print Loop (REPL)](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) of programming languages like Python, we can type different Redis commands in the shell and get a reply from the Redis instance. What those commands are and what they do is the core learning objective of this post!
+
+Let's start first by learning about the data types present in Redis. After that, we'll start learning some commands that allow us to interact with basic data structures.
+
 ## Strings
 
 ## Lists
