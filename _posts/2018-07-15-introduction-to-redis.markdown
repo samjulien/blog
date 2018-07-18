@@ -204,7 +204,180 @@ redis-cli --help
 
 If we run `redis-cli` without any arguments, the program will start in interactive mode. Similar to the [Read–Eval–Print Loop (REPL)](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) of programming languages like Python, we can type different Redis commands in the shell and get a reply from the Redis instance. What those commands are and what they do is the core learning objective of this post!
 
-Let's start first by learning about the data types present in Redis. After that, we'll start learning some commands that allow us to interact with basic data structures.
+Let start first by learning how to manipulate data in Redis using commands!
+
+## Write, Read, Update, and Delete Data in Redis
+
+As we learned earlier, Redis is a key-value store that let us put some data called a **value** into a **key**. We can later retrieve the stored data if we know the _exact_ key that was used to store it.
+
+In case that you haven't done so already, run the Redis CLI in interactive mode by executing the following command:
+
+```shell
+redis-cli
+```
+
+We'll know the interactive CLI is working when we see the Redis instance host and port in the shell prompt:
+
+```shell
+127.0.0.1:6379>
+```
+
+Once there, we are ready to issue commands.
+
+### Reading Data
+
+To store a value in Redis, we can use the [`SET` command](https://redis.io/commands/set) which has the following signature:
+
+```shell
+SET key value
+```
+
+In English, it reads like "set key to hold value." It's important to note that if the key already holds a value, `SET` will overwrite it no matter what.
+
+Let's look at an example. In the interactive shell type:
+
+```shell
+SET service "auth0"
+```
+
+> Notice how, as you type, the interactive shell suggests the required and optional arguments for the Redis command.
+
+[IMG: Redis Shell Syntax Suggestion]
+
+Press `enter` to send the command. Once Redis stores `"auth0"` as the value of `service`, it replies with `OK`, letting us know that everything went well. Thank you, Redis!
+
+### Writing Data
+
+We can use the [`GET` command](https://redis.io/commands/get) to ask Redis for the value of a key:
+
+```shell
+GET key
+```
+
+Let's retrieve the value of `service`:
+
+```shell
+GET service
+```
+
+Redis replies with `"auth0"`.
+
+What if we ask for the value of a key that has never been set?
+
+```shell
+GET users
+```
+
+Redis replies with `(nil)` to let us know that the key doesn't exist in memory.
+
+In a classic API that connects to a database, we'd like to perform [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations: create, read, update, and delete. We have covered how to create (write) and read data in Redis by using the `SET` and `GET` commands respectively. Let's cover the rest.
+
+### Updating Data
+
+We can update the value of a key simply by overwriting its data as mentioned earlier.
+
+Lets create a new key-value pair:
+
+```shell
+SET framework angular
+```
+
+But, we change our mind and now we want the value to be `"react"`. We can overwrite it like this:
+
+```shell
+SET framework react
+```
+
+Did Redis get it right? Let's ask for it!
+
+```shell
+GET framework
+```
+
+Redis indeed replies with `"react"`. We are being a bit indecisive and now we want to set the `framework` key to hold the value of `"vue"`:
+
+```shell
+SET framework vue
+```
+
+If we run `GET framework` again, we get `"vue"`. The update/overwrite works as excepted.
+
+### Deleting Data
+
+But, we don't want to actually set any framework for now and we need to delete that key. How do we do it? We use the [`DEL` command](https://redis.io/commands/del):
+
+```shell
+DEL key
+```
+
+Let's run it:
+
+```
+DEL framework
+```
+
+Redis replies with `(integer) 1` to let us know the number of keys that were removed.
+
+With just three commands, `SET`, `GET`, and `DEL`, we are able to comply with the four CRUD operations!
+
+### Wrapping Strings with Quotation Marks
+
+Notice something curious: we did not have to put quotation marks around a single string value we wanted to store. `SET framework angular` and `SET framework "angular"` are both accepted by Redis as an operation to store the string `"angular"` as the value of the key `framework`. 
+
+Redis automatically wraps single string arguments in quotation marks. Since both key and value are strings, the same applies for the key name. We could have used `SET "framework" angular` and it would have worked as well. However, if we plan to use more than one string as the key or value, we do need to wrap the strings in quotation marks:
+
+```shell
+SET "the frameworks" "angular vue react"
+```
+
+Replies with `OK`.
+
+```shell
+SET the frameworks "angular vue react"
+```
+
+Replies with `(error) ERR syntax error`
+
+```shell
+SET "the frameworks" angular vue react
+```
+
+Also replies with `(error) ERR syntax error`
+
+Finally, to retrieve the value, we must use the exact key string:
+
+```shell
+GET "the frameworks"
+```
+
+Replies with `"angular vue react"`.
+
+### Non-Destructive Write
+
+Redis is compassionate and lets us write data with care. Imagine that we wanted to create a `services` key to hold the value `"heroku aws"` but instead of typing `SET services "heroku aws"`, we typed `SET service "heroku aws"`. This last command would overwrite the current value of `service` without mercy. However, Redis gives us a non-destructive version of `SET` called [`SETNX`](https://redis.io/commands/setnx):
+
+```shell
+SETNX key value
+```
+
+`SETNX` creates a key in memory if and only if the key does not exist already (`SET` if `N`ot e`X`ists). If the key already exists, Redis replies with `0` to indicate a failure to store the key-value pair and with `1` to indicate success. Let's try out this previous scenario but using `SETNX` instead of `SET`:
+
+```shell
+SETNX service "heroku aws"
+```
+
+The reply is `(integer) 0` as we expected.
+
+```shell
+SETNX services "heroku aws"
+```
+
+This time, the reply is `(integer) 1`. Great!
+
+We can use `SETNX` to prevent us from mutating data accidentally.
+
+Now that we can perform basic data manipulation in Redis, let's learn how some commands are atomic.
+
 
 ## Redis Data Types
 
