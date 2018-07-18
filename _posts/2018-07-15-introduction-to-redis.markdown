@@ -442,9 +442,13 @@ TTL notification
 
 We learned earlier that using `SET` is the same as creating the key again, which for Redis also involves resetting any timeouts currently assigned to it.
 
+We have a solid foundation now on manipulating data in Redis. With this knowledge under our belt, we are ready to now explore the data types that Redis offers.
+
 ## Redis Data Types
 
-Far from being a plain key-value store, Redis is an actual **data structure server** that supports different kinds of values. Traditionally, key-value stores allow us to map a string key to a string value and nothing else. In Redis, the string key can be mapped to more than just a simple string. A varied range of complex data structures can become the value of a string key. Let's look at these types at a high level. We'll explore each type in detail in subsequent sections.
+Far from being a plain key-value store, Redis is an actual **data structure server** that supports different kinds of values. Traditionally, key-value stores allow us to map a string key to a string value and nothing else. In Redis, the string key can be mapped to more than just a simple string.
+
+Being a data structure server, we can also refer to the data types as data structures. We can use these more complex data structures to store multiple values in a key at once. Let's look at these types at a high level. We'll explore each type in detail in subsequent sections.
 
 - **Binary-safe strings**
 
@@ -474,7 +478,7 @@ Also known as bitmaps. They let us handle string values as if they were an array
 
 A probabilistic data structure used to estimate the cardinality of a set.
 
-For the scope of this post, we are going to focus on all the Redis types except bitmaps and hyperloglogs that we'll be visiting on a future post handling an advanced Redis use case. Being a data structure server, we can also refer to the data types as data structures.
+For the scope of this post, we are going to focus on all the Redis types except bitmaps and hyperloglogs. We'll visit those on a future post handling an advanced Redis use case.
 
 ## Strings
 
