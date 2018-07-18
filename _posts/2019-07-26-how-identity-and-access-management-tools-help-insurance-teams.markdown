@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Cloud-Scale Thinking from Day One for Your SaaS Product"
-description: "Learn how relying on battle-tested solutions allows your engineers to focus on what matters most to your company — the unique features of your SaaS product."
+title: "Cloud-Scale Thinking from Day One for Your SaaS Products"
+description: "Learn how relying on battle-tested solutions allows your engineers to focus on what matters most to your company — the unique features of your SaaS products."
 date: 2018-07-26 12:30
 category: Growth, Identity
 is_non-tech: true
@@ -33,11 +33,15 @@ related:
 
 **TL;DR**: In this article, we will explore some of the key technical considerations you have to make while building highly-scalable SaaS products. The idea is to show that it's better to use reliable PaaS (Platform as a Service) vendors available in the market instead of utilizing your valuable engineering resources on infrastructure requirements. As you will learn, this will make your engineers available to focus on what matters the most, the key features of your project.
 
+{% include tweet_quote.html quote_text="Relying on battle-tested solutions allows your engineers to focus on what matters most to your company — the unique features of your SaaS products." %}
+
 ## Introduction
 
 Before going into the details, I need to give you a short background of Document360, which will help you to understand the context of the article better.
  
 [Document360 is a self-service knowledge base product](https://document360.io/) that helps you to create public or private product documentation. Take as an example [Auth0's own documentation](https://auth0.com/docs/getting-started). Using Document360, you can easily build such product documentation.
+
+![Using Document360, you can easily build product documentation.](https://document360.io/wp-content/uploads/2018/02/document360_logo.png)
  
 When the idea for Document360 was conceived in the end of 2017, one of the key decisions we have made was to build a solution to scale to unlimited users without any architectural changes. This means that the product have to serve 500 customers today and it shouldn't suffer big architectural changes to serve 500,000 customers in a few years down the line.
  
@@ -74,6 +78,8 @@ A document management product like Document360 is full of text documents, so we 
 ## Identity Management
 
 Now, let's get a bit deeper into the main part of this article: ["Identity Management as Service"](https://auth0.com/learn/cloud-identity-access-management/). Document360 got various types of users logging into the system. When you are building a public facing self-service knowledge base, your draft writers and editors need to safely login to the system to produce relevant content. In some scenarios, where the customer decided to keep their self-service knowledge base private to the organization, then the whole organizations need to securely login in.
+
+![Managing Identity with Auth0](https://cdn.auth0.com/website/assets/pages/dashboard/img/p-dashboard-6fc11ba51b.png)
 
 Out of the five core areas of Document360, getting the initial authentication part in a secure, reliable, and scalable part is the most important aspect. For this, we decided to go with [Auth0 to provide us the initial login/authentication into the product](https://auth0.com/).
 
