@@ -479,12 +479,12 @@ Also known as bitmaps. They let us handle string values as if they were an array
 
 A probabilistic data structure used to estimate the cardinality of a set.
 
-For the scope of this post, we are going to focus on all the Redis types except bitmaps and hyperloglogs. We'll visit those on a future post handling an advanced Redis use case.
+We have already covered Strings during the "Write, Read, Update, and Delete Data in Redis" section. For the rest of this tutorial, we are going to focus on all the Redis types except bitmaps and hyperloglogs. We'll visit those on a future post handling an advanced Redis use case.
 
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Every time some site gets &quot;slashdotted&quot; and is no longer reachable, I think at my little blog in a 5$/mo VM that resists any HN top position pressure without being even remotely affected. And think that many people are sincerely missing an opportunity to use Redis.</p>&mdash; ANTIREZ (@antirez) <a href="https://twitter.com/antirez/status/1017447676789641217?ref_src=twsrc%5Etfw">July 12, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-## Strings
+
 
 ## Lists
 
