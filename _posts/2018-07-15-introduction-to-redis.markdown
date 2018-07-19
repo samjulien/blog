@@ -1,8 +1,7 @@
 ---
 layout: post
 title: "Introduction to Redis"
-description: ""
-longdescription: ""
+description: "In this Redis tutorial, learn how to install and setup Redis as well as how to write and read data from the store using its core data structures."
 date: 2018-07-18 8:30
 category: Technical Guide, Architecture, Backend, Data
 design: 
@@ -480,7 +479,9 @@ A probabilistic data structure used to estimate the cardinality of a set.
 
 For the scope of this post, we are going to focus on all the Redis types except bitmaps and hyperloglogs. We'll visit those on a future post handling an advanced Redis use case.
 
-## Strings
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Every time some site gets &quot;slashdotted&quot; and is no longer reachable, I think at my little blog in a 5$/mo VM that resists any HN top position pressure without being even remotely affected. And think that many people are sincerely missing an opportunity to use Redis.</p>&mdash; ANTIREZ (@antirez) <a href="https://twitter.com/antirez/status/1017447676789641217?ref_src=twsrc%5Etfw">July 12, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 
 ## Lists
 
@@ -1053,6 +1054,11 @@ The most relevant use of Redis in the authentication and authorization workflows
 As recognized by [Amazon Web Services](https://aws.amazon.com/redis/), the in-memory architecture of Redis provides developers with high availability and persistence that makes it a popular choice to store and manage session data for internet-scale applications. Its lightning-fast performance provides us with the super low latency, optimal scale, and resiliency that we need to manage session data such as user profiles, user settings, session state, and credential management. 
 
 As detailed by [Redis Labs](https://redislabs.com/blog/cache-vs-session-store/), a web application that is session-oriented starts a session when the user logs in. The session is active until the user logs out or the session times out. During the session lifecycle, the web application stores all session-related data in the main memory (a database like MongoDB, for example) or in a session store that doesn't lose the data when the application goes down (a store like Redis, for example).
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/redis/session-store-temp" alt="A session-oriented application diagram">
+  <small>Source: <a href="https://redislabs.com/blog/cache-vs-session-store/">Redis Labs: Cache vs. Session Store</a></small>
+</p>
 
 {% include tweet_quote.html quote_text="According to @RedisLabs, a session store requires high availability and durability to support transactional data and uninterrupted user engagement. You can achieve that easily using #Redis." %}
 
