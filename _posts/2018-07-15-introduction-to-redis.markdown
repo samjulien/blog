@@ -37,13 +37,11 @@ Redis is an in-memory key-value store that can be used as a database, cache, and
 
 It supports basic data structures such as strings, lists, sets, sorted sets with range queries, and hashes. More advanced data structures like bitmaps, hyperloglogs, and geospatial indexes with radius queries are also supported.
 
-At Auth0, our Site Reliability Engineering (SRE) Team uses Redis for caching:
+[Alex Stanciu](https://twitter.com/alecks), a Product Owner from the Identity Governance Team at Auth0, explains one of our use cases for Redis:
 
-[Verlic Quote Pending Insight from Yenkel]
+> "We use Redis as a caching layer and a session store for our Slack Bot conversation engine. Because it stores data in memory (RAM), it provides ultra-fast read and write speeds; responses are usually in the single-digit milliseconds."
 
-In this blog post, let's explore the basic data structures that come with Redis.
-
-{% include tweet_quote.html quote_text="Redis is a key-value store that let us store some data, the value, inside a key. It offers ultra-fast performance to satisfy demanding real-time applications like video games 🎮." %}
+In this blog post, we'll learn how to set up Redis in our systems and how to store data in Redis using its core and most frequently used data structures. With this foundation, in future posts we'll learn how to use Redis for caching, session storage, messaging, and real-time analytics. Let's get started! 
 
 ## Installing Redis
 
@@ -207,6 +205,8 @@ redis-cli --help
 If we run `redis-cli` without any arguments, the program will start in interactive mode. Similar to the [Read–Eval–Print Loop (REPL)](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) of programming languages like Python, we can type different Redis commands in the shell and get a reply from the Redis instance. What those commands are and what they do is the core learning objective of this post!
 
 Let start first by learning how to manipulate data in Redis using commands!
+
+{% include tweet_quote.html quote_text="Redis is a key-value store that let us store some data, the value, inside a key. It offers ultra-fast performance to satisfy demanding real-time applications like video games 🎮." %}
 
 ## Write, Read, Update, and Delete Data in Redis
 
@@ -1046,6 +1046,7 @@ Notice how the `member` and the `score` are listed in sequence and not next to e
 
 Being able to return slices of a data structure is one of the great benefits of a Sorted Set. With Lists, we saw that it was easy to get the element in the header or the tail but not so easy to get the element in the middle. With a Sorted Set, we can request a subset, for example, whose header is the element in the middle of the full range and the tail is the last element in the Sorted Set. Then, we could extract that subset header to get the element in the middle of the Sorted Set.
 
-## Using Redis Session Storage
+## Using Redis as a Session Store
+
 
 ## Auth0 Aside
