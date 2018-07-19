@@ -451,21 +451,21 @@ Far from being a plain key-value store, Redis is an actual **data structure serv
 
 Being a data structure server, we can also refer to the data types as data structures. We can use these more complex data structures to store multiple values in a key at once. Let's look at these types at a high level. We'll explore each type in detail in subsequent sections.
 
-- **Binary-safe strings**
+- **Binary-safe Strings**
 
 The most basic kind of Redis value. Being "binary-safe" means that the string can contain any type of data represented as a string: PNG images or serialized objects, for example.
 
 - **Lists**
 
-In essence, Redis lists are linked lists. They are collections of string elements that are sorted based on the order that they were inserted.
+In essence, Redis Lists are linked lists. They are collections of string elements that are sorted based on the order that they were inserted.
 
 - **Sets**
 
 They represent collections of unique and unsorted string elements.
 
-- **Sorted sets**
+- **Sorted Sets**
 
-Like sets, they represent a collection of unique string elements; however, each string element is linked to a floating number value, referred to as the element **score**. When querying the sorted set, the elements are always taken sorted by their score, which enables us to consistently present a range of data from the set.
+Like Sets, they represent a collection of unique string elements; however, each string element is linked to a floating number value, referred to as the element **score**. When querying the Sorted Set, the elements are always taken sorted by their score, which enables us to consistently present a range of data from the Set.
 
 - **Hashes**
 
@@ -488,19 +488,19 @@ We have already covered Strings during the "Write, Read, Update, and Delete Data
 
 ## Lists
 
-A list is a sequence of ordered elements. For example, `1 2 4 5 6 90 19 3` is a list of numbers. In Redis, it's important to note that lists are implemented as [linked lists](https://en.wikipedia.org/wiki/Linked_list). This has some important implications regarding performance. It is fast to add elements to the head and tail of the list but it's slower to search for elements within the list as we do not have indexed access to the elements (like we do in an array).
+A List is a sequence of ordered elements. For example, `1 2 4 5 6 90 19 3` is a List of numbers. In Redis, it's important to note that Lists are implemented as [linked lists](https://en.wikipedia.org/wiki/Linked_list). This has some important implications regarding performance. It is fast to add elements to the head and tail of the List but it's slower to search for elements within the List as we do not have indexed access to the elements (like we do in an array).
 
-A list is created by using a Redis command that pushes data followed by a key name. There are two commands that we can use: `RPUSH` and `LPUSH`. If the key doesn't exist, these commands will return a new list with the passed arguments as elements. If the key already exists or it is not a list, an error is returned.
+A List is created by using a Redis command that pushes data followed by a key name. There are two commands that we can use: `RPUSH` and `LPUSH`. If the key doesn't exist, these commands will return a new List with the passed arguments as elements. If the key already exists or it is not a List, an error is returned.
 
 ### RPUSH
 
-[`RPUSH`](https://redis.io/commands/rpush) inserts a new element at the end of the list (at the tail):
+[`RPUSH`](https://redis.io/commands/rpush) inserts a new element at the end of the List (at the tail):
 
 ```shell
 RPUSH key value [value ...]
 ```
 
-Let's create an `engineers` key that represents a list:
+Let's create an `engineers` key that represents a List:
 
 ```shell
 RPUSH engineers "Alice"
@@ -511,7 +511,7 @@ RPUSH engineers "Carmen"
 // 3
 ```
 
-Each time we insert an element, Redis replies with the length of the list after that insertion. We would expect the `users` list to resemble this: 
+Each time we insert an element, Redis replies with the length of the List after that insertion. We would expect the `users` list to resemble this: 
 
 ```shell
 Alice Bob Carmen
@@ -522,13 +522,13 @@ How can we verify that? We can use the `LRANGE` command.
 
 ### LRANGE
 
-`LRANGE` returns a subset of the list based on a specified start and stop index. Although these indexes are zero-based, they are no the same as array indexes. Given a full list, they simply indicate where to partition the list: make a slice from here (start) to here (stop):
+`LRANGE` returns a subset of the List based on a specified start and stop index. Although these indexes are zero-based, they are no the same as array indexes. Given a full List, they simply indicate where to partition the List: make a slice from here (start) to here (stop):
 
 ```shell
 LRANGE key start stop
 ```
 
-To see the full list, we can use a neat trick: go from `0` to the element just before it, `-1`.
+To see the full List, we can use a neat trick: go from `0` to the element just before it, `-1`.
 
 ```shell
 LRANGE engineers 0 -1
@@ -542,7 +542,7 @@ Redis returns:
 3) "Carmen"
 ```
 
-The index `-1` will always represent the last element in the list.
+The index `-1` will always represent the last element in the List.
 
 To get the first two elements of `engineers` we can issue the following command:
 
@@ -552,7 +552,7 @@ LRANGE engineers 0 1
 
 ### LPUSH
 
-[`LPUSH`](https://redis.io/commands/lpush) behaves the same as `RPUSH` except that it inserts the element at the front of the list (at the header):
+[`LPUSH`](https://redis.io/commands/lpush) behaves the same as `RPUSH` except that it inserts the element at the front of the List (at the header):
 
 ```shell
 LPUSH key value [value ...]
@@ -580,7 +580,7 @@ Redis replies with:
 4) "Carmen"
 ```
 
-It's the same list we had before but with `"Daniel"` as the first element, which is exactly what was expected.
+It's the same List we had before but with `"Daniel"` as the first element, which is exactly what was expected.
 
 ### Multiple Element Insertions
 
@@ -593,7 +593,7 @@ RPUSH engineers "Eve" "Francis" "Gary"
 // 7
 ```
 
-Since we are inserting them at the end of the list, we expect these three new elements to show up in the same order in which they are listed as arguments. Let's verify:
+Since we are inserting them at the end of the List, we expect these three new elements to show up in the same order in which they are listed as arguments. Let's verify:
 
 ```shell
 LRANGE engineers 0 -1
@@ -645,7 +645,7 @@ When listing multiple arguments for `LPUSH` and `RPUSH`, Redis inserts the eleme
 
 ### LLEN
 
-We can find the length of a list at any time by using the [`LLEN`](https://redis.io/commands/llen) command:
+We can find the length of a List at any time by using the [`LLEN`](https://redis.io/commands/llen) command:
 
 ```shell
 LLEN key
@@ -661,15 +661,15 @@ Redis replies with `(integer) 10`. Perfect.
 
 ### Removing Elements from a Redis List
 
-Similar to how we can "pop" elements in arrays, we can pop an element from the head or the tail of a Redis list.
+Similar to how we can "pop" elements in arrays, we can pop an element from the head or the tail of a Redis List.
 
-[`LPOP`](https://redis.io/commands/lpop) removes and returns the first element of the list:
+[`LPOP`](https://redis.io/commands/lpop) removes and returns the first element of the List:
 
 ```shell
 LPOP key
 ```
 
-We can use it to remove `"Jess"`, the first element, from the list:
+We can use it to remove `"Jess"`, the first element, from the List:
 
 ```shell
 LPOP engineers
@@ -677,13 +677,13 @@ LPOP engineers
 
 Redis indeed replies with `"Jess"` to indicate it is the element that was removed.
 
-[`RPOP`](https://redis.io/commands/rpop) removes and returns the last element of the list:
+[`RPOP`](https://redis.io/commands/rpop) removes and returns the last element of the List:
 
 ```shell
 RPOP key
 ```
 
-It's time to say goodbye to `"Gary"`, the last element of the list:
+It's time to say goodbye to `"Gary"`, the last element of the List:
 
 ```shell
 RPOP engineers
@@ -691,23 +691,23 @@ RPOP engineers
 
 The reply from Redis is `"Gary"`.
 
-It's very useful to be able to get the element that was removed from the list as we may want to do something special with it.
+It's very useful to be able to get the element that was removed from the List as we may want to do something special with it.
 
-Redis lists are implemented as linked lists because its engineering team envisioned that for a database system [it is crucial to be able to add elements to a very long list in a very fast way](https://redis.io/topics/data-types-intro#redis-lists).
+Redis Lists are implemented as linked lists because its engineering team envisioned that for a database system [it is crucial to be able to add elements to a very long list in a very fast way](https://redis.io/topics/data-types-intro#redis-lists).
 
 ## Sets
 
-In Redis, a set is similar to a list except that it doesn't keep any specific order for its elements and each element must be unique.
+In Redis, a Set is similar to a List except that it doesn't keep any specific order for its elements and each element must be unique.
 
 ### SADD
 
-We create a set by using the [`SADD`](https://redis.io/commands/sadd) command that adds the specified members to the key:
+We create a Set by using the [`SADD`](https://redis.io/commands/sadd) command that adds the specified members to the key:
 
 ```shell
 SADD key member [member ...]
 ```
 
-Specified members that are already part of the set are ignored. If the key doesn't exist, a new set is created and the unique specified members are added. If the key already exists or it is not a set, an error is returned.
+Specified members that are already part of the Set are ignored. If the key doesn't exist, a new Set is created and the unique specified members are added. If the key already exists or it is not a Set, an error is returned.
 
 Let's create a `languages` set:
 
@@ -720,7 +720,7 @@ SADD languages "french"
 // 1
 ```
 
-In this case, on each set addition Redis returns the number of members that were added with the `SADD` command, not the size of the set. Let's see this in action:
+In this case, on each member addition Redis returns the number of members that were added with the `SADD` command, not the size of the Set. Let's see this in action:
 
 ```shell
 SADD languages "chinese" "japanese" "german"
@@ -729,11 +729,11 @@ SADD languages "english"
 // 0
 ```
 
-The first command returned `3` as we were adding three unique members to the set. The second command returned `0` as `"english"` was already a member of the set.
+The first command returned `3` as we were adding three unique members to the Set. The second command returned `0` as `"english"` was already a member of the Set.
 
 ### SREM
 
-We can remove members from a set by using the [`SREM`](https://redis.io/commands/srem) command:
+We can remove members from a Set by using the [`SREM`](https://redis.io/commands/srem) command:
 
 ```shell
 SREM key member [member ...]
@@ -752,13 +752,13 @@ SREM languages "german"
 
 ### SISMEMBER
 
-To verify that a member is part of a set, we can use the [`SISMEMBER`](https://redis.io/commands/sismember) command:
+To verify that a member is part of a Set, we can use the [`SISMEMBER`](https://redis.io/commands/sismember) command:
 
 ```shell
 SISMEMBER key member
 ```
 
-If the member is part of the set, this command returns `1`; otherwise, it returns `0`:
+If the member is part of the Set, this command returns `1`; otherwise, it returns `0`:
 
 ```shell
 SISMEMBER languages "spanish"
@@ -771,7 +771,7 @@ Since we removed `"german"` in the last section, we get `0`.
 
 ### SMEMBERS
 
-To show all the members that exist in a set, we can use the [`SMEMBERS`](https://redis.io/commands/smembers) command:
+To show all the members that exist in a Set, we can use the [`SMEMBERS`](https://redis.io/commands/smembers) command:
 
 ```shell
 SMEMBERS key
@@ -791,17 +791,17 @@ Redis returns:
 3) "spanish"
 ```
 
-As sets are not ordered, Redis is free to [return the elements in any order at every call](https://redis.io/topics/data-types-intro#redis-sets). They have no guarantees about element ordering.
+As Sets are not ordered, Redis is free to [return the elements in any order at every call](https://redis.io/topics/data-types-intro#redis-sets). They have no guarantees about element ordering.
 
 ### SUNION
 
-Something really powerful that we can do with sets very fast is to combine them using the [`SUNION`](https://redis.io/commands/sunion) command:
+Something really powerful that we can do with Sets very fast is to combine them using the [`SUNION`](https://redis.io/commands/sunion) command:
 
 ```shell
 SUNION key [key ...]
 ```
 
-Each argument to `SUNION` represents a set that we can merge into a larger set. It is important to notice that any overlapping members will be listed once.
+Each argument to `SUNION` represents a Set that we can merge into a larger Set. It is important to notice that any overlapping members will be listed once.
 
 To see this in action, let's first create an `ancient-languages` set:
 
@@ -969,19 +969,19 @@ Introduced in Redis 1.2, a Sorted Set is, in essence, a Set: it contains [unique
 How is the order of members of a Sorted Set determined? As stated in the [Redis documentation](https://redis.io/topics/data-types-intro#redis-sorted-sets): 
 
 * If A and B are two members with a different score, then A > B if A.score is > B.score.
-* If A and B have exactly the same score, then A > B if the A string is lexicographically greater than the B string. **A and B strings can't be equal since sorted sets only have unique elements**.
+* If A and B have exactly the same score, then A > B if the A string is lexicographically greater than the B string. **A and B strings can't be equal since Sorted Sets only have unique elements**.
 
 Some of the commands that we use to interact with Sorted Sets are similar to the commands we used with Sets: we replace the `S` in the Set command and replace it with a `Z`. For example, `SADD` => `ZADD`. However, we have commands that are unique to both. Let's check them out.
 
 ### ZADD
 
-Using [`ZADD`](https://redis.io/commands/zadd) adds all the specified members with specified scores to the sorted set:
+Using [`ZADD`](https://redis.io/commands/zadd) adds all the specified members with specified scores to the Sorted Set:
 
 ```shell
 ZADD key [NX|XX] [CH] [INCR] score member [score member ...]
 ```
 
-As with sets, if `key` does not exist, a new Sorted Set with the specified members as only members is created. If the `key` exists but does not hold a Sorted Set, an error is returned.
+As with Sets, if `key` does not exist, a new Sorted Set with the specified members as only members is created. If the `key` exists but does not hold a Sorted Set, an error is returned.
 
 Starting in Redis 3.0.2, [`ZADD` has optional arguments](https://redis.io/commands/zadd#zadd-options-redis-302-or-greater) that gives us control of insertions:
 
