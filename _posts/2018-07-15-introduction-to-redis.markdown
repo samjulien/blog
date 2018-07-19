@@ -1058,3 +1058,5 @@ As detailed by [Redis Labs](https://redislabs.com/blog/cache-vs-session-store/),
 
 In a future post, we are going to learn in depth how to use Redis to engineer a solid session store. Stay tuned!
 
+
+{% include asides/about-auth0.markdown %}
