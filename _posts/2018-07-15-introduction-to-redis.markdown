@@ -41,7 +41,7 @@ It supports basic data structures such as strings, lists, sets, sorted sets with
 
 > "We use Redis as a caching layer and a session store for our Slack Bot conversation engine. Because it stores data in memory (RAM), it provides ultra-fast read and write speeds; responses are usually in the single-digit milliseconds."
 
-In this blog post, we'll learn how to set up Redis in our systems and how to store data in Redis using its core and most frequently used data structures. With this foundation, in future posts we'll learn how to use Redis for caching, session storage, messaging, and real-time analytics. Let's get started! 
+In this Redis tutorial, we'll learn how to set up Redis in our systems and how to store data in Redis using its core and most frequently used data structures. With this foundation, in future posts we'll learn how to use Redis for caching, session storage, messaging, and real-time analytics. Let's get started! 
 
 ## Installing Redis
 
