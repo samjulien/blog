@@ -1048,5 +1048,13 @@ Being able to return slices of a data structure is one of the great benefits of 
 
 ## Using Redis as a Session Store
 
+The most relevant use of Redis in the authentication and authorization workflows of a web application is to serve as a session store.
 
-## Auth0 Aside
+As recognized by [Amazon Web Services](https://aws.amazon.com/redis/), the in-memory architecture of Redis provides developers with high availability and persistence that makes it a popular choice to store and manage session data for internet-scale applications. Its lightning-fast performance provides us with the super low latency, optimal scale, and resiliency that we need to manage session data such as user profiles, user settings, session state, and credential management. 
+
+As detailed by [Redis Labs](https://redislabs.com/blog/cache-vs-session-store/), a web application that is session-oriented starts a session when the user logs in. The session is active until the user logs out or the session times out. During the session lifecycle, the web application stores all session-related data in the main memory (a database like MongoDB, for example) or in a session store that doesn't lose the data when the application goes down (a store like Redis, for example).
+
+{% include tweet_quote.html quote_text="According to @RedisLabs, a session store requires high availability and durability to support transactional data and uninterrupted user engagement. You can achieve that easily using #Redis." %}
+
+In a future post, we are going to learn in depth how to use Redis to engineer a solid session store. Stay tuned!
+
