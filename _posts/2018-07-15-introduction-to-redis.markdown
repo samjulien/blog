@@ -825,6 +825,137 @@ We get the following reply:
 
 If we pass to `SUNION` a key that doesn't exist, it considers that key to be an empty set (a set that has nothing in it).
 
+## Hashes
+
+In Redis, a Hash is a data structure that maps a string key with field-value pairs. Thus, Hashes are useful to represent objects. They `key` is the name of the Hash and the `value` represents a sequence of `field-name field-value` entries. We could describe a `computer` object as follows:
+
+```shell
+computer name "MacBook Pro" year 2015 disk 512 ram 16
+```
+
+The "properties" of the object are defined as sequences of "property name" and "property value" after the name of the object, `computer`. Recall that Redis is all about sequential strings so we have to be careful when creating these string objects that we use the proper string sequencing to define our objects correctly.
+
+To manipulate Hashes, we use commands that are similar to what we used with strings, after all, they are strings.
+
+### Writing and Reading Hash Data
+
+### HSET
+
+The command [`HSET`](https://redis.io/commands/hset) sets `field` in the Hash to `value`. If `key` does not exist, a new key storing a hash is created. If `field` already exists in the hash, it is overwritten.
+
+```shell
+HSET key field value
+```
+
+Let's create the `computer` hash:
+
+```shell
+HSET computer name "MacBook Pro"
+// 1
+HSET computer year 2015
+// 1
+HSET computer disk 512
+// 1
+HSET computer ram 16
+// 1
+```
+ 
+For each `HSET` command, Redis replies with an integer as follows:
+
+* `1` if `field` is a new field in the hash and value was set.
+* `0` if `field` already exists in the hash and the value was updated.
+
+Let's update the value of the `year` field to `2018`:
+
+```shell
+HSET computer year 2018
+// 0
+```
+
+### HGET
+ 
+[`HGET`](https://redis.io/commands/hget) returns the value associated with `field` in a Hash:
+
+```shell
+HGET key field
+```
+
+Let's verify that we are getting `2018` as the value of `year` instead of `2015`:
+
+```shell
+HGET computer year
+```
+
+Redis replies with `"2018"`. It checks out fine.
+
+### HGETALL
+
+A fast way to get all the fields with their values from the hash is to use [`HGETALL`](https://redis.io/commands/hgetall):
+
+```shell
+HGETALL key
+```
+
+Let's test it out:
+
+```shell
+HGETALL computer
+```
+
+Reply: 
+
+```shell
+1) "name"
+2) "MacBook Pro"
+3) "year"
+4) "2018"
+5) "disk"
+6) "512"
+7) "ram"
+8) "16"
+```
+
+`HGETALL` replies with an empty list when the provided `key` argument doesn't exist.
+
+### HMSET
+
+We can also set multiple fields at once using `HMSET`:
+
+```shell
+HMSET key field value [field value ...]
+```
+
+Let's create a `tablet` hash with it:
+
+```shell
+HMSET tablet name "iPad" year 2016 disk 64 ram 4 
+```
+
+`HMSET` returns `OK` to let us know the `tablet` hash was created successfully.
+
+### HMGET
+
+What if we want to get just two fields? We use [`HMGET`](https://redis.io/commands/hmget) to specify from which fields in the hash we want to get a value:
+
+```shell
+HMGET key field [field ...]
+```
+
+Let's get the `disk` and `ram` fields of the `tablet` hash:
+
+```shell
+HMGET tablet disk ram
+```
+
+Effectively we get the values of `disk` and `ram` as replies:
+
+```shell
+1) "64"
+2) "4"
+```
+
+That's pretty much the gist of using Hashes in Redis. You may explore the [full list of Hash commands](https://redis.io/commands#hash) and try them out.
+
 ## Sorted Sets
 
 Introduced in Redis 1.2, a Sorted Set is, in essence, a Set: it contains [unique, non-repeating string members](https://redis.io/topics/data-types-intro#redis-sorted-sets). However, while members of a Set are not ordered, each member of a Sorted Set is linked to a floating point value called the **score** which is used by Redis to determine its order. Hence, every element of a Sorted Set is mapped to a value, it has an architecture similar to Hash.
@@ -914,8 +1045,6 @@ Reply:
 Notice how the `member` and the `score` are listed in sequence and not next to each other. As we can see, the members are stored in `tickets` in ascending order based on their score.
 
 Being able to return slices of a data structure is one of the great benefits of a Sorted Set. With Lists, we saw that it was easy to get the element in the header or the tail but not so easy to get the element in the middle. With a Sorted Set, we can request a subset, for example, whose header is the element in the middle of the full range and the tail is the last element in the Sorted Set. Then, we could extract that subset header to get the element in the middle of the Sorted Set.
-
-## Hashes
 
 ## Using Redis Session Storage
 
