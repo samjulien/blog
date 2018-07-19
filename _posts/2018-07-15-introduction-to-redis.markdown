@@ -32,6 +32,8 @@ related:
 
 Redis is an in-memory key-value store that can be used as a database, cache, and message broker. The project is [open source](https://github.com/antirez/redis) and it's currently licensed under the [BSD license](https://github.com/antirez/redis/blob/unstable/COPYING).
 
+> Fun Fact: Redis means "REmote DIctionary Server."
+
 [Redis delivers sub-millisecond response times](https://aws.amazon.com/redis/) that enable millions of requests per second to power demanding real-time applications such as games, ad brokers, financial dashboards, and many more!
 
 It supports basic data structures such as strings, lists, sets, sorted sets with range queries, and hashes. More advanced data structures like bitmaps, hyperloglogs, and geospatial indexes with radius queries are also supported.
@@ -482,6 +484,7 @@ For the scope of this post, we are going to focus on all the Redis types except 
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Every time some site gets &quot;slashdotted&quot; and is no longer reachable, I think at my little blog in a 5$/mo VM that resists any HN top position pressure without being even remotely affected. And think that many people are sincerely missing an opportunity to use Redis.</p>&mdash; ANTIREZ (@antirez) <a href="https://twitter.com/antirez/status/1017447676789641217?ref_src=twsrc%5Etfw">July 12, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
+## Strings
 
 ## Lists
 
