@@ -1,12 +1,12 @@
 ---
 layout: post
 title: "How Auth0 Makes Your Apps More Secure"
-description: "Three key solutions Auth0 delivers to help its customers protect user data."
-date: 2018-06-26 8:30
-category: Authentication, Authorization, IDaaS
+description: "Key solutions like anomaly detection, universal login, and custom security rules delivered by Auth0 helps its customers protect sensitive user data."
+date: 2018-07-19 8:30
+category: Auth0-based Tutorial, Tools
 design: 
-  bg_color: "#3f3442"
-  image: https://cdn.auth0.com/blog/the-best-and-worst-travel-sites-at-keeping-your-info-safe/logo.png
+  bg_color: "#666363"
+  image: https://cdn.auth0.com/blog/web-app-security/logo.png
 author:
   name: Diego Poza
   url: https://twitter.com/diegopoza
@@ -22,12 +22,14 @@ tags:
   - verification
   - authentication
 related:
-  - 
+  - 2018-04-12-common-threats-in-web-app-security
+  - 2018-02-14-what-is-data-security
+  - 2018-04-27-strong-identity-management-system-eases-transition-to-hybrid-cloud
 ---
 
 Tight infrastructure security is critical — but if you don't remember to secure your web applications, customer data remains exposed.
 
-There are several common threats to web-app security:
+There are several [common threats to web-app security](https://auth0.com/blog/common-threats-in-web-app-security/):
 
 - A lack of encryption between your web browser and their servers
 - XSS (cross-site scripting) that occurs when malicious scripts are injected into web applications
@@ -44,7 +46,7 @@ Auth0 allows you to combine these features to further amplify protection for you
 
 ## Anomaly Detection
 
-Auth0 provides three built-in [shields](https://auth0.com/docs/anomaly-detection) that detect anomalies among users in an app's system. Used separately or in combination, the shields have the ability to stop malicious access attempts before they occur. Administrators receive alerts of suspicious activity and can then block future login attempts by an aberrant user.
+Auth0 provides three built-in shields that [detect anomalies](https://auth0.com/docs/anomaly-detection) among users in an app's system. Used separately or in combination, the shields have the ability to stop malicious access attempts before they occur. Administrators receive alerts of suspicious activity and can then block future login attempts by an aberrant user.
 
 {% include tweet_quote.html quote_text="Learn more about how Auth0 provides three built-in shields that detect anomalies among users in an app's system." %}
 
@@ -70,7 +72,7 @@ Brute-Force Protection will also block the suspicious IP address. When the issue
 The third shield is breached-password detection. This is easy to turn on and customize in the Anomaly Detection section of the Auth0 dashboard.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/how-auth0-makes-your-apps-more-secure/breached-password-shield.png" alt="Anomaly Detection section of the Auth0 dashboard">
+  <img src="https://cdn.auth0.com/blog/how-auth0-makes-your-apps-more-secure/breached-password-shield.png" alt="Breached-password anomaly detection with Auth0">
 </p>
 
 Breached-password detection is useful in instances where Auth0 suspects that a user's email has been compromised in a major security breach. (Auth0 consistently tracks these on third-party sites.) If this occurs, Auth0 will trigger the shield, notify the user, and block them from logging in until they reset their information. Breached-password detection is becoming increasingly helpful as many individuals use the same or similar iterations of the same password on multiple sites.
@@ -168,6 +170,6 @@ For fraud detection, Auth0 partners with [ThisData](https://auth0.com/blog/anoma
 
 ## No Better Time To Secure Your Apps
 
-Securing your app with the best tools is always a good decision — but it is especially timely, given the slew of new regulations, including [GDPR](https://auth0.com/blog/get-ready-for-gdpr/) and potentially a robust new measure in [California](https://auth0.com/blog/brace-yourself-the-gdpr-ripple-effect-in-california/). In line with these events, Auth0 has developed additional [strategies](https://auth0.com/blog/get-ready-for-gdpr/) for getting your team into alignment quickly, including [customer identity and access management (CIAM) protocol](https://auth0.com/blog/digital-success-through-customer-identity-and-access-management/).
+Securing your app with the best tools is always a good decision — but it is especially timely, given the slew of new regulations: GDPR deadline has passed, but [it's not too late to comply](https://auth0.com/blog/your-quick-gdpr-compliance-checklist/), and several countries and states in the U.S. have followed the EU with [similar privacy initiatives](https://auth0.com/blog/brace-yourself-the-gdpr-ripple-effect-in-california/). In line with these events, Auth0 has developed additional [strategies](https://auth0.com/gdpr-assessment/) for getting your team into alignment quickly, including [customer identity and access management (CIAM) protocol](https://auth0.com/blog/digital-success-through-customer-identity-and-access-management/).
 
 While it might be easy to forget your apps in the swirl of demands around your core operations — making sure you plug any holes here is key to ensuring that you don't become another [data-breach statistic](https://consequenceofsound.net/2018/06/ticketfly-hacker-data-breach/).
