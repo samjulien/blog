@@ -689,7 +689,7 @@ The reply from Redis is `"Gary"`.
 
 It's very useful to be able to get the element that was removed from the list as we may want to do something special with it.
 
-Redis lists are implemented as linked lists because its engineering team envisioned that for a database system [it is crucial to be able to add elements to a very long list in a very fast way](https://redis.io/topics/data-types-intro).
+Redis lists are implemented as linked lists because its engineering team envisioned that for a database system [it is crucial to be able to add elements to a very long list in a very fast way](https://redis.io/topics/data-types-intro#redis-lists).
 
 ## Sets
 
@@ -787,7 +787,7 @@ Redis returns:
 3) "spanish"
 ```
 
-As sets are not ordered, Redis is free to [return the elements in any order at every call](https://redis.io/topics/data-types-intro). They have no guarantees about element ordering.
+As sets are not ordered, Redis is free to [return the elements in any order at every call](https://redis.io/topics/data-types-intro#redis-sets). They have no guarantees about element ordering.
 
 ### SUNION
 
@@ -825,7 +825,95 @@ We get the following reply:
 
 If we pass to `SUNION` a key that doesn't exist, it considers that key to be an empty set (a set that has nothing in it).
 
-## Ordered Sets
+## Sorted Sets
+
+Introduced in Redis 1.2, a Sorted Set is, in essence, a Set: it contains [unique, non-repeating string members](https://redis.io/topics/data-types-intro#redis-sorted-sets). However, while members of a Set are not ordered, each member of a Sorted Set is linked to a floating point value called the **score** which is used by Redis to determine its order. Hence, every element of a Sorted Set is mapped to a value, it has an architecture similar to Hash.
+
+> In Redis, a Sorted Set could be seen as a hybrid of a Set and a Hash.
+
+How is the order of members of a Sorted Set determined? As stated in the [Redis documentation](https://redis.io/topics/data-types-intro#redis-sorted-sets): 
+
+* If A and B are two members with a different score, then A > B if A.score is > B.score.
+* If A and B have exactly the same score, then A > B if the A string is lexicographically greater than the B string. **A and B strings can't be equal since sorted sets only have unique elements**.
+
+Some of the commands that we use to interact with Sorted Sets are similar to the commands we used with Sets: we replace the `S` in the Set command and replace it with a `Z`. For example, `SADD` => `ZADD`. However, we have commands that are unique to both. Let's check them out.
+
+### ZADD
+
+Using [`ZADD`](https://redis.io/commands/zadd) adds all the specified members with specified scores to the sorted set:
+
+```shell
+ZADD key [NX|XX] [CH] [INCR] score member [score member ...]
+```
+
+As with sets, if `key` does not exist, a new Sorted Set with the specified members as only members is created. If the `key` exists but does not hold a Sorted Set, an error is returned.
+
+Starting in Redis 3.0.2, [`ZADD` has optional arguments](https://redis.io/commands/zadd#zadd-options-redis-302-or-greater) that gives us control of insertions:
+
+* `XX`: Only update members that already exist. Never add members.
+* `NX`: Don't update already existing members. Always add new members.
+* `CH`: Modify the return value from the number of new members added, to the total number of members changed (CH is an abbreviation of changed). Changed members are new members added **and** members already existing for which the score was updated. So members specified in the command line having the same score as they had in the past are not counted.
+* `INCR`: When this option is specified ZADD acts like [`ZINCRBY`](https://redis.io/commands/zincrby). Only one score-members pair can be specified in this mode.
+
+It's good to know that these optional arguments are there and what they do, but for this introduction, we are going to focus on adding members without using any of them, but feel free to explore them! In future posts, we are going to revisit them in more complex use cases!
+
+Let's create a Sorted Set to store Help Desk Support tickets. Support tickets are meant to be unique but also need to be sorted, hence, this data structure is a great choice:
+
+```shell
+ZADD tickets 100 HELP204
+// 1
+ZADD tickets 90 HELP004
+// 1
+ZADD tickets 180 HELP330
+// 1
+```
+
+`ZADD` returns a count the number of new elements added. In the commands above, we used the position of the ticket in a queue as the score value followed by the ticket number (all fictional).
+
+### ZRANGE
+
+We'd like now to see how our Sorted Set looks. With Sets, we used `SMEMBERS` to list the unordered members. With Sorted Sets, we use a command that is more in tune with what we used with Lists, a command that shows us a range of elements. 
+
+[`ZRANGE`](https://redis.io/commands/zrange) returns the specified range of members in the Sorted Set:
+
+```shell
+ZRANGE key start stop [WITHSCORES]
+```
+
+It behaves very similarly to `LRANGE` for Lists. We can use it to get a subset of the Sorted Set. To get the full Sorted Set, we can use the `0 -1` range again:
+
+```shell
+ZRANGE tickets 0 -1
+```
+
+Redis replies with:
+
+```shell
+1) "HELP004"
+2) "HELP204"
+3) "HELP330"
+```
+
+We can pass `ZRANGE` the `WITHSCORES` argument to also include the score of each member:
+
+```shell
+ZRANGE tickets 0 -1 WITHSCORES
+```
+
+Reply:
+
+```shell
+1) "HELP004"
+2) "90"
+3) "HELP204"
+4) "100"
+5) "HELP330"
+6) "180"
+```
+
+Notice how the `member` and the `score` are listed in sequence and not next to each other. As we can see, the members are stored in `tickets` in ascending order based on their score.
+
+Being able to return slices of a data structure is one of the great benefits of a Sorted Set. With Lists, we saw that it was easy to get the element in the header or the tail but not so easy to get the element in the middle. With a Sorted Set, we can request a subset, for example, whose header is the element in the middle of the full range and the tail is the last element in the Sorted Set. Then, we could extract that subset header to get the element in the middle of the Sorted Set.
 
 ## Hashes
 
