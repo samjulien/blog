@@ -24,6 +24,9 @@ tags:
   - caching
   - session-storage
   - authentication
+  - key-value
+  - in-memory
+  - db
 related:
   - 
 ---
@@ -56,7 +59,7 @@ To compile Redis follow these simple steps:
 
 - Create a `redis` directory and make it the current working directory:
 
-OSX/Linux:
+macOS/Linux:
 
 ```shell
 mkdir redis && cd redis
@@ -64,21 +67,15 @@ mkdir redis && cd redis
 
 - Fetch the latest redis tarball:
 
-OSX:
+macOS/Linux:
 
 ```shell
 curl -O http://download.redis.io/redis-stable.tar.gz
 ```
 
-Linux:
-
-```shell
-wget http://download.redis.io/redis-stable.tar.gz
-```
-
 - Unpack the tarball:
 
-OSX/Linux:
+macOS/Linux:
 
 ```shell
 tar xvzf redis-stable.tar.gz
@@ -86,7 +83,7 @@ tar xvzf redis-stable.tar.gz
 
 - Make the unpacked `redis-stable` directory the current working directory:
 
-OSX/Linux:
+macOS/Linux:
 
 ```shell
 cd redis-stable
@@ -94,13 +91,13 @@ cd redis-stable
 
 - Compile Redis:
 
-OSX/Linux:
+macOS/Linux:
 
 ```shell
 make
 ```
 
-> If the `make` package is not installed in your system, please follow the instructions provided by the CLI to install it. For a fresh installation of Ubuntu, for example, you may want to run the following commands to update the package manager and install core packages:
+> If the `make` package is not installed in your system, please follow the instructions provided by the CLI to install it. In macOS, you may need to download XCode to have access to the command line tools which include `make` and a C compiler. For a fresh installation of Ubuntu, for example, you may want to run the following commands to update the package manager and install core packages:
 
 Ubuntu:
 
@@ -116,7 +113,7 @@ make
 
 - Test that the build works correctly:
 
-OSX/Linux:
+macOS/Linux:
 
 ```shell
 make test
@@ -132,7 +129,7 @@ Once the compilation is done, the `src` directory within `redis-stable` is popul
 
 We are going to be using the `redis-server` and `redis-cli` executable frequently. For convenience, let's copy both to a location that will let us access them system-wide. This can be done manually by running:
 
-OSX/Linux:
+macOS/Linux:
 
 ```shell
 sudo cp src/redis-server /usr/local/bin/
@@ -141,7 +138,7 @@ sudo cp src/redis-cli /usr/local/bin/
 
 While having `redis-stable` as the current working directory, this can also be done automatically by running the following command:
 
-OSX/Linux:
+macOS/Linux:
 
 ```shell
  sudo make install
@@ -161,7 +158,7 @@ redis-server
 
 If everything is working as expected, the shell will receive as outline a giant ASCII Redis logo that shows the Redis version installed, the running mode, the `port` where the server is running and it's `PID` ([process identification number](http://www.linfo.org/pid.html)).
 
-````shell
+```shell
                 _._
            _.-``__ ''-._
       _.-``    `.  `_.  ''-._           Redis 4.0.10 (00000000/0) 64 bit
@@ -179,7 +176,7 @@ If everything is working as expected, the shell will receive as outline a giant 
       `-._    `-.__.-'    _.-'
           `-._        _.-'
               `-.__.-'
-````
+```
 
 We started Redis without any explicit configuration file; therefore, we'll be using the internal default configuration. This is acceptable for the scope of this blog post: understanding and using the basic Redis data structures.
 
@@ -195,7 +192,7 @@ redis-cli ping
 
 If everything is working well, we should get `PONG` as a reply in the shell.
 
-When we issued `redis-cli ping`, we invoked the `redis-cli` executable follow by a command name, `ping`. A command name and its arguments are sent to the Redis instance running on `localhost:6379` for it to be processed and send a reply.
+When we issued `redis-cli ping`, we invoked the `redis-cli` executable followed by a command name, `ping`. A command name and its arguments are sent to the Redis instance running on `localhost:6379` for it to be processed and send a reply.
 
 The host and port of the instance can be changed. Use the `--help` option to check all the commands that can be used with `redis-cli`:
 
@@ -211,7 +208,7 @@ Let start first by learning how to manipulate data in Redis using commands!
 
 ## Write, Read, Update, and Delete Data in Redis
 
-As we learned earlier, Redis is a key-value store that let us put some data called a **value** into a **key**. We can later retrieve the stored data if we know the _exact_ key that was used to store it.
+As we learned earlier, Redis is a key-value store that let us associate some data called a **value** with a **key**. We can later retrieve the stored data if we know the _exact_ key that was used to store it.
 
 In case that you haven't done so already, run the Redis CLI in interactive mode by executing the following command:
 
@@ -227,7 +224,7 @@ We'll know the interactive CLI is working when we see the Redis instance host an
 
 Once there, we are ready to issue commands.
 
-### Reading Data
+### Writing Data
 
 To store a value in Redis, we can use the [`SET` command](https://redis.io/commands/set) which has the following signature:
 
@@ -245,11 +242,13 @@ SET service "auth0"
 
 > Notice how, as you type, the interactive shell suggests the required and optional arguments for the Redis command.
 
-[IMG: Redis Shell Syntax Suggestion]
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/redis/redis-cli-suggestions.png" alt="Redis CLI showing syntax suggestions">
+</p>
 
 Press `enter` to send the command. Once Redis stores `"auth0"` as the value of `service`, it replies with `OK`, letting us know that everything went well. Thank you, Redis!
 
-### Writing Data
+### Reading Data
 
 We can use the [`GET` command](https://redis.io/commands/get) to ask Redis for the value of a key:
 
@@ -477,7 +476,9 @@ Also known as bitmaps. They let us handle string values as if they were an array
 
 - **HyperLogLogs**
 
-A probabilistic data structure used to estimate the cardinality of a set.
+A probabilistic data structure used to estimate the [cardinality](https://en.wikipedia.org/wiki/Cardinality) of a set, which is a measure of the "number of elements of the set."
+
+<br />
 
 We have already covered Strings during the "Write, Read, Update, and Delete Data in Redis" section. For the rest of this tutorial, we are going to focus on all the Redis types except bitmaps and hyperloglogs. We'll visit those on a future post handling an advanced Redis use case.
 
@@ -962,7 +963,7 @@ That's pretty much the gist of using Hashes in Redis. You may explore the [full 
 
 ## Sorted Sets
 
-Introduced in Redis 1.2, a Sorted Set is, in essence, a Set: it contains [unique, non-repeating string members](https://redis.io/topics/data-types-intro#redis-sorted-sets). However, while members of a Set are not ordered, each member of a Sorted Set is linked to a floating point value called the **score** which is used by Redis to determine its order. Hence, every element of a Sorted Set is mapped to a value, it has an architecture similar to Hash.
+Introduced in Redis 1.2, a Sorted Set is, in essence, a Set: it contains [unique, non-repeating string members](https://redis.io/topics/data-types-intro#redis-sorted-sets). However, while members of a Set are not ordered (Redis is free to [return the elements in any order at every call](https://redis.io/topics/data-types-intro#redis-sets) of a Set), each member of a Sorted Set is linked to a floating point value called the **score** which is used by Redis to determine the order of the Sorted Set members. Since, every element of a Sorted Set is mapped to a value, it also has an architecture similar to Hash.
 
 > In Redis, a Sorted Set could be seen as a hybrid of a Set and a Hash.
 
@@ -1048,24 +1049,23 @@ Reply:
 
 Notice how the `member` and the `score` are listed in sequence and not next to each other. As we can see, the members are stored in `tickets` in ascending order based on their score.
 
-Being able to return slices of a data structure is one of the great benefits of a Sorted Set. With Lists, we saw that it was easy to get the element in the header or the tail but not so easy to get the element in the middle. With a Sorted Set, we can request a subset, for example, whose header is the element in the middle of the full range and the tail is the last element in the Sorted Set. Then, we could extract that subset header to get the element in the middle of the Sorted Set.
-
 ## Using Redis as a Session Store
 
 The most relevant use of Redis in the authentication and authorization workflows of a web application is to serve as a session store.
 
 As recognized by [Amazon Web Services](https://aws.amazon.com/redis/), the in-memory architecture of Redis provides developers with high availability and persistence that makes it a popular choice to store and manage session data for internet-scale applications. Its lightning-fast performance provides us with the super low latency, optimal scale, and resiliency that we need to manage session data such as user profiles, user settings, session state, and credential management. 
 
-As detailed by [Redis Labs](https://redislabs.com/blog/cache-vs-session-store/), a web application that is session-oriented starts a session when the user logs in. The session is active until the user logs out or the session times out. During the session lifecycle, the web application stores all session-related data in the main memory (a database like MongoDB, for example) or in a session store that doesn't lose the data when the application goes down (a store like Redis, for example).
+[Roshan Kumar](https://twitter.com/roshankumar), from [Redis Labs](https://redislabs.com/), explains on his ["Cache vs. Session Store"](https://redislabs.com/blog/cache-vs-session-store/) article that a session-oriented web application starts a session when the user logs in. The session is active until the user logs out or the session times out. During the session lifecycle, the web application stores all session-related data in the main memory (RAM) or in a session store that doesn't lose the data when the application goes down. This session store can be implemented using Redis that, despite being an in-memory store, is able to persist data by [writing transaction logs sequentially in the disk](https://medium.com/@denisanikin/what-an-in-memory-database-is-and-how-it-persists-data-efficiently-f43868cff4c1).
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/redis/session-store-temp" alt="A session-oriented application diagram">
   <small>Source: <a href="https://redislabs.com/blog/cache-vs-session-store/">Redis Labs: Cache vs. Session Store</a></small>
 </p>
 
+Roshan further explains that session stores rely on reading and writing data to the in-memory database. The session store data isn’t temporary and it becomes the only source of truth when the session is live. For that reason, the session store needs to meet the "data durability requirements of a true database."
+
 {% include tweet_quote.html quote_text="According to @RedisLabs, a session store requires high availability and durability to support transactional data and uninterrupted user engagement. You can achieve that easily using #Redis." %}
 
 In a future post, we are going to learn in depth how to use Redis to engineer a solid session store. Stay tuned!
-
 
 {% include asides/about-auth0.markdown %}
