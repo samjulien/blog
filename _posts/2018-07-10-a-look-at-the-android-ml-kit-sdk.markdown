@@ -24,29 +24,29 @@ related:
 **TL;DR:** In today's fast-moving, information-rich world, it is becoming more necessary to build applications that are intelligent in the way they process the data they are fed. Artificial Intelligence is quickly becoming an essential tool in software development. In this article, we will look at the [ML Kit mobile SDK](https://developers.google.com/ml-kit/) that brings Google’s machine learning expertise to mobile developers in an easy to use package. We will look at the various APIs offered by the SDK, and then we will take one of the APIs on a test drive by creating an Android application that makes use of it. You can find the code for the application in [this GitHub repository](https://github.com/echessa/ImageLabelingDemo).
 
 ## Introduction
-In today's information-rich world, people have come to expect their technology to be smart. We are seeing the increased adoption of Artificial Intelligence in the development of intelligent software. AI is quickly becoming an essential tool in software development.
+In today's information-rich world, people have come to expect their technology to be smart. We are seeing the increased adoption of [Artificial Intelligence](https://en.wikipedia.org/wiki/Artificial_intelligence)(AI) in the development of intelligent software. AI is quickly becoming an essential tool in software development.
 
 Lucky for developers, there are various services that make it easier and faster to add Artificial Intelligence to apps without needing much experience in the field. There has been a growing number of AI-related APIs in the market such as Amazon's [AWS Machine Learning APIs](https://aws.amazon.com/machine-learning/), [IBM Watson](https://www.ibm.com/watson/) and [Google Cloud AI](https://cloud.google.com/products/machine-learning/). In this article, we'll take a look at the [ML Kit mobile SDK](https://developers.google.com/ml-kit/) that was introduced at this year's Google IO.
 
-ML Kit is a mobile SDK that enables you to add powerful machine learning features to a mobile application. It supports both Android and iOS and offers the same features for both platforms. The SDK is part of Firebase and bundles together various machine learning technologies from Google such as the [Cloud Vision API](https://cloud.google.com/vision/), [Android Neural Network API](https://developer.android.com/ndk/guides/neuralnetworks/) and [TensorFlow Lite](https://www.tensorflow.org/mobile/tflite/). It comes with a set of ready-to-use APIs for common mobile use cases such as face detection, text recognition, barcode scanning, image labeling and landmark recognition. These are offered as either on-device or cloud APIs. On-device APIs have the advantage of being able to process data quickly, they are free to use and they don't require a network connection to work. The cloud-based APIs give a higher level of accuracy as they are able to leverage the power of Google Cloud Platform's machine learning technologies. All cloud-based APIs are premium services, with a free quota in place.
+ML Kit is a mobile SDK that enables you to add powerful machine learning features to a mobile application. It supports both Android and iOS and offers the same features for both platforms. The SDK is part of Firebase and bundles together various machine learning technologies from Google such as the [Cloud Vision API](https://cloud.google.com/vision/), [Android Neural Network API](https://developer.android.com/ndk/guides/neuralnetworks/) and [TensorFlow Lite](https://www.tensorflow.org/mobile/tflite/). This SDK comes with a set of ready-to-use APIs for common mobile use cases such as face detection, text recognition, barcode scanning, image labeling and landmark recognition. These are offered as either on-device or cloud APIs. On-device APIs have the advantage of being able to process data quickly, they are free to use and they don't require a network connection to work. The cloud-based APIs give a higher level of accuracy as they are able to leverage the power of Google Cloud Platform's machine learning technologies. All cloud-based APIs are premium services, with a free quota in place.
 
 In this article, we'll briefly go over what each of the ML Kit APIs offers before taking a look at how to use one of the APIs in an Android application.
 
-## Text Recognition
-With the text recognition API, your app can recognize text in any Latin-based language ([and more when using the Cloud-based API](https://cloud.google.com/vision/docs/languages)). This can have such use cases as automating data entry from physical records to digital format, providing better accessibility where apps can identify text in images and read it out to users, organize photos based on their text content, e.t.c.
+## Text Recognition with ML Kit SDK
+With the [text recognition API](https://firebase.google.com/docs/ml-kit/recognize-text), your app can recognize text in any Latin-based language ([and more when using the Cloud-based API](https://cloud.google.com/vision/docs/languages)). This can have such use cases as automating data entry from physical records to digital format, providing better accessibility where apps can identify text in images and read it out to users, organize photos based on their text content, e.t.c.
 
 Text recognition is available both as an on-device and cloud-based API. The on-device API provides real-time processing (ideal for a camera or video feed) while the cloud-based one provides higher accuracy text recognition and is able to identify a broader range of languages and special characters.
 
-## Face Detection
-The face detection API can detect human faces in visual media (digital images and video). Given an image, the API returns the position, size and orientation (the angle the face is oriented with respect to the camera) of any detected faces. For each detected face, you can also get landmark and classification information. Landmarks are points of interest within a face such as right eye, left eye, nose base, bottom mouth, e.t.c. Classification determines whether the face displays certain facial characteristics. ML Kit currently supports two classifications: eyes open and smiling. The API is available on-device.
+## Face Detection with ML Kit SDK
+The [face detection API](https://firebase.google.com/docs/ml-kit/detect-faces) can detect human faces in visual media (digital images and video). Given an image, the API returns the position, size and orientation (the angle the face is oriented with respect to the camera) of any detected faces. For each detected face, you can also get landmark and classification information. Landmarks are points of interest within a face such as right eye, left eye, nose base, bottom mouth, e.t.c. Classification determines whether the face displays certain facial characteristics. ML Kit currently supports two classifications: eyes open and smiling. The API is available on-device.
 
-## Barcode Scanning
-With this API, your app can read data encoded using most standard barcode formats. It is available on-device and supports the following barcode formats:
+## Barcode Scanning with ML Kit SDK
+With the [barcode scanning API](https://firebase.google.com/docs/ml-kit/read-barcodes), your app can read data encoded using most standard barcode formats. It is available on-device and supports the following barcode formats:
 
  - **1D barcodes**: EAN-13, EAN-8, UPC-A, UPC-E, Code-39, Code-93, Code-128, ITF, Codabar
  - **2D barcodes**: QR Code, Data Matrix, PDF-417, AZTEC
  
-It automatically parses structured data stored using one of the supported 2D formats. Supported information types include:
+The Barcode Scanning API automatically parses structured data stored using one of the supported 2D formats. Supported information types include:
 
  - URLs
  - Contact information (VCARD, etc.)
@@ -59,21 +59,21 @@ It automatically parses structured data stored using one of the supported 2D for
  - Geo-location (latitude and longitude)
  - AAMVA-standard driver information (license/ID)
  
-## Image Labeling
-The Image labeling API can recognize entities in an image. When used, the API returns a list of recognized entities, each with a score indicating the confidence the ML model has in its relevance. The API can be used for such tasks as automatic metadata generation and content moderation.
+## Image Labeling with ML Kit SDK
+The [image labeling API](https://firebase.google.com/docs/ml-kit/label-images) can recognize entities in an image. When used, the API returns a list of recognized entities, each with a score indicating the confidence the ML model has in its relevance. The API can be used for such tasks as automatic metadata generation and content moderation.
 
 Image labeling is available both as an on-device and cloud-based API. The device-based API supports 400+ labels that cover the most commonly found concepts in photos ([see examples](https://firebase.google.com/docs/ml-kit/label-images#example-on-device-labels)) while the cloud-based API supports 10,000+ labels ([see examples](https://firebase.google.com/docs/ml-kit/label-images#example-cloud-labels)).
 
-## Landmark Recognition
-This API can recognize well-known landmarks in an image. When given an image, the API returns landmarks that were recognized, coordinates of the position of each landmark in the image and each landmark's geographic coordinates. The API can be used to generate metadata for images or to customize some features according to the content a user shares. Landmark recognition is only available as a cloud-based API.
+## Landmark Recognition with ML Kit SDK
+The [landmark recognition API](https://firebase.google.com/docs/ml-kit/recognize-landmarks) can recognize well-known landmarks in an image. When given an image, the API returns landmarks that were recognized, coordinates of the position of each landmark in the image and each landmark's geographic coordinates. The API can be used to generate metadata for images or to customize some features according to the content a user shares. Landmark recognition is only available as a cloud-based API.
 
-## Custom Model
-If you are an experienced machine learning engineer and would prefer not to use the pre-built ML Kit models, you can use your own custom TensorFlow Lite models with ML Kit. The models can either be hosted on Firebase or they can be bundled with the app. Hosting the model on Firebase reduces your app's binary size while also ensuring that the app is always working with the most up-to-date version of the model. Storing the model locally on the device makes for faster processing. You can choose to support both on-device and cloud-hosted models in your app. By using both, you make the most recent version of the model available to your app while also ensuring that the app's ML features are always functional even if the Firebase-hosted model is unavailable (perhaps due to network issues).
+## Using Custom Models with ML Kit SDK
+If you are an experienced machine learning engineer and would prefer not to use the pre-built ML Kit models, you can use your own [custom TensorFlow Lite models](https://firebase.google.com/docs/ml-kit/use-custom-models) with ML Kit. The models can either be hosted on Firebase or they can be bundled with the app. Hosting the model on Firebase reduces your app's binary size while also ensuring that the app is always working with the most up-to-date version of the model. Storing the model locally on the device makes for faster processing. You can choose to support both on-device and cloud-hosted models in your app. By using both, you make the most recent version of the model available to your app while also ensuring that the app's ML features are always functional even if the Firebase-hosted model is unavailable (perhaps due to network issues).
 
 ## Upcoming APIs
 When ML Kit was released, Google also announced its plans of releasing two more APIs in the near future. These are the **Smart Reply** and **Face Contour** APIs.
 
-The Smart Reply API will allow you to support contextual messaging replies in your app. The API can provide suggested text snippets that fit the context of messages it is sent, similar to the suggested-response feature we see in the Android Messages app.
+The Smart Reply API will allow you to support contextual messaging replies in your app. The API will provide suggested text snippets that fit the context of messages it is sent, similar to the suggested-response feature we see in the Android Messages app.
 
 The Face Contour API will be an addition to the Face Detection API. It will provide a high-density face contour. This will enable you to perform much more precise operations on faces than you can with the Face Detection API. To see a preview of the API in use, you can take a look at [this YouTube video](https://youtu.be/Z-dqGRSsaBs?t=24m44s).
 
@@ -81,43 +81,56 @@ The Face Contour API will be an addition to the Face Detection API. It will prov
 ![Summary of On-device and In-cloud Features](https://raw.githubusercontent.com/echessa/imgs/master/auth0/mlkit/image_01.png)
 
 ## Image Labeling in an Android App
-To see one of the APIs in action, we will create an application that uses the Image Labeling API to identify the contents of an image. The APIs share some similarities when it comes to integration, so knowing how to use one, can help you understand how to implement the others.
+To see one of the APIs in action, we will create an application that uses the Image Labeling API to identify the contents of an image. The APIs share some similarities when it comes to integration, so knowing how to use one can help you understand how to implement the others.
 
 To get started, create a new project in Android Studio. Give your application a name; I named mine `ImageLabelingDemo`. Firebase features are only available on devices running API level 14 and above, so select 14 or higher for your app's minimum SDK. On the next window, select the `Basic Activity` template and on the last one, you can leave the default Activity name of `MainActivity`.
 
 ![Basic Activity Template](https://raw.githubusercontent.com/echessa/imgs/master/auth0/mlkit/image_02.png)
 
-To add Firebase to your app, first, create a Firebase project in the [Firebase console](https://console.firebase.google.com/?authuser=0).
+To add Firebase to your app, first, create a Firebase project in the [Firebase console](https://console.firebase.google.com).
 
-![Create FIrebase Project](https://raw.githubusercontent.com/echessa/imgs/master/auth0/mlkit/image_03.png)
+![Create Firebase Project](https://cdn.auth0.com/blog/ml-kit-sdk/creating-a-firebase-project.png)
 
 On the dashboard, select `Add Firebase to your Android app`.
 
-![Add Firebase to your Android app](https://raw.githubusercontent.com/echessa/imgs/master/auth0/mlkit/image_04.png)
+![Add Firebase to your Android app](https://cdn.auth0.com/blog/ml-kit-sdk/add-firebase-to-android-app.png)
 
-Fill out the provided form with your app's details. For this project, you only need to provide a package name. You can add an app nickname to easily identify the application on the Firebase console. This can come in handy if you are going to add several applications to the same project.
+Fill out the provided form with your app's details. For this project, you only need to provide a package name (you can find this in your Android project's `AndroidManifest.xml` file). You can add an app nickname to easily identify the application on the Firebase console. This can come in handy if you are going to add several applications to the same project.
 
-![Add Firebase to your Android App Configuration](https://raw.githubusercontent.com/echessa/imgs/master/auth0/mlkit/image_05.png)
+![Add Firebase to your Android App Configuration](https://cdn.auth0.com/blog/ml-kit-sdk/add-firebase-to-android-app-step-2.png)
 
 After the app has been registered, you will see a button you can use to download a config file named `google-services.json`. Download the file and move it into your Android app module root directory. This is where the file should be located if you use the Project view in Android Studio.
 
-![Android Studio Project Directory](https://raw.githubusercontent.com/echessa/imgs/master/auth0/mlkit/image_06.png)
+![Android Studio Project Directory](https://cdn.auth0.com/blog/ml-kit-sdk/add-google-services-json-file.png)
 
-The Google services plugin for Gradle loads the `google-services.json` file that you added to your project. Modify your Project level `build.gradle` file to use the plugin by adding the following in `dependencies`.
-
-```
-classpath 'com.google.gms:google-services:4.0.1'
-```
-
-Next, add the following dependencies to the App-level `build.gradle` file.
+The Google services plugin for Gradle loads the `google-services.json` file that you added to your project. Modify your Project level `build.gradle` file to use the plugin by adding it to `dependencies`.
 
 ```
-implementation 'com.google.firebase:firebase-core:16.0.1'
-implementation 'com.google.firebase:firebase-ml-vision:16.0.0'
-implementation 'com.google.firebase:firebase-ml-vision-image-label-model:15.0.0'
+buildscript {
+    // ... repositories ...
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.google.gms:google-services:4.0.1'
+    }
+}
+
+// ... allprojects, task clean ...
 ```
 
-Then add the following to the bottom of the same file and press 'Sync now' in the bar that appears in the IDE.
+Next, add the following dependencies to the App-level `build.gradle` file (the one found in the `/app/build.gradle` directory).
+
+```
+// ... apply & android ...
+
+dependencies {
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-ml-vision:16.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:15.0.0'
+    // ... other dependencies ...
+}
+```
+
+Then add the following to the bottom of the same file (right after dependencies) and press 'Sync now' in the bar that appears in the IDE.
 
 ```
 apply plugin: 'com.google.gms.google-services'
@@ -126,7 +139,6 @@ apply plugin: 'com.google.gms.google-services'
 Open up the `strings.xml` file and add the following string values that we'll use in the app.
 
 ```xml
-<string name="action_settings">Settings</string>
 <string name="action_process">Process</string>
 <string name="storage_access_required">Storage access is required to enable selection of images</string>
 <string name="ok">OK</string>
@@ -158,7 +170,7 @@ Also, add the following to the manifest file inside `application`
 
 The above code is optional but recommended to add to your manifest file if your app will use any of the on-device APIs. With the above configuration, the app will automatically download the ML model(s) specified by `android:value` to the device soon after the app is installed from the Play Store. If you don't enable install-time model downloads, then the model that app needs will be downloaded the first time the app runs the detector for that particular model. Requests made before the download is complete won't produce any results. To use multiple models, include them in a comma-separated list, e.g. `android:value="ocr,face,barcode,label`.
 
-Replace the content of `content_main.xml` with the following code. We switch from ConstraintLayout to a vertical LinearLayout and add an ImageView and TextView to the layout.
+Replace the content of `content_main.xml` with the following code.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -214,20 +226,30 @@ private View mLayout;
 private FirebaseVisionLabelDetector mDetector;
 ```
 
-In `onCreate()` replace the FloatingActionButton code with the code below.
+If you haven't done so, I recommend enabling [Auto Import](https://stackoverflow.com/a/16616085/1380071) on Android Studio which will automatically import unambiguous libraries to the class as you add code that uses them. You can also [refer to this file](https://github.com/echessa/ImageLabelingDemo/blob/master/app/src/main/java/com/echessa/imagelabelingdemo/MainActivity.java) for a full list of libraries used in `MainActivity`.
+
+Modify `onCreate()` as shown below.
 
 ```java
-mTextView = findViewById(R.id.textView);
-mImageView = findViewById(R.id.imageView);
-mLayout = findViewById(R.id.main_layout);
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
 
-FloatingActionButton fab = findViewById(R.id.fab);
-fab.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        checkPermissions();
-    }
-});
+    mTextView = findViewById(R.id.textView);
+    mImageView = findViewById(R.id.imageView);
+    mLayout = findViewById(R.id.main_layout);
+
+    FloatingActionButton fab = findViewById(R.id.fab);
+    fab.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            checkPermissions();
+        }
+    });
+}
 ```
 
 Here, we instantiate view objects in our layout and set a click listener on the FloatingActionButton. The user will use this button to select an image from their phone. The image will then be loaded onto the ImageView that we added to `content_main.xml`.
@@ -320,7 +342,7 @@ In `openGallery()`, we called `startActivityForResult()` which starts an Activit
 
 `onRequestPermissionsResult()` is the callback that is invoked when permissions are requested. Here we check for the result of the permission that was requested with the code `ASK_PERMISSION_REQUEST_CODE` and then check if the permission was granted or not. If the permission was granted, then we call `openGallery()` which we have looked at previously. If the permission was denied, either by the user or by the system as a result of the user having previously chosen not to be asked again, it is recommended that you gracefully handle this in a way that will not cause the program to crash or to not work correctly. You can, for instance, disable the functionality that requires that permission and then let the user know why it is disabled. If the user requested to not be asked again for the permission, you can include in your message instructions for them on how to enable permission via Settings.
 
-After the user selects an image, we want them to be able to process it with ML Kit. In `menu_main.xml` we had added a menu item to the layout. Add an `else if` clause to `onOptionsItemSelected()` with the following code which calls `processImage()` when the user taps the menu item.
+After the user selects an image, we want them to be able to process it with ML Kit. In `menu_main.xml` we had added a menu item to the layout. Add an `else if` clause to the `onOptionsItemSelected()` method in `MainActivity` with the following code which calls `processImage()` when the user taps the menu item.
 
 ```java
 if (id == R.id.action_settings) {
@@ -399,9 +421,9 @@ protected void onPause() {
 
 With that, you can now run the application.
 
-On selecting an image and tapping on the **Process** button on the App Bar, you will be able to see the various labels and their corresponding confidence scores.
+On selecting an image and tapping on the **Process** button on the App Bar, you will be able to see the various labels and their corresponding confidence scores. If you are running the app on the emulator and want to add an image to its gallery, [find the instructions in this guide](https://stackoverflow.com/a/48669304/1232793).
 
-![ML Kit Image Processing Results](https://raw.githubusercontent.com/echessa/imgs/master/auth0/mlkit/image_07.png)
+![ML Kit Image Processing Results](https://cdn.auth0.com/blog/ml-kit-sdk/android-app-processing-image-with-ml-kit.png)
 
 By default, the on-device image labeler returns a maximum of 10 labels (returned labels can be less than 10). If you want to change this setting, you can set a confidence threshold on your detector. This is done with the `FirebaseVisionLabelDetectorOptions` object. As an example, you can specify that the detector only returns labels that are above a certain level. Below, we specify that the detector only returns labels with a confidence score of `0.8` and above.
 
@@ -418,6 +440,8 @@ The `FirebaseVisionLabelDetectorOptions` object can then be passed to the detect
 FirebaseVisionLabelDetector detector = FirebaseVision.getInstance()
         .getVisionLabelDetector(options);
 ```
+
+{% include asides/android.markdown %}
 
 ## Conclusion
 In this article, we have looked at the Google ML Kit Mobile SDK and all the features it offers. We've also looked at how to use one of its APIs in an Android application. To find out more about this SDK, you can watch this [video from Google IO](https://www.youtube.com/watch?v=Z-dqGRSsaBs) and you should also take a look at the [documentation](https://firebase.google.com/docs/ml-kit/) which covers all the APIs and shows their use on both Android and iOS. You can also take a look at the code in these apps, to see how the various APIs are implemented on [Android](https://github.com/firebase/quickstart-android/tree/master/mlkit) and on [iOS](https://github.com/firebase/quickstart-ios/tree/master/mlvision).
