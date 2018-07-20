@@ -29,6 +29,8 @@ related:
 
 **TL;DR:** In today's fast-moving, information-rich world, it is becoming more necessary to build applications that are intelligent in the way they process the data they are fed. Artificial Intelligence is quickly becoming an essential tool in software development. In this article, we will look at the [ML Kit mobile SDK](https://developers.google.com/ml-kit/) that brings Google’s machine learning expertise to mobile developers in an easy to use package. We will look at the various APIs offered by the SDK, and then we will take one of the APIs on a test drive by creating an Android application that makes use of it. You can find the code for the application in [this GitHub repository](https://github.com/echessa/ImageLabelingDemo).
 
+{% include tweet_quote.html quote_text="Google I/O 2018 enabled @Android developers to take advantage of some cool #MachineLearning APIs. Learn what are the new APIs and create a simple app that recognizes objects on images." %}
+
 ## Introduction
 
 In today's information-rich world, people have come to expect their technology to be smart. We are seeing the increased adoption of [Artificial Intelligence](https://en.wikipedia.org/wiki/Artificial_intelligence)(AI) in the development of intelligent software. AI is quickly becoming an essential tool in software development.
@@ -48,6 +50,8 @@ Text recognition is available both as an on-device and cloud-based API. The on-d
 ## Face Detection with ML Kit SDK
 
 The [face detection API](https://firebase.google.com/docs/ml-kit/detect-faces) can detect human faces in visual media (digital images and video). Given an image, the API returns the position, size and orientation (the angle the face is oriented with respect to the camera) of any detected faces. For each detected face, you can also get landmark and classification information. Landmarks are points of interest within a face such as right eye, left eye, nose base, bottom mouth, e.t.c. Classification determines whether the face displays certain facial characteristics. ML Kit currently supports two classifications: eyes open and smiling. The API is available on-device.
+
+{% include tweet_quote.html quote_text="@Android developers can now detect faces with ease using the new #MachineLearning SDK introduced by Google." %}
 
 ## Barcode Scanning with ML Kit SDK
 
@@ -477,6 +481,8 @@ The `FirebaseVisionLabelDetectorOptions` object can then be passed to the detect
 FirebaseVisionLabelDetector detector = FirebaseVision.getInstance()
         .getVisionLabelDetector(options);
 ```
+
+{% include tweet_quote.html quote_text="I just built an @Android app that recognizes objects on images! #MachineLearning" %}
 
 {% include asides/android.markdown %}
 
