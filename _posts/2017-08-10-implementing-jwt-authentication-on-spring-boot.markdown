@@ -53,7 +53,7 @@ git clone https://github.com/auth0-blog/springboot-auth-updated.git
 cd springboot-auth-updated
 ```
 
-- To ensure compatibility with Java 10, we have to add the following line to the `build.gradle` file:
+To ensure compatibility with Java 10, we have to add the following line to the `build.gradle` file:
 
 ```gradle
 ...
@@ -64,7 +64,7 @@ dependencies {
 }
 ```
 
-- Then, we run the unsecured RESTful API by either issuing the command `gradle bootRun` from the command line or by building and running the project in our favorite IDE.
+Then, we run the unsecured RESTful API by either issuing the command `gradle bootRun` from the command line or by building and running the project in our favorite IDE.
 
 If everything works as expected, our RESTful Spring Boot API will be up and running. To test it, we can use a tool like [Postman](https://www.getpostman.com/) or [curl](https://curl.haxx.se/) to issue request to the available endpoints:
 
@@ -187,7 +187,7 @@ public class UserController {
 }
 ```
 
-The implementation of the endpoint is quite simple. All it does is encrypt the password of the new user (holding it as plain text wouldn't be a good idea) and then save it to the database. The encryption process is handled by an instance of [`BCryptPasswordEncoder`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/crypto/bcrypt/BCryptPasswordEncoder.html), which is a class that belongs to the Spring Security framework.
+The implementation of the endpoint is quite simple. All it does is encrypt the password of the new user (holding it as plain text wouldn't be a good idea) and then save it to the database. The encryption process is handled by an instance of [`BCryptPasswordEncoder`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/crypto/bcrypt/BCryptPasswordEncoder.html), which is a class that belongs to the Spring Security framework.
 
 Right now we have two gaps in our application:
 
@@ -234,8 +234,8 @@ To support both authentication and authorization in our application, we are goin
 
 - implement an authentication filter to issue JWTS to users sending credentials,
 - implement an authorization filter to validate requests containing JWTS,
-- create a custom implementation of [`UserDetailsService`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/core/userdetails/UserDetailsService.html) to help Spring Security loading user-specific data in the framework,
-- and extend the [`WebSecurityConfigurerAdapter`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter.html) class to customize the security framework to our needs.
+- create a custom implementation of [`UserDetailsService`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/core/userdetails/UserDetailsService.html) to help Spring Security loading user-specific data in the framework,
+- and extend the [`WebSecurityConfigurerAdapter`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter.html) class to customize the security framework to our needs.
 
 Before proceeding to the development of these filters and classes, let's create a new package called `com.auth0.samples.authapi.springbootauthupdated.security`. This package will hold all the code related to our app's security.
 
@@ -310,14 +310,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 }
 ```
 
-Note that the authentication filter that we created extends the [`UsernamePasswordAuthenticationFilter` class](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/web/authentication/UsernamePasswordAuthenticationFilter.html). When we add a new filter to Spring Security, we can explicitly define where in the *filter chain* we want that filter, or we can let the framework figure it out by itself. By extending the filter provided within the security framework, Spring can automatically identify the best place to put it in the security chain.
+Note that the authentication filter that we created extends the [`UsernamePasswordAuthenticationFilter` class](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/UsernamePasswordAuthenticationFilter.html). When we add a new filter to Spring Security, we can explicitly define where in the *filter chain* we want that filter, or we can let the framework figure it out by itself. By extending the filter provided within the security framework, Spring can automatically identify the best place to put it in the security chain.
 
 Our custom authentication filter overwrites two methods of the base class:
 
-- `attemptAuthentication`: where we parse the user's credentials and issue them to the [`AuthenticationManager`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/authentication/AuthenticationManager.html).
+- `attemptAuthentication`: where we parse the user's credentials and issue them to the [`AuthenticationManager`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/AuthenticationManager.html).
 - `successfulAuthentication`: which is the method called when a user successfully logs in. We use this method to generate a JWT for this user.
 
-Our IDE will probably complain about the code in this class for two reasons. First, because the code imports four constants from a class that we haven't created yet, `SecurityConstants`. Second, because this class generates JWTS with the help of a class called `Jwts`, which belongs to a library that we haven't added as dependency to our project.
+Our IDE will probably complain about the code in this class for two reasons. First, because the code imports four constants from a class that we haven't created yet, `SecurityConstants`. Second, because this class generates JWTS with the help of a class called `JWT`, which belongs to a library that we haven't added as dependency to our project.
 
 Let's solve the missing dependency first. In the `./build.gradle` file, let's add the following line of code:
 
@@ -413,7 +413,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 }
 ```
 
-We have extended the [`BasicAuthenticationFilter`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/web/authentication/www/BasicAuthenticationFilter.html) to make Spring replace it in the *filter chain* with our custom implementation. The most important part of the filter that we've implemented is the private `getAuthentication` method. This method reads the JWT from the `Authorization` header, and then uses [`JWT`](https://github.com/auth0/java-jwt/blob/master/lib/src/main/java/com/auth0/jwt/JWT.java) to validate the token. If everything is in place, we set the user in the [`SecurityContext`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/core/context/SecurityContext.html) and allow the request to move on.
+We have extended the [`BasicAuthenticationFilter`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/www/BasicAuthenticationFilter.html) to make Spring replace it in the *filter chain* with our custom implementation. The most important part of the filter that we've implemented is the private `getAuthentication` method. This method reads the JWT from the `Authorization` header, and then uses [`JWT`](https://github.com/auth0/java-jwt/blob/master/lib/src/main/java/com/auth0/jwt/JWT.java) to validate the token. If everything is in place, we set the user in the [`SecurityContext`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/core/context/SecurityContext.html) and allow the request to move on.
 
 ### Integrating the Security Filters on Spring Boot
 
@@ -476,7 +476,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 We have annotated this class with `@EnableWebSecurity` and made it extend `WebSecurityConfigurerAdapter` to take advantage of the default [web security configuration provided by Spring Security](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-security.html). This allows us to fine-tune the framework to our needs by defining three methods:
 
 - `configure(HttpSecurity http)`: a method where we can define which resources are public and which are secured. In our case, we set the `SIGN_UP_URL` endpoint as being public and everything else as being secured. We also configure CORS (Cross-Origin Resource Sharing) support through `http.cors()` and we add a custom security filter in the Spring Security filter chain.
-- `configure(AuthenticationManagerBuilder auth)`: a method where we defined a custom implementation of [`UserDetailsService`](https://docs.spring.io/spring-security/site/docs/5.0.6.RELEASE/api/org/springframework/security/core/userdetails/UserDetailsService.html) to load user-specific data in the security framework. We have also used this method to set the encrypt method used by our application (`BCryptPasswordEncoder`).
+- `configure(AuthenticationManagerBuilder auth)`: a method where we defined a custom implementation of [`UserDetailsService`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/core/userdetails/UserDetailsService.html) to load user-specific data in the security framework. We have also used this method to set the encrypt method used by our application (`BCryptPasswordEncoder`).
 - `corsConfigurationSource()`: a method where we can allow/restrict our CORS support. In our case we left it wide open by permitting requests from any source (`/**`).
 
 Spring Security doesn't come with a concrete implementation of `UserDetailsService` that we could use out of the box with our in-memory database. Therefore, we create a new class called `UserDetailsServiceImpl` in the `com.auth0.samples.authapi.springbootauthupdated.user` package to provide one:
