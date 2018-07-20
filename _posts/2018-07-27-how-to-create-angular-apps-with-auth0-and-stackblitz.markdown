@@ -181,6 +181,10 @@ From the Auth0 Application, we need configuration variables to allow our Angular
 
 In the next section, we will discuss the Angular project structure present on StackBlitz. For now, to start wiring our Angular app with Auth0, use the values of `Client ID` and `Domain` from the "Settings" to replace the values of `clientID` and `domain` in the `environment.ts` file present in `src/environments/` in our project directory.
 
+Within this file, we also need to replace the value of `redirect` with the value of the URL that we set in **"Allowed Callback URLs"**.
+
+With these three variables in place, our application can identify itself as an authorized party to interact with the Auth0 authentication server.
+
 ```typescript
 // src/environments/environment.ts
 
@@ -249,111 +253,523 @@ Inside the `app` folder is where the core Angular development happens. Here we f
 * We have three folders that define components of the app:
   * `home`: Holds a component that defines the Home view of our app. 
   * `callback`: The route that points to this component will be called by Auth0 once it completes the authentication process successfully. This component has logic that saves the authentication data returned by Auth0 in memory.
-  * `account`: Holds a component that defines an Account view that presented user profile information. This is a private view that requires authentication.
+  * `account`: Holds a component that defines an Account view that presents user profile information. This is a private view that requires authentication.
 * We have an `auth` folder that holds everything related to the authentication feature of our application which is powered by Auth0.
 
 This is the gist of the project structure available to us. Next, let's learn about the authentication flow that this Angular application is following.
 
 ## Authentication Under the Hood
 
-Within the `app/auth` folder we have three files:
+We were able to use authentication successfully and easily just like if it was magic. Let's now open the curtains and see Auth0 in action. 
 
-* `auth.config.ts` creates an object that contains our Auth0 application credentials and configuration.
+Within the `app/auth` folder we have two files:
+
 * `auth.service.ts` creates a service that handles of all our authentication flow.
-* `auth.guard.ts` wires up Angular router guards with our authentication service so that we can create guarded routes within our router configuration.
+* `auth.guard.ts` creates a route guard based on authentication that we can use within our router configuration.
 
-### Angular Authentication Service
+Let's explore fully the authentication flow and how the rest of our application interacts with the authentication service and route guard. 
 
-`auth.service.ts` is annotated with comments that described what each method in the `AuthService` class is doing. This service imports the `auth0-js` module which contains everything needed for authentication:
+### Initializing the Authentication Service
+
+When our application is built, `AuthService` which lives in `auth.service.ts` is initialized. `AuthService` is a service provided to the whole application by `AppModule`:
 
 ```typescript
-import * as auth0 from 'auth0-js';
+// src/app/app.module.ts
+
+// ...
+
+import { AuthService } from "./auth/auth.service";
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    AccountComponent,
+    CallbackComponent
+  ],
+  imports: [BrowserModule, AppRoutingModule],
+  providers: [AuthService],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
 ```
 
-When a user logs in, Auth0 returns three items:
-
-* `access_token`: to learn more, see the [Access Token documentation](https://auth0.com/docs/tokens/access-token)
-
-* `id_token`: to learn more, see the [ID Token documentation](https://auth0.com/docs/tokens/id-token)
-
-* `expires_in`: the number of seconds before the Access Token expires
-
-
-We use these items in our application to set up and manage authentication.
-
-In the service, we have an instance of the `auth0.WebAuth` object. When creating that instance, we can specify the following:
-
-* Configuration for our application and domain.
-* Response type, to show that we need a user's Access Token and an ID Token after authentication.
-* Audience and scope, which specify that authentication must be [OIDC-conformant](https://auth0.com/docs/api-auth/tutorials/adoption).
-* The URL where we want to redirect our users after authentication.
-
-We define the configuration object passed to `auth0.WebAuth` by importing our `AUTH_CONFIG` object and using its values here:
+Notice that the only role of the `AuthService` constructor is to inject the Angular router, `Router`, in our application:
 
 ```typescript
-import { AUTH_CONFIG } from './auth.config';
+// src/app/auth/auth.service.ts
+
+export class AuthService {
+    // ...
+    
+    constructor(private router: Router) {}
+    
+    // ...
+}
 ```
 
+When `AuthService` is instantiated, we also create an instance of `auth0.WebAuth` that we store in a private variable called `auth0`. What is this?
+
+[`auth0.WebAuth`](https://auth0.com/docs/libraries/auth0js/v9#initialization) initialize a new instance of an Auth0 application as follows:
+
 ```typescript
-auth0 = new auth0.WebAuth({
-    clientID: AUTH_CONFIG.CLIENT_ID,
-    domain: AUTH_CONFIG.CLIENT_DOMAIN,
-    responseType: 'token id_token',
-    redirectUri: AUTH_CONFIG.REDIRECT,
-    audience: AUTH_CONFIG.AUDIENCE,
-    scope: AUTH_CONFIG.SCOPE
-  });
+// src/app/auth/auth.service.ts
+
+export class AuthService {
+    // ...
+    
+    private auth0 = new auth0.WebAuth({
+        clientID: environment.auth.clientID,
+        domain: environment.auth.domain,
+        responseType: "id_token token",
+        redirectUri: environment.auth.redirect
+      });
+    
+    // ...
+}
 ```
 
+`auth0.WebAuth` is a constructor that takes as argument an object with properties that serve as configuration options to the Auth0 application. The properties that this object requires are `domain` and `clientID` which, as we saw earlier, represent the Domain and Client ID variables from the Auth0 Application Settings. 
 
-The `login` method is used for Auth0 to authorize the request by calling `this.auth0.authorize()` and it is wired to a login UI element.
+> Earlier, we also updated those values in `src/environments/environment.ts` to match the Settings values.
 
-`handleAuth` looks for the result of authentication in the URL hash. Then, the result is processed with the `parseHash` method from `auth0-js`.
+The other two properties we should define that are optional are `responseType` and `redirectUri`.
 
-`_setSession` stores the user's Access Token, ID Token, and the Access Token's expiry time in browser storage.
+`responseType` can be any space-separated list of the values `code`, `token`, and `id_token`, which are [tokens used by Auth0](https://auth0.com/docs/tokens). It defaults to `token` unless a `redirectUri` is provided, then it defaults to `code`. Here, we select both `id_token` and `token`. 
 
-`logout` removes the user's tokens and expiry time from browser storage.
+`id_token` is a [JSON Web Token (JWT)](https://auth0.com/docs/jwt) that contains user profile attributes represented in the form of [claims](https://www.iana.org/assignments/jwt/jwt.xhtml). The ID Token is consumed by the application and used to get user information like the user's name, email, and so forth, typically used for UI display.
 
-`authenticated`: checks whether the expiry time for the user's Access Token has passed.
+`token` is a credential that can be used by an application to access an API. Auth0 uses Access Tokens to protect access to the [Auth0 Management API](https://auth0.com/docs/api/management/v2), for example.
 
-With all these methods present in the service, we have a full authentication framework that would handle everything the user needs to have a complete authentication experience.
+We are going to display user profile information in the Account view so we need to request `id_token`. We also request `token` as an exercise since we are not going to be making any API request in the scope of this starter app, but it will be there if you decide to do so. 
 
-### Process the Authentication Result
+Finally, `redirectUri` represents the URL that we want Auth0 to call when it authenticates our users.
 
-When a user authenticates at the login page, they are redirected to our application. Their URL contains a hash fragment with their authentication information. As we saw, the `handleAuth` method in the `AuthService` service processes the hash. 
+We'll use the Auth0 application stored in `auth0` throughout `AuthService`.
 
-We need to call the `handleAuth` somewhere. The method processes the authentication hash while our app loads. We do this in the `ngOnInit()` lifecycle hook of the `CallbackComponent`:
+### Logging In
+
+The process of authentication is manually kicked when a user clicks on the login button. This action triggers the `login` method exposed by `AuthService`. In turn, `login` calls the `authorize` method of the `auth0` application instance:
 
 ```typescript
-// app/callback/callback.component.ts
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
+// src/app/auth/auth.service.ts
+
+export class AuthService {
+    // ...
+    
+    login = () => this.auth0.authorize();
+    
+    // ...
+}
+```
+
+[`webAuth.authorize()`](https://auth0.com/docs/libraries/auth0js/v9#webauth-authorize-) can be used for logging in users via Universal Login, or via social connections. This method invokes the `/authorize` endpoint of the [Authentication API](https://auth0.com/docs/api/authentication), and can take a variety of parameters via an options object. 
+
+Since we want to invoke the Universal Login page, we only need to call the `authorize()` method without any additional parameters.
+
+As we learned, with Universal Login, users are taken to a login page hosted by Auth0. Here, users will enter their credentials and log in. If the login is successful, Auth0 will redirect the users to the callback URL we specified. Recall that our callback URL points to our `/callback` route. According to the router configuration in `app-routing.module.ts` this route calls the `CallbackComponent`:
+
+```typescript
+// app-routing.module.ts
+
+// ... 
+
+const routes: Routes = [
+  {
+    path: "",
+    component: HomeComponent
+  },
+  {
+    path: "account",
+    component: AccountComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "callback",
+    component: CallbackComponent
+  }
+];
+
+// ...
+```
+
+`CallbackComponent` is a super lean component. Its constructor injects the `AuthService` service and it has a method within its `ngOnInit` lifecycle hook that calls another method that processes the successful login from Auth0, `handleLoginCallback()`:
+
+```typescript
+// src/app/callback/callback.component.ts
+
+import { Component, OnInit } from "@angular/core";
+import { AuthService } from "../auth/auth.service";
 
 @Component({
-  selector: 'callback',
+  selector: "app-callback",
   template: `
     <p>
       Loading...
     </p>
-  `,
-  styles: []
+  `
 })
 export class CallbackComponent implements OnInit {
-
-  constructor(private authService: AuthService) { }
+  constructor(private auth: AuthService) {}
 
   ngOnInit() {
-    this.authService.handleAuth();
+    this.auth.handleLoginCallback();
   }
-
 }
 ```
 
-When the `CallbackComponent` is initialized by Angular, the authentication workflow is also started and our app is ready to handle login and logout requests as well as to enable or prevent navigation to guarded routes based on the authentication status of the user, which is communicated by the `authenticated` method within `AuthService`.
+Let's learn more on how we handle the callback from Auth0.
 
-Our under-the-hood view of the Auth0 Angular authentication process is now complete. Authentication is hard but Auth0 definitely makes it much easier to understand and implement. 
+### Handling the Auth0 Callback from Authentication
 
-### Conclusion
+`this.auth.handleLoginCallback()` is a method exposed by the public API of `AuthService`. When Auth0 redirects the user to our `/callback` route, it includes an authentication response, which includes all the authentication data we requested, as a URL hash fragment that is appended to the `/callback` route. We need to extract that data from the URL hash and save it in memory. To do that, we need to call the  `webAuth.parseHash` method that we wrap in the private `parseHash()` method to manage it better through a [JavaScript Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise):
+
+```typescript
+// src/app/auth/auth.service.ts
+
+export class AuthService {
+    // ...
+    
+    handleLoginCallback = () => {
+        if (window.location.hash && !this.isLoggedIn()) {
+          this.parseHash()
+            .then(authResult => {
+              this.saveAuthData(authResult);
+    
+              window.location.hash = "";
+    
+              this.router.navigate([this.onAuthSuccessURL]);
+            })
+            .catch(this.handleError);
+        }
+      };
+    
+      private parseHash = (): Promise<any> => {
+        return new Promise((resolve, reject) =>
+          this.auth0.parseHash((err, authResult) => {
+            authResult && authResult.accessToken
+              ? resolve(authResult)
+              : reject(err);
+          })
+        );
+      };
+    
+    // ...
+}
+```
+
+The contents of the `authResult` object returned by `this.auth0.parseHash` depend upon which authentication parameters were used in the `responseType` of the `auth0` instance configuration. It can include:
+
+* `accessToken`: An Access Token for the API, specified by the audience.
+* `expiresIn`: A string containing the expiration time (in seconds) of the `accessToken`.
+* `idToken`: An ID Token JWT containing user profile information.
+
+Since we requested `id_token` and `token`, we get all these properties in the `authResult` object.
+
+With `parseHash`, we are taking an extra precaution: `authResult && authResult.accessToken`. We want to ensure that we only resolve the Promise if `authResult` is defined and if it contains the `accessToken` property.
+
+To save this data in memory, we call the auxiliary method, `saveAuthData`:
+
+```typescript
+// src/app/auth/auth.service.ts
+
+export class AuthService {
+    // ...
+    
+    private saveAuthData = authResult => {
+        // Save authentication data and update login status subject
+    
+        localStorage.setItem(this.loggedInKey, JSON.stringify(true));
+    
+        this.tokenData$.next({
+          expiresAt: authResult.expiresIn * 1000 + Date.now(),
+          accessToken: authResult.accessToken
+        });
+        this.userProfile$.next(authResult.idTokenPayload);
+      };
+    
+    // ...
+}
+```
+
+This method plays a very important role. `saveAuthData` receives as its argument the `authResult` object. At this point, we are certain that authentication was successful and we store a flag in local storage to communicate that state change across the application, globally. Other methods will check the value of the `loggedInKey` flag to determine if the user is authenticated or not. Soon, we'll learn more about how we control this flag.
+
+We store `expiresAt` and `accessToken` in a reactive stream, `tokenData$`. We also store `idTokenPayload`, which contains all the user profile information, in another reactive stream, `userProfile$`. Why use RxJS streams here? We want to be able to have tight control of the asynchronous nature of our application. By storing this data that can be used by different elements within our application in streams, we allow these elements to subscribe to the streams and get the most up-to-date value for the data. We can afford that because both `tokenData$` and `userProfile$` are built as a [`BehaviorSubject`](http://reactivex.io/rxjs/manual/overview.html#behaviorsubject).
+
+The `AccountComponent` makes use of `userProfile$` to populate the user profile information:
+
+```typescript
+// src/app/account/account.component.ts
+
+import { Component, OnInit } from "@angular/core";
+import { AuthService } from "../auth/auth.service";
+
+@Component({
+  selector: "app-account",
+  template: `
+    <section *ngIf="profile" class="jumbotron">
+      <h2><img src="{{profile.picture}}" alt="Jumbotron image"/></h2>
+      <h1>{{profile.name}}</h1>
+      <p>Well done!</p>
+      <div class="btn btn-success btn-lg" routerLink="/">Back to Homepage</div>
+    </section>
+  `
+})
+export class AccountComponent implements OnInit {
+  profile: any;
+
+  constructor(public authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.userProfile$.subscribe(data => {
+      if (data) {
+        this.profile = { ...data };
+      }
+    });
+  }
+}
+```
+
+Initially, the value of `data` is `null`; thus, no information is displayed. When `userProfile$` pushes the user profile information within `this.saveAuthData`, `data` becomes a valid object and we store its value immutably in `this.profile`. Thus, the component renders the account information. If we navigate to `/account` after we log in from the `/home` view, we won't see this so much in action. If we were to refresh the page while we are in the `/account` view, we may see a quick delay in the account information showing up if we are authenticated. That happens because we refresh authentication session tokens when we build the application. We'll learn how this happens in detail in a few sections.
+
+After we save the authentication data, we clear the URL hash and navigate to the route stored in `onAuthSuccessURL`:
+
+```typescript
+// src/app/auth/auth.service.ts
+
+export class AuthService {
+    // ...
+    
+    handleLoginCallback = () => {
+        if (window.location.hash && !this.isLoggedIn()) {
+          this.parseHash()
+            .then(authResult => {
+              this.saveAuthData(authResult);
+    
+              window.location.hash = "";
+    
+              this.router.navigate([this.onAuthSuccessURL]);
+            })
+            .catch(this.handleError);
+        }
+      };
+    
+    // ...
+}
+```
+
+At that point, the template of `HomeComponent` is called which uses the `isLoggedIn` method from `AuthService` to determine the authentication state of the application. 
+
+```typescript
+// src/app/auth/auth.service.ts
+
+export class AuthService {
+    // ...
+    
+    isLoggedIn = (): boolean =>
+        JSON.parse(localStorage.getItem(this.loggedInKey));
+    
+    // ...
+}
+```
+
+This method parses the value of the local storage flag we set earlier. Consumers of this method use its result to handle actions that depend on authentication, such as showing either the `Login` or `Logout` label in a button. 
+
+`AuthGuard`, as defined in `src/app/auth/auth.guard.ts`, is one of the consumers of `isLoggedIn`. It uses it to determine if it can allow navigation to a route or not:
+
+```typescript
+// src/app/auth/auth.guard.ts
+
+// ...
+
+@Injectable()
+export class AuthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
+
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> | Promise<boolean> | boolean {
+    if (this.authService.isLoggedIn()) {
+      return true;
+    } else {
+      this.router.navigate([this.authService.onAuthFailureURL]);
+      return false;
+    }
+  }
+}
+```
+
+If the user is logged in, `isLoggedIn()` returns `true`, `AuthGuard` allows navigation. If it returns `false`, it not only prevents navigation to the route but also redirects the user to the URL defined with `onAuthFailureURL`.  
+
+We use `AuthGuard` to guard the `/account` route in the `routes` object of `AppRoutingModule`:
+
+```typescript
+// src/app/app-routing.module.ts
+
+// ...
+
+const routes: Routes = [
+  {
+    path: "",
+    component: HomeComponent
+  },
+  {
+    path: "account",
+    component: AccountComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "callback",
+    component: CallbackComponent
+  }
+];
+
+// ...
+```
+
+If we are authenticated, we can visit `/account` and see our user profile information displayed.
+
+### Checking for an Active Session
+
+What happens if we were to refresh the screen on any view? We have a flag in local storage that keeps track of whether or not we are logged in. But this flag has no connection with the authentication server at Auth0. Thus, it is ideal for us to have a mechanism that can check if we have an active session with the authentication server if we refresh the page. 
+
+We do this by calling `this.authService.refreshAuthData()` in the `ngOnInit` lifecycle hook of the `AppComponent`. Why there? It's guaranteed that this component will be built whenever we refresh the page, no matter what the active route is. 
+
+```typescript
+// src/app/app.component.ts
+
+import { Component, OnInit } from "@angular/core";
+import { AuthService } from "./auth/auth.service";
+
+@Component({
+  selector: "app-root",
+  template: `
+    <router-outlet></router-outlet>
+    `
+})
+export class AppComponent implements OnInit {
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.refreshAuthData();
+  }
+}
+```
+
+Let's take a closer look at `refreshAuthData`:
+
+```typescript
+// src/app/auth/auth.service.ts
+
+export class AuthService {
+    // ...
+    
+    refreshAuthData() {
+        if (this.isLoggedIn()) {
+          this.checkSession()
+            .then(this.saveAuthData)
+            .catch(err => {
+              localStorage.removeItem(this.loggedInKey);
+              this.router.navigate([this.onAuthFailureURL]);
+            });
+        }
+      }
+    
+    // ...
+}
+```
+
+Notice that we only execute the logic in `refreshAuthData` if we are not logged in. If the local storage flag evaluates to `false`, the application knows globally that the user is not logged in. If it evaluates to `true`, we take that value with a grain of salt and verify with the authentication server that we have an active session using `webAuth.checkSession`. This process also let us acquire new session tokens. This method is wrapped in a Promise and called from the private `checkSession` method:
+
+```typescript
+// src/app/auth/auth.service.ts
+
+export class AuthService {
+    // ...
+    
+    private checkSession = (): Promise<any> =>
+        new Promise((resolve, reject) =>
+          this.auth0.checkSession({}, (err, authResult) => {
+            authResult && authResult.accessToken
+              ? resolve(authResult)
+              : reject(err);
+          })
+        );
+    
+    // ...
+}
+```
+
+The [`checkSession`](https://auth0.com/docs/libraries/auth0js/v9#using-checksession-to-acquire-new-tokens) method allows us to acquire a new token from Auth0 for a user who is already authenticated against Auth0 for our domain. This method accepts any valid OAuth2 parameters that would normally be sent to `authorize`. If we omit them, it will use the ones we provided when initializing Auth0, the `auth0` application instance. If the user has a live authentication session with Auth0, we get an `authResult` object that has the authentication data, similar to what happened within `parseHash` earlier. If the user is not authenticated, we get an error and reject the Promise with it.
+
+Let's look back at `refreshAuthData`:
+
+```typescript
+// src/app/auth/auth.service.ts
+
+export class AuthService {
+    // ...
+    
+    refreshAuthData() {
+        if (this.isLoggedIn()) {
+          this.checkSession()
+            .then(this.saveAuthData)
+            .catch(err => {
+              localStorage.removeItem(this.loggedInKey);
+              this.router.navigate([this.onAuthFailureURL]);
+            });
+        }
+      }
+    
+    // ...
+}
+```
+
+If `this.checkSession` resolves with `authResult`, we call `this.saveAuthData` to save the authentication data in memory. If the Promise is rejected, we remove the logged-in flag from local storage and we redirect the user to the URL defined with `this.onAuthFailureURL`. 
+
+This refresh logic is run at any time the application is built.
+
+### Logging out
+
+Finally, the last step we can take in this authentication workflow is to log out. We do so by calling the `logout` method of `AuthService`: 
+
+```typescript
+// src/app/auth/auth.service.ts
+
+export class AuthService {
+    // ...
+    
+    logout = () => {
+        localStorage.setItem(this.loggedInKey, JSON.stringify(false));
+    
+        this.auth0.logout({
+          returnTo: this.returnURL,
+          clientID: environment.auth.clientID
+        });
+      };
+    
+    // ...
+}
+```
+
+The first step we take within `logout` is to set the logged-in flag to `false`. Afterward, we call `webAuth.logout` through the `this.auth0` instance.
+
+As the name implies, [`webAuth.logout`](https://auth0.com/docs/libraries/auth0js/v9#logout) is used to log out a user. This method accepts an options object, which can include the following optional parameters:
+
+* `returnTo`: URL to redirect the user to after the logout action.
+* `clientID`: Your Auth0 client ID
+
+> Note that if the `clientID` parameter is included, the `returnTo` URL that is provided must be listed in the Application's Allowed Logout URLs in the Auth0 dashboard. However, if the `clientID` parameter is not included, the `returnTo` URL must be listed in the Allowed Logout URLs at the account level in the Auth0 dashboard.
+
+When `this.auth0.logout` is called, the logged-in flag becomes `false`, the Auth0 authentication session is over, and the user is redirected to the specified URL.
+
+### Complete Authentication Workflow
+
+This concludes the authentication workflow that is implemented using Angular and Auth0 in this application that is hosted in the cloud using StackBlitz. We went from zero through logging in to logging out and covered some additional procedures to ensure we query the authentication server for an active session when appropriate. The application is ready to be expanded into whatever we want it to become.
+
+
+## Conclusion
 
 I encourage you to learn more about what Auth0 can do to help you meet your identity requirements and goals and to also experiment with developing projects in the cloud using StackBlitz. Our partnership with StackBlitz was carefully selected because we saw the potential it provides to developers around the globe to create highly available applications. 
 
