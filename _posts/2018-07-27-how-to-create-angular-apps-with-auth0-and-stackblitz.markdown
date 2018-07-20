@@ -104,7 +104,7 @@ The best part of the Auth0 platform is how streamlined is to get started. Let's 
 
 ### Step 1: Signing Up and Getting Credentials for Auth0
 
-<a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">Sign up for a free Auth0 account here</a> or click on the sign up button in the page. You can start for free and save time with with Auth0. A free account offers us:
+<a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">Sign up for a free Auth0 account here</a> or click on the sign up button in the page. You can start for free and save time with Auth0. A free account offers us:
 
 * 7,000 free active users & unlimited logins.
 * [Passwordless authentication](https://auth0.com/blog/how-passwordless-authentication-works/).
@@ -112,13 +112,13 @@ The best part of the Auth0 platform is how streamlined is to get started. Let's 
 * Up to 2 [social identity providers](https://auth0.com/docs/identityproviders) like Facebook, Github, and Twitter.
 * Unlimited [Serverless Rules](https://auth0.com/docs/rules/current). 
  
-During the sign-up process, you are going to create something called a *Tenant*, this represents the product or service to which you that are adding authentication. I'll explain more on this is a moment.
+During the sign-up process, you are going to create something called a *Tenant*, this represents the product or service to which you are adding authentication. More on this in a moment.
 
-Once you are signed in, you are welcomed into the Auth0 Dashboard. In the left sidebar menu, click on `Applications`. Let's understand better what this area represents.
+Once you are signed in, you are welcomed into the Auth0 Dashboard. In the left sidebar menu, click on "Applications". Let's understand better what this area represents.
 
 Let's say that we have a photo-sharing app called Auth0gram. We then would create an *Auth0 tenant* called `auth0gram`. From a customer perspective, Auth0gram is that customer's product or service. Auth0gram is available as a web app that can be accessed through desktop and mobile browsers and as a native mobile app for iOS and Android. That is, Auth0gram is available on 3 platforms: web as a single page application, Android as a native mobile app, and iOS also as a native mobile app. If each platform needs authentication, then we would need to create 3 *Auth0 applications* that would connect with each respective platform to provide the product all the wiring and procedures needed to authenticate users through that platform. Auth0gram users would belong to the *Auth0 tenant* and are shared across *Auth0 applications*. If we have another product called "Auth0shop" that needs authentication, we would need to create another tenant, `auth0shop`, and create new Auth0 applications for it depending on the platforms where it lives.
 
-With this knowledge, in `Applications`, click on the button `Create Application`. A modal titled `Create Application` will open up. We have the option to provide a `Name` for the application and choose its type. 
+With this knowledge, in "Applications", click on the button "Create Application". A modal titled "Create Application" will open up. We have the option to provide a `Name` for the application and choose its type. 
 
 Let's name this app the same as the StackBlitz one `angularblitz` and choose `Single Page Web Applications` as the type:
 
@@ -126,29 +126,56 @@ Let's name this app the same as the StackBlitz one `angularblitz` and choose `Si
   <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/6-create-application.png" alt="Auth0 Create Application view">
 </p>
 
-> Your StackBlitz app will be named something different, feel free to use any names you like!
+> Your StackBlitz app will be named something different, feel free to use any names you like.
 
-Let's click `Create`. Next, we are going to be welcomed by a view that asks us `What technology are you using for your web app?`. This is a tool that we've created at Auth0 to provide you different quickstarts to get you up and running fast in setting up Auth0 within a project. Feel free to choose Angular and check out the content of that quickstart, but for this app, I am giving you the quick steps that relate to setting up Auth0 specifically for the StackBlitz architecture, so please, stay with me here.
+Let's click "Create". Next, we are going to be welcomed by a view that asks us "What technology are you using for your web app?". This is a tool that we've created at Auth0 to provide you different quickstarts to get you up and running fast in setting up Auth0 within a project. Feel free to choose Angular and check out the content of that quickstart, but for this app, I am giving you the quick steps that relate to setting up Auth0 specifically for the StackBlitz architecture, so please, stay with me here.
 
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Learned last night: <a href="https://t.co/pBChRzDhto">https://t.co/pBChRzDhto</a> (by <a href="https://twitter.com/auth0?ref_src=twsrc%5Etfw">@auth0</a>) + <a href="https://twitter.com/stackblitz?ref_src=twsrc%5Etfw">@stackblitz</a> = easy peasy full stack live demo setup for talks 🤯🤯🤯</p>&mdash; Sam Julien 🅰️⬆️ (@samjulien) <a href="https://twitter.com/samjulien/status/964567331832782848?ref_src=twsrc%5Etfw">February 16, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
+In the next step, we are going to discuss how to help Angular and Auth0 communicate.
 
-What we want from the Auth0 Application are some data points that we need to make available in our Angular app so that it can talk to Auth0. Click on the `Settings` tab of your application and you are going to get a view of different fields. So what do we need from here? We need:
+### Step 2: Creating a Communication Bridge Between Angular and Auth0
 
-* Domain
+One of the offerings of Auth0 to reduce the overhead of adding and managing authentication is our [Universal Login](https://auth0.com/docs/hosted-pages/login) page. Auth0's Universal Login is the most secure way to easily authenticate users for your applications.
+
+How does [Universal Login work](https://auth0.com/docs/hosted-pages/login#how-does-universal-login-work)?  
+
+Auth0 shows the login page whenever something (or someone) triggers an authentication request. Users will see the login page provided by Auth0. Once they log in, they will be redirected back to our application. With security in mind, for this to happen, we have to specify in the Auth0 Settings to what URLs Auth0 can redirect users once they are authenticated. 
+
+Back in the Auth0 Settings page, let's scroll down until we see **"Allowed Callback URLs"**. We are going to specify here where we want Auth0 to redirect our users. In my case, I am going to paste `https://angularblitz.stackblitz.io/callback`.
+
+Why do we need to append `/callback` to the root domain? As we are going to see later, we'd want to redirect users to a special Angular component (a view) that processes and saves authentication data in memory and sets a flag in local storage indicating that the user is logged in. 
+
+We also need to tell Auth0 where to redirect a user when they log out. We are going to use the root domain of our application as that target route. Therefore, I am going to paste `https://angularblitz.stackblitz.io` in the **"Allowed Callback URLs"** field. 
+
+> After the user authenticates Auth0 will only call back to any of the URLs listed in that field.
+
+Finally, we need to enable Cross-Origin Authentication. [What is Cross-Origin Authentication?](https://auth0.com/docs/cross-origin-authentication#what-is-cross-origin-authentication-) When authentication requests are made from our application to Auth0, the user's credentials are sent to a domain which differs from the one that serves our application. Collecting user credentials in an application served from one origin and then sending them to another origin can present certain security vulnerabilities, including the possibility of a phishing attack. 
+
+Auth0 provides a [cross-origin authentication flow](https://raw.githubusercontent.com/jaredhanson/draft-openid-connect-cross-origin-authentication/master/Draft-1.0.txt) which makes use of [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies). The use of third-party cookies allows Auth0 to perform the necessary checks to allow for secure authentication transactions across different origins. This **helps to prevent phishing** when creating a single sign-on experience with the Lock widget or a custom login form in our application and it also helps to create a secure login experience even if single sign-on is not the goal. 
+
+To allow transactions between our Angular app origin and Auth0, we need to add our root domain to the **Allowed Web Origins** field in the "Settings". In my case, I am adding `https://angularblitz.stackblitz.io/` as its value. 
+
+Save these settings by scrolling down and clicking on `Save Changes` or pressing `CMD`/`CTRL` + `S`. 
+
+### Step 3: Adding Auth0 Configuration Variables to Angular
+
+From the Auth0 Application, we need configuration variables to allow our Angular application to use the communication bridge we previously created. Within the Auth0 Application Settings page, we need the following variables:
+
+* **Domain**
 
  When we created our new account with Auth0, we were asked to pick a name for our Tenant. This name, appended with `auth0.com`, will be our Auth0 Domain. It's the base URL we will be using to access the Auth0 API and the URL where users are redirected in order to authenticate.
  
  > [Custom domains](https://auth0.com/docs/getting-started/the-basics#custom-domains) can also be used to allow Auth0 to do the authentication heavy lifting for us without compromising on branding experience.
 
-* Client ID
+* **Client ID**
 
-[Each application is assigned a Client ID upon creation](https://auth0.com/docs/getting-started/the-basics). This is an alphanumeric string and it's the unique identifier for your application (such as q8fij2iug0CmgPLfTfG1tZGdTQyGaTUA). It cannot be modified and you will be using it in your application's code when you call Auth0 APIs. 
+[Each application is assigned a Client ID upon creation](https://auth0.com/docs/getting-started/the-basics). This is an alphanumeric string and it's the unique identifier for our application (such as `q8fij2iug0CmgPLfTfG1tZGdTQyGaTUA`). It cannot be modified and we will be using it in our application's code when we call Auth0 APIs. 
 
-> Warning! Another important piece of information present in the "Settings" is the **Client Secret**. Think of it as your application's password which must be kept confidential at all times. If anyone gains access to your Client Secret they can impersonate your application and access protected resources.
+> **Warning:** Another important piece of information present in the "Settings" is the **Client Secret**. Think of it as your application's password which must be kept confidential at all times. If anyone gains access to your Client Secret they can impersonate your application and access protected resources.
 
-In the next section, we will discuss the Angular project structure present on StackBlitz. For now, to start wiring our Angular app with Auth0, use the values of `Client ID` and `Domain` in the "Settings" to replace the values of `clientID` and `domain` in the `environment.ts` file present in `src/environments/` in our project directory.
+In the next section, we will discuss the Angular project structure present on StackBlitz. For now, to start wiring our Angular app with Auth0, use the values of `Client ID` and `Domain` from the "Settings" to replace the values of `clientID` and `domain` in the `environment.ts` file present in `src/environments/` in our project directory.
 
 ```typescript
 // src/environments/environment.ts
@@ -163,11 +190,40 @@ export const environment = {
 };
 ```
 
-In the next step, we are going to discuss what `redirect` is about and how to establish help Angular and Auth0 communicate.
+### Step 4: Log in
 
-### Step 2: Creating a Communication Bridge Between Angular and Auth0
+Press the login button to test that we are communicating correctly with Auth0 and that we can get authenticated. 
 
-Save these settings by scrolling down and clicking on `Save Changes` or pressing `CMD`/`CTRL` + `S`.
+If everything was set up correctly, we are going to be redirected to the [Universal Login page](https://auth0.com/docs/hosted-pages/login). As explained earlier, this login page is provided by Auth0 with batteries included. It powers not only the login but also the signup of new users into our application. If you have any existing user already, go ahead and log in; otherwise, sign up as a new user.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/7-hosted-login-page.png" alt="Auth0 Universal Login page">
+</p>
+
+An advantage of the Universal Login page is that it is part of the Auth0 domain, not StackBlitz or our Angular app. It lets us delegate the process of user authentication, including registration, to Auth0. 
+
+If you created a new user through the sign-up process, you will receive an email asking you to verify your email. There are tons of settings that we can tweak to customize the signup and login experience of our users, such as [requiring a username for registration](https://auth0.com/docs/connections/database/require-username). Feel free to check out the different options presented to you by Auth0 within the Dashboard and the [Auth0 documentation](https://auth0.com/docs).
+
+Once we signed up or logged in, we are taken back to our Angular app hosted at StackBlitz. Notice that the button in the jumbotron (the giant header at the top of the page) changed from `Login` to `Logout`, which means that we are authenticated. 
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/8-logout-button-ready-alt.png" alt="Authenticated Session">
+</p>
+
+### Step 5: Accessing Guarded Routes
+
+Our application uses Angular to guard the `/account` route. Angular route guards are for the UI only. They don't confer any security when it comes to accessing an API. However, if we were to enforce authentication and authorization in our API (as we should do in all our apps), we could take advantage of guards to authenticate and redirect users as well as stop unauthorized navigation. 
+
+The `/account` route guard prevents navigation to it if the user is not authenticated. Since we have logged in, when we click on the `guarded route` link that points to `/account`, we are successfully taken to that view. In case that we were logged out, we would remain on the home screen.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/9-account-page.png" alt="Access to guarded Account View">
+</p>
+
+
+### Authentication Integration Completed
+
+That's it! All that is left is for you to continue building your project in StackBlitz or to export the project locally by downloading it. Feel free to dive deeper into the [Auth0 Documentation](https://auth0.com/docs/getting-started) to learn more about how Auth0 helps you save time on implementing and managing identity. However, in the next sections, we'll explore what is happening under-the-hood of our Angular application in relation to authentication with Auth0.
 
 ## Auth0 Angular Starter
 
@@ -197,21 +253,6 @@ If we go back to `https://angularblitz.stackblitz.io/` in the preview tab, the h
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/5-auth0-initial-steps.png" alt="StackBlitz preview">
 </p>
- 
-Let's go over these steps next!
- 
-## Setting Up Angular Authentication with Auth0
- 
-Let's go briefly over the steps that we need to take to set up Auth0 to use it with our project.
-
-
-### Wiring up Auth0 with Angular in StackBlitz
-
-
-## Testing Authentication for Angular
-
-Let's go back to our app preview tab. In the Home Screen, if you click on the `protected page` link in "Step 4", nothing will happen. That's because we are not logged in and we are implementing a [route guard](https://angular.io/guide/router#milestone-5-route-guards) in our application. 
-
 
 Angular route guards determine whether a user should be allowed to access a specific route or not. If the guard evaluates to `true`, navigation is allowed to complete. If the guard evaluates to `false`, the route is not activated and the user's attempted navigation does not take place. With the `AuthGuard` implemented in `auth/auth.guard.ts` we establish one level of authorization: Is the user authenticated?
 
@@ -276,34 +317,6 @@ export class AppRoutingModule { }
 
 You can use `AuthGuard` to protect any other route you may create afterward. 
 
-Angular route guards are for the UI only. They don't confer any security when it comes to accessing an API. However, if we were to enforce authentication and authorization in our API (as we should do in all our apps), we could take advantage of guards to authenticate and redirect users as well as stop unauthorized navigation.
-
-So let's go ahead and click on the `Login` button in "Step 3" and test if we are communicating correctly with Auth0 and get authenticated. 
-
-If everything was set up correctly, we are going to be received by our awesome [Universal Login page](https://auth0.com/docs/hosted-pages/login). It's a login page provided by Auth0 with batteries included that powers not only the login but the signup of new users into our application. If you have any existing user already, go ahead and log in; otherwise, sign up as a new user.
-
-<p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/7-hosted-login-page.png" alt="Auth0 Universal Login page">
-</p>
-
-What is really awesome is that the Universal Login page is part of the Auth0 domain, not StackBlitz or our Angular app. It lets us delegate the process of user authentication, including registration, to Auth0!  
-
-If you created a new user through the sign-up process, you will receive an email asking you to verify your email. There are tons of settings that we can tweak to customize the signup and login experience of our users, such as [requiring a username for registration](https://auth0.com/docs/connections/database/require-username). Feel free to check out all the power presented to you by Auth0 within the Dashboard and the [Auth0 docs](https://auth0.com/docs).
-
-Once we signed up or logged in, we are taken back to our Angular app that is hosted in the StackBlitz domain. Notice that the button in the jumbotron changed from `Login` to `Logout` that means we are in! 
-
-<p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/8-logout-button-ready-alt.png" alt="Authenticated Session">
-</p>
-
-If we click on the `protected page` link in "Step 4" that points to the guarded route `/account`, this time around we are successfully taken to that view. 
-
-<p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/9-account-page.png" alt="Access to guarded Account View">
-</p>
-
-
-And, that's it! All that is left is for you to continue building your project in StackBlitz or to export the project locally by downloading it.
 
 ## Authentication Under the Hood
 
