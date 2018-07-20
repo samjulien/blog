@@ -59,7 +59,7 @@ At the moment of this writing, the options are Angular, React, and Ionic. Just b
 In a few seconds, StackBlitz scaffolds a brand new project environment for us complete with an online code editor and a browser preview, all within the same browser window!
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/2-project-ready.png" alt="StackBlitz scaffold">
+  <img src="https://cdn.auth0.com/blog/sb/stackblitz-main-view.png" alt="StackBlitz main view">
 </p>
 
 A really cool StackBlitz features to mention here:
@@ -70,10 +70,16 @@ A really cool StackBlitz features to mention here:
 
 * You can also import your GitHub projects into StackBlitz and continue their development in the online editor. Use StackBlitz to develop team projects, prototypes, whatever you desire, it's all portable and easily accessible through the universal platform that is the web. More on this feature later on.
 
-We can also provide our project with a custom name that would be reflected in its URL. To do this, locate the project name in the upper left corner, click on the pencil icon, and provide it a new unique name. I am naming mine `angularblitz`. If we take a look at my browser preview domain, we can see that now I also have a custom domain:
+We can also provide our project with a custom name that would be reflected in its URL. To do this, locate the project name in the upper left corner, click on the pencil icon, and provide it a new unique name. 
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/sb/change-project-name-in-stackblitz.png" alt="Change project name in StackBlitz">
+</p>
+
+I am naming mine `angular-cloud`. If we take a look at my browser preview domain, we can see that now I also have a custom domain:
 
 ```bash
-https://angularblitz.stackblitz.io
+https://angular-cloud.stackblitz.io
 ```
 
 This is very similar to what GitHub does with Github pages! I can share that link with anyone I want to check out my app online. The biggest and most useful difference is that the code is alive on StackBlitz! Other people can interact with my code instead of it being static. They can also fork my project to make it their own and make any changes to it. That is definitely one of the best features of **StackBlitz: living code**.
@@ -82,14 +88,10 @@ This is very similar to what GitHub does with Github pages! I can share that lin
 
 We can hide the preview browser by clicking on the top right corner `Close` button. But something better to do is to click on `Open in New Window`. If we do that, StackBlitz opens our app preview into a full browser tab. You can detach that from our browser and position side to side with the editor window. Just like that, we have recreated the usual editor and browser setup. When we make any changes in the code editor, the preview tab is live and reflects the new changes super fast.
 
-<p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/3-unique-name.png" alt="StackBlitz Angular Custom URL">
-</p>
-
 Notice on the editor tab that we have a full working project directory. StackBlitz scaffolds the foundation of our project.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/4-full-project-folder.png" alt="StackBlitz full project">
+  <img src="https://cdn.auth0.com/blog/sb/stackblitz-full-editor-view.png" alt="StackBlitz full editor view">
 </p>
 
 As a first step, let's jump into the browser preview and learn how to get started with Auth0.
@@ -103,7 +105,7 @@ Auth0 is a global leader in [Identity-as-a-Service (IDaaS)](https://www.webopedi
 The best part of the Auth0 platform is how streamlined is to get started. Let's follow the five steps listed in the page and discuss them in detail.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/5-auth0-initial-steps.png" alt="StackBlitz preview">
+  <img src="https://cdn.auth0.com/blog/sb/authentication-steps-view.png" alt="StackBlitz browser preview view">
 </p>
 
 ### Step 1: Signing Up and Getting Credentials for Auth0
@@ -124,7 +126,7 @@ Let's say that we have a photo-sharing app called Auth0gram. We then would creat
 
 With this knowledge, in "Applications", click on the button "Create Application". A modal titled "Create Application" will open up. We have the option to provide a `Name` for the application and choose its type. 
 
-Let's name this app the same as the StackBlitz one `angularblitz` and choose `Single Page Web Applications` as the type:
+Let's name this app the same as the StackBlitz one `angular-cloud` and choose `Single Page Web Applications` as the type:
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/6-create-application.png" alt="Auth0 Create Application view">
@@ -147,11 +149,11 @@ How does [Universal Login work](https://auth0.com/docs/hosted-pages/login#how-do
 
 Auth0 shows the login page whenever something (or someone) triggers an authentication request. Users will see the login page provided by Auth0. Once they log in, they will be redirected back to our application. With security in mind, for this to happen, we have to specify in the Auth0 Settings to what URLs Auth0 can redirect users once they are authenticated. 
 
-Back in the Auth0 Settings page, let's scroll down until we see **"Allowed Callback URLs"**. We are going to specify here where we want Auth0 to redirect our users. In my case, I am going to paste `https://angularblitz.stackblitz.io/callback`.
+Back in the Auth0 Settings page, let's scroll down until we see **"Allowed Callback URLs"**. We are going to specify here where we want Auth0 to redirect our users. In my case, I am going to paste `https://angular-cloud.stackblitz.io/callback`.
 
 Why do we need to append `/callback` to the root domain? As we are going to see later, we'd want to redirect users to a special Angular component (a view) that processes and saves authentication data in memory and sets a flag in local storage indicating that the user is logged in. 
 
-We also need to tell Auth0 where to redirect a user when they log out. We are going to use the root domain of our application as that target route. Therefore, I am going to paste `https://angularblitz.stackblitz.io` in the **"Allowed Callback URLs"** field. 
+We also need to tell Auth0 where to redirect a user when they log out. We are going to use the root domain of our application as that target route. Therefore, I am going to paste `https://angular-cloud.stackblitz.io` in the **"Allowed Callback URLs"** field. 
 
 > After the user authenticates Auth0 will only call back to any of the URLs listed in that field.
 
@@ -159,7 +161,7 @@ Finally, we need to enable Cross-Origin Authentication. [What is Cross-Origin Au
 
 Auth0 provides a [cross-origin authentication flow](https://raw.githubusercontent.com/jaredhanson/draft-openid-connect-cross-origin-authentication/master/Draft-1.0.txt) which makes use of [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies). The use of third-party cookies allows Auth0 to perform the necessary checks to allow for secure authentication transactions across different origins. This **helps to prevent phishing** when creating a single sign-on experience with the Lock widget or a custom login form in our application and it also helps to create a secure login experience even if single sign-on is not the goal. 
 
-To allow transactions between our Angular app origin and Auth0, we need to add our root domain to the **Allowed Web Origins** field in the "Settings". In my case, I am adding `https://angularblitz.stackblitz.io/` as its value. 
+To allow transactions between our Angular app origin and Auth0, we need to add our root domain to the **Allowed Web Origins** field in the "Settings". In my case, I am adding `https://angular-cloud.stackblitz.io/` as its value. 
 
 Save these settings by scrolling down and clicking on `Save Changes` or pressing `CMD`/`CTRL` + `S`. 
 
@@ -215,7 +217,7 @@ If you created a new user through the sign-up process, you will receive an email
 Once we signed up or logged in, we are taken back to our Angular app hosted at StackBlitz. Notice that the button in the jumbotron (the giant header at the top of the page) changed from `Login` to `Logout`, which means that we are authenticated. 
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/8-logout-button-ready-alt.png" alt="Authenticated Session">
+  <img src="https://cdn.auth0.com/blog/sb/active-session-view.png" alt="Angular app showing active authentication session">
 </p>
 
 ### Step 5: Accessing Guarded Routes
@@ -225,7 +227,7 @@ Our application uses Angular to guard the `/account` route. Angular route guards
 The `/account` route guard prevents navigation to it if the user is not authenticated. Since we have logged in, when we click on the `guarded route` link that points to `/account`, we are successfully taken to that view. In case that we were logged out, we would remain on the home screen.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/9-account-page.png" alt="Access to guarded Account View">
+  <img src="https://cdn.auth0.com/blog/sb/account-view.png" alt="Access to guarded Account View">
 </p>
 
 
