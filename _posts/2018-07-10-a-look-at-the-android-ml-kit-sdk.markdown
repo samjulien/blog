@@ -78,14 +78,14 @@ The Smart Reply API will allow you to support contextual messaging replies in yo
 The Face Contour API will be an addition to the Face Detection API. It will provide a high-density face contour. This will enable you to perform much more precise operations on faces than you can with the Face Detection API. To see a preview of the API in use, you can take a look at [this YouTube video](https://youtu.be/Z-dqGRSsaBs?t=24m44s).
 
 ## Summary of On-device and In-cloud Features
-![Summary of On-device and In-cloud Features](https://raw.githubusercontent.com/echessa/imgs/master/auth0/mlkit/image_01.png)
+![Summary of On-device and In-cloud Features](https://cdn.auth0.com/blog/ml-kit-sdk/ml-kit-features-per-type.png)
 
 ## Image Labeling in an Android App
 To see one of the APIs in action, we will create an application that uses the Image Labeling API to identify the contents of an image. The APIs share some similarities when it comes to integration, so knowing how to use one can help you understand how to implement the others.
 
 To get started, create a new project in Android Studio. Give your application a name; I named mine `ImageLabelingDemo`. Firebase features are only available on devices running API level 14 and above, so select 14 or higher for your app's minimum SDK. On the next window, select the `Basic Activity` template and on the last one, you can leave the default Activity name of `MainActivity`.
 
-![Basic Activity Template](https://raw.githubusercontent.com/echessa/imgs/master/auth0/mlkit/image_02.png)
+![Basic Activity Template](https://cdn.auth0.com/blog/ml-kit-sdk/choosing-basic-activity-to-new-android-project.png)
 
 To add Firebase to your app, first, create a Firebase project in the [Firebase console](https://console.firebase.google.com).
 
@@ -215,15 +215,20 @@ app:srcCompat="@android:drawable/ic_menu_gallery"
 Add the following variables to the `MainActivity` class.
 
 ```java
-private static final int SELECT_PHOTO_REQUEST_CODE = 100;
-private static final int ASK_PERMISSION_REQUEST_CODE = 101;
-private static final String TAG = MainActivity.class.getName();
+public class MainActivity extends AppCompatActivity {
 
-private TextView mTextView;
-private ImageView mImageView;
-private View mLayout;
+    private static final int SELECT_PHOTO_REQUEST_CODE = 100;
+    private static final int ASK_PERMISSION_REQUEST_CODE = 101;
+    private static final String TAG = MainActivity.class.getName();
 
-private FirebaseVisionLabelDetector mDetector;
+    private TextView mTextView;
+    private ImageView mImageView;
+    private View mLayout;
+
+    private FirebaseVisionLabelDetector mDetector;
+    
+    // ... methods ...
+}
 ```
 
 If you haven't done so, I recommend enabling [Auto Import](https://stackoverflow.com/a/16616085/1380071) on Android Studio which will automatically import unambiguous libraries to the class as you add code that uses them. You can also [refer to this file](https://github.com/echessa/ImageLabelingDemo/blob/master/app/src/main/java/com/echessa/imagelabelingdemo/MainActivity.java) for a full list of libraries used in `MainActivity`.
@@ -257,39 +262,43 @@ Here, we instantiate view objects in our layout and set a click listener on the 
 Add the following two functions to the class.
 
 ```java
-private void checkPermissions() {
-    if (ContextCompat.checkSelfPermission(MainActivity.this,
-            Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-        // Permission not granted
-        if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            // Show an explanation to the user of why permission is needed
-            Snackbar.make(mLayout, R.string.storage_access_required,
-                    Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                        // Request the permission
-                        ActivityCompat.requestPermissions(MainActivity.this,
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                ASK_PERMISSION_REQUEST_CODE);
-                        }
-                    }).show();
+public class MainActivity extends AppCompatActivity {
+    // ... variables and methods ...
+    
+    private void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Permission not granted
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Show an explanation to the user of why permission is needed
+                Snackbar.make(mLayout, R.string.storage_access_required,
+                        Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                            // Request the permission
+                            ActivityCompat.requestPermissions(MainActivity.this,
+                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                    ASK_PERMISSION_REQUEST_CODE);
+                            }
+                        }).show();
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        ASK_PERMISSION_REQUEST_CODE);
+            }
         } else {
-            // No explanation needed; request the permission
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    ASK_PERMISSION_REQUEST_CODE);
+            // Permission has already been granted
+            openGallery();
         }
-    } else {
-        // Permission has already been granted
-        openGallery();
     }
-}
 
-private void openGallery() {
-    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-    photoPickerIntent.setType("image/*");
-    startActivityForResult(photoPickerIntent, SELECT_PHOTO_REQUEST_CODE);
+    private void openGallery() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, SELECT_PHOTO_REQUEST_CODE);
+    }
 }
 ```
 
@@ -300,39 +309,43 @@ If the user had denied the permission and chosen the **Don't ask again** option,
 Add the following methods to `MainActivity`.
 
 ```java
-@Override
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
+public class MainActivity extends AppCompatActivity {
+    // ... variables and methods ...
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    if (requestCode == SELECT_PHOTO_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == SELECT_PHOTO_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
-        Uri uri = data.getData();
+            Uri uri = data.getData();
 
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-            mImageView.setImageBitmap(bitmap);
-            mTextView.setText("");
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                mImageView.setImageBitmap(bitmap);
+                mTextView.setText("");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
-}
 
-@Override
-public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-    switch (requestCode) {
-        case ASK_PERMISSION_REQUEST_CODE: {
-            // If permission request is cancelled, grantResults array will be empty.
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission was granted
-                openGallery();
-            } else {
-                // Permission denied. Handle appropriately e.g. you can disable the
-                // functionality that depends on the permission.
+        switch (requestCode) {
+            case ASK_PERMISSION_REQUEST_CODE: {
+                // If permission request is cancelled, grantResults array will be empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted
+                    openGallery();
+                } else {
+                    // Permission denied. Handle appropriately e.g. you can disable the
+                    // functionality that depends on the permission.
+                }
+                return;
             }
-            return;
         }
     }
 }
@@ -342,7 +355,7 @@ In `openGallery()`, we called `startActivityForResult()` which starts an Activit
 
 `onRequestPermissionsResult()` is the callback that is invoked when permissions are requested. Here we check for the result of the permission that was requested with the code `ASK_PERMISSION_REQUEST_CODE` and then check if the permission was granted or not. If the permission was granted, then we call `openGallery()` which we have looked at previously. If the permission was denied, either by the user or by the system as a result of the user having previously chosen not to be asked again, it is recommended that you gracefully handle this in a way that will not cause the program to crash or to not work correctly. You can, for instance, disable the functionality that requires that permission and then let the user know why it is disabled. If the user requested to not be asked again for the permission, you can include in your message instructions for them on how to enable permission via Settings.
 
-After the user selects an image, we want them to be able to process it with ML Kit. In `menu_main.xml` we had added a menu item to the layout. Add an `else if` clause to the `onOptionsItemSelected()` method in `MainActivity` with the following code which calls `processImage()` when the user taps the menu item.
+After the user selects an image, we want them to be able to process it with ML Kit. In `menu_main.xml` we had added a menu item to the layout. Add an `else if` clause to the `if` statement in the `onOptionsItemSelected()` method in `MainActivity` with the following code that calls `processImage()` when the user taps the menu item.
 
 ```java
 if (id == R.id.action_settings) {
@@ -356,39 +369,43 @@ if (id == R.id.action_settings) {
 Next, add the following to the class.
 
 ```java
-private void processImage() {
-    if (mImageView.getDrawable() == null) {
-        // ImageView has no image
-        Snackbar.make(mLayout, R.string.select_image, Snackbar.LENGTH_SHORT).show();
-    } else {
-        // ImageView contains image
-        Bitmap bitmap = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
-        mDetector = FirebaseVision.getInstance().getVisionLabelDetector();
-        mDetector.detectInImage(image)
-                .addOnSuccessListener(
-                        new OnSuccessListener<List<FirebaseVisionLabel>>() {
-                            @Override
-                            public void onSuccess(List<FirebaseVisionLabel> labels) {
-                                // Task completed successfully
-                                StringBuilder sb = new StringBuilder();
-                                for (FirebaseVisionLabel label : labels) {
-                                    String text = label.getLabel();
-                                    String entityId = label.getEntityId();
-                                    float confidence = label.getConfidence();
-                                    sb.append("Label: " + text + "; Confidence: " + confidence + "; Entity ID: " + entityId + "\n");
+public class MainActivity extends AppCompatActivity {
+    // ... variables and methods ...
+    
+    private void processImage() {
+        if (mImageView.getDrawable() == null) {
+            // ImageView has no image
+            Snackbar.make(mLayout, R.string.select_image, Snackbar.LENGTH_SHORT).show();
+        } else {
+            // ImageView contains image
+            Bitmap bitmap = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
+            FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+            mDetector = FirebaseVision.getInstance().getVisionLabelDetector();
+            mDetector.detectInImage(image)
+                    .addOnSuccessListener(
+                            new OnSuccessListener<List<FirebaseVisionLabel>>() {
+                                @Override
+                                public void onSuccess(List<FirebaseVisionLabel> labels) {
+                                    // Task completed successfully
+                                    StringBuilder sb = new StringBuilder();
+                                    for (FirebaseVisionLabel label : labels) {
+                                        String text = label.getLabel();
+                                        String entityId = label.getEntityId();
+                                        float confidence = label.getConfidence();
+                                        sb.append("Label: " + text + "; Confidence: " + confidence + "; Entity ID: " + entityId + "\n");
+                                    }
+                                    mTextView.setText(sb);
                                 }
-                                mTextView.setText(sb);
-                            }
-                        })
-                .addOnFailureListener(
-                        new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Task failed with an exception
-                                Log.e(TAG, "Image labelling failed " + e);
-                            }
-                        });
+                            })
+                    .addOnFailureListener(
+                            new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Task failed with an exception
+                                    Log.e(TAG, "Image labelling failed " + e);
+                                }
+                            });
+        }
     }
 }
 ```
@@ -406,14 +423,18 @@ If the labeling succeeds, a list of `FirebaseVisionLabel` objects is passed to t
 When you are done with the detector or when it is clear that it will not be in use, you should close it to release the resources it is using. In our app, we can do this in `onPause()` which will close the detector when the activity goes to the background.
 
 ```java
-@Override
-protected void onPause() {
-    super.onPause();
-    if (mDetector != null) {
-        try {
-            mDetector.close();
-        } catch (IOException e) {
-            Log.e(TAG, "Exception thrown while trying to close Image Labeling Detector: " + e);
+public class MainActivity extends AppCompatActivity {
+    // ... variables and methods ...
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mDetector != null) {
+            try {
+                mDetector.close();
+            } catch (IOException e) {
+                Log.e(TAG, "Exception thrown while trying to close Image Labeling Detector: " + e);
+            }
         }
     }
 }
