@@ -45,7 +45,7 @@ In this blog post, we are going to learn how easy and convenient is to build the
 
 
 
-## Setting up Angular with Auth0
+## Getting Familiar with StackBlitz
 
 Getting started with StackBlitz is super easy. Let's point our browser to [`https://stackblitz.com`](https://stackblitz.com/). Once there, notice the `Start a New Project` section that offers us different options to get started. 
 
@@ -101,6 +101,10 @@ In the browser preview, we have a page that lists all the needed steps to enable
 Auth0 is a global leader in [Identity-as-a-Service (IDaaS)](https://www.webopedia.com/TERM/I/idaas-identity-as-a-service.html). It provides thousands of customers with a Universal Identity Platform for their web, mobile, IoT, and internal applications. Our extensible platform seamlessly authenticates and secures more than 1.5B logins per month, making it loved by developers and trusted by global enterprises.
 
 The best part of the Auth0 platform is how streamlined is to get started. Let's follow the five steps listed in the page and discuss them in detail.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/5-auth0-initial-steps.png" alt="StackBlitz preview">
+</p>
 
 ### Step 1: Signing Up and Getting Credentials for Auth0
 
@@ -227,96 +231,28 @@ That's it! All that is left is for you to continue building your project in Stac
 
 ## Auth0 Angular Starter
 
-If you are familiar with Angular apps generated through the [Angular CLI](https://cli.angular.io/), the initial project structure created by StackBlitz won't look too different. 
+This application was created using the [Angular CLI](https://cli.angular.io/); thus, the project structure may feel familiar. Our application code centers around the contents of the `src` folder.
 
-At the project root folder we have:
+Within the `src` folder we find:
 
-* `app` directory: It holds all the constructs that belong to the app.
+* `app` directory: It holds all the constructs that belong to the app and build it.
+* `environments` directory: It holds configuration for different environments such as `development` and `production`.
 * `index.html`: The entry point for the frontend application
 * `main.ts`: The entry point for the Angular application
 * `polyfills.ts`:  This file includes polyfills needed by Angular and is loaded before the app. You can add your own extra polyfills to this file.
 * `styles.css`: Application-wide (global) styles. Add your own to customize the app's look.
 
-Inside the `app` folder is where the core Angular development actions happen. Inside that folder we have:
+Inside the `app` folder is where the core Angular development happens. Here we find:
 
-* `app-module.ts` which bootstraps the application using the `app.component.ts`. 
-* `router.module.ts` which defines the root routes of the app.
-* We also have three folders that define features and other components of the app:
-  * `auth`: This folder holds everything related to the authentication feature of our application which is powered by 
-  Auth0. This is the core focus of this post and we are going to learn more about its details soon.
-  * `account`: Holds a component that defines an Account Management feature.
-  * `home`: Holds a component that defines the Home Screen of our app. 
-  * `callback`: This component will be called when we complete the authentication process successfully.
- 
-If we go back to `https://angularblitz.stackblitz.io/` in the preview tab, the home screen will show us some steps that we need to take to enable Auth0 in our project:
- 
-<p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/5-auth0-initial-steps.png" alt="StackBlitz preview">
-</p>
+* `app.module.ts` which bootstraps the application using the `app.component.ts`. 
+* `app-routing.module.ts` which defines the root routes of the app.
+* We have three folders that define components of the app:
+  * `home`: Holds a component that defines the Home view of our app. 
+  * `callback`: The route that points to this component will be called by Auth0 once it completes the authentication process successfully. This component has logic that saves the authentication data returned by Auth0 in memory.
+  * `account`: Holds a component that defines an Account view that presented user profile information. This is a private view that requires authentication.
+* We have an `auth` folder that holds everything related to the authentication feature of our application which is powered by Auth0.
 
-Angular route guards determine whether a user should be allowed to access a specific route or not. If the guard evaluates to `true`, navigation is allowed to complete. If the guard evaluates to `false`, the route is not activated and the user's attempted navigation does not take place. With the `AuthGuard` implemented in `auth/auth.guard.ts` we establish one level of authorization: Is the user authenticated?
-
-```typescript
-// auth/auth.guard.ts
-
-import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { AuthService } from './auth.service';
-import { Router } from '@angular/router';
-
-@Injectable()
-export class AuthGuard implements CanActivate {
-
-  constructor(private authService: AuthService, private router: Router) {}
-
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (!this.authService.authenticated) {
-      this.router.navigate(['/']);
-      return false;
-    }
-    return true;
-  }
-}
-```
-
-When `AuthGuard` is invoked by the router, if the user is not authenticated, the router navigates to the Home Screen. Within our router configuration in `app/router.module.ts`, we use `AuthGuard` to guard the path `/account` from unauthenticated access: 
-
-```typescript
-// app/router.module.ts
-
-// ... 
-
-const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent,
-  },
-  {
-    path: 'account',
-    component: AccountComponent,
-    canActivate: [
-      AuthGuard
-    ]
-  },
-  {
-    path: 'callback',
-    component: CallbackComponent
-  }
-];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  providers: [AuthGuard],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
-``` 
-
-You can use `AuthGuard` to protect any other route you may create afterward. 
-
+This is the gist of the project structure available to us. Next, let's learn about the authentication flow that this Angular application is following.
 
 ## Authentication Under the Hood
 
