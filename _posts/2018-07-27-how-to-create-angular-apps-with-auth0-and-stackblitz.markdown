@@ -24,7 +24,7 @@ related:
   - 
 ---
 
-Auth0 is proud to be a sponsor of the [StackBlitz](https://stackblitz.com/) platform. StackBlitz is an online IDE for web applications that is powered by Visual Studio Code. The platform feels as quick and flexible as its desktop counterpart. It offers us developers with great features such as:
+Auth0 is proud to be a sponsor of the [StackBlitz](https://stackblitz.com/) platform. StackBlitz is an online IDE for web applications that is powered by [Visual Studio Code](https://code.visualstudio.com/). The platform feels as quick and flexible as its desktop counterpart. It offers us developers with great features such as:
 
 * Intellisense, Project Search (Cmd/Ctrl+P), Go to Definition, and other key Visual Studio Code features.
 
@@ -62,15 +62,15 @@ In a few seconds, StackBlitz scaffolds a brand new project environment for us co
   <img src="https://cdn.auth0.com/blog/sb/stackblitz-main-view.png" alt="StackBlitz main view">
 </p>
 
-A really cool StackBlitz features to mention here:
+Some cool StackBlitz features to mention here:
 
-* StackBlitz lets you save your progress so that you can leave the browser and resume your work later on. To save your work, sign up with GitHub to create a StackBlitz profile. 
+* StackBlitz lets us save our progress so that we can leave the browser and resume our work later on. To save our work, we can sign up with GitHub to create a StackBlitz profile. 
 
-* Your profile showcases all of the work that you have saved in the platform, which effectively allows you to use StackBlitz as an online portfolio that you can share with others, think of it as a **live code resume**! 
+* Our profile showcases all of the work that we have saved in the platform, which effectively allows us to use StackBlitz as an online portfolio that we can share with others. We can think of it as a **live code resume**! 
 
-* You can also import your GitHub projects into StackBlitz and continue their development in the online editor. Use StackBlitz to develop team projects, prototypes, whatever you desire, it's all portable and easily accessible through the universal platform that is the web. More on this feature later on.
+* We can also import our GitHub projects into StackBlitz and continue their development in the online editor. Use StackBlitz to develop team projects, prototypes, whatever you desire, it's all portable and easily accessible through the universal platform that is the web. More on this feature later on.
 
-We can also provide our project with a custom name that would be reflected in its URL. To do this, locate the project name in the upper left corner, click on the pencil icon, and provide it a new unique name. 
+* We can also provide our project with a custom name that would be reflected in its URL. To do this, locate the project name in the top-left corner, click on the pencil icon, and provide it a new unique name. 
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/sb/change-project-name-in-stackblitz.png" alt="Change project name in StackBlitz">
@@ -78,15 +78,15 @@ We can also provide our project with a custom name that would be reflected in it
 
 I am naming mine `angular-cloud`. If we take a look at my browser preview domain, we can see that now I also have a custom domain:
 
-```bash
-https://angular-cloud.stackblitz.io
-```
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/sb/stackblitz-custom-domain.png" alt="StackBlitz custom domain">
+</p>
 
 This is very similar to what GitHub does with Github pages! I can share that link with anyone I want to check out my app online. The biggest and most useful difference is that the code is alive on StackBlitz! Other people can interact with my code instead of it being static. They can also fork my project to make it their own and make any changes to it. That is definitely one of the best features of **StackBlitz: living code**.
 
 {% include tweet_quote.html quote_text="The best feature of StackBlitz is that it acts as a repository of living code. Share, fork, and change your code right within the browser!" %}
 
-We can hide the preview browser by clicking on the top right corner `Close` button. But something better to do is to click on `Open in New Window`. If we do that, StackBlitz opens our app preview into a full browser tab. You can detach that from our browser and position side to side with the editor window. Just like that, we have recreated the usual editor and browser setup. When we make any changes in the code editor, the preview tab is live and reflects the new changes super fast.
+We can hide the preview browser by clicking on the top-right corner `Close` button. But something better to do is to click on `Open in New Window`. If we do that, StackBlitz opens our app preview into a separate browser tab. We can detach that from our browser and position side to side with the editor window. Just like that, we have recreated the usual editor and browser setup. When we make any changes in the code editor, the preview tab is live and reflects the new changes super fast.
 
 Notice on the editor tab that we have a full working project directory. StackBlitz scaffolds the foundation of our project.
 
@@ -118,23 +118,21 @@ The best part of the Auth0 platform is how streamlined is to get started. Let's 
 * Up to 2 [social identity providers](https://auth0.com/docs/identityproviders) like Facebook, Github, and Twitter.
 * Unlimited [Serverless Rules](https://auth0.com/docs/rules/current). 
  
-During the sign-up process, you are going to create something called a *Tenant*, this represents the product or service to which you are adding authentication. More on this in a moment.
+During the sign-up process, we are going to create something called a *Tenant*, which represents the product or service to which we are adding authentication. More on this in a moment.
 
-Once you are signed in, you are welcomed into the Auth0 Dashboard. In the left sidebar menu, click on "Applications". Let's understand better what this area represents.
+Once we are signed in, we are welcomed into the Auth0 Dashboard. In the left sidebar menu, let's [click on "Applications"](https://manage.auth0.com/#/applications). Let's understand better what this area represents.
 
-Let's say that we have a photo-sharing app called Auth0gram. We then would create an *Auth0 tenant* called `auth0gram`. From a customer perspective, Auth0gram is that customer's product or service. Auth0gram is available as a web app that can be accessed through desktop and mobile browsers and as a native mobile app for iOS and Android. That is, Auth0gram is available on 3 platforms: web as a single page application, Android as a native mobile app, and iOS also as a native mobile app. If each platform needs authentication, then we would need to create 3 *Auth0 applications* that would connect with each respective platform to provide the product all the wiring and procedures needed to authenticate users through that platform. Auth0gram users would belong to the *Auth0 tenant* and are shared across *Auth0 applications*. If we have another product called "Auth0shop" that needs authentication, we would need to create another tenant, `auth0shop`, and create new Auth0 applications for it depending on the platforms where it lives.
+Let's say that we have a photo-sharing app called Auth0gram. We then would create an *Auth0 tenant* called `auth0gram`. From a customer perspective, Auth0gram is that customer's product or service. Auth0gram is available as a web app that can be accessed through desktop and mobile browsers and as a native mobile app for iOS and Android. That is, Auth0gram is available on 3 platforms: web as a single-page application, Android as a native mobile app, and iOS also as a native mobile app. If each platform needs authentication, then we would need to create 3 *Auth0 applications* that would connect with each respective platform to provide the product all the wiring and procedures needed to authenticate users through that platform. Auth0gram users would belong to the *Auth0 tenant* and are shared across *Auth0 applications*. If we have another product called "Auth0shop" that needs authentication, we would need to create another tenant, `auth0shop`, and create new Auth0 applications for it depending on the platforms where it lives.
 
 With this knowledge, in "Applications", click on the button "Create Application". A modal titled "Create Application" will open up. We have the option to provide a `Name` for the application and choose its type. 
 
-Let's name this app the same as the StackBlitz one `angular-cloud` and choose `Single Page Web Applications` as the type:
+I'll name this app the same as my StackBlitz one, `angular-cloud`. Your StackBlitz app will be named something different, feel free to use any names you like. Next, let's choose `Single Page Web Applications` as the type:
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/6-create-application.png" alt="Auth0 Create Application view">
 </p>
 
-> Your StackBlitz app will be named something different, feel free to use any names you like.
-
-Let's click "Create". Next, we are going to be welcomed by a view that asks us "What technology are you using for your web app?". This is a tool that we've created at Auth0 to provide you different quickstarts to get you up and running fast in setting up Auth0 within a project. Feel free to choose Angular and check out the content of that quickstart, but for this app, I am giving you the quick steps that relate to setting up Auth0 specifically for the StackBlitz architecture, so please, stay with me here.
+Let's click "Create". We are going to be welcomed by a view that asks us "What technology are you using for your web app?". This is a tool that we've created at Auth0 to provide you different quickstarts to get you up and running fast in setting up Auth0 within a project. Feel free to choose Angular and check out the content of that quickstart, but for this app, I am giving you the quick steps that relate to setting up Auth0 specifically for the StackBlitz architecture; therefore, let's continue here. 
 
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Learned last night: <a href="https://t.co/pBChRzDhto">https://t.co/pBChRzDhto</a> (by <a href="https://twitter.com/auth0?ref_src=twsrc%5Etfw">@auth0</a>) + <a href="https://twitter.com/stackblitz?ref_src=twsrc%5Etfw">@stackblitz</a> = easy peasy full stack live demo setup for talks 🤯🤯🤯</p>&mdash; Sam Julien 🅰️⬆️ (@samjulien) <a href="https://twitter.com/samjulien/status/964567331832782848?ref_src=twsrc%5Etfw">February 16, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -149,11 +147,19 @@ How does [Universal Login work](https://auth0.com/docs/hosted-pages/login#how-do
 
 Auth0 shows the login page whenever something (or someone) triggers an authentication request. Users will see the login page provided by Auth0. Once they log in, they will be redirected back to our application. With security in mind, for this to happen, we have to specify in the Auth0 Settings to what URLs Auth0 can redirect users once they are authenticated. 
 
-Back in the Auth0 Settings page, let's scroll down until we see **"Allowed Callback URLs"**. We are going to specify here where we want Auth0 to redirect our users. In my case, I am going to paste `https://angular-cloud.stackblitz.io/callback`.
+Let's click on the Auth0 Settings page.
+ 
+<p style="text-align: center;">
+ <img src="https://cdn.auth0.com/blog/sb/auth0-applications-settings.png" alt="Auth0 application settings tab">
+</p>
+ 
+Once there, let's scroll down until we see **"Allowed Callback URLs"**. We are going to specify here where we want Auth0 to redirect our users. In my case, I am going to paste my StackBlitz root URL with a `/callback` path appended:
+  
+`https://angular-cloud.stackblitz.io/callback`
 
-Why do we need to append `/callback` to the root domain? As we are going to see later, we'd want to redirect users to a special Angular component (a view) that processes and saves authentication data in memory and sets a flag in local storage indicating that the user is logged in. 
+As before, use the value of your StackBlitz app URL. Why do we need to append `/callback` to the root domain? As we are going to see later, we'd want to redirect users to a special Angular component (a view) that processes and saves authentication data in memory and sets a flag in `localStorage` indicating that the user is logged in. 
 
-We also need to tell Auth0 where to redirect a user when they log out. We are going to use the root domain of our application as that target route. Therefore, I am going to paste `https://angular-cloud.stackblitz.io` in the **"Allowed Callback URLs"** field. 
+We also need to tell Auth0 where to redirect a user when they log out. We are going to use the root domain of our application as that target route. Therefore, I am going to paste `https://angular-cloud.stackblitz.io` in the **"Allowed Logout URLs"** field. 
 
 > After the user authenticates Auth0 will only call back to any of the URLs listed in that field.
 
@@ -179,7 +185,7 @@ From the Auth0 Application, we need configuration variables to allow our Angular
 
 [Each application is assigned a Client ID upon creation](https://auth0.com/docs/getting-started/the-basics). This is an alphanumeric string and it's the unique identifier for our application (such as `q8fij2iug0CmgPLfTfG1tZGdTQyGaTUA`). It cannot be modified and we will be using it in our application's code when we call Auth0 APIs. 
 
-> **Warning:** Another important piece of information present in the "Settings" is the **Client Secret**. Think of it as your application's password which must be kept confidential at all times. If anyone gains access to your Client Secret they can impersonate your application and access protected resources.
+> **Warning:** Another important piece of information present in the "Settings" is the **Client Secret**. It [protects your resources by only granting tokens to requestors if they're authorized](https://auth0.com/docs/applications/how-to-rotate-client-secret). Think of it as your application's password which must be kept confidential at all times. If anyone gains access to your Client Secret they can impersonate your application and access protected resources.
 
 In the next section, we will discuss the Angular project structure present on StackBlitz. For now, to start wiring our Angular app with Auth0, use the values of `Client ID` and `Domain` from the "Settings" to replace the values of `clientID` and `domain` in the `environment.ts` file present in `src/environments/` in our project directory.
 
@@ -206,13 +212,15 @@ Press the login button to test that we are communicating correctly with Auth0 an
 
 If everything was set up correctly, we are going to be redirected to the [Universal Login page](https://auth0.com/docs/hosted-pages/login). As explained earlier, this login page is provided by Auth0 with batteries included. It powers not only the login but also the signup of new users into our application. If you have any existing user already, go ahead and log in; otherwise, sign up as a new user.
 
+> Alternatively, you may also sign up and log in with Google.
+
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/7-hosted-login-page.png" alt="Auth0 Universal Login page">
 </p>
 
-An advantage of the Universal Login page is that it is part of the Auth0 domain, not StackBlitz or our Angular app. It lets us delegate the process of user authentication, including registration, to Auth0. 
+An advantage of the Universal Login page is that it is part of the Auth0 domain, not StackBlitz or our Angular app. It lets us delegate the process of user authentication, including registration, to Auth0 which makes it both convenient and secure. 
 
-If you created a new user through the sign-up process, you will receive an email asking you to verify your email. There are tons of settings that we can tweak to customize the signup and login experience of our users, such as [requiring a username for registration](https://auth0.com/docs/connections/database/require-username). Feel free to check out the different options presented to you by Auth0 within the Dashboard and the [Auth0 documentation](https://auth0.com/docs).
+Unless you signed up with Google, if you created a new user through the sign-up process, you will receive an email asking you to verify your email. There are tons of settings that we can tweak to customize the signup and login experience of our users, such as [requiring a username for registration](https://auth0.com/docs/connections/database/require-username). Feel free to check out the different options presented to you by Auth0 within the Dashboard and the [Auth0 documentation](https://auth0.com/docs).
 
 Once we signed up or logged in, we are taken back to our Angular app hosted at StackBlitz. Notice that the button in the jumbotron (the giant header at the top of the page) changed from `Login` to `Logout`, which means that we are authenticated. 
 
@@ -243,20 +251,20 @@ Within the `src` folder we find:
 
 * `app` directory: It holds all the constructs that belong to the app and build it.
 * `environments` directory: It holds configuration for different environments such as `development` and `production`.
-* `index.html`: The entry point for the frontend application
-* `main.ts`: The entry point for the Angular application
+* `index.html`: The entry point for the frontend application.
+* `main.ts`: The entry point for the Angular application.
 * `polyfills.ts`:  This file includes polyfills needed by Angular and is loaded before the app. You can add your own extra polyfills to this file.
 * `styles.css`: Application-wide (global) styles. Add your own to customize the app's look.
 
 Inside the `app` folder is where the core Angular development happens. Here we find:
 
-* `app.module.ts` which bootstraps the application using the `app.component.ts`. 
-* `app-routing.module.ts` which defines the root routes of the app.
+* `app.module.ts`, which bootstraps the application using the `app.component.ts`. 
+* `app-routing.module.ts`, which defines the root routes of the app.
 * We have three folders that define components of the app:
   * `home`: Holds a component that defines the Home view of our app. 
   * `callback`: The route that points to this component will be called by Auth0 once it completes the authentication process successfully. This component has logic that saves the authentication data returned by Auth0 in memory.
   * `account`: Holds a component that defines an Account view that presents user profile information. This is a private view that requires authentication.
-* We have an `auth` folder that holds everything related to the authentication feature of our application which is powered by Auth0.
+* We have an `auth` folder that holds everything related to the authentication feature of our application, which is powered by Auth0.
 
 This is the gist of the project structure available to us. Next, let's learn about the authentication flow that this Angular application is following.
 
@@ -273,7 +281,7 @@ Let's explore fully the authentication flow and how the rest of our application 
 
 ### Initializing the Authentication Service
 
-When our application is built, `AuthService` which lives in `auth.service.ts` is initialized. `AuthService` is a service provided to the whole application by `AppModule`:
+When our application is built, `AuthService`, which lives in `auth.service.ts`, is initialized. `AuthService` is a service provided to the whole application by `AppModule`:
 
 ```typescript
 // src/app/app.module.ts
@@ -339,7 +347,7 @@ The other two properties we should define that are optional are `responseType` a
 
 `responseType` can be any space-separated list of the values `code`, `token`, and `id_token`, which are [tokens used by Auth0](https://auth0.com/docs/tokens). It defaults to `token` unless a `redirectUri` is provided, then it defaults to `code`. Here, we select both `id_token` and `token`. 
 
-`id_token` is a [JSON Web Token (JWT)](https://auth0.com/docs/jwt) that contains user profile attributes represented in the form of [claims](https://www.iana.org/assignments/jwt/jwt.xhtml). The ID Token is consumed by the application and used to get user information like the user's name, email, and so forth, typically used for UI display.
+[`id_token`](https://auth0.com/docs/tokens/id-token) is a [JSON Web Token (JWT)](https://auth0.com/docs/jwt) that contains user profile attributes represented in the form of [claims](https://www.iana.org/assignments/jwt/jwt.xhtml). The ID Token is consumed by the application and used to get user information like the user's name, email, and so forth, typically used for UI display.
 
 `token` is a credential that can be used by an application to access an API. Auth0 uses Access Tokens to protect access to the [Auth0 Management API](https://auth0.com/docs/api/management/v2), for example.
 
@@ -365,7 +373,7 @@ export class AuthService {
 }
 ```
 
-[`webAuth.authorize()`](https://auth0.com/docs/libraries/auth0js/v9#webauth-authorize-) can be used for logging in users via Universal Login, or via social connections. This method invokes the `/authorize` endpoint of the [Authentication API](https://auth0.com/docs/api/authentication), and can take a variety of parameters via an options object. 
+[`webAuth.authorize()`](https://auth0.com/docs/libraries/auth0js/v9#webauth-authorize-) can be used for logging in users via Universal Login, or via social connections. This method invokes the `/authorize` endpoint of the [Authentication API](https://auth0.com/docs/api/authentication) to [start an authentication/authorization transaction](https://github.com/auth0/auth0.js#api). It can take a variety of parameters via an options object. 
 
 Since we want to invoke the Universal Login page, we only need to call the `authorize()` method without any additional parameters.
 
@@ -462,7 +470,7 @@ export class AuthService {
 
 The contents of the `authResult` object returned by `this.auth0.parseHash` depend upon which authentication parameters were used in the `responseType` of the `auth0` instance configuration. It can include:
 
-* `accessToken`: An Access Token for the API, specified by the audience.
+* `accessToken`: An Access Token for the API.
 * `expiresIn`: A string containing the expiration time (in seconds) of the `accessToken`.
 * `idToken`: An ID Token JWT containing user profile information.
 
@@ -494,7 +502,7 @@ export class AuthService {
 }
 ```
 
-This method plays a very important role. `saveAuthData` receives as its argument the `authResult` object. At this point, we are certain that authentication was successful and we store a flag in local storage to communicate that state change across the application, globally. Other methods will check the value of the `loggedInKey` flag to determine if the user is authenticated or not. Soon, we'll learn more about how we control this flag.
+This method plays a very important role. `saveAuthData` receives as its argument the `authResult` object. At this point, we are certain that authentication was successful and we store a flag in [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Storage/LocalStorage) to communicate that state change across the application, globally. Other methods will check the value of the `loggedInKey` flag to determine if the user is authenticated or not. Soon, we'll learn more about how we control this flag.
 
 We store `expiresAt` and `accessToken` in a reactive stream, `tokenData$`. We also store `idTokenPayload`, which contains all the user profile information, in another reactive stream, `userProfile$`. Why use RxJS streams here? We want to be able to have tight control of the asynchronous nature of our application. By storing this data that can be used by different elements within our application in streams, we allow these elements to subscribe to the streams and get the most up-to-date value for the data. We can afford that because both `tokenData$` and `userProfile$` are built as a [`BehaviorSubject`](http://reactivex.io/rxjs/manual/overview.html#behaviorsubject).
 
@@ -506,16 +514,12 @@ The `AccountComponent` makes use of `userProfile$` to populate the user profile 
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../auth/auth.service";
 
+import { Component, OnInit } from "@angular/core";
+import { AuthService } from "../auth/auth.service";
+
 @Component({
   selector: "app-account",
-  template: `
-    <section *ngIf="profile" class="jumbotron">
-      <h2><img src="{{profile.picture}}" alt="Jumbotron image"/></h2>
-      <h1>{{profile.name}}</h1>
-      <p>Well done!</p>
-      <div class="btn btn-success btn-lg" routerLink="/">Back to Homepage</div>
-    </section>
-  `
+  templateUrl: "./account.component.html"
 })
 export class AccountComponent implements OnInit {
   profile: any;
@@ -560,7 +564,7 @@ export class AuthService {
 }
 ```
 
-At that point, the template of `HomeComponent` is called which uses the `isLoggedIn` method from `AuthService` to determine the authentication state of the application. 
+At that point, the template of `HomeComponent` is called, which uses the `isLoggedIn` method from `AuthService` to determine the authentication state of the application. 
 
 ```typescript
 // src/app/auth/auth.service.ts
@@ -602,7 +606,7 @@ export class AuthGuard implements CanActivate {
 }
 ```
 
-If the user is logged in, `isLoggedIn()` returns `true`, `AuthGuard` allows navigation. If it returns `false`, it not only prevents navigation to the route but also redirects the user to the URL defined with `onAuthFailureURL`.  
+If the user is logged in, `isLoggedIn()` returns `true` and `AuthGuard` allows navigation. If it returns `false`, it not only prevents navigation to the route but also redirects the user to the URL defined with `onAuthFailureURL`.  
 
 We use `AuthGuard` to guard the `/account` route in the `routes` object of `AppRoutingModule`:
 
@@ -634,7 +638,7 @@ If we are authenticated, we can visit `/account` and see our user profile inform
 
 ### Checking for an Active Session
 
-What happens if we were to refresh the screen on any view? We have a flag in local storage that keeps track of whether or not we are logged in. But this flag has no connection with the authentication server at Auth0. Thus, it is ideal for us to have a mechanism that can check if we have an active session with the authentication server if we refresh the page. 
+What happens if we were to refresh the screen on any view? We have a flag in [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Storage/LocalStorage) that keeps track of whether or not we are logged in. But this flag has no connection with the authentication server at Auth0. Thus, it is ideal for us to have a mechanism that can check if we have an active session with the authentication server if we refresh the page. 
 
 We do this by calling `this.authService.refreshAuthData()` in the `ngOnInit` lifecycle hook of the `AppComponent`. Why there? It's guaranteed that this component will be built whenever we refresh the page, no matter what the active route is. 
 
@@ -682,7 +686,7 @@ export class AuthService {
 }
 ```
 
-Notice that we only execute the logic in `refreshAuthData` if we are not logged in. If the local storage flag evaluates to `false`, the application knows globally that the user is not logged in. If it evaluates to `true`, we take that value with a grain of salt and verify with the authentication server that we have an active session using `webAuth.checkSession`. This process also let us acquire new session tokens. This method is wrapped in a Promise and called from the private `checkSession` method:
+Notice that we only execute the logic in `refreshAuthData` if we are logged in. If the local storage flag evaluates to `false`, the application knows globally that the user is not logged in. If it evaluates to `true`, we take that value with a grain of salt and verify with the authentication server that we have an active session using `webAuth.checkSession`. This process also let us acquire new session tokens. This method is wrapped in a Promise and called from the private `checkSession` method:
 
 ```typescript
 // src/app/auth/auth.service.ts
@@ -728,7 +732,7 @@ export class AuthService {
 }
 ```
 
-If `this.checkSession` resolves with `authResult`, we call `this.saveAuthData` to save the authentication data in memory. If the Promise is rejected, we remove the logged-in flag from local storage and we redirect the user to the URL defined with `this.onAuthFailureURL`. 
+If `this.checkSession` resolves with `authResult`, we call `this.saveAuthData` to save the authentication data in memory. If the Promise is rejected, we remove the logged-in flag from `localStorage` and we redirect the user to the URL defined with `this.onAuthFailureURL`. 
 
 This refresh logic is run at any time the application is built.
 
