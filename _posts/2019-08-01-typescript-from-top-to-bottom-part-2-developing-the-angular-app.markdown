@@ -25,31 +25,39 @@ related:
 - 2017-10-31-typescript-practical-introduction.markdown
 ---
 
-**TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. In the first part, you learnt how to build a simple API with Nest.js. In this second part, you are going to learn how to use Angular to build the frontend application that communicates with Nest.js. [You can find the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/).
+**TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. [In the first part, you learnt how to build a simple API with Nest.js]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs). In this second part, you are going to learn how to use Angular to build the frontend application that communicates with Nest.js. [You can find the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/).
 
-## Summarizing part 1
+## Summarizing Part 1
 
-In part 1, you learnt why you should use [Angular](https://angular.io/) together [Nest.js](https://nestjs.com/) to create a full stack web Application using Typescript. 
+[In the first part]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs), you learnt why you should use [Angular](https://angular.io/) together with [Nest.js](https://nestjs.com/) to create a full-stack web application using TypeScript.
 
-Then, you created a Nest.js backend application that manages the menu of a restaurant, this API had 3 endpoints, one that was public (`GET /items`), another one that needed user's identification (`POST /shop-cart`) and the third one that need admin's authorization (`POST /items`). Let this API running, since you are going to use it in part 2 (the aim of the front end application is to be a web interface that interacts with this API). 
+Then, you created a Nest.js backend app that manages the menu of a restaurant. This API had three endpoints. One that accepts unauthenticated requests (`GET /items`), another one that accepts requests from any authenticated user (`POST /shop-cart`), and the third one that accepts requests only from users authenticated as administrators (`POST /items`).
 
-You also created an Auth0 API application, open the settings page of this application and leave this page open as you will need to copy _Domain_ and _Client ID_ to configure your front end application.
-
-## Set up Angular
-
-Here you are going to use [Angular CLI](https://github.com/angular/angular-cli) to start your application. Since you already installed Node and NPM in part 1, run the following command to install Angular CLI:
+As you will need this backend application to support your Angular app, make sure you have it up and running:
 
 ```bash
-npm install -g @angular/cli # it will install Angular Cli
+# move into the backend directory
+cd nest-restaurant-api
+
+# run the server
+npm start
 ```
 
-And then generate a new project by running the following command:
+## Scaffolding an Angular Application
+
+To facilitate the process of scaffolding an Angular app, you are going to use the [Angular CLI](https://github.com/angular/angular-cli) tool. Installing this tool requires only Node and NPM, which you probably already have as you have followed the first article. Having those, you can open a new terminal and run the following command to install Angular CLI:
 
 ```bash
-ng new angular-restaurant-front # angular-restaurant-front
+npm install -g @angular/cli
 ```
 
-After a while, it will generate a project with the following structure:
+Then, to generate a new Angular application, move into the directory where you usually put your projects and run the following:
+
+```bash
+ng new angular-restaurant-app
+```
+
+After a while, Angular CLI will generate a project with the following structure:
 
 ```bash
 ├── README.md
@@ -82,16 +90,26 @@ After a while, it will generate a project with the following structure:
 └── tslint.json
 ```
 
-The code that you are going to create will be located under the directory `src/app`, those files that have `spec` in their names are related to tests, and are going to be ignored in this tutorial. Detailed meaning of each file in this folder you can find in [Angular's documentation page](https://angular.io/guide/quickstart). To start this application, you must type the following on your terminal:
+Throughout this article, you are mainly going to create code located under the `src/app` directory. In the structure created, you will see some files related to automated tests (like `test.ts` and these files that have `spec` in their names). Although implementing automated tests is extremely important, in this article, you are going to ignore them so you can achieve your goal faster.
+
+> **Note:** [If you want to learn about testing Angular applications, please, check this series that we prepared for you](https://auth0.com/blog/angular-2-testing-in-depth-services/).
+
+
+> **Note:** [If you have questions about what role each file and directory plays, you can find answers in Angular's documentation page](https://angular.io/guide/quickstart).
+
+After scaffolding your Angular app, you can make it run by issuing the following commands:
 
 ```bash
-cd angular-restaurant-front # goes to your app's folder
-ng serve --open # starts and open the angular app
+# moves into your new Angular app
+cd angular-restaurant-app
+
+# starts the Angular app and open it in the default browser
+ng serve --open
 ```
 
-After doing that, you will get a page like the following one on [localhost:4200](http://localhost:4200):
+After running these, Angular CLI will open your browser at [localhost:4200](http://localhost:4200) and you will see a page like this:
 
-![Angular page](https://angular.io/generated/images/guide/cli-quickstart/app-works.png)
+![Scaffolding an Angular app](https://cdn.auth0.com/blog/fullstack-typescript/scaffolding-angular.png)
 
 ## Create a Static Angular App
 
