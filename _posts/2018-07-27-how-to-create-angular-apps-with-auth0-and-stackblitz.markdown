@@ -709,6 +709,8 @@ export class AuthService {
 
 The [`checkSession`](https://auth0.com/docs/libraries/auth0js/v9#using-checksession-to-acquire-new-tokens) method allows us to acquire a new token from Auth0 for a user who is already authenticated against Auth0 for our domain. This method accepts any valid OAuth2 parameters that would normally be sent to `authorize`. If we omit them, it will use the ones we provided when initializing Auth0, the `auth0` application instance. If the user has a live authentication session with Auth0, we get an `authResult` object that has the authentication data, similar to what happened within `parseHash` earlier. If the user is not authenticated, we get an error and reject the Promise with it.
 
+> If you used Google or any other social connection, the [`checkSession` call will always return `login_required`](https://auth0.com/docs/libraries/auth0js/v9#using-checksession-to-acquire-new-tokens) when you are using Auth0 dev keys.
+
 Let's look back at `refreshAuthData`:
 
 ```typescript
