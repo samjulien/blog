@@ -281,6 +281,10 @@ export class ItemsComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder) { }
 
+  addToCart() {
+    window.alert('Added');
+  }
+
   ngOnInit() {
     // Initiating the form with the fields and the required validators
     this.itemForm = this.formBuilder.group({
@@ -487,9 +491,9 @@ The code snippets above contains two placeholders that you will need to replace:
 
 ![Auth0 Angular Application](https://cdn.auth0.com/blog/fullstack-typescript/auth0-angular-application.png)
 
-### Create an Angular Component for the Header 
+### Creating a Header Component with Angular
 
-You are going to create a header component for triggering the authentication component. To do that, create a component as you did a few paragraphs before called `header`, then open the file `header.component.ts` and copy the following code:
+After creating this service, you are going to create a header component that will enable users to trigger the authentication process. To do that, create a new component called `header` by issuing `ng generate component header`. Then, open the `header.component.ts` file and replace its code with this:
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
@@ -526,15 +530,16 @@ export class HeaderComponent implements OnInit {
     return this.authService.getProfile();
   }
 }
-
 ```
-The code is basically instantiating the authService that you created before to this service as a private instance (so you may not access the methods of the `AuthService` directly from HTML), that is a good practice because all the methods called in HTML template should be in it's component, so you don't loose control from where those methods are being called.
 
-Now open the page `header.component.html` and then add the following peace of code to it:
+The code above is basically getting an instance of `AuthService` injected into the `authService` private field of this component. Then, you make use of this instance to redefine only the methods that you want to share with your view (avoiding to share unnecessary stuff).
+
+Now, open the `header.component.html` file and replace its contents with this:
 
 {% highlight html %}
+{% raw %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-  <a class="navbar-brand" href="#">{% raw %}{{title}}{% raw %}</a>
+  <a class="navbar-brand" href="#">{{title}}</a>
   <button class="btn btn-primary login" *ngIf="!isAuthenticated()" (click)="login()">
       Login
   </button>
@@ -542,23 +547,25 @@ Now open the page `header.component.html` and then add the following peace of co
     <span>
       Logged in as:
       <img [src]="getProfile().picture" width="40">
-      {% raw %}{{getProfile().name }}{% raw %}
+      {{getProfile().name }}
     </span>
     <button class="btn btn-secondary" (click)="logout()">Logout</button>
   </span>
 </nav>  
+{% endraw %}
 {% endhighlight %}
 
-The HTML code is basically verifying if the user is logged through the `*ngIF` directive (if it is true, it will create the tag in which the directive is in), if the user is authenticated it will show the profile, otherwise it will show the login button.
+The elements above are basically verifying if the user is logged through the `*ngIF` directive. If the user is authenticated it will show the profile, otherwise it will show a login button.
 
-Now you should add this new component to the top of `app.component.html`:
+Now, to use this component you need to add this line to the top of `app.component.html`:
 
 {% highlight html %}
+{% raw %}
 <app-header></app-header>
-...
+{% endraw %}
 {% endhighlight %}
 
-And last but not least, you are going to add code to `app.component.ts` to handle authentication when auth0 page redirects back to your app's main (and single) page and checks if the user is authenticated.
+Then, last but not least, you are going to add code to `app.component.ts` to handle authentication when Auth0 redirects back to your app's main page. [This will process the redirect URL and fetch the tokens from it](https://auth0.com/docs/users/redirecting-users)):
 
 ```typescript
 import { Component } from '@angular/core';
@@ -574,22 +581,31 @@ export class AppComponent {
     this.authService.checkSession();
   }
 }
-
 ```
 
-Now, you may run the code and play around authentication methods with Auth0. If everything is okay, you will probably see a page like the following one when you authenticate:
+Now, you may run your project (`ng serve --open`) and play with the authentication methods that you have developed. If everything is okay, you will see a page like the following one when you authenticate:
 
-![Authenticated page](https://screenshotscdn.firefoxusercontent.com/images/ea396a6a-bbca-43f2-930e-588ae5e1d988.png)
+![User authenticated with Auth0 on an Angular app](https://cdn.auth0.com/blog/fullstack-typescript/angular-app-authenticated-with-auth0.png)
 
 ### Verify identity and authorization on items 
 
-Now remember our business rules: people who are not identified users should not be able to click the button to add an item to their shop cart and people who are not admin users should not be able to post new items. For doing that, you need also to import auth service to `item.component.ts` just as you did to `header.component.ts`. The code will look like that after the modifications: 
+Now, remember one of your business rules:
+
+> People who are not identified users should not be able to click the button to add an item to their shop cart and people who are not _admin_ users should not be able to include new items.
+
+To accomplish that, you will need to import `AuthService` into `items.component.ts` just as you did into `header.component.ts`. The following code snippet shows the code that you will need to add in this component:
 
 ```typescript
-...
+// ... other import statements ...
+import { AuthService } from '../auth/auth.service';
+
+// ... @Component definition ...
 export class ItemsComponent implements OnInit {
-  ...
+  // ... items, itemSubmitted, and itemForm definition ...
+
   constructor(private authService: AuthService, private formBuilder: FormBuilder) { }
+
+  // ... ngOnInit, getItemForm, and addNewItem definition ...
 
   isAdmin() {
     return this.authService.isAdmin();
@@ -598,40 +614,36 @@ export class ItemsComponent implements OnInit {
   isAuthenticated() {
     return this.authService.isAuthenticated();
   }
-  ...
 }
-...
-
 ```
 
-Now you will add to HTML template some verification to see if the user has the right to access some of the services. To do that, you will add the following lines of code to the file `items.component.html`:
+Now, you will need to update the HTML template to execute some verification that checks if the current user has access to some of the services. To do that, open `items.component.html` and update the button that triggers `addToCart` as follows:
 
 {% highlight html %}
-<table>
-...
-  <tr>
-  ...
-     <td>
-        <!--The button will be disabled if is authenticated is false-->
-        <button class="btn btn-default"
-          (click)="addToCart()"
-          [disabled]="!isAuthenticated()">
-          Add to shopping cart
-        </button>
-      </td>
-  <tr>
-</table>
-
-<!--It will show the form div if the user is admin-->
-<div *ngIf="isAdmin()">
-...
-  <form>
-    ...
-  </form>
-</div>
+{% raw %}
+<!--The button will be disabled if is authenticated is false-->
+<button class="btn btn-secondary"
+  (click)="addToCart()"
+  [disabled]="!isAuthenticated()">
+  Add to shopping cart
+</button>
+{% endraw %}
 {% endhighlight %}
 
-Now you can may play around with different accounts and see how it works.
+Then, update the `div` that encapsulates the `h3` and the `form` element as follows:
+
+{% highlight html %}
+{% raw %}
+<!--It will show the form div if the user is admin-->
+<div *ngIf="isAdmin()">
+  <!--> ... h3 and div ... <-->
+</div>
+{% endraw %}
+{% endhighlight %}
+
+Now, you can test your application with different accounts to see these changes in action.
+
+![Non-admin user accessing your Angular app](https://cdn.auth0.com/blog/fullstack-typescript/non-admin-user-logged-in.png)
 
 ## Integrating Angular with Nest.js
 
