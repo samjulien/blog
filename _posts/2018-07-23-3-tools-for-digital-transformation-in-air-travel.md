@@ -2,11 +2,11 @@
 layout: post
 title: "3 Tools For Digital Transformation in Air Travel"
 description: "Map your customer journey and incorporate passwordless registration and profile enrichment features to create a more enjoyable and safer UX."
-date: 2018-06-26 8:30
-category: Security, Identity, Authentication
+date: 2018-07-23 8:30
+category: Growth, Industries, Travel
 design: 
-  bg_color: "#3f3442"
-  image: https://cdn.auth0.com/blog/the-best-and-worst-travel-sites-at-keeping-your-info-safe/logo.png
+  bg_color: "#00604A"
+  image: https://cdn.auth0.com/blog/3-tools-for-digital-transformation-in-air-travel/digital-transformation-air-travel.png
 author:
   name: Diego Poza
   url: https://twitter.com/diegopoza
@@ -22,7 +22,9 @@ tags:
   - ux
   - usability
 related:
-  - 
+  - 2018-06-22-the-best-and-worst-travel-sites-at-keeping-your-info-safe
+  - 2017-03-15-5-reasons-your-company-needs-identity-and-access-management
+  - 2017-12-18-retail-analytics-past-present-and-future
 ---
 
 Digital transformation starts with the customer. Understanding the full scope of a customer's journey and the numerous points at which s/he interacts with your company's products and services will serve as a guide when modernizing operations. This is especially important for airlines. While many might think that the flight is the only important part of the customer journey in air travel, critical communications take place starting from the customer's initial decision to book a flight through post-flight feedback and promotions.
@@ -47,7 +49,7 @@ Modernizing the first major point at which a customer or potential customer enga
 
 {% include tweet_quote.html quote_text="Modernize the first major point at which a customer engages with your company online: registration." %}
 
-( [Source](https://auth0.com/blog/auth0-passwordless-email-authentication-and-sms-login-without-passwords/))
+([Source](https://auth0.com/blog/auth0-passwordless-email-authentication-and-sms-login-without-passwords/))
 
 Instead of prompting customers to re-enter a password every single time, passwordless login can ease any frustration and mitigates risk of churn early on when you need to delight your users the most.
 
