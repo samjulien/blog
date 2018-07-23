@@ -493,6 +493,8 @@ The code snippets above contains two placeholders that you will need to replace:
 
 ![Auth0 Angular Application](https://cdn.auth0.com/blog/fullstack-typescript/auth0-angular-application.png)
 
+While on your Auth0 Application, find the _Allowed Web Origins_ field and set `http://localhost:4200` as its value. You will need this because your Angular application will issue cross-origin requests to check if users are authenticated or not.
+
 ### Creating a Header Component with Angular
 
 After creating this service, you are going to create a header component that will enable users to trigger the authentication process. To do that, create a new component called `header` by issuing `ng generate component header`. Then, open the `header.component.ts` file and replace its code with this:
