@@ -25,13 +25,7 @@ related:
 - 2017-10-31-typescript-practical-introduction.markdown
 ---
 
-**Necessary knowledges for understanding this tutorial**:
-  * _HTML_: intermediate level (3 out 5 stars);
-  * _TypeScript/JavaScript_: basic to intermediate level (2 out 5 stars)
-  * _Linux/Mac terminal_ or _Windows prompt_: basic level (1 out 5 stars)
-  * _HTTP_ requests and Web architecture: basic to intermediate level (2 out 5 stars)
-
-**TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. In the first part, you learnt how to build a simple API with Nest.js. In this second part you are going to learn about the frontend application using Angular. [You can find the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/).
+**TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. In the first part, you learnt how to build a simple API with Nest.js. In this second part, you are going to learn how to use Angular to build the frontend application that communicates with Nest.js. [You can find the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/).
 
 ## Summarizing part 1
 
