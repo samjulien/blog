@@ -647,85 +647,65 @@ Now, you can test your application with different accounts to see these changes 
 
 ## Integrating Angular with Nest.js
 
-Now finally you are going to integrate this front end with the back end you created on part 1. 
+So far, your Angular application didn't actually communicate with your Nest.js app. So, in this section, you are going to integrate the frontend app with the Nest.js backend API you in the first article.
 
-### Create a Proxy
+### Creating a Proxy
 
-In order to interact with the backend service, you will need to deal with [CORS Cross Request Origin Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), because the calls among the front end and back end will be blocked by the browser because of the [Same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) used by most of the web browsers. 
+In order to interact with the backend service, you will need to deal with [CORS (Cross Request Origin Sharing)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). This is so because the calls made by Angular to your backend will be blocked by browsers because of the [Same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy). That is, as a security measure, browsers block requests made to different domains unless these domains explicitly say that they do allow these requests.
 
-One way to deal with that is going back to your backend and [enabling CORS on it](https://docs.nestjs.com/techniques/cors), to do that, just add the following line of code to `main.ts`. 
+There are two ways you can solve this problem. One way is to update your backend API to [enable CORS on it](https://docs.nestjs.com/techniques/cors). If you were to follow this approach, you would need to configure your backend as follows:
 
 ```typescript
-...
 app.enableCors();
-...
 ```
 
-It is a easy way to do that, but basically it allows any page on the web to have scripts inserted by your back end, which is not ideal. You can also set a proxy to your application when you deploys it (for example, a [NGINX proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/)), but in this tutorial you are going to create a proxy for development (it should be used mainly when you are developing this application and should be changed by NGINX or something similar when you deploy it). To do that, create a file in the root of your project called `proxy.config.js`:
+Another way is to create a proxy for development (it should be used mainly when you are developing this application). To keep things short, in this article you are going to use this approach. So, create a file called `proxy.config.js` in the project root of Angular with the following code:
 
 ```javascript
 const proxy = [
-    {
-      context: '/api',
-      target: 'http://localhost:3000',
-      pathRewrite: {'^/api' : ''}
-    }
-  ];
-  
+  {
+    context: '/api',
+    target: 'http://localhost:3000',
+    pathRewrite: {'^/api' : ''}
+  }
+];
 module.exports = proxy;
-
 ```
 
-Now you can restart your application using this proxy by running the following command:
+Now, to start your development server and use this proxy, you will need to run the following command:
 
 ```bash
-ng serve --proxy-config proxy.config.js
+ng serve --proxy-config proxy.config.js --open
 ```
 
 ### Create Requests with Angular Services
 
-You are going to need to import into your project Angular HTTP requester. Your `app.module.ts` will look like that after importing it:
+After creating the proxy, you are going to need to import into your project the Angular HTTP module. So, open the `app.module.ts` file and update it as follows:
 
 ```typescript
-
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+// ... other import statements ...
 import { HttpClientModule } from '@angular/common/http';
 
-import { AppComponent } from './app.component';
-import { ItemsComponent } from './items/items.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HeaderComponent } from './header/header.component';
-
 @NgModule({
-  declarations: [
-    AppComponent,
-    ItemsComponent,
-    HeaderComponent
-  ],
+  // ... declarations ...
   imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule
+    // ... other modules imported ...
+    HttpClientModule,
   ],
-  providers: [],
-  bootstrap: [ AppComponent ]
+  // ... providers and bootstrap ...
 })
 export class AppModule { }
-
 ```
 
-Now, with this http document, you are going to create a service that does all the HTTP calls that you did on part 1 of this tutorial using curl. To generate this service, run the following command: 
+Then, after importing `HttpClientModule`, you are going to create a service that handles all HTTP calls. To generate this service, run the following command: 
 
 ```bash
-ng generate service items/items # it will generate the service items inside of items folder
+ng generate service items/items
 ```
 
-And then open the just created file and add the following code to it:
+The command above will generate a file called `items.service.ts`. Open this file and replace its content with this:
 
 ```typescript
-
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Item } from './item.interface';
@@ -759,20 +739,26 @@ export class ItemsService {
   }
 }
 ```
-As you may have noticed, every method other than `_authHeader()` (which adds the Auth0's token to the request). Now you are going to add the `items.service.ts` to the `items.component.ts`, the code will look like the following:
+
+As you can see, every method (other than `_authHeader()`, which adds the access token to requests) is just a wrapper to an HTTP request.
+
+Now, to use your new service, open the `items.component.ts` file and update it as follows:
 
 ```typescript
+// ... other import statements ...
 import { ItemsService } from './items.service';
-...
-export class ItemsComponent implements OnInit {
-..
-items: Item [];
-...
-constructor(public authService: AuthService, private itemService: ItemsService, private formBuilder: FormBuilder) {}
 
- ngOnInit() {
+// ... @Component ...
+export class ItemsComponent implements OnInit {
+  items: Item [];
+  // ... itemSubmitted and itemForm definition ...
+
+  constructor(public authService: AuthService, private itemService: ItemsService, private formBuilder: FormBuilder) {}
+
+  ngOnInit() {
     this.itemService.getItems().subscribe(items => this.items = items);
-    ...
+    
+    // ... this.itemForm ...
   }
 
   addToCart() {
@@ -786,23 +772,27 @@ constructor(public authService: AuthService, private itemService: ItemsService, 
   addNewItem() {
     this.itemSubmitted = true;
 
-    if (this.itemForm.invalid) {
-      console.log(this.itemForm);
-    } else {
+    if (!this.itemForm.invalid) {
       this.itemService.postItems(this.itemForm.value).subscribe(response => {
         window.location.reload();
       }, error => {
-          window.alert(error.error.message);
+        window.alert(error.error.message);
       });
     }
   }
-  ...
+  
+  // ... getItemForm, isAdmin, isAuthenticated ...
 }
-
 ```
 
-Now you may visit [localhost:4200](http://localhost:4200) and play around with your just integrated application.
+Now, run your application again:
+
+```bash
+ng serve --proxy-config proxy.config.js --open
+```
+
+And head to your app ([localhost:4200](http://localhost:4200)) to test it. From there, you can add new items that this time will be synced with your backend application. To check this, you can restart your Angular app and you will see that the new items you create will still be available (prior to these changes, your items were actually held in memory by Angular). Just don't forget that to update the list of items available in the menu, you have to authenticate yourself with the email address that you have used in the Auth0 rules in [the last article]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs).
 
 ## Conclusion
 
-You learned how to create an application using typescript from back end to front end. It is not a production ready application yet: far from it! You will need to learn how to create tests to it, how to integrate it with a database as Mongo DB and many other things, but I hope that this tutorial will help you as an introduction to your further studies on NEST and Angular 6.
+In this series, you learned how to create a fullstack application that uses TypeScript on both sides (in the backend and in the frontend). In the first part of the series, you created a Nest.js backend API and secured it with Auth0 then, in this article, you created a nice Angular app that is also secured with Auth0. Is this application production ready? I wouldn't say so. For starters, you will need to create some automated tests to guarantee that future changes don't break the current functionality. Also, you will need to integrate your backend API with some reliable database (such as MongoDB or PostgreSQL). However, with this series, you acquire sufficient knowledge to start creating modern applications with state-of-the-art technologies.
