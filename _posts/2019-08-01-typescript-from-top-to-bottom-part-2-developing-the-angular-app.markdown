@@ -231,38 +231,31 @@ If everything is working as expected, you will see a web app like this one:
  
 ![Table of items](https://cdn.auth0.com/blog/fullstack-typescript/angular-menu-app-v1.png)
 
-### Create a Reactive Angular Form to Add New Items
+### Adding New Items Through a Reactive Angular Form
 
-Now you are going to create a form to add new items to your `items` object. For doing that, you are going to use Angular's Reactive form, which creates a object for the form and makes it easy to validate and test the form. To do that, first add Angular's form component to you `app.module.ts` file (this file is used for importing libraries), that will look like that after the addition:
+Next, you are going to create [a reactive Angular form](https://angular.io/guide/reactive-forms) to allow users to add new items to your `items` array. Using Angular's Reactive forms makes it easy to validate and test data that users input. To use this type of form, first, you will need to add Angular's form component to your `app.module.ts` file. that will look like that after the addition:
 
 ```typescript
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-
-import { AppComponent } from './app.component';
-import { ItemsComponent } from './items/items.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HeaderComponent } from './header/header.component';
+// ... other import statements ...
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ItemsComponent,
-    HeaderComponent
-  ],
+  // ... declarations ...
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
   ],
-  providers: [],
-  bootstrap: [ AppComponent ]
+  // ... providers and bootstrap ...
 })
 export class AppModule { }
 ```
-Then, you should add some code to your `items.component.ts` (_note_: you could create a new component called something like `itemsform` for that form, but to keep things shorter, everything in this tutorial related to items will be under the same component), there you are going to add a few properties to the class: `itemForm` of the type `formGroup` which is the form itself and `itemSubmitted` a boolean used for validation, you will also need a method for adding new items to the array. After adding that, your code will be like the following one:
+
+Then, you will need to add some code to `items.component.ts`, where you are going to add a few properties to the `ItemsComponent` class:
+
+- `itemForm` (with the `formGroup` type) which is the form itself;
+- and `itemSubmitted` a boolean used for validation.
+
+You will also create a method for adding new items to the array. After adding these, your code will look like this:
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
@@ -309,13 +302,15 @@ export class ItemsComponent implements OnInit {
     }
   }
 }
-
 ```
 
-Now the file `items.component.html`, there you will add the HTML code that represents the form defined by `itemForm`, to do that add the following code to the bottom of the already existing code:
+> **Note**: you could create a new component to handle the form (e.g. `ItemsForm`) but, to keep things shorter, everything in this tutorial related to items will be created under the same component.
+
+Now, you will need to update the `items.component.html` file. There, you will add the HTML code that represents the form defined by the `itemForm` field. The following code snippet shows the tags that you will have to include after the `table` element present in the current code:
 
 {% highlight html %}
-...
+{% raw %}
+<!--><table class="table">...</table><!-->
 <div>
   <h3 class="col-md-12">Add a new Item</h3>
   <form class="form-inline" (submit)="addNewItem()" [formGroup]="itemForm">
@@ -345,11 +340,14 @@ Now the file `items.component.html`, there you will add the HTML code that repre
     </div>
   </form>
 </div>
+{% endraw %}
 {% endhighlight %}
 
-Now you can visit [localhost:4200](http://localhost:4200) again and get a page like the following one, you may play around and try to submit valid and invalid values:
+After adding these HTML elements, you can head back to your app (i.e. open [localhost:4200](http://localhost:4200) in your browser if you closed it before) and you will see that your app looks like this:
 
-![Table with form](https://screenshotscdn.firefoxusercontent.com/images/aaef632a-07c5-499a-ac55-c2d57d4f6408.png)
+![Using Angular Reactive Forms](https://cdn.auth0.com/blog/fullstack-typescript/using-angular-reactive-forms.png)
+
+With these changes in place, you have finished developing the mock functionality that allows users to manage items on the menu. In the next sections, you will integrate your application with Auth0 and implement the missing parts that make your app communicate with the backend API.
 
 ## Integrating Angular Apps with Auth0
 
