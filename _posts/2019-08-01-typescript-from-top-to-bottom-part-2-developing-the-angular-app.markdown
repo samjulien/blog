@@ -111,39 +111,48 @@ After running these, Angular CLI will open your browser at [localhost:4200](http
 
 ![Scaffolding an Angular app](https://cdn.auth0.com/blog/fullstack-typescript/scaffolding-angular.png)
 
-## Create a Static Angular App
+## Developing Frontend Apps with Angular
 
-First, you are going to create an angular app that doesn't interact with the backend application, and then you are going to add some integration to it.
+To make the article easier to grasp, first, you are going to develop an Angular app that doesn't interact with your backend API. After that, you will integrate it with both your Nest.js API and with Auth0 (so your users can authenticate).
 
-### Installing dependencies
+### Angular and Bootstrap
 
-You are going to use [Twitter's Bootstrap](https://getbootstrap.com/) to give some style to your app (if you don't do that, your app will still work, but in an uglier way). To import bootstrap, go to your application's folder and run the following command:
+As you don't want develop an ugly app and you don't want to invest too much time working on CSS either, you are going to use [Twitter's Bootstrap](https://getbootstrap.com/) to give some basic style to your app. To import bootstrap, stop the Angular development server and run the following command:
 
 ```bash
 npm install bootstrap
 ```
 
-Then open the file `src/styles.css` and add the following line to it:
+Then, open the `src/styles.css` file and add the following line to it:
 
 ```css
 @import "bootstrap/dist/css/bootstrap.css";
 ```
 
-### Create an Angular Component to Show the Items
+### Showing the Menu with an Angular Component
 
-First, you are going to create the page where the user will see the items of the menu. First you need to create a component by typing the following command: 
+The first feature you are going to implement in your app is the view where unauthorized users can check what is in the menu. So, to do that, you are going to create a new Angular component by running the following code in the project root:
 
 ```bash
 ng generate component items
 ```
 
-After that you will get a new folder `items` with 3 main files:
+After that, you will get a new folder called `items` with three main files (plus one for tests that you won't use):
 
-  * `items.component.css`: where you may add some local style for item's page;
-  * `items.component.html`: as the name states, where you are going to add HTML code to structure the page;
-  * `items.component.ts`: where you are going to place the logic related to this component.
+* `items.component.css`: This is the file where you may add some local style for your new Angular component.
+* `items.component.html`: This is the file where you are going to add the HTML code to structure your information.
+* `items.component.ts`: This is the file where you are going to place the code that controls the behavior of this component.
 
-Copy to this folder the `items.interface.ts` that you have developed in the part one of this tutorial, since the same interface is going to be used for handling data on frontend. Then open the `items.components.ts` and paste the following peace of code to it:
+The next step will be creating the an interface ([the same that you have created in your Nest.js backend API](https://github.com/auth0-blog/nest-restaurant-api/blob/master/src/items/item.interface.ts)) to represent items on the menu. As both your projects (the Angular one and the Nest.js one) will exchange data with this structure, you have to define the same structure on both sides. So, create a new file called `item.interface.ts` under the `./src/app/items` directory and add the following code to it:
+
+```typescript
+export class Item {
+  readonly name: string;
+  readonly price: number;
+}
+```
+
+Then, open the `items.components.ts` file and replace its contents with this:
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
@@ -172,13 +181,14 @@ export class ItemsComponent implements OnInit {
   ngOnInit() {
   }
 }
-
 ```
-You are basically creating the items object there and a fake function to add items to shopping cart. The `@Component` annotation says that this class is a component, its selector says how this component is going to be called in a parent components, template and style are links to html and css files that refers to this component. The method `ngOnInit()` is going to be executed when the page is loading.
 
-Now, you are going to add the code needed in the HTML page. Go to `items.component.html` and add the following code to it:
+Basically, this version of the component is hard coding some items so you can see the view working. Also, this version is adding a fake `addToCart` method that simply confirms the action by triggering a `window.alert` with the _Added_ message.
+
+Next, you are going to add the code needed in the HTML page. So, open the `items.component.html` file and replace its code with this:
 
 {% highlight html %}
+{% raw %}
 <table class="table">
   <thead>
     <tr>
@@ -189,10 +199,10 @@ Now, you are going to add the code needed in the HTML page. Go to `items.compone
   </thead>
   <tbody>
     <tr *ngFor="let item of items"> <!--for every item in object items, create a table row-->
-      <td>{% raw %}{{item.name }}{% endraw %}</td> <!--Write it's name in a column--> 
-      <td>{% raw %}${{item.price}}{% endraw %}</td> <!--Write it's price in a column--> 
+      <td>{{item.name }}</td> <!--Write it's name in a column--> 
+      <td>${{item.price}}</td> <!--Write it's price in a column--> 
       <td>
-        <button class="btn btn-default"
+        <button class="btn btn-secondary"
                 (click)="addToCart()">
           Add to shopping cart
         </button>
@@ -200,19 +210,26 @@ Now, you are going to add the code needed in the HTML page. Go to `items.compone
     </tr> 
   </tbody>
 </table>
+{% endraw %}
 {% endhighlight %}
 
-The code above is basically a HTML table with Angular directive `*ngFor` for the `<tr>` tag. This element saying that for every item in the object `items` there should be a table row containing columns with the name of the item, it's price and button which is for add this product to a shop cart. 
+As you can see, the code above contains an HTML `table` with a row (`tr`) that uses the `*ngFor` Angular directive. This directive makes Angular iterate over every item in the `items` array to build a table that exposes items' `price`, `name`, and a `button` to invoke the `addToCart` method.
 
-Now you should call the component you have just created in the `src/app/app.component.html` file, just delete the code automatically generated there and add the following line of code:
+Now, to show your new component, open the `src/app/app.component.html` file and replace everything with this:
 
 {% highlight html %}
 <app-items></app-items>
 {% endhighlight %}
 
-And then visit again [localhost:4200](http://localhost:4200) and if everything was done correctly, you will get a page like the following one:
+Then, run your project again to check if it is working:
+
+```bash
+ng serve --open
+```
+
+If everything is working as expected, you will see a web app like this one:
  
-![Table of items](https://screenshotscdn.firefoxusercontent.com/images/b1f3a4fd-2e79-4d04-a158-07e220d8dd1d.png)
+![Table of items](https://cdn.auth0.com/blog/fullstack-typescript/angular-menu-app-v1.png)
 
 ### Create a Reactive Angular Form to Add New Items
 
