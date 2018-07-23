@@ -351,26 +351,29 @@ With these changes in place, you have finished developing the mock functionality
 
 ## Integrating Angular Apps with Auth0
 
-Now you are going to create learn how to add authentication and authorization in your app using the Auth0 API you set up on the last tutorial.
+In the first part of this series, you have secured your Nest.js backend API with Auth0 to guarantee that only certain users can manage the list of items. As such, you will also need to integrate your Angular application with Auth0 so your users can authenticate to perform these actions.
 
 ### Installing the Dependencies
 
-You will need to install `auth0-js` and `auth0/angular-jwt` in order to follow this tutorial. Run the following commands:
+As you will see, securing Angular applications with Auth0 is really simple. First, you will only need to install two dependencies. So, stop your development server (which can be accomplished by hitting `CMD/CTRL` + `C`), then issue the following command on the project root:
 
 ```bash
-npm install auth0-js@latest # installs auth-0
-npm install @auth0/angular-jwt # auth0/angular-jtw
+npm install auth0-js @auth0/angular-jwt
 ```
-### Create an Auth0 Angular Service
 
-You will create a Angular service that interacts with Auth0 server to provide identification and authorization. If you have ever created a similar service using browser's `localstorage` before, here you are going to use a better strategy because you are not going to use browser's `localStorage` to store user's token, instead you are going to require a new token to Auth0 every time the page reloads, so you will make your application safer since when tokens were stored within the browsers could be stollen by any script running in the user's browser.
+### Creating an Auth0 Angular Service
 
-To create this service type run following command:
+After installing these libraries, you will need to create a Angular service to interact with [the Auth0 login page](https://auth0.com/docs/hosted-pages/login).
+
+> **Note:** If you have ever created a similar service using browser's `localstorage` before, here you are going to use a better (more secure) strategy that requires new tokens to Auth0 every time the page reloads. This strategy avoids using `localstorage` and keeps everything in memory, so you will make your application safer .
+
+To create this service, run the following command:
 
 ```bash
-ng generate service auth/auth # creates auth.service.ts in auth directory
+ng generate service auth/auth
 ```
-And then open the just created file `auth.service.ts` and paste the following code:
+
+Then, open the `auth.service.ts` file that was just created and replace its contents with the following:
 
 ```typescript
 import { Injectable } from '@angular/core';
@@ -480,7 +483,9 @@ export class AuthService {
 }
 ```
 
-Don't forget to change your client id and your domain to those in your Auth0 page. Next you are going to understand in more details which every method of this class does. 
+The code snippets above contains two placeholders that you will need to replace: `[CLIENT_ID]` and `[DOMAIN]`. These placeholders refer to the Auth0 Application that you have created in the previous article. So, [open your Auth0 Dashboard, head to the Applications section](https://manage.auth0.com/#/applications), click on the Single Page Application you created, and copy the _Client ID_ and _Domain_ properties from it to replace these placeholders.
+
+![Auth0 Angular Application](https://cdn.auth0.com/blog/fullstack-typescript/auth0-angular-application.png)
 
 ### Create an Angular Component for the Header 
 
