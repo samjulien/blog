@@ -30,18 +30,18 @@ related:
 Digital transformation starts with the customer. Understanding the full scope of a customer's journey and the numerous points at which s/he interacts with your company's products and services will serve as a guide when modernizing operations. This is especially important for airlines. While many might think that the flight is the only important part of the customer journey in air travel, critical communications take place starting from the customer's initial decision to book a flight through post-flight feedback and promotions.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/3-tools-for-digital-transformation-in-air-travel/customer-communication-flow-for-air-travel.png" alt="Customer communication flow for air travel transaction experience">
+  <img src="https://cdn.auth0.com/blog/3-tools-for-digital-transformation-in-air-travel/customer-communication-flow-for-air-travel.png" alt="Customer flow and journey map in air travel experiences">
 </p>
 
 While many airlines will have similar maps for their customers, you can tailor this to your specific brand using resources from companies like [ProsperWorks](https://www.prosperworks.com/blog/the-importance-of-customer-journey-mapping) and [Appcues](https://www.appcues.com/blog/user-journey-map) that delve into user personas and more advanced tools for approaching your research. However you go about visualizing the path your customer(s) take with your company, this exercise will help you notice the best places to make digital improvements.
 
 ## Enhance The Customer Journey: Key Tools In A Successful Digital Transformation
 
-Once you've mapped out your customer journey, including details like booking processes and post-flight surveys that might be unique to your organization, it's time to home in on key pain points. The customer's initial login process and profile creation are areas that touch on and can help solve several issues at once.
+Once you've mapped out your customer journey, including details like booking processes and post-flight surveys that might be unique to your organization, it's time to hone in on key pain points. The customer's initial login experience and profile creation are areas that touch on and can help solve several issues at once.
 
 ### Passwordless Registration
 
-Modernizing the first major point at which a customer or potential customer engages with your company online ensures a top-notch experience and sets the stage for enhanced security in the future. With [Auth0 Passwordless](https://auth0.com/passwordless), on the front end, you can offer one time codes or “magic links” delivered via SMS or e-mail, or even use the iPhone’s TouchID option.
+Modernizing the first major point at which a customer or potential customer engages with your company online ensures a top-notch experience and sets the stage for enhanced security in the future. With [Auth0 Passwordless](https://auth0.com/passwordless), on the front end, you can offer one time codes or “magic links” delivered via SMS or e-mail.
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/3-tools-for-digital-transformation-in-air-travel/pwdless.png" alt="Auth0 passwordless options">
