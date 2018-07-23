@@ -25,15 +25,15 @@ related:
 - 2017-10-31-typescript-practical-introduction.markdown
 ---
 
-**TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. [In the first part, you learnt how to build a simple API with Nest.js]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs). In this second part, you are going to learn how to use Angular to build the frontend application that communicates with Nest.js. [You can find the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/).
+**TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. [In the first part, you learned how to build a simple API with Nest.js]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs). In this second part, you are going to learn how to use Angular to build the frontend application that communicates with Nest.js. [You can find the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/).
 
 {% include tweet_quote.html quote_text="Learn how to develop fullstack @typescriptlang applications with @nestframework and @angular." %}
 
 ## Summarizing Part 1
 
-[In the first part]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs), you learnt why you should use [Angular](https://angular.io/) together with [Nest.js](https://nestjs.com/) to create a full-stack web application using TypeScript.
+[In the first part]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs), you learned why you should use [Angular](https://angular.io/) together with [Nest.js](https://nestjs.com/) to create a full-stack web application using TypeScript.
 
-Then, you created a Nest.js backend app that manages the menu of a restaurant. This API had three endpoints. One that accepts unauthenticated requests (`GET /items`), another one that accepts requests from any authenticated user (`POST /shop-cart`), and the third one that accepts requests only from users authenticated as administrators (`POST /items`).
+Then, you created a Nest.js backend app that manages the menu of a restaurant. This API had three endpoints. One that accepts unauthenticated requests (`GET /items`), another one that accepts requests from authenticated users (`POST /shop-cart`), and the third one that accepts requests only from users authenticated as administrators (`POST /items`).
 
 As you will need this backend application to support your Angular app, make sure you have it up and running:
 
@@ -119,7 +119,7 @@ To make the article easier to grasp, first, you are going to develop an Angular 
 
 ### Angular and Bootstrap
 
-As you don't want develop an ugly app and you don't want to invest too much time working on CSS either, you are going to use [Twitter's Bootstrap](https://getbootstrap.com/) to give some basic style to your app. To import bootstrap, stop the Angular development server and run the following command:
+As you don't want to develop an ugly app and you don't want to invest too much time working on CSS either, you are going to use [Twitter's Bootstrap](https://getbootstrap.com/) to give some basic style to your app. To import bootstrap, stop the Angular development server and run the following command:
 
 ```bash
 npm install bootstrap
@@ -145,7 +145,7 @@ After that, you will get a new folder called `items` with three main files (plus
 * `items.component.html`: This is the file where you are going to add the HTML code to structure your information.
 * `items.component.ts`: This is the file where you are going to place the code that controls the behavior of this component.
 
-The next step will be creating the an interface ([the same that you have created in your Nest.js backend API](https://github.com/auth0-blog/nest-restaurant-api/blob/master/src/items/item.interface.ts)) to represent items on the menu. As both your projects (the Angular one and the Nest.js one) will exchange data with this structure, you have to define the same structure on both sides. So, create a new file called `item.interface.ts` under the `./src/app/items` directory and add the following code to it:
+The next step will be creating an interface ([the same that you have created in your Nest.js backend API](https://github.com/auth0-blog/nest-restaurant-api/blob/master/src/items/item.interface.ts)) to present items on the menu. As both your projects (the Angular one and the Nest.js one) will exchange data with this structure, you have to define the same structure on both sides. So, create a new file called `item.interface.ts` under the `./src/app/items` directory and add the following code to it:
 
 ```typescript
 export class Item {
@@ -369,9 +369,9 @@ npm install auth0-js @auth0/angular-jwt
 
 ### Creating an Auth0 Angular Service
 
-After installing these libraries, you will need to create a Angular service to interact with [the Auth0 login page](https://auth0.com/docs/hosted-pages/login).
+After installing these libraries, you will need to create an Angular service to interact with [the Auth0 login page](https://auth0.com/docs/hosted-pages/login).
 
-> **Note:** If you have ever created a similar service using browser's `localstorage` before, here you are going to use a better (more secure) strategy that requires new tokens to Auth0 every time the page reloads. This strategy avoids using `localstorage` and keeps everything in memory, so you will make your application safer .
+> **Note:** If you have ever created a similar service using browser's `localStorage` before, here you are going to use a better (more secure) strategy that requires new tokens to Auth0 every time the page reloads. This strategy avoids using `localStorage` and keeps everything in memory, so you will make your application safer.
 
 To create this service, run the following command:
 
@@ -455,7 +455,7 @@ export class AuthService {
     this._idToken = authResult.idToken;
   }
   
-  // check if there is a property Admin in access token
+  // check if there is a property Admin in the access token
   public isAdmin(): boolean {
     if (this._accessToken) {
       const helper = new JwtHelperService();
@@ -557,7 +557,7 @@ Now, open the `header.component.html` file and replace its contents with this:
 {% endraw %}
 {% endhighlight %}
 
-The elements above are basically verifying if the user is logged through the `*ngIF` directive. If the user is authenticated it will show the profile, otherwise it will show a login button.
+The elements above are basically verifying if the user is logged through the `*ngIF` directive. If the user is authenticated it will show the profile, otherwise, it will show a login button.
 
 Now, to use this component you need to add this line to the top of `app.component.html`:
 
