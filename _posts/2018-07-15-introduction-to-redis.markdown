@@ -1058,7 +1058,7 @@ As recognized by [Amazon Web Services](https://aws.amazon.com/redis/), the in-me
 [Roshan Kumar](https://twitter.com/roshankumar), from [Redis Labs](https://redislabs.com/), explains on his ["Cache vs. Session Store"](https://redislabs.com/blog/cache-vs-session-store/) article that a session-oriented web application starts a session when the user logs in. The session is active until the user logs out or the session times out. During the session lifecycle, the web application stores all session-related data in the main memory (RAM) or in a session store that doesn't lose the data when the application goes down. This session store can be implemented using Redis that, despite being an in-memory store, is able to persist data by [writing transaction logs sequentially in the disk](https://medium.com/@denisanikin/what-an-in-memory-database-is-and-how-it-persists-data-efficiently-f43868cff4c1).
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/redis/session-store-temp" alt="A session-oriented application diagram">
+  <img src="https://cdn.auth0.com/blog/intro-redis/redis-session-store.png" alt="A session-oriented application diagram">
   <small>Source: <a href="https://redislabs.com/blog/cache-vs-session-store/">Redis Labs: Cache vs. Session Store</a></small>
 </p>
 
