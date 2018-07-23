@@ -27,6 +27,8 @@ related:
 
 **TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. [In the first part, you learnt how to build a simple API with Nest.js]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs). In this second part, you are going to learn how to use Angular to build the frontend application that communicates with Nest.js. [You can find the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/).
 
+{% include tweet_quote.html quote_text="Learn how to develop fullstack @typescriptlang applications with @nestframework and @angular." %}
+
 ## Summarizing Part 1
 
 [In the first part]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs), you learnt why you should use [Angular](https://angular.io/) together with [Nest.js](https://nestjs.com/) to create a full-stack web application using TypeScript.
@@ -792,6 +794,10 @@ ng serve --proxy-config proxy.config.js --open
 ```
 
 And head to your app ([localhost:4200](http://localhost:4200)) to test it. From there, you can add new items that this time will be synced with your backend application. To check this, you can restart your Angular app and you will see that the new items you create will still be available (prior to these changes, your items were actually held in memory by Angular). Just don't forget that to update the list of items available in the menu, you have to authenticate yourself with the email address that you have used in the Auth0 rules in [the last article]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs).
+
+![Building fullstack applications with Nest.js and Angular](https://cdn.auth0.com/blog/fullstack-typescript/angular-and-nestjs-apps-communicating.png)
+
+{% include tweet_quote.html quote_text="I just built a fullstack @typescriptlang application with @nestframework and @angular!" %}
 
 ## Conclusion
 
