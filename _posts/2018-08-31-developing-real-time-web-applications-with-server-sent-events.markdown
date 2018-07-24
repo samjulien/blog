@@ -41,7 +41,7 @@ So, let's take a look at how to use Server-Sent Events in a realistic applicatio
 
 In order to learn how to use Server-Sent Events, we are going to develop a simple flight timetable application (similar to those flight trackers you can find at any airport). The timetable app will consist of a simple web page showing a list of flights as shown in the following picture:
 
-![Real-time flights tracker timetable](./xxx-images/flights-timetable.png)
+![Real-time flights tracker timetable](https://cdn.auth0.com/blog/server-sent-events/developing-real-time-web-applications.png)
 
 Through this real-time app, we can find the flight arrival timetable and, after implementing Server-Sent Events, we will see automatically updates when the state of flights change. In our demo application, we are going to simulate the flight state changes using scheduled events. However, one can easily replace this mechanism with more realistic ones on production-ready applications.
 
@@ -366,6 +366,8 @@ this.eventSource = new EventSource('http://localhost:5000/events');
 ```
 
 Bingo! If we run our backend server again and then launch the client application, after a few seconds, we will see our browser showing our real-time application.
+
+![Developing real-time web applications with Node.js, React, and Server-Sent Events.](https://cdn.auth0.com/blog/server-sent-events/developing-real-time-web-applications-with-react-and-node.png)
 
 As a recap, this is how we run our projects:
 
