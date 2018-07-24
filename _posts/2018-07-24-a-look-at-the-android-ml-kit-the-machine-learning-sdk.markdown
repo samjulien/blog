@@ -1,7 +1,7 @@
 ---
 layout: post
-title: A Look at the Android ML Kit SDK
-description: In this article, you will learn about the different APIs available in the ML Kit SDK. You will also learn how to create an application that uses one of the APIs
+title: A Look at the Android ML Kit - the Machine Learning SDK
+description: In this article, you will learn about the different APIs available in the Google's ML Kit (the machine learning SDK). You will also learn how to create an application that uses one of the APIs
 date: 2018-07-24 18:30
 category: Technical Guide, Mobile
 author:
@@ -27,7 +27,7 @@ related:
 - 2016-12-06-machine-learning-for-everyone
 ---
 
-**TL;DR:** In today's fast-moving, information-rich world, it is becoming more necessary to build applications that are intelligent in the way they process the data they are fed. Artificial Intelligence is quickly becoming an essential tool in software development. In this article, we will look at the [ML Kit mobile SDK](https://developers.google.com/ml-kit/) that brings Google’s machine learning expertise to mobile developers in an easy to use package. We will look at the various APIs offered by the SDK, and then we will take one of the APIs on a test drive by creating an Android application that makes use of it. You can find the code for the application in [this GitHub repository](https://github.com/echessa/ImageLabelingDemo).
+**TL;DR:** In today's fast-moving, information-rich world, it is becoming more necessary to build applications that are intelligent in the way they process the data they are fed. Artificial Intelligence is quickly becoming an essential tool in software development. In this article, we will look at the [ML Kit mobile SDK](https://developers.google.com/ml-kit/) that brings all the Google’s expertise on machine learning techniques to mobile developers in an easy-to-use package. We will look at the various APIs offered by the SDK, and then we will take one of the APIs on a test drive by creating an Android application that makes use of it. You can find the code for the application in [this GitHub repository](https://github.com/echessa/ImageLabelingDemo).
 
 {% include tweet_quote.html quote_text="Google I/O 2018 enabled @Android developers to take advantage of some cool #MachineLearning APIs. Learn what are the new APIs and create a simple app that recognizes objects on images." %}
 
@@ -35,7 +35,7 @@ related:
 
 In today's information-rich world, people have come to expect their technology to be smart. We are seeing the increased adoption of [Artificial Intelligence](https://en.wikipedia.org/wiki/Artificial_intelligence)(AI) in the development of intelligent software. AI is quickly becoming an essential tool in software development.
 
-Lucky for developers, there are various services that make it easier and faster to add Artificial Intelligence to apps without needing much experience in the field. There has been a growing number of AI-related APIs in the market such as Amazon's [AWS Machine Learning APIs](https://aws.amazon.com/machine-learning/), [IBM Watson](https://www.ibm.com/watson/) and [Google Cloud AI](https://cloud.google.com/products/machine-learning/). In this article, we'll take a look at the [ML Kit mobile SDK](https://developers.google.com/ml-kit/) that was introduced at this year's Google IO.
+Luckily for developers, there are various services that make it easier and faster to add Artificial Intelligence to apps without needing much experience in the field. There has been a growing number of AI-related APIs in the market such as Amazon's [AWS Machine Learning APIs](https://aws.amazon.com/machine-learning/), [IBM Watson](https://www.ibm.com/watson/) and [Google Cloud AI](https://cloud.google.com/products/machine-learning/). In this article, we'll take a look at the [ML Kit mobile SDK](https://developers.google.com/ml-kit/) that was introduced at this year's Google IO.
 
 ML Kit is a mobile SDK that enables you to add powerful machine learning features to a mobile application. It supports both Android and iOS and offers the same features for both platforms. The SDK is part of Firebase and bundles together various machine learning technologies from Google such as the [Cloud Vision API](https://cloud.google.com/vision/), [Android Neural Network API](https://developer.android.com/ndk/guides/neuralnetworks/) and [TensorFlow Lite](https://www.tensorflow.org/mobile/tflite/). This SDK comes with a set of ready-to-use APIs for common mobile use cases such as face detection, text recognition, barcode scanning, image labeling and landmark recognition. These are offered as either on-device or cloud APIs. On-device APIs have the advantage of being able to process data quickly, they are free to use and they don't require a network connection to work. The cloud-based APIs give a higher level of accuracy as they are able to leverage the power of Google Cloud Platform's machine learning technologies. All cloud-based APIs are premium services, with a free quota in place.
 
@@ -97,7 +97,7 @@ The Face Contour API will be an addition to the Face Detection API. It will prov
 
 ## Summary of On-Device and In-Cloud Features
 
-![Summary of On-device and In-cloud Features](https://cdn.auth0.com/blog/ml-kit-sdk/ml-kit-features-per-type.png)
+![Google's mobile machine learning kit features](https://cdn.auth0.com/blog/ml-kit-sdk/ml-kit-features-per-type.png)
 
 ## Image Labeling in an Android App
 
@@ -105,7 +105,7 @@ To see one of the APIs in action, we will create an application that uses the Im
 
 To get started, create a new project in Android Studio. Give your application a name; I named mine `ImageLabelingDemo`. Firebase features are only available on devices running API level 14 and above, so select 14 or higher for your app's minimum SDK. On the next window, select the `Basic Activity` template and on the last one, you can leave the default Activity name of `MainActivity`.
 
-![Basic Activity Template](https://cdn.auth0.com/blog/ml-kit-sdk/choosing-basic-activity-to-new-android-project.png)
+![Firebase Basic Activity Template](https://cdn.auth0.com/blog/ml-kit-sdk/choosing-basic-activity-to-new-android-project.png)
 
 To add Firebase to your app, first, create a Firebase project in the [Firebase console](https://console.firebase.google.com).
 
@@ -117,7 +117,7 @@ On the dashboard, select `Add Firebase to your Android app`.
 
 Fill out the provided form with your app's details. For this project, you only need to provide a package name (you can find this in your Android project's `AndroidManifest.xml` file). You can add an app nickname to easily identify the application on the Firebase console. This can come in handy if you are going to add several applications to the same project.
 
-![Add Firebase to your Android App Configuration](https://cdn.auth0.com/blog/ml-kit-sdk/add-firebase-to-android-app-step-2.png)
+![Firebase app registration form](https://cdn.auth0.com/blog/ml-kit-sdk/add-firebase-to-android-app-step-2.png)
 
 After the app has been registered, you will see a button you can use to download a config file named `google-services.json`. Download the file and move it into your Android app module root directory. This is where the file should be located if you use the Project view in Android Studio.
 
@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity {
 
 With that, you can now run the application.
 
-On selecting an image and tapping on the **Process** button on the App Bar, you will be able to see the various labels and their corresponding confidence scores. If you are running the app on the emulator and want to add an image to its gallery, [find the instructions in this guide](https://stackoverflow.com/a/48669304/1232793).
+On selecting an image and tapping on the **Process** button on the App Bar, you will be able to see the various labels and their corresponding confidence scores. If you are running the app on the emulator refer to [this guide to add an image to the app's gallery](https://stackoverflow.com/a/48669304/1232793).
 
 ![ML Kit Image Processing Results](https://cdn.auth0.com/blog/ml-kit-sdk/android-app-processing-image-with-ml-kit.png)
 
@@ -488,4 +488,4 @@ FirebaseVisionLabelDetector detector = FirebaseVision.getInstance()
 
 ## Conclusion
 
-In this article, we have looked at the Google ML Kit Mobile SDK and all the features it offers. We've also looked at how to use one of its APIs in an Android application. To find out more about this SDK, you can watch this [video from Google IO](https://www.youtube.com/watch?v=Z-dqGRSsaBs) and you should also take a look at the [documentation](https://firebase.google.com/docs/ml-kit/) which covers all the APIs and shows their use on both Android and iOS. You can also take a look at the code in these apps, to see how the various APIs are implemented on [Android](https://github.com/firebase/quickstart-android/tree/master/mlkit) and on [iOS](https://github.com/firebase/quickstart-ios/tree/master/mlvision).
+In this article, we have looked at the Google ML Kit Mobile (the machine learning SDK) and all the features it offers. We've also looked at how to use one of its APIs in an Android application. To find out more about this SDK, you can watch this [video from Google IO](https://www.youtube.com/watch?v=Z-dqGRSsaBs) and you should also take a look at the [documentation](https://firebase.google.com/docs/ml-kit/) which covers all the APIs and shows their use on both Android and iOS. You can also take a look at the code in these apps, to see how the various APIs are implemented on [Android](https://github.com/firebase/quickstart-android/tree/master/mlkit) and on [iOS](https://github.com/firebase/quickstart-ios/tree/master/mlvision).
