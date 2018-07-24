@@ -486,3 +486,124 @@ As we can see, the body of the `componentDidMount()` method has no longer the as
 In the example, we assigned the `updateFlightState()` method to the `flightStateUpdate` event and the `removeFlight()` method to the `flightRemoval` event.
 
 If we run both our projects again and open our React application on a browser ([`http://localhost:3000/`](http://localhost:3000/)), after 9 seconds (as defined in the last `setTimeout` on our `server.js` file), the flight to Rome will be removed.
+
+## Handling Connection Closure on Server-Sent Events
+
+The Server-Sent Event connection between the client and the server is a streaming connection. This means that the connection will be kept active indefinitely unless the client or the server stops running. If our server has no more events to send or the client isn't longer interested in server's events, how can we explicitly stop the currently active connection?
+
+Let's consider the case where the client wants to stop the event stream. To learn about this, let's create a button that allows the user to stop receiving new events. So, let's change the `render()` method of the `App` class, as shown below:
+
+```javascript
+render() {
+  return (
+    <div className="App">
+      <button onClick={() => this.stopUpdates()}>Stop updates</button>
+      <ReactTable
+        data={this.state.data}
+        columns={this.columns}
+      />
+    </div>
+  );
+}
+```
+
+Here we added a `<button>` element and bound the click event to the `stopUpdates()` method of the same component. This method will look like the following:
+
+```javascript
+stopUpdates() {
+  this.eventSource.close();
+}
+```
+
+In other words, to stop the event stream, we simply invoked the `close()` method of the `eventSource` object.
+
+Closing the event stream on the client doesn't automatically closes the connection on the server side. This means that the server will continue to send events to the client. To avoid this, we need to handle the connection close request on the server side. We can do it by adding an event handler for the `close` event on the server side, as shown by the following code:
+
+```javascript
+// server.js
+
+const http = require('http');
+
+http.createServer((request, response) => {
+  console.log(`Request url: ${request.url}`);
+
+  request.on('close', () => {
+    if (!response.finished) {
+      response.end();
+      console.log('Stopped sending events.');
+    }
+  });
+
+  // ... etc ...
+}).listen(5000, () => {
+  console.log('Server running at http://127.0.0.1:5000/');
+});
+```
+
+The `request.on()` method catches the `close` request and executes the callback function. This function invokes the `response.end()` method to close the HTTP connection. Also, it checks if the connection is already closed, which is a situation that may occur when multiple closing requests are sent by the client.
+
+Since our server event generators are scheduled by using `setTimeout()`, it could happen that an attempt to send an event to the client may be made after the connection has been closed, which would raise an exception. We can avoid this by checking if the connection is still active, as shown in the following example:
+
+```javascript
+setTimeout(() => {
+  if (!response.finished) {
+  response.write(
+      'event: flightStateUpdate\n'
+    );
+    response.write(
+      'data: {"flight": "I768", "state": "landing"}'
+    );
+    response.write('\n\n');
+  }
+}, 3000);	
+```
+
+> **Note:** We have to implement the same strategy for the other timeout events.
+
+Now, when we need to close the connection from the server, we will need to invoke the `response.end()` method, as seen before. Also, the client should be informed about the closure, so that it can free resources on its side.
+
+To achieve that, an easy strategy to follow is to create an specific type of event that informs the client that they have to close the connection. For example, our server could simply generate a `closedConnection` event as follows:
+
+```javascript
+setTimeout(() => {
+  if (!response.finished) {
+  response.write(
+      'event: closedConnection\n'
+    );
+    response.write(
+      'data: '
+    );
+    response.write('\n\n');
+  }
+}, 3000);
+```
+
+Then, to handle this event on our React application, we could update our `src/App.js` as follows:
+
+```javascript
+// src/App.js
+
+// ... import statements ...
+
+class App extends Component {
+  // ... constructor ...
+
+  componentDidMount() {
+    // ... flightStateUpdate and flightRemoval event handlers ...
+    this.eventSource.addEventListener('closedConnection',
+      (e) => this.stopUpdates());
+  }
+
+  // ... updateFlightState and removeFlight methods ...
+
+  stopUpdates() {
+    this.eventSource.close();
+  }
+
+  // ... render ...
+}
+
+export default App;
+```
+
+As we can see, handling this new event type is as easy as assigning the `stopUpdates()` method to the `closedConnection` event.
