@@ -27,9 +27,11 @@ related:
 
 **TL;DR:** [Server-Sent Events (SSE)](https://html.spec.whatwg.org/multipage/server-sent-events.html) is a standard that enables Web servers to push data in real time to clients. In this article, we will learn how to use this standard by building a flight timetable demo application with React and Node.js. However, the concepts you will learn following this tutorial are applicable to any programming language and technology. [You can find the final code of the application in this GitHub repository](https://github.com/andychiare/server-sent-events).
 
+{% include tweet_quote.html quote_text="Learn how to build real-time web applications with the Server-Sent Events protocol." %}
+
 ## Introducing on Server-Sent Events
 
-The [typical interactions between browsers and servers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Session) consist on browsers requesting resources and servers providing responses. But, can we make our servers send data to clients at any time without explicit requests?
+The [typical interactions between browsers and servers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Session) consist of browsers requesting resources and servers providing responses. But, can we make our servers send data to clients at any time without explicit requests?
 
 The answer is _yes_! We can achieve that by using [Server-Sent Events (which is also known as *SSE* or *Event Source*)](https://html.spec.whatwg.org/multipage/server-sent-events.html), a W3C standard that allows servers to push data to clients asynchronously. This may suggest using that annoying polling we'd implement to get the progress status from a long server processing but, thanks to SSE, we don't have to implement polling to wait for a response from the server. We don't even need any complex and strange protocol. That is, we can continue to use the standard HTTP protocol.
 
@@ -257,7 +259,7 @@ class App extends Component {
 export default App;
 ```
 
-As we can see, we added an event handler to the `onmessage` property of the `eventSource` object in the `componentDidMount()` method. The `onmessage` property points to an event handler that will be called when an event comes from the server. In our case, the assigned event handler calls the `updateFlightState()` method to update the component `state` with the data sent by the server. Each event carries data in the `e.data` property represented as a string. For our application, the data will be a JSON string that represents updated flight data, as we will see in next section.
+As we can see, we added an event handler to the `onmessage` property of the `eventSource` object in the `componentDidMount()` method. The `onmessage` property points to an event handler that will be called when an event comes from the server. In our case, the assigned event handler calls the `updateFlightState()` method to update the component `state` with the data sent by the server. Each event carries data in the `e.data` property represented as a string. For our application, the data will be a JSON string that represents updated flight data, as we will see in the next section.
 
 Although we can't test the application yet (we still have to create our backend and send events from it), our React application is now ready to handle server-sent events. Not hard, huh?
 
@@ -303,11 +305,11 @@ http.createServer((request, response) => {
 });
 ```
 
-At the beginning of the file, we import the `http` module and we use its `createServer` method to run a web server whose behavior is described by the callback function passed as an argument. The callback function verifies that the requested URL is `/events` and only in this case initiates a response by sending a few HTTP headers. The headers sent by the server are very important in order to establish a live communication channel with the client.
+At the beginning of the file, we import the `http` module and we use its `createServer` method to run a web server whose behavior is described by the callback function passed as an argument. The callback function verifies that the requested URL is `/events` and, only in this case, initiates a response by sending a few HTTP headers. The headers sent by the server are very important in order to establish a live communication channel with the client.
 
-In fact, the `keep-alive` value for the `Connection` header informs to the client that this is a permanent connection. With that, the client knows that this is a connection that doesn't end with the first bunch of data received.
+In fact, the `keep-alive` value for the `Connection` header informs the client that this is a permanent connection. With that, the client knows that this is a connection that doesn't end with the first bunch of data received.
 
-The `text/event-stream` value for the `Content-Type` header determines the way the client should interpret the data that it will receive. In practice, this value informs to the client that this connection uses the Server-Sent Events protocol.
+The `text/event-stream` value for the `Content-Type` header determines the way the client should interpret the data that it will receive. In practice, this value informs the client that this connection uses the Server-Sent Events protocol.
 
 Finally, the `Cache-Control` header asks the client not to store data into its local cache, so that data read by the client is really sent by the server and not some old, out-of-date data received in the past.
 
@@ -562,7 +564,7 @@ setTimeout(() => {
 
 Now, when we need to close the connection from the server, we will need to invoke the `response.end()` method, as seen before. Also, the client should be informed about the closure, so that it can free resources on its side.
 
-To achieve that, an easy strategy to follow is to create an specific type of event that informs the client that they have to close the connection. For example, our server could simply generate a `closedConnection` event as follows:
+To achieve that, an easy strategy to follow is to create a specific type of event that informs the client that they have to close the connection. For example, our server could simply generate a `closedConnection` event as follows:
 
 ```javascript
 setTimeout(() => {
@@ -610,9 +612,9 @@ As we can see, handling this new event type is as easy as assigning the `stopUpd
 
 ## Handling Connection Recovery on Server-Sent Events
 
-So far, we built real-time application based on Server-Sent Events that is quite complete. We are able to get different types of events pushed by the server and to control the end of the event stream. But, what happens if the client loses some event due to network issues? Of course, it depends on the specific application. In some situations, we may ignore the loss of some event, in some others we can't.
+So far, we built a real-time application based on Server-Sent Events that is quite complete. We are able to get different types of events pushed by the server and to control the end of the event stream. But, what happens if the client loses some event due to network issues? Of course, it depends on the specific application. In some situations, we may ignore the loss of some event, in some others we can't.
 
-Let's consider, for example, the event stream we implemented. If a network issue happens and the client loses the `flightStateUpdate` event that puts the flight into the landing state, it could not be a big problem. User would just miss the landing phase on the timetable but, when the connection gets restored, the timetable would provide the correct information with the subsequent states.
+Let's consider, for example, the event stream we implemented. If a network issue happens and the client loses the `flightStateUpdate` event that puts the flight into the landing state, it could not be a big problem. The user would just miss the landing phase on the timetable but, when the connection gets restored, the timetable would provide the correct information with the subsequent states.
 
 However, if the network issue happens immediately after the flight enters in the landing state and the connection is restored after the `flightRemoval` event, we have an issue: the flight will remain in the landing state forever and we need to handle this awkward situation.
 
@@ -751,6 +753,8 @@ function checkConnectionToRestore(request, response, eventHistory) {
 ```
 
 With these changes, we make our backend more robust and more resilient.
+
+{% include tweet_quote.html quote_text="Updating the state of frontend applications with Server-Sent Events is quite easy." %}
 
 ## Browser Support
 
