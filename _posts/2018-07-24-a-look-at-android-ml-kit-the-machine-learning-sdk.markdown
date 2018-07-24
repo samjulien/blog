@@ -3,15 +3,15 @@ layout: post
 title: A Look at Android ML Kit - the Machine Learning SDK
 description: In this article, you will learn about the different APIs available in the Google's ML Kit (the machine learning SDK). You will also learn how to create an application that uses one of the APIs
 date: 2018-07-24 18:30
-category: Technical Guide, Mobile
+category: Technical Guide, Mobile, Android
 author:
   name: Joyce Echessa
   url: https://twitter.com/joyceechessa
   mail: jokhessa@gmail.com
   avatar: https://s.gravatar.com/avatar/f820da721cd1faa5ef4b5e14af3f1ed5
 design:
-  bg_color: #03A3F1
-  image: https://raw.githubusercontent.com/echessa/imgs/master/auth0/mlkit/ML-Kit-Firebase.jpeg
+  bg_color: #4236c9
+  image: https://cdn.auth0.com/blog/ml-kit-sdk/android-ml-kit-machine-learning-sdk-logo.png
 tags:
 - artificial-intelligence
 - android
