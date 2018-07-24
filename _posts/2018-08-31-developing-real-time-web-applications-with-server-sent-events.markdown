@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Developing Real-Time Applications with Server-Sent Events"
-description: "Learn how to create real-time applications by using the new Server-Sent Events specification."
+title: "Developing Real-Time Web Applications with Server-Sent Events"
+description: "Learn how to create real-time web applications by using the Server-Sent Events specification."
 date: 2018-08-31 08:30
 category: Technical Guide, Backend
 author:
