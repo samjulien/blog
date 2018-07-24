@@ -751,3 +751,45 @@ function checkConnectionToRestore(request, response, eventHistory) {
 ```
 
 With these changes, we make our backend more robust and more resilient.
+
+## Browser Support
+
+According to [`caniuse.com`](https://caniuse.com/#search=server%20sent%20events), Server-Sent Events are currently supported by all major browsers but Internet Explorer, Edge, and Opera Mini. Although [supporting them in Edge is under consideration](https://developer.microsoft.com/en-us/microsoft-edge/platform/status/serversenteventseventsource/), the lack of universal support forces us to use polyfills, such as [Remy Sharp's EventSource.js](https://github.com/remy/polyfills/blob/master/EventSource.js), [Yaffle's EventSource](https://github.com/Yaffle/EventSource), or [AmvTek's EventSource](https://github.com/amvtek/EventSource).
+
+Using these polyfills is very simple. In this section, we will see how to use AmvTek's polyfill. The process of using the other ones is not so different. In order to add AmvTek's EventSource polyfill to our React client application, we need to install it via `npm`, as shown below: 
+
+```shell
+npm install eventsource-polyfill
+```
+
+Then, we should import the module in the `App` component's module:
+
+```react
+// src/App.js
+
+// ... other import statements ...
+import 'eventsource-polyfill';
+
+// ... App class definition and export ...
+```
+
+And that's all. The polyfill will define an `EventSource` constructor only if it is not natively supported and our code will continue to work as before also on browsers that don't support it.
+
+## Server-Sent Events vs WebSockets
+
+Using the Server-Sent Events protocol helps us to solve some common issues that involve waiting for data from the server. So, instead of implementing a long polling, whose main drawback is consuming resources both on the client and on the server side, we get a simple and performant solution.
+
+An alternative approach is to use [WebSockets, a standard TCP based protocol providing full duplex communication between the client and the server](https://www.w3.org/TR/websockets/). What benefits does WebSockets bring with respect to Server-Sent Events? When to use one technology instead of the other?
+
+The following are some considerations to keep in mind when choosing between Server-Sent Events and WebSockets:
+
+- WebSockets support a bidirectional communication, while Server-Sent Events support only communication from the server to the client.
+- WebSockets is a low-level protocol, while Server-Sent Events is based on HTTP and so it doesn't require additional settings in the network infrastructure.
+- WebSockets supports binary data transfer, while Server-Sent Events supports only text-based data transfer. That is, if we want to transfer binary data via Server-Sent Events we need to encode it in Base64.
+- The combination of low-level protocol and support of binary data transfer makes WebSockets more suitable than Server-Sent Events for applications requiring real-time binary data transfer as may happen in gaming or other similar application types.
+
+## Summary
+
+In this article, we used Server-Sent Events to implement a real-time application that simulates a flight timetable. During the implementation, we had the opportunity to explore the features that the standard provides to support event typing, connection control, and restoring. We also learned how to add support Server-Sent Events on browsers that do not support it by default. Lastly, we took a look at a brief comparison between Server-Sent Events and WebSockets.
+
+If needed, you can [check and download the final code of the project developed throughout this article from this GitHub repository](https://github.com/andychiare/server-sent-events).
