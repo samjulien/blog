@@ -258,3 +258,80 @@ export default App;
 ```
 
 As we can see, we added an event handler to the `onmessage` property of the `eventSource` object in the `componentDidMount()` method. The `onmessage` property points to an event handler that will be called when an event comes from the server. In our case, the assigned event handler calls the `updateFlightState()` method to update the component `state` with the data sent by the server. Each event carries data in the `e.data` property represented as a string. For our application, the data will be a JSON string that represents updated flight data, as we will see in next section.
+
+Although we can't test the application yet (we still have to create our backend and send events from it), our React application is now ready to handle server-sent events. Not hard, huh?
+
+## Building Real-Time Backends with Server-Sent Events
+
+The server-side of our application will be simple Node.js web server that responds to requests submitted to the `events` endpoint. To implement it, let's create a new directory called `real-time-sse-backend` at the same level of the `real-time-sse-app` directory. Within the `server` directory, let's create a new file called `server.js` and put the following code inside it:
+
+```javascript
+// server.js
+
+const http = require('http');
+
+http.createServer((request, response) => {
+  console.log('Requested url: ' + request.url);
+
+  if (request.url.toLowerCase() === '/events') {
+    response.writeHead(200, {
+      'Connection': 'keep-alive',
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache'
+    });
+
+    setTimeout(() => {
+      response.write(
+        'data: {"flight": "I768", "state": "landing"}'
+      );
+      response.write('\n\n');
+    }, 3000);
+
+    setTimeout(() => {
+      response.write(
+        'data: {"flight": "I768", "state": "landed"}'
+      );
+      response.write('\n\n');
+    }, 6000);
+
+  } else {
+    response.writeHead(404);
+    response.end();
+  }
+}).listen(5000, () => {
+  console.log('Server running at http://127.0.0.1:5000/');
+});
+```
+
+At the beginning of the file, we import the `http` module and we use its `createServer` method to run a web server whose behavior is described by the callback function passed as an argument. The callback function verifies that the requested URL is `/events` and only in this case initiates a response by sending a few HTTP headers. The headers sent by the server are very important in order to establish a live communication channel with the client.
+
+In fact, the `keep-alive` value for the `Connection` header informs to the client that this is a permanent connection. With that, the client knows that this is a connection that doesn't end with the first bunch of data received.
+
+The `text/event-stream` value for the `Content-Type` header determines the way the client should interpret the data that it will receive. In practice, this value informs to the client that this connection uses the Server-Sent Events protocol.
+
+Finally, the `Cache-Control` header asks the client not to store data into its local cache, so that data read by the client is really sent by the server and not some old, out-of-date data received in the past.
+
+After sending these headers, the client using the `EventSource()` constructor will wait for events reporting newly available data. The rest of the function body schedules the execution of a few functions in order to simulate the change of a flight state. At each scheduled function execution, a string in the following form is sent to the client:
+
+```
+data: xxxxxxx
+```
+
+The `xxxxxxx` represents the data to be sent to the client. In our case, we send a JSON string representing a flight. We can send multiple data lines in an event response but the response must be closed by a double empty line. In other words, our event message could have the following schema:
+
+```
+data: This is a message\n
+data: A long message\n
+\n
+\n
+```
+
+In order to execute the web server we created so far, let's type the following commands on the terminal:
+
+```shell
+# make sure we are in the real-time-sse-backend directory
+cd real-time-sse-backend
+
+# run the server
+node server.js
+```
