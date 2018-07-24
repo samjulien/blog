@@ -335,3 +335,50 @@ cd real-time-sse-backend
 # run the server
 node server.js
 ```
+
+## Consuming Server-Sent Events
+
+After building both our React client and our Node.js server, we want to make them communicate with each other. However, they run on different domains. Currently, the React client is running on `http://localhost:3000` and the Node.js server is running on `http://localhost:5000`.
+
+This means that, if we don't do anything, our React client won't be able to issue HTTP requests to the Node.js server due to the [same-origin policy](https://en.wikipedia.org/wiki/Same-origin_policy) applied by the browser itself. 
+
+We could get around the problem by simply adding a `proxy` value in the `package.json` file, as mentioned in the [`create-react-app` documentation](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#proxying-api-requests-in-development). However, due to a [known issue](https://github.com/facebook/create-react-app/issues/3391), this workaround is not applicable currently.
+
+So, in order to enable communication between our client app and our backend server, we need to make our server support [CORS (Cross-origin resource sharing)](https://auth0.com/docs/cross-origin-authentication). With this approach, the server authorizes a client published on a different domain to request its resources. To enable CORS in our Node.js server, we can simply add a new header to be sent to the client: the `Access-Control-Allow-Origin` header. After making this change, the call to `response.writeHead` will look like this:
+
+```javascript
+response.writeHead(200, {
+  'Connection': 'keep-alive',
+  'Content-Type': 'text/event-stream',
+  'Cache-Control': 'no-cache',
+  'Access-Control-Allow-Origin': '*'
+});
+```
+
+The asterisk assigned to the `Access-Control-Allow-Origin` header indicates that any client (from any domain) is authorized to access this URL. It may not be the desired solution in a production environment. In fact, in a production environment, we should adopt a different approach, such as put the two applications under the same domain (by using a reverse proxy), or by enabling [CORS](https://auth0.com/docs/cross-origin-authentication) more selectively (i.e. authorizing only specific domains).
+
+Once we have enabled CORS on the Node.js server, we should change the URL passed to the `EventSource()` constructor. So, let's open the `./src/App.js` file on our React application and replace the line that defines `this.eventSource` with this:
+
+```javascript
+this.eventSource = new EventSource('http://localhost:5000/events');
+```
+
+Bingo! If we run our backend server again and then launch the client application, after a few seconds, we will see our browser showing our real-time application.
+
+As a recap, this is how we run our projects:
+
+```shell
+# from the backend directory
+cd real-time-sse-backend
+
+# start the Node.js server
+node server.js
+
+# and from the real-time-sse-app directory
+cd real-time-sse-app
+
+# start the React application
+npm start
+```
+
+> **Note:** It might be easier to run both applications from different terminal sessions. Otherwise, we might have to run the backend server in the background by issuing `node server.js &`.
