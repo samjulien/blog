@@ -607,3 +607,147 @@ export default App;
 ```
 
 As we can see, handling this new event type is as easy as assigning the `stopUpdates()` method to the `closedConnection` event.
+
+## Handling Connection Recovery on Server-Sent Events
+
+So far, we built real-time application based on Server-Sent Events that is quite complete. We are able to get different types of events pushed by the server and to control the end of the event stream. But, what happens if the client loses some event due to network issues? Of course, it depends on the specific application. In some situations, we may ignore the loss of some event, in some others we can't.
+
+Let's consider, for example, the event stream we implemented. If a network issue happens and the client loses the `flightStateUpdate` event that puts the flight into the landing state, it could not be a big problem. User would just miss the landing phase on the timetable but, when the connection gets restored, the timetable would provide the correct information with the subsequent states.
+
+However, if the network issue happens immediately after the flight enters in the landing state and the connection is restored after the `flightRemoval` event, we have an issue: the flight will remain in the landing state forever and we need to handle this awkward situation.
+
+The Server-Sent Events protocol help us by providing a mechanism to identify events and to restore a dropped connection. Let's learn about it.
+
+When the server generates an event, we have the ability to assign an identifier by attaching an `id` keyword to the response to be sent to the client. For example, we could send the `flightStateUpdate` event as shown by the following code:
+
+```javascript
+setTimeout(() => {
+  if (!response.finished) {
+    const eventString = 'id: 1\nevent: flightStateUpdate\ndata: {"flight": "I768", "state": "landing"}\n\n';
+    response.write(eventString);
+  }
+}, 3000);
+```
+
+Here, we are making a little refactoring to our code to add the `id` keyword with `1` as its value.
+
+When a network issue happens and the connection to an event stream is lost, the browser will automatically attempt to restore the connection. When the connection is established again, the browser will automatically send the identifier of the last received event in the `Last-Event-Id` HTTP header. So, the server should be changed to handle this request to restore the event stream properly. It is up to the server to decide if it should send all missed events or if it should continue with newly generated events. Anyway, if the server needs to send all missed events, it also needs to store all events already sent to the client.
+
+Let's implement this strategy in our server. With a bit of refactoring, the following is the final version of the server side code:
+
+```javascript
+// server.js
+
+const http = require('http');
+
+http.createServer((request, response) => {
+  console.log(`Request url: ${request.url}`);
+
+  const eventHistory = [];
+
+  request.on('close', () => {
+    if (!response.finished) {
+      response.end();
+      console.log('Stopped sending events.');
+    }
+  });
+
+  if (request.url.toLowerCase() === '/events') {
+    response.writeHead(200, {
+      'Connection': 'keep-alive',
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Access-Control-Allow-Origin': '*'
+    });
+
+    checkConnectionToRestore(request, response, eventHistory);
+
+    sendEvents(response, eventHistory);
+  } else {
+    response.writeHead(404);
+    response.end();
+  }
+}).listen(5000, () => {
+  console.log('Server running at http://127.0.0.1:5000/');
+});
+
+function sendEvents(response, eventHistory) {
+  setTimeout(() => {
+    if (!response.finished) {
+      const eventString = 'id: 1\nevent: flightStateUpdate\ndata: {"flight": "I768", "state": "landing"}\n\n';
+      response.write(eventString);
+      eventHistory.push(eventString);
+    }
+  }, 3000);
+
+  setTimeout(() => {
+    if (!response.finished) {
+      const eventString = 'id: 2\nevent: flightStateUpdate\ndata: {"flight": "I768", "state": "landed"}\n\n';
+      response.write(eventString);
+      eventHistory.push(eventString);
+    }
+  }, 6000);
+
+  setTimeout(() => {
+    if (!response.finished) {
+      const eventString = 'id: 3\nevent: flightRemoval\ndata: {"flight": "I768"}\n\n';
+      response.write(eventString);
+      eventHistory.push(eventString);
+    }
+  }, 9000);
+
+  setTimeout(() => {
+    if (!response.finished) {
+      const eventString = 'id: 4\nevent: closedConnection\ndata: \n\n';
+      eventHistory.push(eventString);
+    }
+  }, 12000);
+}
+
+function checkConnectionToRestore(request, response, eventHistory) {
+  if (request.headers['last-event-id']) {
+    const eventId = parseInt(request.headers['last-event-id']);
+
+    const eventsToReSend = eventHistory.filter((e) => e.id > eventId);
+
+    eventsToReSend.forEach((e) => {
+      if (!response.finished) {
+        response.write(e);
+      }
+    });
+  }
+}
+```
+
+In the new version of our backend, we introduced an array called `eventHistory` to store the events sent to the client. Then, we assigned to the `checkConnectionToRestore()` function the task of checking and restoring possible broken connections and we encapsulated the code for event generation in the `sendEvents()` function.
+
+Now, we can see that each time an event is sent to the client, it is also stored in the `eventHistory`. For example, this is the code that handles the first event:
+
+```javascript
+setTimeout(() => {
+  if (!response.finished) {
+    const eventString = 'id: 1\nevent: flightStateUpdate\ndata: {"flight": "I768", "state": "landing"}\n\n';
+    response.write(eventString);
+    eventHistory.push(eventString);
+  }
+}, 3000);
+```
+
+If the `checkConnectionToRestore()` function finds the `Last-Event-Id` HTTP header in the request, it filters the already sent events in the `eventHistory` array and sends them again to the client:
+
+```javascript
+function checkConnectionToRestore(request, response, eventHistory) {
+  if (request.headers['last-event-id']) {
+    const eventId = parseInt(request.headers['last-event-id']);
+
+    const eventsToReSend = eventHistory.filter((e) => e.id > eventId);
+
+    eventsToReSend.forEach((e) => {
+      if (!response.finished) {
+        response.write(e);
+      }
+    });
+  }
+```
+
+With these changes, we make our backend more robust and more resilient.
