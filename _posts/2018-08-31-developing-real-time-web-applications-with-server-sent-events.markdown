@@ -34,3 +34,13 @@ The [typical interactions between browsers and servers](https://developer.mozill
 The answer is _yes_! We can achieve that by using [Server-Sent Events (which is also known as *SSE* or *Event Source*)](https://html.spec.whatwg.org/multipage/server-sent-events.html), a W3C standard that allows servers to push data to clients asynchronously. This may suggest using that annoying polling we'd implement to get the progress status from a long server processing but, thanks to SSE, we don't have to implement polling to wait for a response from the server. We don't even need any complex and strange protocol. That is, we can continue to use the standard HTTP protocol.
 
 So, let's take a look at how to use Server-Sent Events in a realistic application.
+
+## Building a Real-Time App with Server-Sent Events
+
+In order to learn how to use Server-Sent Events, we are going to develop a simple flight timetable application (similar to those flight trackers you can find at any airport). The timetable app will consist of a simple web page showing a list of flights as shown in the following picture:
+
+![Real-time flights tracker timetable](./xxx-images/flights-timetable.png)
+
+Through this real-time app, we can find the flight arrival timetable and, after implementing Server-Sent Events, we will see automatically updates when the state of flights change. In our demo application, we are going to simulate the flight state changes using scheduled events. However, one can easily replace this mechanism with more realistic ones on production-ready applications.
+
+So, let's start coding and discover how the Server-Sent Events standard works.
