@@ -51,14 +51,14 @@ So, let's start coding and discover how the Server-Sent Events standard works.
 
 As the first step, let's scaffold our React client application. To make things simple, we will use [`create-react-app`](https://github.com/facebook/create-react-app) to set up our React-based client. So, [let's make sure that we have Node.js installed](https://nodejs.org/en/download/) on our machine and let's type the following command in a terminal window:
 
-```shell
+```bash
 # installing create-react-app globally
 npm install -g create-react-app
 ```
 
 After installing `create-react-app` in our development machine, let's create the basic template of a React application by typing:
 
-```shell
+```bash
 create-react-app real-time-sse-app
 ```
 
@@ -66,7 +66,7 @@ After a few seconds, we will get a new directory called `real-time-sse-app` with
 
 Since our application will show data in a tabular form, we will install a React component that simplifies the task of rendering data into tables: [_React Table_](https://react-table.js.org). To add this component to our application, we will type the following commands in our terminal:
 
-```shell
+```bash
 # make sure we are on the React app project root
 cd real-time-sse-app
 
@@ -189,7 +189,7 @@ The module above exports the `getInitialFlightData` function that simply returns
 
 So far, our application presents the flight data in tabular form. Let's check it out in a web browser! To run the app, type the following command in the terminal:
 
-```shell
+```bash
 # from the real-time-sse-app, start the React app
 npm start
 ```
@@ -315,13 +315,13 @@ Finally, the `Cache-Control` header asks the client not to store data into its l
 
 After sending these headers, the client using the `EventSource()` constructor will wait for events reporting newly available data. The rest of the function body schedules the execution of a few functions in order to simulate the change of a flight state. At each scheduled function execution, a string in the following form is sent to the client:
 
-```
+```bash
 data: xxxxxxx
 ```
 
 The `xxxxxxx` represents the data to be sent to the client. In our case, we send a JSON string representing a flight. We can send multiple data lines in an event response but the response must be closed by a double empty line. In other words, our event message could have the following schema:
 
-```
+```bash
 data: This is a message\n
 data: A long message\n
 \n
@@ -330,7 +330,7 @@ data: A long message\n
 
 In order to execute the web server we created so far, let's type the following commands on the terminal:
 
-```shell
+```bash
 # make sure we are in the real-time-sse-backend directory
 cd real-time-sse-backend
 
@@ -371,7 +371,7 @@ Bingo! If we run our backend server again and then launch the client application
 
 As a recap, this is how we run our projects:
 
-```shell
+```bash
 # from the backend directory
 cd real-time-sse-backend
 
@@ -396,8 +396,6 @@ Suppose, for example, that we want to remove the row that describes a flight aft
 We could think of using the `data` property of the event to specify an event information that distinguishes different event types. However, the Server-Sent Events protocol allows us to specify an event so that we can handle different type of events in an easy way. We are talking about the `event` property on the server-sent event. Let's take a look at how our server's code changes:
 
 ```javascript
-// server.js
-
 // server.js
 
 const http = require('http');
@@ -764,7 +762,7 @@ According to [`caniuse.com`](https://caniuse.com/#search=server%20sent%20events)
 
 Using these polyfills is very simple. In this section, we will see how to use AmvTek's polyfill. The process of using the other ones is not so different. In order to add AmvTek's EventSource polyfill to our React client application, we need to install it via `npm`, as shown below: 
 
-```shell
+```bash
 npm install eventsource-polyfill
 ```
 
@@ -793,6 +791,8 @@ The following are some considerations to keep in mind when choosing between Serv
 - WebSockets is a low-level protocol, while Server-Sent Events is based on HTTP and so it doesn't require additional settings in the network infrastructure.
 - WebSockets supports binary data transfer, while Server-Sent Events supports only text-based data transfer. That is, if we want to transfer binary data via Server-Sent Events we need to encode it in Base64.
 - The combination of low-level protocol and support of binary data transfer makes WebSockets more suitable than Server-Sent Events for applications requiring real-time binary data transfer as may happen in gaming or other similar application types.
+
+{% include asides/javascript-at-auth0.markdown %}
 
 ## Summary
 
