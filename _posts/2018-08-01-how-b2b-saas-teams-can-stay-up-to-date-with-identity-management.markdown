@@ -32,6 +32,8 @@ For teams of all sizes, however, it can be a challenge to keep up in a rapidly e
 
 Building your security practices around the starting point of understanding and managing all of your users can help ensure that you always have a handle on who is working within your system and with confidential information. When crafted well, a robust identity and access management (IAM) system for your users can be a springboard for moving forward.
 
+{% include tweet_quote.html quote_text="When crafted well, a robust identity and access management (IAM) system for your users can be a springboard for moving forward." %}
+
 ## What Is Identity and Access Management (IAM)?
 
 According to [Gartner](http://www.gartner.com/it-glossary/identity-and-access-management-iam/), "Identity and access management (IAM) is the security discipline that enables the right individuals to access the right resources at the right times for the right reasons." As teams become more dispersed and users are logging in across multiple time zones and various devices, IAM practices have emerged to organize and control appropriate access.
@@ -79,6 +81,8 @@ Auth0 supports over 30 social providers, 11 enterprise providers, and three lega
 ## If You're Still Unsure About Outsourcing Your Identity Management Needs, Consider Compliance
 
 More than simply creating a safer and easier UX, Auth0 can help B2B SaaS teams comply with increasingly stringent [security regulations](https://auth0.com/security). A specialized provider like Auth0 can become a one-stop shop for adhering to GDPR and similar laws.
+
+{% include tweet_quote.html quote_text="More than simply creating a safer and easier UX, Auth0 can help B2B SaaS teams comply with increasingly stringent security regulations." %}
 
 Auth0 tools incorporate
 
