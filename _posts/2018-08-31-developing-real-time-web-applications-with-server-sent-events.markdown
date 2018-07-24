@@ -195,3 +195,66 @@ npm start
 After a few seconds, we should see in the browser the list of flights as shown in the picture above. If the browser doesn't open automatically, please open it and go to [`http://localhost:3000`](http://localhost:3000).
 
 > **Note:** For some unknown reason, the application fails to start, issuing `npm i` from the `real-time-sse-app` directory might solve the problem.
+
+### Consuming Server-Sent Events with React
+
+After making our React application present some static data, let's add the functionality it needs to consume server-side generated events.
+
+To do this, we are going to use the [`EventSource` API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource), a standard interface created to interact with the Server-Sent Events protocol. As MDN documentation says, "_an `EventSource` instance opens a persistent connection to an HTTP server, which sends events in `text/event-stream` format. The connection remains open until closed by calling `EventSource.close()`_"
+
+So, as the first step, let's add the `eventSource` property to the `App` component and assign an `EventSource` instance to it. The code below shows how we achieve that:
+
+```javascript
+// src/App.js
+
+// ... import statements ...
+
+class App extends Component {
+  constructor(props) {
+    // ... super, state, and columns ...
+
+    this.eventSource = new EventSource('events');
+  }
+
+  // ... render ...
+}
+
+export default App;
+```
+
+The `EventSource()` constructor creates an object that initializes a communication channel between the client and the server. This channel is unidirectional, meaning that events flow from the server to the client, never the opposite way. To create a new instance, we pass it as argument an URL that represents an endpoint from where we want to receive events. Since we are using HTTP, the URL can be any valid relative or absolute web address, including any possible query strings.
+
+In our case, the client expects a stream of events from the `events` endpoint within the same domain of the client. That is, if the client URL is, as in our example, `http://localhost:3000` then the server endpoint pushing data will be at `http://localhost:3000/events`.
+
+Now, let's capture events sent by the server by adding a few lines of code. We are going to add a new method called `updateFlightState` to our `App` component. This method will be called whenever we receive a message from the server and will update the component state with the message data. The following code snippet shows what changes we need to make in our `App` component to handle server-sent events:
+
+```javascript
+// src/App.js
+
+// ... import statements ...
+
+class App extends Component {
+  // ... constructor ...
+
+  componentDidMount() {
+    this.eventSource.onmessage = (e) => this.updateFlightState(JSON.parse(e.data));
+  }
+  
+  updateFlightState(flightState) {
+    let newData = this.state.data.map((item) => {
+      if (item.flight === flightState.flight) {
+        item.state = flightState.state;
+      }
+      return item;
+    });
+
+    this.setState(Object.assign({}, {data: newData}));
+  }
+
+  // ... render ...
+}
+
+export default App;
+```
+
+As we can see, we added an event handler to the `onmessage` property of the `eventSource` object in the `componentDidMount()` method. The `onmessage` property points to an event handler that will be called when an event comes from the server. In our case, the assigned event handler calls the `updateFlightState()` method to update the component `state` with the data sent by the server. Each event carries data in the `e.data` property represented as a string. For our application, the data will be a JSON string that represents updated flight data, as we will see in next section.
