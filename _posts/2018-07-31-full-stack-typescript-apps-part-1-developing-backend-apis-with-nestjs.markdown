@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "TypeScript from Top to Bottom - Part 1: Developing an API with Nest.js"
-description: "Learn how to use TypeScript to create a full-stack web application with Angular and Nest.js"
+title: "Full-Stack TypeScript Apps - Part 1: Developing Backend APIs with Nest.js"
+description: "This series shows how to create a simple, full-stack web application with Angular, TypeScript, and Nest.js. Part 1: Developing the backend API with Nest.js."
 date: "2018-07-31 08:30"
 category: Technical Guide, Node.js, Nest.js
 author:
@@ -25,19 +25,19 @@ related:
 - 2017-10-31-typescript-practical-introduction.markdown
 ---
 
-**TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. In this first part, you are going to learn how to build a simple API with Nest.js. The second part is going to be about the frontend application using Angular. [You can find the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/nest-restaurant-api).
+**TL;DR:** This is a series on how to build a full-stack TypeScript web application using Angular and Nest.js. In this first part, you are going to learn how to build a simple backend API with Nest.js. The second part is going to be about the frontend application using Angular. You can find [the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/nest-restaurant-api).
 
-{% include tweet_quote.html quote_text="Learn how to develop fullstack @typescriptlang applications with @nestframework and @angular." %}
+{% include tweet_quote.html quote_text="Learn how to develop full-stack @typescriptlang applications with @nestframework and @angular." %}
 
 ## What Is Nest.Js and Why Use It with Angular?
 
-[Nest.js](https://docs.nestjs.com/) is a framework for building Node.js web applications. What makes it special is that it addresses a problem that no other framework does: the architecture of a Node.js project. If you have ever tried to build a project using Node.js, you may have realized that you can do a lot with one module (for example, an Express middleware can do everything from authentication to validation) which can lead to unorganized and hard-to-support projects. As you will see through this article, Nest.js helps developers keeping their code organized by providing different classes that specialize in different problems.
+[Nest.js](https://docs.nestjs.com/) is a framework for building Node.js server-side web applications. What makes it special is that it addresses a problem that no other framework does: the architecture of a Node.js project. If you have ever tried to build a project using Node.js, you may have realized that you can do a lot with one module (for example, an Express middleware can do everything from authentication to validation) which can lead to unorganized and hard-to-support projects. As you will see through this article, Nest.js helps developers keeping their code organized by providing different classes that specialize in different problems.
 
 Besides that, what makes combining Nest.js and [Angular](https://angular.io/) a good idea is that Nest.js is heavily inspired by Angular. For example, you will find that both frameworks use guards to allow or prevent access to some parts of your apps and that both frameworks provide the `CanActivate` interface to implement these guards. Nevertheless, it is important to notice that, although sharing some similar concepts, both frameworks are independent of each other. That is, in this article, you will build a front-end-agnostic API. So, after building the API, you will be able to use it with other frameworks and libraries like React, Vue.js, and so on.
 
 {% include tweet_quote.html quote_text="As @nestframework is heavily inspired by @angular, using both together is very easy!" %}
 
-## The App You Will Build
+## Restaurant Ordering Web App
 
 The app that you are going to create in this tutorial is a simple app for restaurants where users will be able to order items online. There are some business rules for this app:
 
@@ -101,9 +101,9 @@ cd nest-restaurant-api
 npm run start:dev
 ```
 
-Then, if you head to [`localhost:3000`](localhost:3000) in your browser, you will see a page like the following one:
+Then, if you head to [`localhost:3000`](localhost:3000) in your browser, you will see a _"Hello World!"_ page like the following one:
 
-![Nest.js showing the hello world webpage.](https://cdn.auth0.com/blog/fullstack-typescript/hello-nest.png)
+![Nest.js web app hello world page](https://cdn.auth0.com/blog/fullstack-typescript/hello-nest.png)
 
 To avoid adding more complexity, this article is not going to teach you how to write automated tests for your API (though you should write them for any production-ready app). As such, you can go ahead and delete the `test` directory and the `src/app.controller.spec.ts` file (which is test relate). After that, the remaining files inside the `src` directory will be:
 
@@ -470,7 +470,7 @@ After creating your account, log in to it, head to [the APIs section in your Aut
 
 > Don't change the signing algorithm (leave it as `RS256`) as it is the best option from the security point of view.
 
-![Creating an Auth0 API configuration.](https://cdn.auth0.com/blog/fullstack-typescript/create-auth0-api.png)
+![Creating a new Auth0 API configuration.](https://cdn.auth0.com/blog/fullstack-typescript/create-auth0-api.png)
 
 Then you should visit the [_Applications_ section](https://manage.auth0.com/#/applications) of your Auth0 management dashboard, and click on the application with the same name as the API you just created. 
 
@@ -603,11 +603,11 @@ curl -X POST -H 'authorization: Bearer '$TOKEN http://localhost:3000/shopping-ca
 
 ### Managing Roles with Auth0
 
-Currently, in your API, any user that has a verified token can post an item. However, as described before, you want to restrict this operation to admin users only. To implement this feature, [you are going to use Auth0 rules](https://auth0.com/docs/rules/current).
+Currently, in your API, any user that has a verified token can post an item. However, as described before, you want to restrict this operation to admin users only. To implement this feature, you are going to use [Auth0 rules](https://auth0.com/docs/rules/current).
 
 So, go to your Auth0 dashboard, navigate to [the rules section](https://manage.auth0.com/#/rules), hit the button to create a new rule, and select "set a new role to a user" as the rule model:
 
-![Creating an Auth0 rule.](https://cdn.auth0.com/blog/fullstack-typescript/creating-an-auth0-rule.png)
+![Creating a new Auth0 rule.](https://cdn.auth0.com/blog/fullstack-typescript/creating-an-auth0-rule.png)
 
 By doing that, you will get a JavaScript file with a rule template that adds the admin role to any user who has an email provided by some domain. You should change a few details in this template to get a functional example. For your app, you may choose to give admin access only to your own email address. You also will need to change where the information about the admin status is saved.
 
