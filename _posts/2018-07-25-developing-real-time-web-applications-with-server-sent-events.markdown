@@ -2,7 +2,7 @@
 layout: post
 title: "Developing Real-Time Web Applications with Server-Sent Events"
 description: "Learn how to create real-time web applications by using the Server-Sent Events specification."
-date: 2018-08-31 08:30
+date: 2018-07-25 08:30
 category: Technical Guide, Backend
 author:
   name: "Andrea Chiarelli"
@@ -10,8 +10,8 @@ author:
   mail: "andrea.chiarelli.ac@gmail.com"
   avatar: "https://pbs.twimg.com/profile_images/827888770510880769/nnvUxzSd_400x400.jpg"
 design:
-  image: https://cdn.auth0.com/blog/api-introduction/logo.png
-  bg_color: "#202226"
+  image: https://cdn.auth0.com/blog/server-sent-events/server-sent-events-standard-logo.png
+  bg_color: "#222328"
 tags:
 - real-time
 - backend
