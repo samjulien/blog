@@ -11,8 +11,8 @@ author:
   mail: saravana.kumar@biztalk360.com
   avatar: https://cdn.auth0.com/blog/guest-authors/saravana-kumar.png
 design:
-  bg_color: "#1a587e"
-  image: https://cdn.auth0.com/blog/logos/auth0.png
+  bg_color: "#232D84"
+  image: https://cdn.auth0.com/blog/cloud-scale/cloud-scale-saas.png
 tags:
   - scalability
   - identity
