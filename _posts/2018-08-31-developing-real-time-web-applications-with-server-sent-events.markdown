@@ -367,7 +367,7 @@ this.eventSource = new EventSource('http://localhost:5000/events');
 
 Bingo! If we run our backend server again and then launch the client application, after a few seconds, we will see our browser showing our real-time application.
 
-![Developing real-time web applications with Node.js, React, and Server-Sent Events.](https://cdn.auth0.com/blog/server-sent-events/developing-real-time-web-applications-with-react-and-node.png)
+![Locally running the real-time flight tracker web application.](https://cdn.auth0.com/blog/server-sent-events/developing-real-time-web-applications-with-react-and-node.png)
 
 As a recap, this is how we run our projects:
 
@@ -756,7 +756,7 @@ With these changes, we make our backend more robust and more resilient.
 
 {% include tweet_quote.html quote_text="Updating the state of frontend applications with Server-Sent Events is quite easy." %}
 
-## Browser Support
+## Browser Support for Server-Sent Events
 
 According to [`caniuse.com`](https://caniuse.com/#search=server%20sent%20events), Server-Sent Events are currently supported by all major browsers but Internet Explorer, Edge, and Opera Mini. Although [supporting them in Edge is under consideration](https://developer.microsoft.com/en-us/microsoft-edge/platform/status/serversenteventseventsource/), the lack of universal support forces us to use polyfills, such as [Remy Sharp's EventSource.js](https://github.com/remy/polyfills/blob/master/EventSource.js), [Yaffle's EventSource](https://github.com/Yaffle/EventSource), or [AmvTek's EventSource](https://github.com/amvtek/EventSource).
 
@@ -796,6 +796,6 @@ The following are some considerations to keep in mind when choosing between Serv
 
 ## Summary
 
-In this article, we used Server-Sent Events to implement a real-time application that simulates a flight timetable. During the implementation, we had the opportunity to explore the features that the standard provides to support event typing, connection control, and restoring. We also learned how to add support Server-Sent Events on browsers that do not support it by default. Lastly, we took a look at a brief comparison between Server-Sent Events and WebSockets.
+In this article, we used Server-Sent Events to develop a real-time application that simulates a flight timetable. During the development, we had the opportunity to explore the features that the standard provides to support event typing, connection control, and restoring. We also learned how to add support Server-Sent Events on browsers that do not support it by default. Lastly, we took a look at a brief comparison between Server-Sent Events and WebSockets.
 
 If needed, you can [check and download the final code of the project developed throughout this article from this GitHub repository](https://github.com/andychiare/server-sent-events).
