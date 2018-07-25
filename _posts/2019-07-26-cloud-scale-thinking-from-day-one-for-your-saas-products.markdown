@@ -11,8 +11,8 @@ author:
   mail: saravana.kumar@biztalk360.com
   avatar: https://cdn.auth0.com/blog/guest-authors/saravana-kumar.png
 design:
-  bg_color: "#1a587e"
-  image: https://cdn.auth0.com/blog/logos/auth0.png
+  bg_color: "#232D84"
+  image: https://cdn.auth0.com/blog/cloud-scale/cloud-scale-saas.png
 tags:
   - scalability
   - identity
@@ -39,9 +39,9 @@ related:
 
 Before going into the details, I need to give you a short background of Document360, which will help you to understand the context of the article better.
  
-[Document360 is a self-service knowledge base product](https://document360.io/) that helps you to create public or private product documentation. Take as an example [Auth0's own documentation](https://auth0.com/docs/getting-started). Using Document360, you can easily build such product documentation.
+[Document360 is a self-service knowledge base product](https://document360.io/) that helps you to create public or private product documentation. Take as an example [Auth0's own documentation](https://auth0.com/docs). Using Document360, you can easily build such product documentation.
 
-![Using Document360, you can easily build product documentation.](https://document360.io/wp-content/uploads/2018/02/document360_logo.png)
+![Document360 logo](https://document360.io/wp-content/uploads/2018/02/document360_logo.png)
  
 When the idea for Document360 was conceived at the end of 2017, one of the key decisions we have made was to build a solution to scale to unlimited users without any architectural changes. This means that the product has to serve 500 customers today and it shouldn't suffer big architectural changes to serve 500,000 customers in a few years down the line.
  
