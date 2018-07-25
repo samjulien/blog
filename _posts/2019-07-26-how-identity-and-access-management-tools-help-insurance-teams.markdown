@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Cloud-Scale Thinking from Day One for Your SaaS Products"
-description: "Learn how relying on battle-tested solutions allows your engineers to focus on what matters most to your company — the unique features of your SaaS products."
+description: "Learn how utilizing identity solutions like Auth0 allows your engineers to focus on what matters most to your company - developing your SaaS product's unique features."
 date: 2018-07-26 12:30
 category: Growth, Identity
 is_non-tech: true
@@ -49,15 +49,15 @@ Architecturally, this requires a different level of thinking and infrastructure 
  
 For example, let's say you have the requirement to pick a video file from a storage location to do some processing (like creating a transcript) and to store the result in a third-party storage location. When you are looking at processing 5 video messages per day, the solution is pretty simple, but imagine if you are YouTube or Wistia and need to process 100,000+ videos per day. Then, this single piece of functionality will require significant architecture and infrastructure investment.
  
-If you do not plan correctly and decide to build scalable components yourself, your valuable software engineering time will be spent on creating basic versions of those functionalities. The cloud Platform-as-a-Service (PaaS) market has evolved significantly in the past 5-8 years and, today, there is a specialized offering for each piece of the puzzle. It might be a smart move to pick the required Lego blocks and assemble it together rather than building everything yourself.
+If you do not plan correctly and decide to build scalable components yourself, your valuable software engineering time will be spent on creating basic versions of those functionalities. The cloud Platform as a Service (PaaS) market has evolved significantly in the past 5-8 years and, today, there is a specialized offering for each piece of the puzzle. It might be a smart move to pick the required Lego blocks and assemble it together rather than building everything yourself.
 
 ## Core Services for Cloud Scaling
 
 For Document360, there are five core pieces of the product that required cloud-scale thinking:
 
-1. Identity Management (user authentication);
+1. the Identity Management (user authentication) system;
 2. an user-facing web application;
-3. technical writers facing web application;
+3. technical-writers-facing web application;
 4. a search engine;
 5. and data storage.
 
@@ -75,24 +75,24 @@ For any self-service knowledge base product, a good search engine is the key. Th
  
 A document management product like Document360 is full of text documents, so we need a reliable storage (database) with fast read and write capabilities and that can also scale as we grow. For this feature, we decided to go with [MongoDB cloud as our data storage provider](https://www.mongodb.com/cloud).
 
-## Identity Management
+## Identity and Access Management with Auth0
 
 Now, let's get a bit deeper into the main part of this article: ["Identity Management as Service"](https://auth0.com/learn/cloud-identity-access-management/). Document360 got various types of users logging into the system. When you are building a public facing self-service knowledge base, your draft writers and editors need to safely login to the system to produce relevant content. In some scenarios, where the customer decided to keep their self-service knowledge base private to the organization, then the whole organizations need to securely login in.
 
 ![Managing Identity with Auth0](https://cdn.auth0.com/website/assets/pages/dashboard/img/p-dashboard-6fc11ba51b.png)
 
-Out of the five core areas of Document360, getting the initial authentication part in a secure, reliable, and scalable part is the most important aspect. For this, we decided to go with [Auth0 to provide us the initial login/authentication into the product](https://auth0.com/).
+Out of the five core areas of Document360, getting the initial authentication part in a secure, reliable, and scalable part is the most important aspect. For this, we decided to go with [Auth0 to provide the initial login and user authentication for our product](https://auth0.com/).
 
 There are few reasons why we decided to use Auth0 instead of custom building our own identity providers:
 
 - **Enterprise-Ready**: Even though capturing credentials (username/password), validating them against your database, and issuing a validation token might look like a simple task, soon, everything get complicated when you look at the scale factor. [It would have taken months for our developers to build an identity solution that was somewhat similar to what Auth0 provide](https://auth0.com/b2c-customer-identity-management). More than that, it would take years to reach the level of quality and security of what Auth0 can provide.
 - **Hack-Proof**: These days, when you are building a SaaS product like Document360, you need to worry about the DDOS attack and identity hacking. Every now and then, there is something on the news saying that one of the top websites was hacked. As such, it's not worthing the risk for us to do it ourselves. [A product like Auth0, where they deal with billions of identity validation every day, will be better equipped than any in-house solution that we come up with](https://auth0.com/security).
 - **Trivial to add more providers**: Initially, we are starting with a standard username/password for identity verification. However, our plan in later stages is to support more identity/single sign-on capabilities. By using Auth0, we can rest assured that, when the time comes, we will be able to [easily support other identity providers like Azure Active Directory, LDAP, and social identities (like Facebook, Google, LinkedIn etc)](https://auth0.com/docs/identityproviders). With Auth0, this is more of a trivial configuration change rather than spending weeks building support for new identity providers.
-- **Low cost**: If we put together the total investment required to build and manage an identity solution, we would be amazed. The effort and the investment will all add up pretty quickly because you will need specialized engineering resources blocked just for this feature and for the infrastructure requirement. [By using Auth0, we just end paying based on our usage](https://auth0.com/pricing). That is, we pay more when we make more money.
+- **Low cost**: If we put together the total investment required to build and manage an identity solution, we would be amazed. The effort and the investment will all add up pretty quickly because you will need specialized engineering resources blocked just for this feature and for the infrastructure requirement. By using Auth0, we save money by simply [paying based on our usage](https://auth0.com/pricing). That is, we pay more when we make more money.
 - **Rules trigger on identity**: This is one of the cool features we take advantage of at Auth0. We have requirements like, whenever a new user signup, we need to notify the sales team. With Auth0, we achieved this by plugging in [the Zapier integration after a successful authentication](https://auth0.com/rules/zapier-new-user). This was trivial.
-- **Single Sign-On**: In the Document360 case, we have two different web portals. One for where the Technical writers produce knowledge base content and another one for user/customer facing website (public or private). When the customer decides to go private, then [a seamless Single Sign-On experience](https://auth0.com/docs/sso/current) is required between both the portals. This is achieved seamlessly using Auth0.
+- **Single Sign On**: In the Document360 case, we have two different web portals. One for where the Technical writers produce knowledge base content and another one for user/customer facing website (public or private). When the customer decides to go private, then [a seamless Single Sign On experience](https://auth0.com/docs/sso/current) is required between both the portals. This is achieved seamlessly using Auth0.
 
-{% include tweet_quote.html quote_text="By using Auth0, we just end paying based on our usage. That is, we pay more when we make more money." %}
+{% include tweet_quote.html quote_text="By using Auth0, we save money by simply paying based on our usage. That is, we pay more when we make more money." %}
 
 ## Summary
 
