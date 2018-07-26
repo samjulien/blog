@@ -41,6 +41,8 @@ And it doesn't stop there. These threats are constantly evolving. As soon as IT 
 
 So what can you do, now, to secure your user database in this difficult landscape?
 
+{% include tweet_quote.html quote_text="What can you do to secure your user database when there are so many threats like XSS, Clickjacking, Cross-site request forgery, etc?" %}
+
 This piece will offer concrete tools and approaches for keeping your customers safe and help you build a solid technical foundation on which to scale. 
 
 ## Why Is Your User Database At Risk?
@@ -106,6 +108,8 @@ You can take this a step further and build even richer customer profiles by inte
 ## Why Auth0?
 
 Outsourcing your user database needs allows you to turn over these critical tasks to experts, who are up-to-date on the latest trends and are keeping pace with evolving threats. An identity services provider like Auth0 doesn't have to balance these tasks with regular maintenance projects like most IT teams do. 
+
+{% include tweet_quote.html quote_text="Outsourcing your user database needs allows you to turn over these critical tasks to experts, who are up-to-date on the latest trends and are keeping pace with evolving threats." %}
 
 Auth0's user database tools support all major industry standards such as SAML, OpenID Connect, JSON Web Token, OAuth 2.0, OAuth 1.0a, WS­-Federation and OpenID, preventing vendor lock-in.
 
