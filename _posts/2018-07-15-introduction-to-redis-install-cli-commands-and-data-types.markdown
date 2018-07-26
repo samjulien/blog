@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Introduction to Redis"
-description: "In this Redis tutorial, learn how to install and setup Redis as well as how to write and read data from the store using its core data structures."
+title: "Introduction to Redis: Installation, CLI Commands, and Data Types"
+description: "In this Redis tutorial, learn how to install and setup Redis as well as commands to write, read, update, and delete data from the store using its core data structures."
 date: 2018-07-18 8:30
 category: Technical Guide, Architecture, Backend, Data
 design: 
