@@ -47,7 +47,10 @@ This piece will offer concrete tools and approaches for keeping your customers s
 
 A major reason that user databases are at risk is inherent software vulnerability. For example, Apache servers have historically been exposed to the [Heartbleed](http://heartbleed.com/) bug. Heartbleed is unique to OpenSSL (the data encryption technology used by a huge chunk of the internet) and allows attackers to intercept vulnerable information between one's browser and computer. 
 
-If you're entering a password or payment information into a browser, for example, although this data will be encrypted during the transfer to the computer on one level; a second connection, often described as a “heartbeat” between the browser and computer can be intercepted. 
+If you're entering a password or payment information into a browser, for example, although this data will be encrypted during the transfer to the computer on one level; a second connection, often described as a “heartbeat” between the browser and computer can be intercepted.
+
+![The heartbleed bug](https://cdn.auth0.com/blog/auth0-tools/the-heartbleed-bug.png)
+
 ([Source](https://www.youtube.com/watch?v=WgrBrPW_Zn4))
 
 The Heartbleed bug manipulates the secret keys that the browser and computer use to encrypt the names and passwords of the users, along with other sensitive content. In vulnerable versions of OpenSSL software, hackers can break in and steal data directly from the services and users. You can read more about it on the [Heartbleed website](http://heartbleed.com/). 
@@ -68,22 +71,27 @@ Outsourcing your cybersecurity needs, particularly for a user database, can be a
 
 Auth0 has [several tools](https://auth0.com/why-auth0) to help you do this.
 
-### content-aware mfa technology
+### Content-Aware MFA Technology
 
 Amid the many features that Auth0 offers customers on its universal authentication and authorization platform, [multifactor authentication (MFA)](https://auth0.com/docs/multifactor-authentication) helps ensure that only the right users gain access to your system. Even if a hacker obtains a user's login credentials, s/he still needs a second piece of information, such as the user's thumbprint or mobile device, to make it through. 
 
 It's simple to add MFA to your app. For example, if you want to add the Google Authenticator, which provides a six to eight digit one-time password to users as an alternate token, you can turn this on by first visiting Auth0's [Multifactor Auth](https://manage.auth0.com/#/guardian) page from the dashboard. 
+
+![Auth0 multifactor authentication feature](https://cdn.auth0.com/blog/auth0-tools/auth0-multifactor-authentication.png)
+
 If you want to use a different provider like Duo, just click on the link to switch. You can then select if you want your users to receive the password via a push notification or SMS. 
 
 While MFA is proven to reduce breaches of user databases, few organizations have successfully integrated it. Why? Making the 2FA setup simple for customers is a challenge. Even advanced services like [PayPal](https://www.paypal.com/us/smarthelp/article/how-do-i-enable-2fa-(two-factor-authentication)-for-my-paypal-powered-by-braintree-user-faq3500) have made users opt-in through a lengthy process that entails their first logging into a control panel, navigating to their account, and then independently enabling 2FA with a QR code or another supported app.
 
 Auth0 can help you figure out ways to integrate and communicate MFA capabilities for your users in a more seamless and self-aware way. Visit our [business blog](https://auth0.com/blog/business/) for further resources.
 
-### social login integrations
+### Social Login Integrations
 
 You can also build robust profiles of all of your users using Auth0's [social login functions](https://auth0.com/learn/social-login/). Social login allows users to register and access your app by connecting via a provider like Facebook.
 
 Auth0 supports over 30 social providers, including Facebook, Twitter, Google, Yahoo, Windows Live, LinkedIn, GitHub, PayPal, Amazon, VKontakte, Yandex, Basecamp, Box, Salesforce, and more.
+
+![Auth0 social login integrations](https://cdn.auth0.com/blog/auth0-tools/auth0-social-login-integrations.png)
 
 In addition, you can add any OAuth2 Authorization Server you need. To enable social login, just click Connections and then Social in the Auth0’s Management Dashboard, then flip on the switch of the social network provider you'd like in the app(s) of your choice.
 
