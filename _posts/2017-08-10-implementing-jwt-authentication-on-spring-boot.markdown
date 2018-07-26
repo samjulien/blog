@@ -6,10 +6,10 @@ date: 2017-08-10 18:23
 updated: 2018-07-17 08:30
 category: Technical Guide, Java, Spring Boot
 author:
-  name: "Vladimir Fomene"
-  url: "https://twitter.com/VladimirFomene"
-  mail: "vladimirfomene@gmail.com"
-  avatar: "https://s.gravatar.com/avatar/30b8d1b7c0dab4bb311c121a47a6aae9?s=80"
+  name: "Bruno Krebs"
+  url: "https://twitter.com/brunoskrebs"
+  mail: "bruno.krebs@auth0.com"
+  avatar: "https://www.gravatar.com/avatar/76ea40cbf67675babe924eecf167b9b8?s=60"
 design:
   bg_color: "#3F6426"
   image: https://cdn.auth0.com/blog/spring-boot-auth/logo.png
@@ -205,7 +205,7 @@ dependencies {
 }
 ```
 
-The second problem, the missing `BCryptPasswordEncoder` instance, we solve by implementing a method that generates an instance of `BCryptPasswordEncoder`. This method must be annotated with `@Bean` and we will add it in the `Application` class:
+The second problem, the missing `BCryptPasswordEncoder` instance, we solve by implementing a method that generates an instance of `BCryptPasswordEncoder`. This method must be annotated with `@Bean` and we will add it in the `SpringbootAuthUpdatedApplication` class:
 
 ```java
 package com.auth0.samples.authapi.springbootauthupdated;
@@ -215,7 +215,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-public class Application {
+public class SpringbootAuthUpdatedApplication {
 
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
