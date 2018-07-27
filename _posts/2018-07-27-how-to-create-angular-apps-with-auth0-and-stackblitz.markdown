@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Create Secure Angular Apps in the Cloud with StackBlitz and Auth0"
-description: "Learn how to create Angular applications secured by Auth0 using StackBlitz, an online IDE for web applications powered by Visual Studio Code."
+description: "Learn how to create Angular applications secured by Auth0 using StackBlitz, an online cloud IDE for Angular and React web applications powered by Visual Studio Code."
 date: 2018-06-29 8:30
 category: Angular, Cloud, Authentication
 design: 
@@ -59,7 +59,7 @@ At the moment of this writing, the options are Angular, React, and Ionic. Just b
 In a few seconds, StackBlitz scaffolds a brand new project environment for us complete with an online code editor and a browser preview, all within the same browser window!
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/sb/stackblitz-main-view.png" alt="StackBlitz main view">
+  <img src="https://cdn.auth0.com/blog/sb/stackblitz-main-view.png" alt="StackBlitz online editor main view">
 </p>
 
 Some cool StackBlitz features to mention here:
@@ -73,13 +73,13 @@ Some cool StackBlitz features to mention here:
 * We can also provide our project with a custom name that would be reflected in its URL. To do this, locate the project name in the top-left corner, click on the pencil icon, and provide it a new unique name. 
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/sb/change-project-name-in-stackblitz.png" alt="Change project name in StackBlitz">
+  <img src="https://cdn.auth0.com/blog/sb/change-project-name-in-stackblitz.png" alt="Naming the Angular cloud project in StackBlitz editor">
 </p>
 
 I am naming mine `angular-cloud`. If we take a look at my browser preview domain, we can see that now I also have a custom domain:
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/sb/stackblitz-custom-domain.png" alt="StackBlitz custom domain">
+  <img src="https://cdn.auth0.com/blog/sb/stackblitz-custom-domain.png" alt="StackBlitz live project custom domain">
 </p>
 
 This is very similar to what GitHub does with Github pages! I can share that link with anyone I want to check out my app online. The biggest and most useful difference is that the code is alive on StackBlitz! Other people can interact with my code instead of it being static. They can also fork my project to make it their own and make any changes to it. That is definitely one of the best features of **StackBlitz: living code**.
@@ -91,7 +91,7 @@ We can hide the preview browser by clicking on the top-right corner `Close` butt
 Notice on the editor tab that we have a full working project directory. StackBlitz scaffolds the foundation of our project.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/sb/stackblitz-full-editor-view.png" alt="StackBlitz full editor view">
+  <img src="https://cdn.auth0.com/blog/sb/stackblitz-full-editor-view.png" alt="StackBlitz online code text editor view">
 </p>
 
 As a first step, let's jump into the browser preview and learn how to get started with Auth0.
@@ -105,7 +105,7 @@ Auth0 is a global leader in [Identity-as-a-Service (IDaaS)](https://www.webopedi
 The best part of the Auth0 platform is how streamlined is to get started. Let's follow the five steps listed in the page and discuss them in detail.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/sb/authentication-steps-view.png" alt="StackBlitz browser preview view">
+  <img src="https://cdn.auth0.com/blog/sb/authentication-steps-view.png" alt="StackBlitz live browser preview at custom domain">
 </p>
 
 ### Step 1: Signing Up and Getting Credentials for Auth0
@@ -225,7 +225,7 @@ Unless you signed up with Google, if you created a new user through the sign-up 
 Once we signed up or logged in, we are taken back to our Angular app hosted at StackBlitz. Notice that the button in the jumbotron (the giant header at the top of the page) changed from `Login` to `Logout`, which means that we are authenticated. 
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/sb/active-session-view.png" alt="Angular app showing active authentication session">
+  <img src="https://cdn.auth0.com/blog/sb/active-session-view.png" alt="Angular app showing logged-in authenticated session">
 </p>
 
 ### Step 5: Accessing Guarded Routes
@@ -234,10 +234,7 @@ Our application uses Angular to guard the `/account` route. Angular route guards
 
 The `/account` route guard prevents navigation to it if the user is not authenticated. Since we have logged in, when we click on the `guarded route` link that points to `/account`, we are successfully taken to that view. In case that we were logged out, we would remain on the home screen.
 
-<p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/sb/account-view.png" alt="Access to guarded Account View">
-</p>
-
+<p style="text-align: center;"><img src="https://cdn.auth0.com/blog/sb/account-view.png" alt="Access to guarded Account View"></p>
 
 ### Authentication Integration Completed
 
