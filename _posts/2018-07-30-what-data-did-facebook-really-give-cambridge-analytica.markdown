@@ -71,7 +71,7 @@ You have a series of other options for authenticating your users.
 
 [Auth0 supports 30+ social providers, including Twitter, Google, Yahoo, and LinkedIn](https://auth0.com/learn/social-login/). You can also just add any OAuth2 Authorization Server you need. Despite differences among each provider, Auth0 simplifies the process by unifying the way to call providers and the information you retrieve from them.
 
-It's simple to switch providers in the Auth0 dashboard. Simply click [Connections, then Social](https://auth0.com/learn/social-login/). To enable a new provider, just flip the switch next to their icon. You can then select the desired attributes and permissions you want to get from the provider in the configuration popup.
+It's simple to switch providers in the Auth0 dashboard. If you haven't already, you can <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account here</a>. Then, simply click [Connections, then Social](https://auth0.com/learn/social-login/). To enable a new provider, just flip the switch next to their icon. You can then select the desired attributes and permissions you want to get from the provider in the configuration popup.
 
 ### Solution 2: Incorporate Simpler and More Visible Means of Obtaining User Information
 
