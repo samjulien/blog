@@ -8,10 +8,10 @@ design:
   bg_color: "#203259"
   image: https://cdn.auth0.com/blog/cambridge-analytica-facebook/logo.png
 author:
-  name: Dan Arias
-  url: http://twitter.com/getDanArias
-  mail: dan.arias@auth.com
-  avatar: https://pbs.twimg.com/profile_images/1002301567490449408/1-tPrAG__400x400.jpg
+  name: Diego Poza
+  url: https://twitter.com/diegopoza
+  avatar: https://avatars3.githubusercontent.com/u/604869?v=3&s=200
+  mail: diego.poza@auth0.com
 tags: 
   - facebook
   - gdpr
