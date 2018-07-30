@@ -24,6 +24,8 @@ related:
 
 **TL;DR:** In this article, you will learn how to configure a Continuous Deployment pipeline for your open-source Node.js web apps. For demonstration purposes, you will use Now.sh, GitHub, and Travis CI to automate the pipeline. However, the strategy can actually be used with other programming languages (e.g. Python, Java, and .NET Core) and tools (like BitBucket, AWS, and CircleCI).
 
+{% include tweet_quote.html quote_text="Learn how to configure a Continuous Deployment pipeline for your open-source Node.js web applications." %}
+
 ## Continuous Deployment Overview
 
 [Continuous Deployment](https://www.scaledagileframework.com/continuous-deployment/) (popularly known as CD) is a modern software engineering approach that has to do with automating the release of software. Instead of the usual manual method of pushing out a software to production, Continuous Deployment aims to ease and automate this process with the use of pipelines. In Continuous Deployment, an update to the source code means an update to the production server too if all tests are passed. Continuous Deployment is often mistaken with Continuous Integration and Continuous Delivery. For you to properly get a hang of this concept, let us distinguish the other two concepts.
@@ -430,6 +432,8 @@ Once again, after the last command, GitHub will notify Travis CI about the new c
 To see it, just go back to [your Now dashboard](https://zeit.co/dashboard) and click on the icon to open the latest URL defined by Now.
 
 ![The second deployment of the open-source Node.js web app](https://cdn.auth0.com/blog/continuous-deployment/second-deployment.png)
+
+{% include tweet_quote.html quote_text="I just finished configuring a Continuous Deployment pipeline for my open-source Node.js web app." %}
 
 {% include asides/node.markdown %}
 
