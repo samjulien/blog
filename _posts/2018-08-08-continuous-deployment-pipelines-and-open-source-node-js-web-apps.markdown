@@ -38,82 +38,85 @@ In all of these, you need a repository where your code will reside and a Continu
 
 In this post, you will learn how to setup a Continuous Integration server together with a GitHub repository to show Continuous Deployments in practice. Continuous Deployments are important for the following reasons: better integration for large teams, faster and easier releases, faster feedback, increased development productivity as a whole, etc.
 
-## Preparing a Node.js App for Continuous Deployment
+## Preparing an Open-Source Node.js Web App for Continuous Deployment
 
-You will build a simple hello world app with Node.js. Ensure that you have Node.js installed on your machine before moving ahead. However, if you don’t have it yet, follow this [link](https://nodejs.org/en/download/) to install it. 
+In this section, you will build a simple hello-world app with Node.js. As such, first you will need to ensure that you have Node.js installed on your machine before moving ahead.
+
+```bash
+node --version
+```
+
+Running the command above should make your terminal print something similar to `v9.11.1`. If you get a message saying that `node` was not found, please, follow this [link](https://nodejs.org/en/download/) to install Node.js and NPM.
 
 ### Scaffolding a Node.js Web App
 
-Here, you will setup the structure of your Node.js application. For easy setup, you can run the `npm init` command in the project directory. This will guide you through generating a `package.json` file for your Node.js app. The `package.json` file contains basic information about your app coupled with the name of the dependencies used. If you run the command, you should see something like this on your screen,
- 
+Now that you have Node.js properly installed in your machine, you will setup the structure of your Node.js application. For easy setup, you will run `npm init -y` in a new directory (this will be your project root). This command will generate for you a `package.json` file for that will have the details of your Node.js app. The `package.json` file contains basic information about your app coupled with the name of the dependencies used.
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_256435711D8498B15897840D6DBA9A5C15B103EC205218F06CA3BF9F3DF56283_1532383163132_Screen+Shot+2018-07-23+at+10.59.02+PM.png)
+To create you project and the `package.json` file, go to your terminal and execute the following commands:
 
+```bash
+# create the project root
+mkdir node-cd
 
-Type your package name, lets say — **hello-world** and press enter afterwards. You will be required to fill in other fields. Your responses can look like this after inputing all fields:
+# move into the project root
+cd node-cd
 
+# start it as a NPM project
+npm init -y
+```
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_256435711D8498B15897840D6DBA9A5C15B103EC205218F06CA3BF9F3DF56283_1532383655202_Screen+Shot+2018-07-23+at+11.06.57+PM.png)
-
-
-After you enter the last field(license), the `package.json` file will be generated for you. You will be asked to confirm the details of your app, simply type **yes** in the terminal. If you open the directory for your app, you will see a `package.json` file. The file will look like this:
+After running the last command, NPM will generate the `package.json` file for you. Now, if you open the directory for your app, you will see that the `package.json` file contains the following contents:
 
 ```json
 {
-  "name": "hello-world",
+  "name": "node-cd",
   "version": "1.0.0",
-  "description": "A Node.js app to show Continuous Deployment", 
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-   },
-  "keywords": [
-    "Node.js",
-    "Express",
-    "TravisCI"
-   ],
-  "author": "KingIdee",
+  },
+  "keywords": [],
+  "author": "",
   "license": "ISC"
 }
 ```
 
-### Installing Dependencies
+### Installing the Node.js Web App Dependencies
 
-Haven created the `package.json` file, you will need to install the dependencies needed to build your project. You particularly need two dependencies for this one - `express` and `body-parser`. You can install all these dependencies at once by running this command:
+After creating the `package.json` file, you will need to install the dependencies needed to build your project. For this article, you will need only two dependencies: [`express`](https://github.com/expressjs/express) and [`body-parser`](https://github.com/expressjs/body-parser). You can install all these dependencies at once by running this command:
 
-```
+```bash
 npm install express body-parser --save
 ```
 
 Once the installation is complete you should see a `node_modules` folder. Additionally, your `package.json` file will contain the dependencies installed and their versions.
 
-### Creating a Web Page
+### Creating a Web Page on Node.js
 
-During the setup of the app, NPM declared the `index.js` file as the entry point of the app. Now, you need to create the file. Still in the app directory, run this command to create the file:
+During the setup of the app, NPM declared the `index.js` file as the entry point of the app. Now, you need to create this file. So, still in the project root, run the following command to create it:
 
-```
+```bash
 touch index.js
 ```
 
-Next, you have to create the html file. It is usually a good practice to create a folder for your views. So, you would do same here. You can create the folder and file by running these commands in the directory of your app:
+Next, you will have to create an HTML file. Usually, it is a good practice to create a directory for your views. As such, you will create the directory and the HTML file by running the following commands from the project root:
  
-```
+```bash
+# create a directory for your views
 mkdir pages
-```
 
-This command creates a new directory named `pages`.
-
-```
+# create your first view
 touch pages/index.html
 ```
 
-While this command creates a html file named `index.html` in the pages folder. Now, you have to serve the html file when the user visits the `URL` of your app. Open the `index.js` file and set it up like so: 
+Now, to make your Node.js web app serve the HTML file, you will open the `index.js` file and set it up like so: 
 
-```node
+```javascript
 // import dependencies
 const express = require('express');
 const bodyParser = require('body-parser');
-var path = require('path');
+const path = require('path');
     
 // initialise express
 const app = express();
@@ -123,14 +126,16 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/pages/index.html'));
 });
     
-// select the port in which node server will run
+// select the port in which your Node.js web app will run
 const port = 5000;
     
-// listen to the selected port and log a message once connection is established
+// then listen to the selected port
 app.listen(port, () => console.log(`Server is running on port ${port}`));
 ```    
 
-This snippet contains all the server logic required for this app. Just one endpoint is declared which loads the `index.html` page. The app will run on port `5000`. Now, you need to add some content to your `index.html` file. Open the file and paste this:
+This snippet contains all the server logic required for this app. As you can see, just one endpoint is declared (i.e. the one that loads the `index.html` page). Also, as defined in the code above, the app will run on port `5000`.
+
+Now, to add some content to your `index.html` file, open this file and insert the following code:
 
 ```html
 <!DOCTYPE html>
@@ -153,16 +158,17 @@ This snippet contains all the server logic required for this app. Just one endpo
 </html>
 ```
 
-This is a basic HTML code with Bootstrap and Jquery referenced via CDN (Content Delivery Network). It contains a **hello world** text in a `h1` tag to make the text a heading. You can run your server now with this command: 
+This is a basic HTML code with [Bootstrap (a library that helps building beautiful web apps)](https://getbootstrap.com/) and [jQuery (a JavaScript library needed by Bootstrap)](https://jquery.com/) referenced via CDN (Content Delivery Network). The web page contains a **hello world** text in a `h1` tag to make the text a heading. You can run your server now with this command: 
 
-```
+```bash
 node index.js
 ```
 
-If you visit `http://localhost:5000` , you should see something like this:
+Now, if you visit [`http://localhost:5000`](http://localhost:5000), you should see something like this:
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_256435711D8498B15897840D6DBA9A5C15B103EC205218F06CA3BF9F3DF56283_1532524887723_Screen+Shot+2018-07-25+at+2.21.11+PM.png)
+![Node.js web app showing a hello-world page.](https://cdn.auth0.com/blog/continuous-deployment/hello-world-node-js-web-app.png)
 
+That's it! For the purposes of this article, the current project will be enough. Now, you will need to submit your project to a version control system.
 
 ## Introducing GitHub
 
