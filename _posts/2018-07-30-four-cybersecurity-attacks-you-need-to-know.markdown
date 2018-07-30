@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Four Cybersecurity Attacks Your Employees Need to Know"
-description: "Better education and tools will help you mitigate risk."
+description: "Information and tools to help you mitigate risk against cyber attacks and data breaches. Learn more about Malware Infiltration, Phishing, USB Traps, and Mobile Attacks."
 date: 2018-07-30 8:30
 category: Security, Cybersecurity, Enterprise
 design: 
@@ -33,7 +33,7 @@ In 2017, nearly [_179 million records_](https://www.statista.com/statistics/2735
 
 Many of today’s most common cyberattacks have been socially engineered to rely on human error. Even your best employees can become your greatest weakness if they open a suspicious email, click on a malicious link, or pick up and use an anonymous USB device.
 
-Still, there are ways to protect yourself. Here are four of the most common cyberattack examples and the ways you can avoid them.
+There are ways to protect your organization against sensitive data breaches. Here are four of the most common cyberattack examples and the ways you can avoid them.
 
 ## **1. Malware Infiltration**
 
@@ -41,7 +41,7 @@ Still, there are ways to protect yourself. Here are four of the most common cybe
 
 Malware is a term that encompasses many different types of malicious software, including ransomware and spyware. Each type of malware can wreak havoc once it gains access to a system.
 
-WannaCry, for example, a form of ransomware, recently [took advantage](https://www.symantec.com/security-center/writeup/2017-051310-3522-99) of a weak spot in Microsoft’s operating system. Banks, health care providers, manufacturers, and other businesses across the globe reported WannaCry's encryption.
+WannaCry, for example, a form of ransomware, recently [took advantage of a weak spot in Microsoft’s operating system](https://www.symantec.com/security-center/writeup/2017-051310-3522-99). Banks, health care providers, manufacturers, and other businesses across the globe reported WannaCry's encryption.
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/four-cybersecurity-attacks-you-need-to-know/WannaCry-encryption.png" alt="WannaCry encryption">
@@ -59,14 +59,14 @@ _If you want added security, consider [moving to the cloud](https://auth0.com/bl
 
 **What makes you vulnerable: lack of education and attention to detail in suspicious e-mails**
 
-In 2016, [91% of cyberattacks](https://phishme.com/2016-enterprise-phishing-susceptibility-report/)were the result of a spear-phishing email. Phishing e-mails steal data either by tricking recipients into giving it to the cyber criminals or by getting users to download a file that installs spyware—software designed to steal information directly from a user’s device.
+In 2016, [91% of cyberattacks](https://phishme.com/2016-enterprise-phishing-susceptibility-report/) were the result of a spear-phishing email. Phishing e-mails steal data either by tricking recipients into giving it to the cyber criminals or by getting users to download a file that installs spyware—software designed to steal information directly from a user’s device.
 
 Children’s Mercy Hospital [_recently reported a breach_](https://healthitsecurity.com/news/childrens-mercy-hospital-phishing-attack-impacts-phi-of-60k) that exposed the health care information of at least 60,000 people. E-mails tricked users into disclosing their work e-mail credentials, which led to the exposure of patient health data when the hackers gained access to the inboxes of the targeted hospital workers. Children’s Mercy [_is now being sued_](https://www.hipaajournal.com/childrens-mercy-hospital-sued-for-63000-record-data-breach/) for this major breach.
 
 Here’s an example of an imitation Dropbox e-mail asking for confirmation of a user’s e-mail:
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/four-cybersecurity-attacks-you-need-to-know/dropbox-email-asking-confirmation-of-user-email.png" alt="Dropbox e-mail asking for confirmation of a user’s e-mail">
+  <img src="https://cdn.auth0.com/blog/four-cybersecurity-attacks-you-need-to-know/dropbox-email-asking-confirmation-of-user-email.png" alt="Imitation Dropbox email phishing scam asking for confirmation of a user’s e-mail">
 </p>
 
 [_Source_](https://www.bankinfosecurity.com/locky-returns-via-spam-dropbox-themed-phishing-attacks-a-10250)
@@ -82,7 +82,7 @@ _Creative training programs include the following:_
 - _Inspired eLearning's [Security Awareness for the C-Suite](https://inspiredelearning.com/security-awareness/awareness-c-suite/)_
 - _Wombat Security's [everyday tips](https://www.wombatsecurity.com/security-education/free-security-awareness-resources)_
 
-_See [here](https://www.csoonline.com/article/3225471/security/please-dont-send-me-to-cybersecurity-training.html) for a larger list._
+_[See here for a larger list.](https://www.csoonline.com/article/3225471/security/please-dont-send-me-to-cybersecurity-training.html)_
 
 ## **3. USB Traps**
 
@@ -105,7 +105,7 @@ _Solution: Outlawing anonymous, external drives on company devices will send a c
 Hackers are well aware of the explosion of smartphone and tablet use and have created attacks specifically designed for mobile software. [_The Pegasus attack_](https://blog.lookout.com/lookout-trident-pegasus-enterprise-discovery) on Apple’s iOS software is a prime example. Pegasus infected iPhones through phishing text messages that asked recipients to click on a link inside the text message.
 
 <p style="text-align: center;">
-  <img style="width: 300px;" src="https://cdn.auth0.com/blog/four-cybersecurity-attacks-you-need-to-know/pegasus-mobile-attack-on-ios.png" alt=" _The Pegasus attack_ (https://blog.lookout.com/lookout-trident-pegasus-enterprise-discovery) on Apple’s iOS software">
+  <img style="width: 300px;" src="https://cdn.auth0.com/blog/four-cybersecurity-attacks-you-need-to-know/pegasus-mobile-attack-on-ios.png" alt="Example of Pegasus attack on Apple iOS mobile software.">
 </p>
 
 [_Source_](https://www.hax4us.com/2017/03/hindi-english-smishing-brother-of.html)
