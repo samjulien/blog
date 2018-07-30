@@ -36,7 +36,7 @@ Kogan billed “thisisyourdigitallife” as a research app used by psychologists
 Cambridge Analytica also obtained data without users' consent from an [additional ~87 million](https://www.wired.com/story/facebook-exposed-87-million-users-to-cambridge-analytica/) accounts and sold their findings to political campaigns, including those of [Ted Cruz](https://www.theguardian.com/us-news/2015/dec/11/senator-ted-cruz-president-campaign-facebook-user-data), Ben Carson, and [Donald Trump](https://www.nytimes.com/2018/03/17/us/politics/cambridge-analytica-trump-campaign.html).
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/what-data-did-facebook-really-give-cambridge-analytica/Cambridge-Analytica-internal-email.jpg" alt="Cambridge Analytica internal email">
+  <img src="https://cdn.auth0.com/blog/what-data-did-facebook-really-give-cambridge-analytica/Cambridge-Analytica-internal-email.jpg" alt="Cambridge Analytica data breach internal email discussion">
 </p>
 
 [Source](https://www.nytimes.com/2018/03/17/us/politics/cambridge-analytica-trump-campaign.html)
@@ -50,7 +50,7 @@ For the millions of companies that use [Facebook Login](https://auth0.com/learn/
 Shortly following news of the breach, [Facebook launched an apology ad campaign](https://www.fastcompany.com/40563382/facebook-says-sorry-sort-of-in-its-biggest-ever-ad-campaign) aimed at helping users steer clear of dishonest accounts on its platform that could be attempting to steal their information.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/what-data-did-facebook-really-give-cambridge-analytica/apology-ad-campaign.png" alt="Facebook apology ad campaign">
+  <img src="https://cdn.auth0.com/blog/what-data-did-facebook-really-give-cambridge-analytica/apology-ad-campaign.png" alt="Facebook post-data-breach apology ad campaign">
 </p>
 
  [Source](https://www.wired.com/story/facebook-launches-a-new-ad-campaign-with-an-old-message/)
@@ -69,16 +69,16 @@ You have a series of other options for authenticating your users.
   <img src="https://cdn.auth0.com/blog/what-data-did-facebook-really-give-cambridge-analytica/auth0-social-connectors.png" alt="Auth0 Social Connections dashboard">
 </p>
 
-[Auth0 supports 30+ social providers](https://auth0.com/learn/social-login/), including Twitter, Google, Yahoo, and LinkedIn. You can also just add any OAuth2 Authorization Server you need. Despite differences among each provider, Auth0 simplifies the process by unifying the way to call providers and the information you retrieve from them.
+[Auth0 supports 30+ social providers, including Twitter, Google, Yahoo, and LinkedIn](https://auth0.com/learn/social-login/). You can also just add any OAuth2 Authorization Server you need. Despite differences among each provider, Auth0 simplifies the process by unifying the way to call providers and the information you retrieve from them.
 
-It's simple to switch providers in the [Auth0 dashboard](https://auth0.com/learn/social-login/). Simply click Connections, then Social. To enable a new provider, just flip the switch next to their icon. You can then select the desired attributes and permissions you want to get from the provider in the configuration popup.
+It's simple to switch providers in the Auth0 dashboard. Simply click [Connections, then Social](https://auth0.com/learn/social-login/). To enable a new provider, just flip the switch next to their icon. You can then select the desired attributes and permissions you want to get from the provider in the configuration popup.
 
 ### Solution 2: Incorporate Simpler and More Visible Means of Obtaining User Information
 
 [Progressive profiling](https://auth0.com/blog/progressive-profiling/) is another technique for gradually building up a profile of your customers. Each time they interact with your product, you display a short questionnaire. It can begin with something as simple as requesting a first and last name:
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/what-data-did-facebook-really-give-cambridge-analytica/auth0-registration-form.png" alt="Auth0 registration page">
+  <img src="https://cdn.auth0.com/blog/what-data-did-facebook-really-give-cambridge-analytica/auth0-registration-form.png" alt="Auth0 registration signup with expanded first and last name fields">
 </p>
 
 From there,  you can continue to get more specific — but in small increments:
@@ -101,7 +101,7 @@ Starting gradually will help assure your users of your expertise at the outset w
 
 [Source](https://www.econsultancy.com/blog/69256-gdpr-how-to-create-best-practice-privacy-notices-with-examples)
 
-Adding an automatic text window, like Microsoft does, that appears when requesting data points is a simple yet powerful initial trick. From there, you can prompt viewers to click through to a larger policy statement. If they continue to be curious, place links for them to dig even deeper:
+Adding an automatic text window, like Microsoft does, that appears when requesting data points enhances the user experience in a clear and simple way. From there, you can prompt viewers to click through to a larger policy statement. If they continue to be curious, place links for them to dig even deeper:
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/what-data-did-facebook-really-give-cambridge-analytica/microsoft-privacy-statement.jpg" alt="Microsoft privacy policy sample">
@@ -111,10 +111,10 @@ Adding an automatic text window, like Microsoft does, that appears when requesti
 
 If you're daunted by crafting all of this text yourself — ensuring it is both accurate and digestible —  there are many privacy policy templates online. If you're an e-commerce company, for example, [Shopify](https://www.shopify.com/tools/policy-generator) offers a series of tips and tricks. 
 
-Remember: [investing in current customers](https://blog.ujet.co/30-customer-experience-service-stats-you-cant-ignore) can actually produce better results than attracting new ones. Taking the time to open up to those currently engaged will spur them to create more value for you in the long run.
+Remember: investing in current customers can actually produce better results than attracting new ones. Taking the time to open up to those currently engaged will spur them to create more value for you in the long run.
 
 ## Just Because You Rely on Facebook Login, Doesn't Mean There Isn't a Way Forward
 
-Although Facebook has frustrated many companies with its lack of oversight, it still has enormous resources at its fingertips to (hopefully) help it improve. While we wait for the tech titan to rebuild user trust (and perhaps become a beloved tool for business partners once more), the above solutions will help you continue to research, protect, and delight your users. 
+Although Facebook has frustrated many companies with its lack of oversight in the wake of the Cambridge Analytica data breach, it still has enormous resources at its fingertips to (hopefully) help it improve. While we wait for the tech titan to rebuild user trust (and perhaps become a beloved tool for business partners once more), the above solutions will help you continue to research, protect, and delight your users. 
 
 {% include asides/about-auth0.markdown %}
