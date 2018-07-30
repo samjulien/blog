@@ -28,21 +28,21 @@ related:
 
 ## Continuous Deployment Overview
 
-[Continuous Deployment](https://www.scaledagileframework.com/continuous-deployment/) (popularly known as CD) is a modern software engineering approach that has to do with automating the release of software. Instead of the usual manual method of pushing out a software to production, Continuous Deployment aims to ease and automate this process with the use of pipelines. In Continuous Deployment, an update to the source code means an update to the production server too if all tests are passed. Continuous Deployment is often mistaken with Continuous Integration and Continuous Delivery. For you to properly get a hang of this concept, let us distinguish the other two concepts.
+[Continuous Deployment](https://www.scaledagileframework.com/continuous-deployment/) (popularly known as CD) is a modern software engineering approach that has to do with automating the release of software. Instead of the usual manual method of pushing out software to production, Continuous Deployment aims to ease and automate this process with the use of pipelines. In Continuous Deployment, an update to the source code means an update to the production server too if all tests are passed. Continuous Deployment is often mistaken with Continuous Integration and Continuous Delivery. For you to properly get a hang of this concept, let us distinguish the other two concepts.
 
 In [Continuous Integration (CI)](https://www.atlassian.com/continuous-delivery/continuous-integration-intro), when a new code is checked in, a build is generated and tested. The aim is to test every new code to be sure that it doesn’t break the software as a whole. This will require writing test for every update that is pushed. The importance of CI is to ensure a stable codebase at all times, especially when there are multiple developers in a team. With this, bugs are discovered more rapidly when the automated tests fail.
 
-[Continuous Delivery](https://aws.amazon.com/devops/continuous-delivery/) moves a step ahead of Continuous Integration. After testing, the release process is also automated. The aim is to generate a releasable build (i.e. a build that is stable enough to go into production). This helps to reduce the hassle of preparing for release. In Continuous Delivery, since there are regular releases, there is also a faster feedback.
+[Continuous Delivery](https://aws.amazon.com/devops/continuous-delivery/) moves a step ahead of Continuous Integration. After testing, the release process is also automated. The aim is to generate a releasable build (i.e. a build that is stable enough to go into production). This helps to reduce the hassle of preparing for release. In Continuous Delivery, since there are regular releases, there is also faster feedback.
 
 The major difference between Continuous Delivery and Continuous Deployment is the way releases are done. One is manual, while the other is automated. With Continuous Delivery, your software is always at a state where it can be pushed out to production manually. Whereas, with Continuous Deployment, any stable working version of the software is pushed to production immediately. Continuous Deployment needs Continuous Delivery, but the reverse is not applicable.
 
-In all of these, you need a repository where your code will reside and a Continuous Integration server to monitor the repository where the code is checked into. When the server notices an update in the code, it triggers the pipeline. A pipeline in this context is a script/file that contains commands and tasks to be executed on the project. When typically setting up your Continuous Integration server, you setup your pipeline alongside it. Some common Continuous Integration servers include [Travis CI](https://travis-ci.org/), [Jenkins](https://jenkins.io/), [TeamCity](https://www.jetbrains.com/teamcity/), etc.
+In all of these, you need a repository where your code will reside and a Continuous Integration server to monitor the repository where the code is checked into. When the server notices an update in the code, it triggers the pipeline. A pipeline in this context is a script/file that contains commands and tasks to be executed on the project. When typically configuring your Continuous Integration server, you set up your pipeline alongside it. Some common Continuous Integration servers include [Travis CI](https://travis-ci.org/), [Jenkins](https://jenkins.io/), [TeamCity](https://www.jetbrains.com/teamcity/), etc.
 
-In this post, you will learn how to setup a Continuous Integration server together with a GitHub repository to show Continuous Deployments in practice. Continuous Deployments are important for the following reasons: better integration for large teams, faster and easier releases, faster feedback, increased development productivity as a whole, etc.
+In this post, you will learn how to set up a Continuous Integration server together with a GitHub repository to show Continuous Deployments in practice. Continuous Deployments are important for the following reasons: better integration for large teams, faster and easier releases, faster feedback, increased development productivity as a whole, etc.
 
 ## Preparing an Open-Source Node.js Web App for Continuous Deployment
 
-In this section, you will build a simple hello-world app with Node.js. As such, first you will need to ensure that you have Node.js installed on your machine before moving ahead.
+In this section, you will build a simple hello-world app with Node.js. As such, first, you will need to ensure that you have Node.js installed on your machine before moving ahead.
 
 ```bash
 node --version
@@ -52,9 +52,9 @@ Running the command above should make your terminal print something similar to `
 
 ### Scaffolding a Node.js Web App
 
-Now that you have Node.js properly installed in your machine, you will setup the structure of your Node.js application. For easy setup, you will run `npm init -y` in a new directory (this will be your project root). This command will generate for you a `package.json` file for that will have the details of your Node.js app. The `package.json` file contains basic information about your app coupled with the name of the dependencies used.
+Now that you have Node.js properly installed in your machine, you will set up the structure of your Node.js application. For easy setup, you will run `npm init -y` in a new directory (this will be your project root). This command will generate for you a `package.json` file for that will have the details of your Node.js app. The `package.json` file contains basic information about your app coupled with the name of the dependencies used.
 
-To create you project and the `package.json` file, go to your terminal and execute the following commands:
+To create your project and the `package.json` file, go to your terminal and execute the following commands:
 
 ```bash
 # create the project root
@@ -63,7 +63,7 @@ mkdir node-cd
 # move into the project root
 cd node-cd
 
-# start it as a NPM project
+# start it as an NPM project
 npm init -y
 ```
 
@@ -92,7 +92,7 @@ After creating the `package.json` file, you will need to install the dependencie
 npm install express body-parser --save
 ```
 
-Once the installation is complete you should see a `node_modules` folder. Additionally, your `package.json` file will contain the dependencies installed and their versions.
+Once the installation is complete, you should see a `node_modules` folder. Additionally, your `package.json` file will contain the dependencies installed and their versions.
 
 ### Creating a Web Page on Node.js
 
@@ -160,7 +160,7 @@ Now, to add some content to your `index.html` file, open this file and insert th
 </html>
 ```
 
-This is a basic HTML code with [Bootstrap (a library that helps building beautiful web apps)](https://getbootstrap.com/) and [jQuery (a JavaScript library needed by Bootstrap)](https://jquery.com/) referenced via CDN (Content Delivery Network). The web page contains a **hello world** text in a `h1` tag to make the text a heading. You can run your server now with this command: 
+This is a basic HTML code with [Bootstrap (a library that helps to build beautiful web apps)](https://getbootstrap.com/) and [jQuery (a JavaScript library needed by Bootstrap)](https://jquery.com/) referenced via CDN (Content Delivery Network). The web page contains a **hello world** text in an `h1` tag to make the text a heading. You can run your server now with this command: 
 
 ```bash
 node index.js
@@ -174,9 +174,9 @@ That's it! For the purposes of this article, the current project will be enough.
 
 ## GitHub and Open-Source Web Apps
 
-Earlier in this article, I mentioned the need for repository to demonstrate Continuous Deployment in action. A repository in this case is simply a place where source code is stored. As such, you will need to store your project's source code on a remote (online) repository.
+Earlier in this article, I mentioned the need for a repository to demonstrate Continuous Deployment in action. A repository, in this case, is simply a place where source code is stored. As such, you will need to store your project's source code on a remote (online) repository.
 
-[Git](https://git-scm.com/) is the most popular and one of the most advanced [version control systems](https://en.wikipedia.org/wiki/Version_control) out there. Therefore, a service that can host a Git repository is what you should choose. There are many available out there but we will use the most popular of them, GitHub. [GitHub](https://www.github.com) is a web service where Git repositories are hosted. Actually, they offer more than this and you can read more about [GitHub's features here](https://github.com/features).
+[Git](https://git-scm.com/) is the most popular and one of the most advanced [version control systems](https://en.wikipedia.org/wiki/Version_control) out there. Therefore, a service that can host a Git repository is what you should choose. There are many available out there, but we will use the most popular of them, GitHub. [GitHub](https://www.github.com) is a web service where Git repositories are hosted. Actually, they offer more than this and you can read more about [GitHub's features here](https://github.com/features).
 
 ### Creating a GitHub Account
 
@@ -198,7 +198,7 @@ After click on the _New repository_ option, you will be presented with a form li
 
 Fill the form with a name of your repository (e.g. `node-js-cd-pipeline`) and a description (e.g. "Node.js & Continuous Deployment") then hit the _Create repository_ button. When GitHub finishes creating your repository, you will be redirected to it. There, you will be able to copy the repository's `URL` (it must be similar to `https://github.com/KingIdee/node-js-cd-pipeline.git`). Copy it to your clipboard as you will need it soon.
 
-> **Note:** If you have perviously [configured you GitHub account with an SSH key](https://help.github.com/articles/connecting-to-github-with-ssh/), you may be able to copy and use the other URL format. This format is similar to: `git@github.com:KingIdee/node-js-cd-pipeline.git`.
+> **Note:** If you have previously [configured you GitHub account with an SSH key](https://help.github.com/articles/connecting-to-github-with-ssh/), you may be able to copy and use the other URL format. This format is similar to: `git@github.com:KingIdee/node-js-cd-pipeline.git`.
 
 ### Pushing your Open-Source Node.js Web App to GitHub
 
@@ -210,7 +210,7 @@ git init
 
 > **Note:** [You will need to install the Git CLI (Command Line Interface) to execute `git` commands](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
-This command initializes Git in the project directory by creating a `.git` folder (on most operational systems, this directory is invisible by default). After initializing Git, you will have to set up your GitHub repository as a remote:
+This command initializes Git in the project directory by creating a `.git` folder (on most operating systems, this directory is invisible by default). After initializing Git, you will have to set up your GitHub repository as a remote:
 
 ```bash
 git remote add origin REPO_URL
@@ -250,7 +250,7 @@ If everything works fine, you should see the source code of your project online 
 
 ## Now.sh and Open-Source Apps
 
-[Now](http://now.sh) is a Platform as a Service (PaaS) which allows you deploy your Node.js (or Docker) powered projects to the cloud with ease. Now aims to make Continuous Deployments easier for developers. Naturally, deploying websites built with Node.js require a sound knowledge of server configurations and management together with a good command of the terminal. With Now, you can focus more on your app logic and worry less about deployments.
+[Now](http://now.sh) is a Platform as a Service (PaaS) which allows you to deploy your Node.js (or Docker) powered projects to the cloud with ease. Now aims to make Continuous Deployments easier for developers. Naturally, deploying websites built with Node.js require a sound knowledge of server configurations and management together with a good command of the terminal. With Now, you can focus more on your app logic and worry less about deployments.
 
 Some of the amazing features of Now include:
 
@@ -262,17 +262,17 @@ What is even more awesome is that Now allows you to deploy lightweight open-sour
 
 ### Creating a Now.sh Account
 
-To create a Now.sh account, go to [the sign up page of Now](https://zeit.co/signup) and choose one of the methods available (i.e. through email or through your GitHub account). If you choose to sign up through email, you will get a message with a magic link that you can click to verify your account. After that, the browser tab that you used to sign up will be reloaded with your Now dashboard.
+To create a Now.sh account, go to [the sign-up page of Now](https://zeit.co/signup) and choose one of the methods available (i.e. through email or through your GitHub account). If you choose to sign up through email, you will get a message with a magic link that you can click to verify your account. After that, the browser tab that you used to sign up will be reloaded with your Now dashboard.
 
 Besides that, if you chose the _Signup with GitHub_ option, a verification mail will be sent to your email address.
 
-After verifying your email, you will be able [login to Now](https://zeit.co/login). If you are a new user, after logging in, your dashboard should look like this:
+After verifying your email, you will be able [log in to Now](https://zeit.co/login). If you are a new user, after logging in, your dashboard should look like this:
 
 ![Signing up to Now.sh](https://cdn.auth0.com/blog/continuous-deployment/signing-up-to-now.png)
 
 ### Obtaining a Now Token
 
-Once the registration process is complete and you are logged in, [click on your profile picture on the top-right corner and then click on your email address](https://zeit.co/account) (it will appear under the _Settings_ option). After that, Now will show your account settings and, below you profile picture, [you will see a link to _Tokens_](https://zeit.co/account/tokens). Click on it.
+Once the registration process is complete and you are logged in, [click on your profile picture on the top-right corner and then click on your email address](https://zeit.co/account) (it will appear under the _Settings_ option). After that, Now will show your account settings and, below your profile picture, [you will see a link to _Tokens_](https://zeit.co/account/tokens). Click on it.
 
 In this next screen, you will see a section called _Authorized Apps_ and an input field where you will be able to create a new token. In this field, insert a descriptive name like _Continuous Deployment_ and hit the `Enter`. After that, Now will generate a new Token for you.
 
@@ -320,7 +320,7 @@ deploy:
 If you analyze the contents of this file carefully, you will see that:
 
 - The `language` property defines what is the main technology used in your project (i.e. Node.js).
-- The `before_deploy` property specifies the commands to be executed before the deployment phase. In this case, you are telling Travis CI that you will need the Now CLI installed and that if must remove any previous deployment (`now rm node-cd`). You need this last command because you are using Now's free tier.
+- The `before_deploy` property specifies the commands to be executed before the deployment phase. In this case, you are telling Travis CI that you will need the Now CLI installed and that it must remove any previous deployment (`now rm node-cd`). You need this last command because you are using Now's free tier.
 - The `deploy` section defines recipes (commands) used to deploy your project. In this case, you are telling Travis that you want to use `now` to deploy changes submitted to the `master` branch (`master: true`).
 
 > **Note:** If you are wondering why you need `|| true` on the `now rm node-cd` command, this is the explanation. For the first time you push your code, you won't have any app on Now, so this command will fail. If you don't add `|| true`, Travis CI will stop the build process because the `now rm` command will fail.
@@ -363,7 +363,7 @@ env:
     secure: DZC4XpjVPoPl4oXKPD2QATP4++vpPUXllQW0XZjUnSp4S/U9zQamciEMPjvwot324CC/nWm8eL5EyY5WIEyhvhbWwtl85GIYJJeSVhJbkOcwX9Z8Z95aE+9ajI0IMNgE9xS0f8jHYqUOSGTDz0aagGrl8ZgA/qI7qL7QZKLgX07e3nh5Zgyjtrgvyukhchtyiuhoetryuiozb4EoUUc8LJAZJPXBcok/qAmuxPQe6vZt5OTmhNPeL0efdRt861dql45A2qHKOGREYm3Ma0aV1IuqeCLrmoJkT5u7oGd+pG+OWh7LlgA1bjFbTufT/2YiGqCKDNLwbsX8OzBqOlu0Snm8Rb32Yr6VJIw/ulVweg+ZRsEIdNaY=
 ``` 
 
-Travis CI (the only party that will be able to read and decode this property) will use this key to setup the `NOW_TOKEN` environment variable when running the deployment script. Then, in the end, it will use this variable to deploy your project to Now (through the `now --public --token $NOW_TOKEN` command).
+Travis CI (the only party that will be able to read and decode this property) will use this key to set up the `NOW_TOKEN` environment variable when running the deployment script. Then, in the end, it will use this variable to deploy your project to Now (through the `now --public --token $NOW_TOKEN` command).
 
 ### Defining a Name on Now
 
@@ -441,6 +441,6 @@ To see it, just go back to [your Now dashboard](https://zeit.co/dashboard) and c
 
 In this article, you had the chance to deal with one of the buzzing terms in modern software development - Continuous Deployments. You also took a brief look into Git, Continuous Integration servers, and their respective duties in Continuous Deployments. Particularly, you used tools like GitHub, Travis CI, and Now.sh to configure a Continuous Deployment pipeline for open-source Node.js web apps. Isn’t that awesome? 
 
-With this knowledge, you can go ahead and apply Continuous Integration to your much more complex projects. You can even decide to try tools similar to what is used here, like trying a different CI servers, or a new Git hosting web service.
+With this knowledge, you can go ahead and apply Continuous Integration to your much more complex projects. You can even decide to try tools similar to what is used here, like trying different CI servers, or a new Git hosting web service.
 
 I look forward to seeing what you will build. Cheers!
