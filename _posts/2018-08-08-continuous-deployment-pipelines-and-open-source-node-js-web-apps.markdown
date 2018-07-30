@@ -170,91 +170,81 @@ Now, if you visit [`http://localhost:5000`](http://localhost:5000), you should s
 
 That's it! For the purposes of this article, the current project will be enough. Now, you will need to submit your project to a version control system.
 
-## Introducing GitHub
+## GitHub and Open-Source Web Apps
 
-Earlier in this article, I mentioned the need for repository to demonstrate this subject matter. A repository is simply a place where files are stored. You will need to store your project on a remote (online) repository. The term repository is commonly used when talking about version control systems. Version control systems are systems that keep record of files and changes on them. 
+Earlier in this article, I mentioned the need for repository to demonstrate Continuous Deployment in action. A repository in this case is simply a place where source code is stored. As such, you will need to store your project's source code on a remote (online) repository.
 
-Git is one of the most popular version control systems out there. And so, a web service that can host a git repository is what we will opt for. There are many available out there but we will use the most popular of them, GitHub. [GitHub](https://www.github.com) is a web service where git repositories are hosted. Actually, they offer more than this and you can read more about GitHub [here](https://github.com/features).
+[Git](https://git-scm.com/) is the most popular and one of the most advanced [version control systems](https://en.wikipedia.org/wiki/Version_control) out there. Therefore, a service that can host a Git repository is what you should choose. There are many available out there but we will use the most popular of them, GitHub. [GitHub](https://www.github.com) is a web service where Git repositories are hosted. Actually, they offer more than this and you can read more about [GitHub's features here](https://github.com/features).
 
 ### Creating a GitHub Account
 
-If you don’t have an account with GitHub, visit the [website](https://www.github.com) and create an account If you have an account already, login to your profile. Creating an account requires a unique username, email with any password of your choice. 
+If you don’t have an account with GitHub, visit the [website](https://www.github.com) and create a new one. If you do have an account, make sure you are logged in to your profile. Creating an account requires a unique username, email with any password of your choice. 
 
-
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_256435711D8498B15897840D6DBA9A5C15B103EC205218F06CA3BF9F3DF56283_1532375325519_Screen+Shot+2018-07-23+at+8.48.26+PM.png)
-
+![Creating a GitHub account](https://cdn.auth0.com/blog/continuous-deployment/creating-a-github-account.png)
 
 After registration, you will be required to verify your account through your email address to gain full access.
 
 ### Creating a GitHub Repository
 
-GitHub offers public and private repositories. For this demo, you only need a public repository. To create a new repository, open your profile, click the plus button and select **New repository**. Your profile should look like this:
+GitHub is free for public repositories (i.e. for open-source projects), which is just what you need for this article. To create a new repository, open your profile, click the plus button, and select _New repository_. Your profile should look like this:
 
+![GitHub profile and "New Repository" button](https://cdn.auth0.com/blog/continuous-deployment/github-profile.png)
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_256435711D8498B15897840D6DBA9A5C15B103EC205218F06CA3BF9F3DF56283_1532387287747_Screen+Shot+2018-07-24+at+12.07.29+AM.png)
+After click on the _New repository_ option, you will be presented with a form like this:
 
+![Creating a new GitHub repository](https://cdn.auth0.com/blog/continuous-deployment/creating-new-github-repo.png)
 
-After selecting a new repository, you will be presented with a form like this
+Fill the form with a name of your repository (e.g. `node-js-cd-pipeline`) and a description (e.g. "Node.js & Continuous Deployment") then hit the _Create repository_ button. When GitHub finishes creating your repository, you will be redirected to it. There, you will be able to copy the repository's `URL` (it must be similar to `https://github.com/KingIdee/node-js-cd-pipeline.git`). Copy it to your clipboard as you will need it soon.
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_256435711D8498B15897840D6DBA9A5C15B103EC205218F06CA3BF9F3DF56283_1532387443030_Screen+Shot+2018-07-24+at+12.10.07+AM.png)
+> **Note:** If you have perviously [configured you GitHub account with an SSH key](https://help.github.com/articles/connecting-to-github-with-ssh/), you may be able to copy and use the other URL format. This format is similar to: `git@github.com:KingIdee/node-js-cd-pipeline.git`.
 
+### Pushing your Open-Source Node.js Web App to GitHub
 
-Fill it with the name of your repository and the description. Click the **Create repository button** after you are done. When your repository is created, you are given a `URL` that resembles this `https://github.com/KingIdee/hello-world.git` . Copy it to your clipboard, you will need it soon.
+Haven setup your Node.js web app and created a GitHub repository for it, it is time to push your source code online. So, from your project root, run the following command:
 
-### Pushing your Node.js Project to GitHub
-
-Haven setup your Node.js app and installed dependencies, it is time to push your project online to GitHub. Still in your root directory run the following commands: 
-
-```
+```bash
 git init
 ```
 
-This initialises git in the project directory by creating a `.git` folder which is most times invisible.
+> **Note:** [You will need to install the Git CLI (Command Line Interface) to execute `git` commands](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
-```
+This command initialises Git in the project directory by creating a `.git` folder (on most operational systems, this directory is invisible by default). After initiliasing Git, you will have to set up your GitHub repository as a remote:
+
+```bash
 git remote add origin REPO_URL
 ```
+> Make sure you replace `REPO_URL` with the repository URL you copied earlier.
 
-This command connects the local folder to the remote (online) repository.
+Sometimes, there are particular files that you need to ignore when pushing a project to your remote repository. For this project (and most Node.js projects), you will need to ignore the `node_modules` directory. Therefore, create a `.gitignore` file in the directory like so:
 
-
-> Replace **REPO_URL** with your own repository `URL` which you copied earlier.
-
-Sometimes, there are particular files you need to ignore when pushing a project to the repository. For this project and most Node projects you need to ignore the `node_modules` folder. Create a `.gitignore` file in the directory like so:
-
-```
+```bash
 touch .gitignore
 ```
 
-Open the file and paste this line: 
+Then, open the file and paste this line:
 
-```
+```bash
 /node_modules
 ```
 
-> You can add other files you want to ignore as well
+Next, you need to commit the changes made to the project and push to your remote repository. You can do so by running the following commands:
 
-Next, you need to commit the changes made to the project folder and push to your remote repository. You can do so by running the following  commands:
-
-```
+```bash
+# add changed files
 git add -A
-```
 
-This command adds all files affected by changes to git except the ones explicitly listed in `.gitignore` file.
-
-```
+# commit them to Git
 git commit -m "first commit"
-```
 
-This command adds a message to the added/changed files to note what changes that occurred. 
-
-```
+# push them to GitHub
 git push -u origin master
 ```
 
-This command pushes the local changes made to the project to the remote repository and sets up the local project to track remote changes.
+The first command (`git add`) adds all files affected by changes to Git, except the ones explicitly listed in the `.gitignore` file. Then, the second command (`git commit`) adds a message to the added/changed files to note what changes occurred and save them in your local Git repository. Lastly, the `git push` command pushes the local changes made to the project to the remote repository (GitHub in this case) and sets up the local project to track remote changes.
 
-If everything works fine you should see your project online when you visit the repository you created. 
+If everything works fine, you should see the source code of your project online when you visit the repository you created.
+
+![Pushing changes to the GitHub remote repository.](https://cdn.auth0.com/blog/continuous-deployment/pushing-changes-to-the-github-remote-repo.png)
 
 ## Introducing Now.sh
 
