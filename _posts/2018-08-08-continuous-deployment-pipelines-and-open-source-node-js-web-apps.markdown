@@ -22,7 +22,7 @@ related:
 - 2018-06-13-vue-js-and-lambda-developing-production-ready-apps-part-1
 ---
 
-**TL;DR:** In this article, you will learn how to configure a Continuous Deployment pipeline for your open-source Node.js web apps. For demonstration purposes, you will use Now.sh, GitHub, and TravisCI to automate the pipeline. However, the strategy can actually be used with other programming languages (e.g. Python, Java, and .NET Core) and tools (like BitBucket, AWS, and CircleCI).
+**TL;DR:** In this article, you will learn how to configure a Continuous Deployment pipeline for your open-source Node.js web apps. For demonstration purposes, you will use Now.sh, GitHub, and Travis CI to automate the pipeline. However, the strategy can actually be used with other programming languages (e.g. Python, Java, and .NET Core) and tools (like BitBucket, AWS, and CircleCI).
 
 ## Continuous Deployment Overview
 
@@ -208,7 +208,7 @@ git init
 
 > **Note:** [You will need to install the Git CLI (Command Line Interface) to execute `git` commands](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
-This command initialises Git in the project directory by creating a `.git` folder (on most operational systems, this directory is invisible by default). After initiliasing Git, you will have to set up your GitHub repository as a remote:
+This command initializes Git in the project directory by creating a `.git` folder (on most operational systems, this directory is invisible by default). After initializing Git, you will have to set up your GitHub repository as a remote:
 
 ```bash
 git remote add origin REPO_URL
@@ -276,135 +276,160 @@ In this next screen, you will see a section called _Authorized Apps_ and an inpu
 
 For the time being, leave this page open. Soon, you will need to copy this token.
 
-## Introducing Travis CI
+## Configuring Travis CI for Continuous Deployment
 
-[Travis CI](https://travis-ci.org/) is a continuous integration server. CI servers are used to monitor repositories when there is a change and trigger a pre-configured process on the repository. Travis CI particularly supports only projects on GitHub. The project is usually configured by adding a pipeline file named -  `.travis.yml` file to the root directory of the repository.  
+[Travis CI](https://travis-ci.org/) is a Continuous Integration server that you can use for open-source projects. If needed, you can also use it for your private projects but, for this, you will have to use [their other website](https://travis-ci.com/). Continuous Integration servers, as explained before, are used to monitor repositories for changes and to trigger a pre-configured process whenever they find one.
+
+Travis CI particularly supports only projects that are available on GitHub. These projects are usually configured by adding a pipeline file called `.travis.yml` to the root directory of the repository.
 
 ### Creating a Travis Account
 
-To move ahead, you have to signup on [Travis CI](https://travis-ci.org/). Travis CI requires only GitHub signup. Since you 
-have a GitHub account, open the website and signup.
+To move ahead, you have to signup on [Travis CI](https://travis-ci.org/). Travis CI requires only GitHub signup. Since you already have a GitHub account, open the website and signup.
 
-### Configuring Travis CI for your GitHub Repo
+### Configuring Travis CI for your GitHub Open-Source Project
 
-After a successful signup, you can see a list of your public repositories on your profile [here](https://travis-ci.org/) while your private repositories are found [here](http://travis-ci.com.). Travis stores public and private repos in separate domains. Go to your public repository list. It should look like this
+After a successful signup, you will be able to see [a list of your public repositories on your profile](https://travis-ci.org/profile). In there, you will be able to see your repository and you will be able to click on the checkbox button next to it to enable Travis CI to get updates.
 
+![Activating the GitHub repository on Travis CI](https://cdn.auth0.com/blog/continuous-deployment/activate-repository-on-travis-ci.png)
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_256435711D8498B15897840D6DBA9A5C15B103EC205218F06CA3BF9F3DF56283_1532392825500_Screen+Shot+2018-07-24+at+1.39.51+AM.png)
+### Configuring Travis in your Node.js Web App
 
+After activating Travis CI, go back to the project, create a file called `.travis.yml`, and paste the following code on it:
 
-Select the repository you created earlier and activate it. 
-
-
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_256435711D8498B15897840D6DBA9A5C15B103EC205218F06CA3BF9F3DF56283_1532393198638_Screen+Shot+2018-07-24+at+1.45.28+AM.png)
-
-
-### Configuring Travis in your Application
-
-Go back to the project folder, create a `.travis.yml` file and paste the following code:
-
-```
+```bash
 language: node_js
 node_js:
 - node
 cache:
   directories:
   - node_modules
-before_deploy: npm install now --no-save # installs now cli
+before_deploy:
+  - npm install now --no-save
+  - now rm node-cd --token $NOW_TOKEN --yes || true
 deploy:
 - provider: script
-  # deploys the application to now.sh if all tests pass
-  script: now --public --token $NOW_TOKEN && now alias --token $NOW_TOKEN
+  # deploys the application to now.sh
+  script: now --public --token $NOW_TOKEN
   skip_cleanup: true
   on:
     master: true
-- provider: script
-# starts the node server with the entry point script server.js
-  script: npm run server
-  skip_cleanup: true
 ```
 
+If you analyze the contents of this file carefully, you will see that:
 
-In `language:` the technology used for the app is specified, in this case -  Node.js. The `before_deploy:` section specifies the command to be executed before deployment. Here, the Now CLI is installed. The first `script:` in the `deploy` section deploys the project to Now.sh using Now CLI, the `on:` tells Travis which branch to work with and the second `script` starts the node application.
+- The `language` property defines what is the main technology used in your project (i.e. Node.js).
+- The `before_deploy` property specifies the commands to be executed before the deployment phase. In this case, you are telling Travis CI that you will need the Now CLI installed and that if must remove any previous deployment (`now rm node-cd`). You need this last command because you are using Now's free tier.
+- The `deploy` section defines recipes (commands) used to deploy your project. In this case, you are telling Travis that you want to use `now` to deploy changes submitted to the `master` branch (`master: true`).
 
-Next, open your `package.json` file too and add this in the file:
+> **Note:** If you are wondering why you need `|| true` on the `now rm node-cd` command, this is the explanation. For the first time you push your code, you won't have any app on Now, so this command will fail. If you don't add `|| true`, Travis CI will stop the build process because the `now rm` command will fail.
+
+With this in place, open your `package.json` file and redefine the `scripts` section as follows:
  
 ```json
 {
- [...]
- "scripts": {
-   "start": "npm run server",
-   "server": "node index.js"
+  "scripts": {
+    "start": "node index.js"
   }
- }
+}
 ```
- 
-The `npm run server` which was defined in `.travis.yml` didn’t exist in `package.json` file until you just added it now.  
 
-### Securing Now.sh token with Travis CLI
+### Giving Travis CI a Now Token
 
-Security is important when deploying your application as secret keys may be involved. For instance, in your case, the now token is a secret key. Setting the keys as environment variables in Travis CI may seem as the run to approach. Unfortunately, this is not entirely secure. To secure your keys properly, you will need to use the Travis Command Line Interface. To use this, you need to install  ruby and `gem` on your machine. Follow this [documentation](https://github.com/rubygems/rubygems#installation) to achieve that. After you have done that, you can now install Travis CLI using this command:
+Security is important when deploying your application as secret keys may be involved. For instance, in your case, the Now token is a secret key. Setting the keys as environment variables in Travis CI may seem as the run to approach. Unfortunately, this is not entirely secure. To secure your keys properly, you will need to use the Travis CLI (Command Line Interface). To use this, you need to install Ruby and RubyGems on your machine.
 
-```
+If you don't have them yet, you can [follow this documentation](https://github.com/rubygems/rubygems#installation) to achieve that.
+
+After that, you can use `gem` to install Travis CLI:
+
+```bash
 gem install travis
 ```
 
-Congrats! You now have Travis CLI installed. You can now encrypt your `now token` by running this command in your project directory:
+With Travis CLI installed in your local environment, you can use it encrypt your Now Token by running the following command in project root directory:
 
-```
+```bash
 travis encrypt NOW_TOKEN=YOUR_TOKEN --add
 ```
 
-> Replace YOUR_TOKEN with the token with the token you copied from your Now.sh dashboard.
+Just make sure you replace `YOUR_TOKEN` in the command above with [the token available in your Now dashboard (remember you left the page open?)](https://zeit.co/account/tokens).
 
-
-This snippet encrypts `YOUR_TOKEN` and adds the encoded version to `.travis.yml` file under  the`.env` section. If the above command is successful you should see some configurations appear on `.travis.yml` file as shown below:
+This command encrypts your Now Token and adds its encoded version to `.travis.yml` under the `env` section. If the above command is successful you should see some configurations appear on `.travis.yml` file as shown below:
 
 ```
 env:
-    global:
-    secure: DZC4XpjVPoPl4oXKPD2QATP4++vbPUXllQW0XZaUnSp4S/U9zQamciEMPjvwot324CC/nWm8eL5EyY4WIEyhvhbWwtl85GIYJJeSVhJbkOcwX9Z8Z95aE+9ajI0INNgE9xS0f7jHYqUOSGTDz0aagGrl8ZgA/qI7qL7QZKLgX07e3nh5Zgyjtrgvyukhchtyiuhoetryuiozb4EoUUc8LJAZJPXBcok/qAmuxPQe6vZt5OTmhNPeL0efdRt861dql45A2qHKOGREYm3Ma0aV1IuqeCLrmoJkT5u7oGd+pG+OWh7LlgA1bjFbTufT/2YiGqCKDNLwbsX8OzCqOluOSnm8Rb32Yr6VJIw/ulVweg+ZRsEIdNaY=
+  global:
+    secure: DZC4XpjVPoPl4oXKPD2QATP4++vpPUXllQW0XZjUnSp4S/U9zQamciEMPjvwot324CC/nWm8eL5EyY5WIEyhvhbWwtl85GIYJJeSVhJbkOcwX9Z8Z95aE+9ajI0IMNgE9xS0f8jHYqUOSGTDz0aagGrl8ZgA/qI7qL7QZKLgX07e3nh5Zgyjtrgvyukhchtyiuhoetryuiozb4EoUUc8LJAZJPXBcok/qAmuxPQe6vZt5OTmhNPeL0efdRt861dql45A2qHKOGREYm3Ma0aV1IuqeCLrmoJkT5u7oGd+pG+OWh7LlgA1bjFbTufT/2YiGqCKDNLwbsX8OzBqOlu0Snm8Rb32Yr6VJIw/ulVweg+ZRsEIdNaY=
 ``` 
 
-The key generated above will be used for deploying your application to Now.
+Travis CI (the only party that will be able to read and decode this property) will use this key to setup the `NOW_TOKEN` environment variable when running the deployment script. Then, in the end, it will use this variable to deploy your project to Now (through the `now --public --token $NOW_TOKEN` command).
 
-## Testing the Continuous Deployment Pipeline
+### Defining a Name on Now
 
-To test your deployment pipeline all you need to do is add or change files, commit and push to your remote repository which you created in the course of this tutorial.
+The last thing you will have to do to set up Now and Travis together is to create a file called `now.json` on the project root and add the following contents to it:
+
+```json
+{
+  "name": "node-cd"
+}
+```
+
+This file will tell Now what is the `name` of your project and it will help Now defining the unique URL when deploying it.
+
+## The Continuous Deployment Pipeline in Action
+
+To test your deployment pipeline, all you need to do is add (or change/remove) files, commit, and push to your remote GitHub repository. As you have enabled Travis CI on this repository, GitHub will warn Travis CI about the new changes and the deployment process will start.
 
 ### Pushing Your First Change
 
-Change the text in your `index.html` file to something like - **Hello World! Watch this space.** Commit your changes and push to GitHub by running the following commands individually:
+Since you haven't committed and you haven't submitted the changes to `.travis.yml`, `package.json`, and `now.json` yet, you can issue the following commands from your project root directory to push your changes to GitHub:
 
 ```bash
 git add -A
     
-git commit -m "configured deployment pipeline with travis"
+git commit -m "configured the Continuous Deployment pipeline with Travis CI and GitHub"
     
 git push
 ```
 
-Once the changes has been pushed to your repository a deployment process is triggered and Travis CI takes over the build process. It handles this process based on the configurations in `.travis.yml` file which you created in your root directory. As this process is going on you should see the log on your Travis dashboard.
+Once you push the changes to your GitHub repository, Travis CI will trigger a deployment process and take over the build process. As the process goes on, you should see the log on your Travis dashboard.
 
-Once the build is completed, visit your Now dashboard you should see the current deployment instance created with a unique URL which you can visit to view your deployed application on the browser.
+![Travis CI logs while deploying your Node.js web app](https://cdn.auth0.com/blog/continuous-deployment/travis-deploying-your-application.png)
+
+> **Note:** To find the current job, [go to the main Travis CI page while logged in](https://travis-ci.org/). From there, you will be able to find all running jobs.
+
+Once Travis CI completes the build process, you can visit [your Now dashboard](https://zeit.co/dashboard) to see the current deployment instance. There, you will see, under the _Events_ section, a link to your new deployment.
+
+![Now dashboard after the first deployment.](https://cdn.auth0.com/blog/continuous-deployment/now-dashboard-after-deployment.png)
+
+Clicking on it will open your open-source, Node.js app in a new browser tab.
 
 ### Pushing Your Second Change
 
-Next, you can make more changes to your `index.html` file, commit  the changes and push again. Watch your changes go live in minutes. 
+Now, to confirm that your Continuous Deployment pipeline truly words, you can make more changes to your `pages/index.html` file and push to GitHub. So, for example, open this file and replace the `h1` element with this:
+
+{% highlight html %}
+{% raw %}
+<h1 class="text-center">
+  I've just finished configuring a Continuous Deployment pipeline for my open-source, Node.js web app.
+</h1>
+{% endraw %}
+{% endhighlight %}
+
+Then, go to your terminal and issue the following commands:
 
 ```bash
 git add -A
     
-git commit -m "made adjustment to index.html files"
+git commit -m "new message on the index.html file"
     
 git push
 ```
 
+Once again, after the last command, GitHub will notify Travis CI about the new changes and a new deployment process will start. After a couple of minutes, Travis CI will finish the build and will use Now to deploy the new version of your open-source Node.js web app.
 
-Once again visit your Now dashboard you should see the current deployment instance created with a unique URL which you can visit to view your deployed application on the browser. The deployment instances are displayed as shown below:
+To see it, just go back to [your Now dashboard](https://zeit.co/dashboard) and click on the icon to open the latest URL defined by Now.
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_256435711D8498B15897840D6DBA9A5C15B103EC205218F06CA3BF9F3DF56283_1532681757775_Screen+Shot+2018-07-27+at+9.55.14+AM.png)
-
+![The second deployment of the open-source Node.js web app](https://cdn.auth0.com/blog/continuous-deployment/second-deployment.png)
 
 ## Conclusion
 
