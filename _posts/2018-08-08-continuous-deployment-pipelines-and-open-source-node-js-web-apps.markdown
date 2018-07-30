@@ -2,7 +2,7 @@
 layout: post
 title: "Continuous Deployment Pipelines and Open-Source Node.js Web Apps"
 description: "Learn how to configure a Continuous Deployment pipeline for your open-source Node.js web applications."
-date: 2018-07-25 08:30
+date: 2018-08-08 08:30
 category: Technical Guide, Backend
 author:
   name: "Idorenyin Obong"
@@ -139,7 +139,8 @@ This snippet contains all the server logic required for this app. As you can see
 
 Now, to add some content to your `index.html` file, open this file and insert the following code:
 
-```html
+{% highlight html %}
+{% raw %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -158,7 +159,8 @@ Now, to add some content to your `index.html` file, open this file and insert th
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 </html>
-```
+{% endraw %}
+{% endhighlight %}
 
 This is a basic HTML code with [Bootstrap (a library that helps to build beautiful web apps)](https://getbootstrap.com/) and [jQuery (a JavaScript library needed by Bootstrap)](https://jquery.com/) referenced via CDN (Content Delivery Network). The web page contains a **hello world** text in an `h1` tag to make the text a heading. You can run your server now with this command: 
 
@@ -357,7 +359,7 @@ Just make sure you replace `YOUR_TOKEN` in the command above with [the token ava
 
 This command encrypts your Now Token and adds its encoded version to `.travis.yml` under the `env` section. If the above command is successful you should see some configurations appear on `.travis.yml` file as shown below:
 
-```
+```bash
 env:
   global:
     secure: DZC4XpjVPoPl4oXKPD2QATP4++vpPUXllQW0XZjUnSp4S/U9zQamciEMPjvwot324CC/nWm8eL5EyY5WIEyhvhbWwtl85GIYJJeSVhJbkOcwX9Z8Z95aE+9ajI0IMNgE9xS0f8jHYqUOSGTDz0aagGrl8ZgA/qI7qL7QZKLgX07e3nh5Zgyjtrgvyukhchtyiuhoetryuiozb4EoUUc8LJAZJPXBcok/qAmuxPQe6vZt5OTmhNPeL0efdRt861dql45A2qHKOGREYm3Ma0aV1IuqeCLrmoJkT5u7oGd+pG+OWh7LlgA1bjFbTufT/2YiGqCKDNLwbsX8OzBqOlu0Snm8Rb32Yr6VJIw/ulVweg+ZRsEIdNaY=
