@@ -433,6 +433,8 @@ To see it, just go back to [your Now dashboard](https://zeit.co/dashboard) and c
 
 ## Conclusion
 
-In this article you have learnt about one of the buzzing terms in modern software development - Continuous Deployments. You learnt about git hosting web services, CI servers, a PaaS, and their respective duties in Continuous Deployments. Particularly, you used tools like GitHub, Travis CI, and Now.sh. You even went ahead to create a Node.js app and deploy by yourself. Isn’t that awesome? 
+In this article, you had the chance to deal with one of the buzzing terms in modern software development - Continuous Deployments. You also took a brief look into Git, Continuous Integration servers, and their respective duties in Continuous Deployments. Particularly, you used tools like GitHub, Travis CI, and Now.sh to configure a Continuous Deployment pipeline for open-source Node.js web apps. Isn’t that awesome? 
 
-With this knowledge, you can go ahead and apply continuous integration to your much more complex projects. You can even decide to try tools similar to what is used here, like trying a different CI server, or a new git hosting web service. I look forward to seeing what you will build. Cheers!
+With this knowledge, you can go ahead and apply Continuous Integration to your much more complex projects. You can even decide to try tools similar to what is used here, like trying a different CI servers, or a new Git hosting web service.
+
+I look forward to seeing what you will build. Cheers!
