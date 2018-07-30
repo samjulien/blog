@@ -246,42 +246,35 @@ If everything works fine, you should see the source code of your project online 
 
 ![Pushing changes to the GitHub remote repository.](https://cdn.auth0.com/blog/continuous-deployment/pushing-changes-to-the-github-remote-repo.png)
 
-## Introducing Now.sh
+## Now.sh and Open-Source Apps
 
-[Now](http://now.sh) is a Platform as a Service (Paas) which allows you deploy your Node.js or Docker powered websites to the cloud with ease. Now aims to make Continuous Deployments easier for developers. Naturally, deploying websites built with Node.js require a sound knowledge of  server configurations and management together with a good command of the terminal. With Now, you can focus more on your app logic and worry less on deployments.
+[Now](http://now.sh) is a Platform as a Service (PaaS) which allows you deploy your Node.js (or Docker) powered projects to the cloud with ease. Now aims to make Continuous Deployments easier for developers. Naturally, deploying websites built with Node.js require a sound knowledge of server configurations and management together with a good command of the terminal. With Now, you can focus more on your app logic and worry less about deployments.
 
 Some of the amazing features of Now include:
 
-- Free unique URL -  for every deployment made, there is a unique `URL`  generated usually in the form `<appname>-<random string>.now.sh` E.g `helloworld-hddnhdvhsd.now.sh`
-- Process logging - every process from the point of running the command to the point of starting the server for the deployed app is logged on the screen and can be viewed by clicking on any of the deployment instance link found on your dashboard.
+- Free unique URL: for every deployment made, there is a unique `URL` generated usually in the form `<appname>-<random string>.now.sh` (e.g `helloworld-hddnhdvhsd.now.sh`).
+- Process logging: every process from the point of running the command to the point of starting the server for the deployed app is logged on the screen and can be viewed by clicking on any of the deployment instance link found on your dashboard.
 - SSL certificate management - Now uses [Let's Encrypt](https://letsencrypt.org/) to provide your deployments with SSL at no cost. Etc.
 
-Now also offers you the option of purchasing a custom domain. You can read more about Now in the official [docs](https://zeit.co/docs) page. 
+What is even more awesome is that Now allows you to deploy lightweight open-source applications on their infrastructure without paying a dime. [The code, in that case, is open for anyone who is curious about the project](https://zeit.co/blog/now-public). However, since you are developing an open-source app, this shouldn't be a problem. Also, environment variables (for example credentials to connect to a database) are not shared with the public as they are not part of the source code itself.
 
 ### Creating a Now.sh Account
 
-Go to [Now.sh](https://zeit.co/signup) and create an account. You can easily use the **Signup with GitHub** option.
+To create a Now.sh account, go to [the sign up page of Now](https://zeit.co/signup) and choose one of the methods available (i.e. through email or through your GitHub account). If you choose to sign up through email, you will get a message with a magic link that you can click to verify your account. After that, the browser tab that you used to sign up will be reloaded with your Now dashboard.
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_256435711D8498B15897840D6DBA9A5C15B103EC205218F06CA3BF9F3DF56283_1532614163877_Screen+Shot+2018-07-26+at+3.08.44+PM.png)
+Besides that, if you chose the _Signup with GitHub_ option, a verification mail will be sent to your email address.
 
+After verifying your email, you will be able [login to Now](https://zeit.co/login). If you are a new user, after logging in, your dashboard should look like this:
 
+![Signing up to Now.sh](https://cdn.auth0.com/blog/continuous-deployment/signing-up-to-now.png)
 
-If you chose the Signup with GitHub option, a verification mail will be sent to your email address. After verifying your email, you can now [login with GitHub](https://zeit.co/login). If you are a new user, after logging in, your dashboard should look like this:
+### Obtaining a Now Token
 
+Once the registration process is complete and you are logged in, [click on your profile picture on the top-right corner and then click on your email address](https://zeit.co/account) (it will appear under the _Settings_ option). After that, Now will show your account settings and, below you profile picture, [you will see a link to _Tokens_](https://zeit.co/account/tokens). Click on it.
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_256435711D8498B15897840D6DBA9A5C15B103EC205218F06CA3BF9F3DF56283_1532391681715_Screen+Shot+2018-07-24+at+1.20.18+AM.png)
+In this next screen, you will see a section called _Authorized Apps_ and an input field where you will be able to create a new token. In this field, insert a descriptive name like _Continuous Deployment_ and hit the `Enter`. After that, Now will generate a new Token for you.
 
-
-
-### Obtaining a now token
-
-Once registration is complete login with GitHub, click on **settings** and select **Tokens** tab. 
-
-
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_256435711D8498B15897840D6DBA9A5C15B103EC205218F06CA3BF9F3DF56283_1532392002811_Screen+Shot+2018-07-24+at+1.26.14+AM.png)
-
-
-Click on **copy** for any tokens listed there and your token will be copied to the clipboard for you. You can also choose to create a new token, you can do this by entering a name in the **Create a new token** hint input field and hit enter. You will use this token for deployments. 
+For the time being, leave this page open. Soon, you will need to copy this token.
 
 ## Introducing Travis CI
 
