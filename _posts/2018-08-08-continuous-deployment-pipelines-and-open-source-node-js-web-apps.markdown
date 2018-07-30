@@ -431,6 +431,8 @@ To see it, just go back to [your Now dashboard](https://zeit.co/dashboard) and c
 
 ![The second deployment of the open-source Node.js web app](https://cdn.auth0.com/blog/continuous-deployment/second-deployment.png)
 
+{% include asides/node.markdown %}
+
 ## Conclusion
 
 In this article, you had the chance to deal with one of the buzzing terms in modern software development - Continuous Deployments. You also took a brief look into Git, Continuous Integration servers, and their respective duties in Continuous Deployments. Particularly, you used tools like GitHub, Travis CI, and Now.sh to configure a Continuous Deployment pipeline for open-source Node.js web apps. Isn’t that awesome? 
