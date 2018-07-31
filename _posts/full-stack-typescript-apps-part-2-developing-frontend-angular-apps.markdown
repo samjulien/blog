@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "TypeScript from Top to Bottom - Part 2: Developing the Angular App"
-description: "Learn how to use TypeScript to create a full-stack web application with Angular and Nest.js"
+title: "Full-Stack TypeScript Apps - Part 2: Developing Frontend Angular Apps"
+description: "This series shows how to create a simple, full-stack web application with Angular, TypeScript, and Nest.js. Part 2: Developing frontend Angular apps."
 date: "2018-08-01 08:30"
 category: Technical Guide, Node.js, Nest.js
 author:
@@ -25,13 +25,13 @@ related:
 - 2017-10-31-typescript-practical-introduction.markdown
 ---
 
-**TL;DR:** This is a small series on how to build a full-stack TypeScript application using Angular and Nest.js. [In the first part, you learned how to build a simple API with Nest.js]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs). In this second part, you are going to learn how to use Angular to build the frontend application that communicates with Nest.js. [You can find the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/).
+**TL;DR:** This is a series on how to build a full-stack TypeScript web application using Angular and Nest.js. [In the first part, you learned how to build a simple API with Nest.js]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs). In part two, here, you are going to learn how to use Angular to develop the frontend of the application that communicates with Nest.js. You can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/).
 
-{% include tweet_quote.html quote_text="Learn how to develop fullstack @typescriptlang applications with @nestframework and @angular." %}
+{% include tweet_quote.html quote_text="Learn how to develop full-stack @typescriptlang applications with @nestframework and @angular." %}
 
 ## Summarizing Part 1
 
-[In the first part]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs), you learned why you should use [Angular](https://angular.io/) together with [Nest.js](https://nestjs.com/) to create a full-stack web application using TypeScript.
+[In part 1 of this series]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs), you learned why you should use [Angular](https://angular.io/) together with [Nest.js](https://nestjs.com/) to create a full-stack web application using TypeScript.
 
 Then, you created a Nest.js backend app that manages the menu of a restaurant. This API had three endpoints. One that accepts unauthenticated requests (`GET /items`), another one that accepts requests from authenticated users (`POST /shop-cart`), and the third one that accepts requests only from users authenticated as administrators (`POST /items`).
 
@@ -111,7 +111,7 @@ ng serve --open
 
 After running these, Angular CLI will open your browser at [localhost:4200](http://localhost:4200) and you will see a page like this:
 
-![Scaffolding an Angular app](https://cdn.auth0.com/blog/fullstack-typescript/scaffolding-angular.png)
+![Scaffolding Angular app - the welcome page](https://cdn.auth0.com/blog/fullstack-typescript/scaffolding-angular.png)
 
 ## Developing Frontend Apps with Angular
 
@@ -231,7 +231,7 @@ ng serve --open
 
 If everything is working as expected, you will see a web app like this one:
  
-![Table of items](https://cdn.auth0.com/blog/fullstack-typescript/angular-menu-app-v1.png)
+![Localhost Angular web app displaying a table of items](https://cdn.auth0.com/blog/fullstack-typescript/angular-menu-app-v1.png)
 
 ### Adding New Items Through a Reactive Angular Form
 
@@ -351,7 +351,7 @@ Now, you will need to update the `items.component.html` file. There, you will ad
 
 After adding these HTML elements, you can head back to your app (i.e. open [localhost:4200](http://localhost:4200) in your browser if you closed it before) and you will see that your app looks like this:
 
-![Using Angular Reactive Forms](https://cdn.auth0.com/blog/fullstack-typescript/using-angular-reactive-forms.png)
+![Localhost Angular web app using reactive forms](https://cdn.auth0.com/blog/fullstack-typescript/using-angular-reactive-forms.png)
 
 With these changes in place, you have finished developing the mock functionality that allows users to manage items on the menu. In the next sections, you will integrate your application with Auth0 and implement the missing parts that make your app communicate with the backend API.
 
@@ -651,7 +651,7 @@ Now, you can test your application with different accounts to see these changes 
 
 ## Integrating Angular with Nest.js
 
-So far, your Angular application didn't actually communicate with your Nest.js app. So, in this section, you are going to integrate the frontend app with the Nest.js backend API you in the first article.
+So far, your Angular application didn't actually communicate with the Nest.js backend API you developed in the first article. So, in this section, you are going to integrate the frontend app with the Nest.js backend API you in the first article.
 
 ### Creating a Proxy
 
@@ -795,12 +795,14 @@ Now, run your application again:
 ng serve --proxy-config proxy.config.js --open
 ```
 
-And head to your app ([localhost:4200](http://localhost:4200)) to test it. From there, you can add new items that this time will be synced with your backend application. To check this, you can restart your Angular app and you will see that the new items you create will still be available (prior to these changes, your items were actually held in memory by Angular). Just don't forget that to update the list of items available in the menu, you have to authenticate yourself with the email address that you have used in the Auth0 rules in [the last article]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs).
+And head to your app ([localhost:4200](http://localhost:4200)) to test it. From there, you can add new items that this time will be synced with your backend application. To check this, you can restart your Angular app and you will see that the new items you create will still be available (prior to these changes, your items were actually held in memory by Angular). Just don't forget that to update the list of items available in the menu, you have to authenticate yourself with the email address that you have used in the Auth0 rules in [part 1 of this series]((https://auth0.com/blog/typescript-from-top-to-bottom-part-1-developing-an-api-with-nestjs).
 
-![Building fullstack applications with Nest.js and Angular](https://cdn.auth0.com/blog/fullstack-typescript/angular-and-nestjs-apps-communicating.png)
+![Building full-stack applications with Nest.js and Angular](https://cdn.auth0.com/blog/fullstack-typescript/angular-and-nestjs-apps-communicating.png)
 
-{% include tweet_quote.html quote_text="I just built a fullstack @typescriptlang application with @nestframework and @angular!" %}
+{% include tweet_quote.html quote_text="I just built a full-stack @typescriptlang application with @nestframework and @angular!" %}
 
 ## Conclusion
 
-In this series, you learned how to create a fullstack application that uses TypeScript on both sides (in the backend and in the frontend). In the first part of the series, you created a Nest.js backend API and secured it with Auth0 then, in this article, you created a nice Angular app that is also secured with Auth0. Is this application production ready? I wouldn't say so. For starters, you will need to create some automated tests to guarantee that future changes don't break the current functionality. Also, you will need to integrate your backend API with some reliable database (such as MongoDB or PostgreSQL). However, with this series, you acquire sufficient knowledge to start creating modern applications with state-of-the-art technologies.
+In this series, you learned how to create a full-stack application that uses TypeScript on both sides (in the backend and in the frontend). In the first part of the series, you created a Nest.js backend API and secured it with Auth0 then, in this article, you created a nice Angular app that is also secured with Auth0.
+
+Is this application production ready? I wouldn't say so. For starters, you will need to create some automated tests to guarantee that future changes don't break the current functionality. Also, you will need to integrate your backend API with some reliable database (such as MongoDB or PostgreSQL). However, with this series, you acquire sufficient knowledge to start creating modern applications with state-of-the-art technologies.
