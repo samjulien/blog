@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Developing and Publishing an NPM Package"
-description: "How to configure the right tools to develop and publish trustworthy NPM packages. Create a high-quality NPM package and publish it to the registry of NPM packages."
+description: "Learn, through a practical tutorial, what tools we can leverage to develop and publish high-quality NPM packages."
 date: "2017-12-20 08:30"
 design:
   bg_color: "#1D4E69"
