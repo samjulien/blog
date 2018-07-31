@@ -2,7 +2,7 @@
 layout: post
 title: "Full-Stack TypeScript Apps - Part 1: Developing Backend APIs with Nest.js"
 description: "This series shows how to create a simple, full-stack web application with Angular, TypeScript, and Nest.js. Part 1: Developing the backend API with Nest.js."
-date: "2018-07-25 08:30"
+date: "2018-07-31 08:30"
 category: Technical Guide, Node.js, Nest.js
 author:
   name: "Ana Ribeiro"
