@@ -1,8 +1,7 @@
 ---
 layout: post
 title: "Building Modern Applications with Django and Vue.js"
-description: "In this article, you will create, step by step, a full-stack application with Django and Vue.js."
-longdescription: "Throughout this article, you will use Django, Django REST framework, and Vue.js to develop an application with a REST API back-end and a Vue.js front-end. The API will be consumed by the Vue.js front-end with the help of Axios (the HTTP client library) and JWT authentication will be handled by Auth0."
+description: "How to create a full-stack application with Django, Django REST framework, and Vue.js. A REST API back-end and a Vue.js front-end, along with JWT authentication through Auth0."
 date: 2018-05-22 17:28
 category: Technical Guide, Python, Django
 author:
@@ -54,13 +53,13 @@ This article is composed of the following sections:
 
 [Python](https://www.python.org/) is a general-purpose programming language and it's among the most popular programming languages in the world nowadays. It's readable, efficient, and [easy to learn](http://lifehacker.com/five-best-programming-languages-for-first-time-learners-1494256243/1497409477). Python is also a portable language available for major operating systems such as Linux, Windows, and Mac.
 
-For web developers, Python has many great tools and frameworks that make developers more productive and able to build prototypes in no time. The most popular framework for web development in the Python landscape is [Django](https://www.djangoproject.com/). Django is advertised as *the framework for perfectionists with tight deadlines* because of its ability to allow developers to quickly build prototypes.
+For web developers, Python has many great tools and frameworks that make developers more productive and able to build prototypes in no time. The most popular web framework for development in the Python landscape is [Django](https://www.djangoproject.com/). Django is advertised as *the framework for perfectionists with tight deadlines* because of its ability to allow developers to quickly build prototypes.
 
-Django uses the power of Python to offer developers a great set of features such as class-based views and a powerful ORM that you can use to model your database requirements without writing any single line of SQL. The Django ORM abstracts away all the complexities of working with databases and, most importantly, doesn't intimidate you when your client has not decided yet on the database system to use. You can start developing using an SQLite database (which doesn't need any special installation) then you can switch to the right database system later on when your client has settled on the right RDBMS (Relational Database Management System) to use.
+Django uses the power of Python that offers Django developers a great set of features such as class-based views and a powerful ORM that you can use to model your database requirements without writing any single line of SQL. The Django ORM abstracts away all the complexities of working with databases and, most importantly, doesn't intimidate you when your client has not decided yet on the database system to use. You can start developing using an SQLite database (which doesn't need any special installation) then you can switch to the right database system later on when your client has settled on the right RDBMS (Relational Database Management System) to use.
 
 Django also comes with a powerful migration system that allows you to migrate your database safely and without losing your data when you make changes to the database structure later on.
 
-Another advantage of using Django is that it has a big and an evolving community. This community has created open source packages for common web development problems, so you don't need to reinvent the wheel when building your project.
+Another advantage of using the Django web framework is that it has a big and an evolving community. This community has created open source packages for common web development problems, so you don't need to reinvent the wheel when building your project.
 
 Django has an excellent and complete documentation of all the features of the framework supplemented by a set of tutorials created by the community.
 
@@ -70,7 +69,7 @@ Django is also suitable for beginners and you don't have to be an expert in ever
 
 <h2 id="introduction-vue-js">Introduction to Vue.js and Vue.js Features</h2>
 
-[Vue.js is a progressive framework for building user interfaces with JavaScript](https://vuejs.org/). You can use Vue.js in the view layer of your application or you can use it to build Single Page Applications (SPAs) by combining it with some other front-end [tools](https://vuejs.org/v2/guide/single-file-components.html).
+[Vue.js is a progressive framework for building user interfaces with JavaScript](https://vuejs.org/). You can use Vue.js in the view layer of your application or you can use it to build Single Page Applications (SPAs) by combining it with some other [front-end tools](https://vuejs.org/v2/guide/single-file-components.html).
 
 Vue.js took the best of both Angular.js and React into one library. For example, just like React, Vue.js uses [a virtual DOM](https://vuejsdevelopers.com/2017/02/21/vue-js-virtual-dom/) and a component-based approach. It also uses similar syntax to the Angular.js directives (e.g. `v-if` and `v-for`)
 
@@ -178,7 +177,7 @@ python manage.py runserver
 
 If you navigate to [http://127.0.0.1:8000](http://127.0.0.1:8000) in a web browser, you will see the following homepage:
 
-![Django starter page](https://cdn.auth0.com/blog/django-vuejs/django-basic-app.png)
+![Django localhost starter page](https://cdn.auth0.com/blog/django-vuejs/django-basic-app.png)
 
 <h2 id="bootstrapping-front-end">Bootstrapping the Front-end Project</h2>
 
@@ -226,7 +225,7 @@ npm run dev
 
 After that, you should be able to visit the Vue.js application in your browser by navigating to [http://127.0.0.1:8080](http://127.0.0.1:8080).
 
-![Vue.js basic application](https://cdn.auth0.com/blog/django-vuejs/vuejs-basic-app.png)
+![Vue.js localhost basic application](https://cdn.auth0.com/blog/django-vuejs/vuejs-basic-app.png)
 
 <h2 id="introduction-jwt">Introduction to JWT</h2>
 
