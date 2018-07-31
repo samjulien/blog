@@ -51,7 +51,7 @@ Loyalty programs, in particular, are notorious for having too many steps require
 
 Logging in should be as easy as entering a password or, ideally, clicking a button. There shouldn't be too many steps and there also shouldn't be winding pathways to get to the login page itself. 
 
-Auth0 offers [Passwordless login](https://auth0.com/passwordless) which is both safe and fast. It uses email, SMS, or Apple Touch ID to authenticate customers and moves them quickly into the site. By clicking on a magic link or using their fingerprint, users can fly past the login panel to enter the site. It's more intuitive and secure than a wall of login options all leading to different sites. 
+Auth0 offers [Passwordless login](https://auth0.com/passwordless) which is both safe and fast. It uses email or SMS to authenticate customers and moves them quickly into the site. By clicking on a magic link or using their fingerprint, users can fly past the login panel to enter the site. It's more intuitive and secure than a wall of login options all leading to different sites. 
 
 
 ## Customers Will Leave if Logging On Requires Too Many Steps
