@@ -37,20 +37,20 @@ You can find the final source code of the demo project that you will create in t
 
 ---
 
-## Summary
+## Table of Contents
 
 This article is composed of the following sections:
 
-* Introduction to Python and Django
-* Introduction to Vue.js and Vue.js Features
-* Bootstrapping the Back-End Project
-* Bootstrapping the Front-End Project
-* Introduction to JSON Web Tokens
-* Integrating Django with Auth0
-* Integrating Auth0 with Vue.js
-* Conclusion and Next Steps
+* <a href="#introduction-python-django" target="_self">Introduction to Python and Django</a>
+* <a href="#introduction-vue-js" target="_self">Introduction to Vue.js and Vue.js Features</a>
+* <a href="#bootstrapping-back-end" target="_self">Bootstrapping the Back-End Project</a>
+* <a href="#bootstrapping-front-end" target="_self">Bootstrapping the Front-End Project</a>
+* <a href="#introduction-jwt" target="_self">Introduction to JSON Web Tokens</a>
+* <a href="#django-auth0" target="_self">Integrating Django with Auth0</a>
+* <a href="#vue-auth0" target="_self">Integrating Auth0 with Vue.js</a>
+* <a href="#conclusion" target="_self">Conclusion and Next Steps</a>
 
-## Introduction to Python and Django
+<h2 id="introduction-python-django">Introduction to Python and Django</h2>
 
 [Python](https://www.python.org/) is a general-purpose programming language and it's among the most popular programming languages in the world nowadays. It's readable, efficient, and [easy to learn](http://lifehacker.com/five-best-programming-languages-for-first-time-learners-1494256243/1497409477). Python is also a portable language available for major operating systems such as Linux, Windows, and Mac.
 
@@ -68,7 +68,7 @@ Django is also suitable for beginners and you don't have to be an expert in ever
 
 {% include tweet_quote.html quote_text="Django is also suitable for beginners and you don't have to be an expert in every feature of the framework to start building your web application." %}
 
-## Introduction to Vue.js and Vue.js Features
+<h2 id="introduction-vue-js">Introduction to Vue.js and Vue.js Features</h2>
 
 [Vue.js is a progressive framework for building user interfaces with JavaScript](https://vuejs.org/). You can use Vue.js in the view layer of your application or you can use it to build Single Page Applications (SPAs) by combining it with some other front-end [tools](https://vuejs.org/v2/guide/single-file-components.html).
 
@@ -81,7 +81,7 @@ Vue.js has many features, such as:
 * great performance;
 * and native rendering on iOS and Android thanks to [Weex](https://weex.incubator.apache.org/) and [NativeScript](https://github.com/rigor789/nativescript-vue);
 
-## Bootstrapping the Back-End Project
+<h2 id="bootstrapping-back-end">Bootstrapping the Back-End Project</h2>
 
 Before you can create the back-end project, you need to install some requirements on your development machine. For Django, you need to have [Python 3](https://www.python.org/download/releases/3.0/), [PIP](https://pypi.python.org/pypi/pip), and [`venv`](https://docs.python.org/3/library/venv.html) installed.
 
@@ -180,7 +180,7 @@ If you navigate to [http://127.0.0.1:8000](http://127.0.0.1:8000) in a web brows
 
 ![Django starter page](https://cdn.auth0.com/blog/django-vuejs/django-basic-app.png)
 
-## Bootstrapping the Front-end Project
+<h2 id="bootstrapping-front-end">Bootstrapping the Front-end Project</h2>
 
 Vue.js has a [CLI utility](https://github.com/vuejs/vue-cli) that allows developers to quickly generate SPAs. The CLI offers pre-configured build setups for a modern frontend workflow and takes only a few minutes to scaffold a basic project boilerplate. This boilerplate is shipped with features such as hot-reloading, lint-on-save, and production-ready builds.
 
@@ -228,7 +228,7 @@ After that, you should be able to visit the Vue.js application in your browser b
 
 ![Vue.js basic application](https://cdn.auth0.com/blog/django-vuejs/vuejs-basic-app.png)
 
-## Introduction to JWT
+<h2 id="introduction-jwt">Introduction to JWT</h2>
 
 [JWT](https://jwt.io/) stands for JSON Web Token and it's simply a JSON (JavaScript Object Notation) object that contains claims. Here it is the official definition in the [RFC 7519](https://tools.ietf.org/html/rfc7519):
 
@@ -258,7 +258,7 @@ After that, click on the *Create* button. You'll be taken to a page where you ca
 
 That's it! You are now ready to integrate your Django application with Auth0
 
-## Integrating Django with Auth0
+<h2 id="django-auth0">Integrating Django with Auth0</h2>
 
 In this section, you will see how to secure the Django REST API with Auth0.
 
@@ -465,7 +465,7 @@ CORS_ORIGIN_WHITELIST = (
 
 You can add this configuration as the last item in the `settings.py` file.
 
-## Integrating Auth0 with The Vue.js Front-end
+<h2 id="vue-auth0">Integrating Auth0 with The Vue.js Front-end</h2>
 
 In this section, you will see how you can add Auth0 authentication to your front-end Vue.js application. You will also add a button to use the access token, retrieved from Auth0, to allow users to fetch the message from the `/api/private/` endpoint.
 
@@ -739,7 +739,7 @@ After authenticating, you will be redirected to your Vue.js application, where t
 
 {% include tweet_quote.html quote_text="I just learned how easy it is to integrate Django and Vue.js" %}
 
-## Conclusion and Next Steps
+<h2 id="conclusion">Conclusion and Next Steps</h2>
 
 In this article, you have bootstrapped both the Django back-end project and the Vue.js front-end application. You have also added JWT authentication to your back-end using Auth0. If you are interested on learning more about how to create REST APIs using Django REST framework and then how to consume it from the Vue.js front-end using Axios, leave a message on the comments so we can know how popular the topic is.
 
