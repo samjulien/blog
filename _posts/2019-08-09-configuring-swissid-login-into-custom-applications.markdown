@@ -119,6 +119,6 @@ That's it! Your custom connection between Auth0 and SwissID is already configure
 
 By default, [the Auth0 Login page](https://auth0.com/docs/hosted-pages/login) will automatically display all connections enabled for an application. For first-class connections like Facebook and Google, the login page will automatically display an appropriate icon for the connection. However, for custom connections (such as SwissID), only a default icon is displayed.
 
-If needed, you can tailor the look and presentation for any connection on either the login or the registration dialogs. This allows you to host a logo for SwissID on your own CDN, and then tell Auth0's login page to use this logo. For more information, check our documentation on [how to customize your login page](https://auth0.com/docs/hosted-pages/login#how-to-customize-your-login-page)
+If needed, you can tailor the look and feel for any connection on either the login or the registration dialogs. This allows you to host a logo for SwissID on your own CDN, and then tell Auth0's login page to use this logo. For more information, check our documentation on [how to customize your login page](https://auth0.com/docs/hosted-pages/login#how-to-customize-your-login-page)
 
 {% include asides/about-auth0.markdown %}
