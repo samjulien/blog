@@ -21,11 +21,11 @@ tags:
 - frontend
 - backend
 related:
-- 2017-10-05-nestjs-brings-typescript-to-nodejs-and-express
-- 2017-10-31-typescript-practical-introduction.markdown
+- 2018-08-01-full-stack-typescript-apps-part-2-developing-frontend-angular-apps
+- 2017-10-31-typescript-practical-introduction
 ---
 
-**TL;DR:** This is a series on how to build a full-stack TypeScript web application using Angular and Nest.js. In this first part, you are going to learn how to build a simple backend API with Nest.js. The second part is going to be about the frontend application using Angular. You can find [the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/nest-restaurant-api).
+**TL;DR:** This is a series on how to build a full-stack TypeScript web application using Angular and Nest.js. In this first part, you are going to learn how to build a simple backend API with Nest.js. [The second part of this series is about the frontend application using Angular](https://auth0.com/blog/full-stack-typescript-apps-part-2-developing-frontend-angular-apps/). You can find [the final code developed throughout this article in this GitHub repository](https://github.com/auth0-blog/nest-restaurant-api).
 
 {% include tweet_quote.html quote_text="Learn how to develop full-stack @typescriptlang applications with @nestframework and @angular." %}
 
@@ -722,6 +722,6 @@ curl -X POST -H 'Content-Type: application/json' \
 
 ## Conclusion
 
-Congratulations! You just finished building your Nest.js API and can now focus on the development of the frontend app!
+Congratulations! You just finished building your Nest.js API and can now focus on the development of the frontend app! Be sure to check out the second part of this series: [Full-Stack TypeScript Apps - Part 2: Developing Frontend Angular Apps](https://auth0.com/blog/full-stack-typescript-apps-part-2-developing-frontend-angular-apps/).
 
 To recapitulate, in this article, you had the chance to use Nest.js/TypeScript features like _modules_, _controllers_, _services_, _interfaces_, _pipes_, _middleware_, and _guard_ to build an API. Hopefully, you had a great experience and are ready to keep evolving your application. If you have any doubts, a good resource to rely on is [the official Nest.js documentation](https://docs.nestjs.com).
