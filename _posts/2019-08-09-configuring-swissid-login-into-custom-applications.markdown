@@ -29,7 +29,7 @@ Usually, application vendors implementing support for SwissID would require a wo
 
 ## Signing up to SwissID
 
-As an application vendor (a.k.a. a [Relying Party](https://auth0.com/identity-glossary#r)) you will first need to sign-up to SwissID. This process starts by [contacting SwissID in order to become a Business Partner](https://www.swissid.ch/en/business-partners#become-a-part-of-a-success-story). After the sign up with SwissID, you will have to provide information about your redirection URI’s. In return, SwissID will provide you a Client ID and a Client Secret. Keep handy this information as you will need both values while setting up SwissID within you Auth0 tenant.
+As an application vendor (a.k.a. a [Relying Party](https://auth0.com/identity-glossary#r)), you will first need to sign-up to SwissID. This process starts by [contacting SwissID in order to become a Business Partner](https://www.swissid.ch/en/business-partners#become-a-part-of-a-success-story). After the sign up with SwissID, you will have to provide information about your redirection URI’s. In return, SwissID will provide you a Client ID and a Client Secret. Keep handy this information as you will need both values while setting up SwissID within you Auth0 account.
 
 ## Signing up to Auth0
 
