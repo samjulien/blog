@@ -107,9 +107,13 @@ With this in place, you can hit the _Save_ button to persist the new settings.
 
 ## Testing the SwissID Custom Social Connection in Auth0
 
-Once configured the TRY button can be used to verify that the configuration is successful; pressing it will typically present the SwissID login page, and once your credentials have been successfully presented a page similar to the following will be displayed by Auth0:
+After hitting the _Save_ button, a new set off buttons will appear on the screen. One of them will be the _Try_ button. Pressing it will present you the SwissID login page and, once your credentials have been successfully informed, a page similar to the following will be displayed by Auth0:
 
-You can then use the Apps tab on the Connection page to enable the applications you want to use with SwissID (see https://auth0.com/docs/extensions/custom-social-extensions for further information).
+![Testing the SwissID Custom Social Connection in Auth0](https://cdn.auth0.com/blog/swissid/testing-the-social-connection-extension.png)
+
+That's it! Your custom connection between Auth0 and SwissID is already configured. Now, you can use the _Apps_ tab available on your custom connection to enable the applications you want to use with SwissID. For example, the screenshot below shows a configuration where only the _Some Awesome Product_ application has the SwissID custom connection.
+
+![](https://cdn.auth0.com/blog/swissid/activating-the-custom-connection-to-different-apps.png)
 
 ## Configuring Auth0 Lock to use SwissID
 
