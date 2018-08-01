@@ -25,13 +25,13 @@ related:
 - 2017-10-31-typescript-practical-introduction.markdown
 ---
 
-**TL;DR:** This is a series on how to build a full-stack TypeScript web application using Angular and Nest.js. [In the first part, you learned how to build a simple API with Nest.js]((https://auth0.com/blog/full-stack-typescript-apps-part-1-developing-backend-apis-with-nestjs/). In part two, here, you are going to learn how to use Angular to develop the frontend of the application that communicates with Nest.js. You can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/).
+**TL;DR:** This is a series on how to build a full-stack TypeScript web application using Angular and Nest.js. [In the first part, you learned how to build a simple API with Nest.js](https://auth0.com/blog/full-stack-typescript-apps-part-1-developing-backend-apis-with-nestjs/). In part two, here, you are going to learn how to use Angular to develop the frontend of the application that communicates with Nest.js. You can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/).
 
 {% include tweet_quote.html quote_text="Learn how to develop full-stack @typescriptlang applications with @nestframework and @angular." %}
 
 ## Summarizing Part 1
 
-[In part 1 of this series]((https://auth0.com/blog/full-stack-typescript-apps-part-1-developing-backend-apis-with-nestjs/), you learned why you should use [Angular](https://angular.io/) together with [Nest.js](https://nestjs.com/) to create a full-stack web application using TypeScript.
+[In part 1 of this series](https://auth0.com/blog/full-stack-typescript-apps-part-1-developing-backend-apis-with-nestjs/), you learned why you should use [Angular](https://angular.io/) together with [Nest.js](https://nestjs.com/) to create a full-stack web application using TypeScript.
 
 Then, you created a Nest.js backend app that manages the menu of a restaurant. This API had three endpoints. One that accepts unauthenticated requests (`GET /items`), another one that accepts requests from authenticated users (`POST /shop-cart`), and the third one that accepts requests only from users authenticated as administrators (`POST /items`).
 
@@ -795,7 +795,7 @@ Now, run your application again:
 ng serve --proxy-config proxy.config.js --open
 ```
 
-And head to your app ([localhost:4200](http://localhost:4200)) to test it. From there, you can add new items that this time will be synced with your backend application. To check this, you can restart your Angular app and you will see that the new items you create will still be available (prior to these changes, your items were actually held in memory by Angular). Just don't forget that to update the list of items available in the menu, you have to authenticate yourself with the email address that you have used in the Auth0 rules in [part 1 of this series]((https://auth0.com/blog/full-stack-typescript-apps-part-1-developing-backend-apis-with-nestjs/).
+And head to your app ([localhost:4200](http://localhost:4200)) to test it. From there, you can add new items that this time will be synced with your backend application. To check this, you can restart your Angular app and you will see that the new items you create will still be available (prior to these changes, your items were actually held in memory by Angular). Just don't forget that to update the list of items available in the menu, you have to authenticate yourself with the email address that you have used in the Auth0 rules in [part 1 of this series](https://auth0.com/blog/full-stack-typescript-apps-part-1-developing-backend-apis-with-nestjs/).
 
 ![Building full-stack applications with Nest.js and Angular](https://cdn.auth0.com/blog/fullstack-typescript/angular-and-nestjs-apps-communicating.png)
 
