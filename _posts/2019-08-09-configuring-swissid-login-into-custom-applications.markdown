@@ -42,13 +42,13 @@ As part of [the free plan](https://auth0.com/pricing), you will get things like:
 
 ![Auth0 free plan](https://cdn.auth0.com/blog/swissid/auth0-free-plan.png)
 
-While signing up to Auth0, you will have to define a _Tenant Domain_ (e.g., `your-company.auth0.com`) and you will have to choose a _Region_ (at the time of writing, three regions are available: US, Europe, and Australia). After that, you can complete your account creation and Auth0 will redirect you to your dashboard.
+While signing up to Auth0, you will have to define a _Tenant Domain_ (e.g., `your-company.auth0.com`) and you will have to choose a _Region_ (at the time of writing, three regions are available: US, Europe, and Australia). After filling in this form, you can complete your account creation and Auth0 will redirect you to your dashboard.
 
 ![Auth0 dashboard](https://cdn.auth0.com/blog/secure-your-gaming-company-with-auth0's-user-fraud-score-and-minfraud/auth0-dashboard.png)
 
 ## Setup a SwissID Custom Social Connection in Auth0
 
-With your Auth0 account properly created, you will have to install [the _Custom Social Connections_ extension](https://auth0.com/docs/extensions/custom-social-extensions) in your tenant. This extension provides an easy way to manage social connections within Auth0 that are not supplied as "first class citizens" (i.e., out of the box). To install it, go to [the _Extensions_ section of your dashboard](https://manage.auth0.com/#/extensions) and click on the _Custom Social Connections_ option.
+With your Auth0 account properly created, you will have to install [the _Custom Social Connections_ extension](https://auth0.com/docs/extensions/custom-social-extensions) in your tenant. This extension provides an easy way to manage social connections within Auth0 that are not supplied as "first-class citizens" (i.e., they are not available out of the box). To install it, go to [the _Extensions_ section of your dashboard](https://manage.auth0.com/#/extensions) and click on the _Custom Social Connections_ option.
 
 ![Installing the Custom Social Connection extension](https://cdn.auth0.com/blog/swissid/custom-social-connection.png)
 
