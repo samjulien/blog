@@ -48,12 +48,20 @@ While signing up to Auth0, you will have to define a _Tenant Domain_ (e.g., `you
 
 ## Setup a SwissID Custom Social Connection in Auth0
 
-You will also need to setup install the Custom Social Connections extension with your Auth0 tenant (https://auth0.com/docs/extensions/custom-social-extensions). The Custom Social Connections extension provides an easy way to manage social connections within Auth0 that are not supplied as ‘first class citizens’ out-of-the-box.
-Once the Custom Social Connections extension is installed it can be used to setup a SwissID Custom Social Connection within Auth0. From the Custom Social Connections dialog click + New Connection to add a new connection:
+With your Auth0 account properly created, you will have to install [the _Custom Social Connections_ extension](https://auth0.com/docs/extensions/custom-social-extensions) in your tenant. This extension provides an easy way to manage social connections within Auth0 that are not supplied as "first class citizens" (i.e., out of the box). To install it, go to [the _Extensions_ section of your dashboard](https://manage.auth0.com/#/extensions) and click on the _Custom Social Connections_ option.
 
-This will bring up the New Connection dialog which can then be used to configure your SwissID connection as described in the section below.
+![Installing the Custom Social Connection extension](https://cdn.auth0.com/blog/swissid/custom-social-connection.png)
+
+Once this extension is installed, you can use it to setup an integration with SwissID. So, if you click on its name in the _Installed Extensions_ table, Auth0 will redirect you to your extension's deployment.
+
+![The Custom Social Connection extension' deployment](https://cdn.auth0.com/blog/swissid/custom-social-connect-deployment.png)
 
 ## Configuring the SwissID Custom Social Connection in Auth0
+
+From your deployment, you can click on the _New Connection_ button. This will bring up the _New Connection_ dialog, which you can use to configure your SwissID connection as described here.
+
+
+
 
 Once SwissID sign-up is complete and you have your SwissID registration details, you can configure the SwissID Custom Social Connection within Auth0. Creating a new Custom Social Connection (as described in the section above) will provide a New Connection dialog in which the configuration information for SwissID can entered as shown below: 
 
