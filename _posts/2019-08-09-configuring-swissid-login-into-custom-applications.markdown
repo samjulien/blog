@@ -27,6 +27,8 @@ related:
 
 Usually, application vendors implementing support for SwissID would require a working knowledge of the [OAuth 2.0 protocol](https://auth0.com/docs/protocols/oauth2) and of the [OpenID Connect specification](https://auth0.com/docs/protocols/oidc). However, as [Auth0](https://auth0.com) now supports SwissID as a [Custom Social Connection](https://auth0.com/docs/extensions/custom-social-extensions), developers can easily integrate this identity provider into their applications. Also, alongside with SwissID, by using Auth0 you can support a myriad of other Identity Provider services (e.g., Facebook, Google, Twitter, and LinkedIn) as well as add capabilities such as [Single Sign On](https://auth0.com/docs/sso/current) and [Multifactor Authentication](https://auth0.com/docs/multifactor-authentication).
 
+{% include tweet_quote.html quote_text="Auth0 helps developers integrating the SwissID indentity provider into their custom applications." %}
+
 ## Signing up to SwissID
 
 As an application vendor (a.k.a. a [Relying Party](https://auth0.com/identity-glossary#r)), you will first need to sign-up to SwissID. This process starts by [contacting SwissID in order to become a Business Partner](https://www.swissid.ch/en/business-partners#become-a-part-of-a-success-story). After the sign up with SwissID, you will have to provide information about your redirection URI’s. In return, SwissID will provide you a Client ID and a Client Secret. Keep handy this information as you will need both values while setting up SwissID within you Auth0 account.
@@ -114,6 +116,8 @@ After hitting _Save_, a new set of buttons will appear on the screen. One of the
 That's it! Your custom connection between Auth0 and SwissID is already configured. Now, you can use the _Apps_ tab available on your custom connection to enable the applications you want to use with SwissID. For example, the screenshot below shows a configuration where only the _Some Awesome Product_ application has the SwissID custom connection active.
 
 ![](https://cdn.auth0.com/blog/swissid/activating-the-custom-connection-to-different-apps.png)
+
+{% include tweet_quote.html quote_text="With Auth0, developers can support SwissID login alongside with other features like multifactor authentication, single sign on, etc." %}
 
 ## Styling the SwissID Connection on the Auth0 Login Page
 
