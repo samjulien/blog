@@ -2,7 +2,7 @@
 layout: post
 title: Configuring SwissID Login into Custom Applications
 description: Learn how to support SwissID login into your custom applications with ease.
-date: 2018-07-24 18:30
+date: 2018-08-09 08:30
 category: Technical Guide, Identity
 author:
   name: Peter Fernandez
@@ -27,11 +27,11 @@ related:
 
 Usually, application vendors implementing support for SwissID would require a working knowledge of the [OAuth 2.0 protocol](https://auth0.com/docs/protocols/oauth2) and of the [OpenID Connect specification](https://auth0.com/docs/protocols/oidc). However, as [Auth0](https://auth0.com) now supports SwissID as a [Custom Social Connection](https://auth0.com/docs/extensions/custom-social-extensions), developers can easily integrate this identity provider into their applications. Also, alongside with SwissID, by using Auth0 you can support a myriad of other Identity Provider services (e.g., Facebook, Google, Twitter, and LinkedIn) as well as add capabilities such as [Single Sign On](https://auth0.com/docs/sso/current) and [Multifactor Authentication](https://auth0.com/docs/multifactor-authentication).
 
-{% include tweet_quote.html quote_text="Auth0 helps developers integrating the SwissID indentity provider into their custom applications." %}
+{% include tweet_quote.html quote_text="Auth0 helps developers integrating the SwissID identity provider into their custom applications." %}
 
 ## Signing up to SwissID
 
-As an application vendor (a.k.a. a [Relying Party](https://auth0.com/identity-glossary#r)), you will first need to sign-up to SwissID. This process starts by [contacting SwissID in order to become a Business Partner](https://www.swissid.ch/en/business-partners#become-a-part-of-a-success-story). After the sign up with SwissID, you will have to provide information about your redirection URI’s. In return, SwissID will provide you a Client ID and a Client Secret. Keep handy this information as you will need both values while setting up SwissID within you Auth0 account.
+As an application vendor (a.k.a. a [Relying Party](https://auth0.com/identity-glossary#r)), you will first need to sign-up to SwissID. This process starts by [contacting SwissID in order to become a Business Partner](https://www.swissid.ch/en/business-partners#become-a-part-of-a-success-story). After the sign up with SwissID, you will have to provide information about your redirection URI’s. In return, SwissID will provide you with a Client ID and a Client Secret. Keep handy this information as you will need both values while setting up SwissID within you Auth0 account.
 
 ## Signing up to Auth0
 
@@ -44,7 +44,7 @@ As part of [the free plan](https://auth0.com/pricing), you will get things like:
 
 ![Auth0 free plan](https://cdn.auth0.com/blog/swissid/auth0-free-plan.png)
 
-While signing up to Auth0, you will have to define a _Tenant Domain_ (e.g., `your-company.auth0.com`) and you will have to choose a _Region_ (at the time of writing, three regions are available: US, Europe, and Australia). After filling in this form, you can complete your account creation and Auth0 will redirect you to your dashboard.
+While signing up to Auth0, you will have to define a _Tenant Domain_ (e.g., `your-company.auth0.com`) and you will have to choose a _Region_ (at the time of writing, three regions are available: US, Europe, and Australia). After filling in this form, you can complete your account creation, and Auth0 will redirect you to your dashboard.
 
 ![Auth0 dashboard](https://cdn.auth0.com/blog/secure-your-gaming-company-with-auth0's-user-fraud-score-and-minfraud/auth0-dashboard.png)
 
@@ -54,7 +54,7 @@ With your Auth0 account properly created, you will have to install [the _Custom 
 
 ![Installing the Custom Social Connection extension](https://cdn.auth0.com/blog/swissid/custom-social-connection.png)
 
-Once this extension is installed, you can use it to setup an integration with SwissID. So, if you click on its name in the _Installed Extensions_ table, Auth0 will redirect you to your extension's deployment.
+Once this extension is installed, you can use it to set up an integration with SwissID. So, if you click on its name in the _Installed Extensions_ table, Auth0 will redirect you to your extension's deployment.
 
 ![The Custom Social Connection extension' deployment](https://cdn.auth0.com/blog/swissid/custom-social-connect-deployment.png)
 
@@ -100,12 +100,12 @@ function (accessToken, ctx, cb) {
 After implementing the script above, you will have to define three more properties before wrapping up:
 
 1. _Authorization URL_: In this field, you will have to input this: `https://login.int.swissid.ch:443/idp/oauth2/authorize`.
-2. _Token URL_: In this field you will have to input this: `https://login.int.swissid.ch:443/idp/oauth2/`.
-3. _Scope_: In this field you will have to input this: `openid profile email phone`.
+2. _Token URL_: In this field, you will have to input this: `https://login.int.swissid.ch:443/idp/oauth2/`.
+3. _Scope_: In this field, you will have to input this: `openid profile email phone`.
 
 With these changes in place, you can hit the _Save_ button to persist the new settings.
 
-> **Note:** The function declared in the script above is fully customizable and is used to obtain the various supported claims from SwissID. You can tweak this script to build the profile from different perspectives for a particular user (for example, you could ask only for its email address, or its email and its first name, etc). If you need help building up your users' profile, you can check [the reference application provided by SwissID](https://login.int.swissid.ch/swissid-ref-app) to explore what claims are available. 
+> **Note:** The function declared in the script above is fully customizable and is used to obtain the various supported claims from SwissID. You can tweak this script to build the profile from different perspectives for a particular user (for example, you could ask only for its email address, or its email and its first name, etc.). If you need help building up your users' profile, you can check [the reference application provided by SwissID](https://login.int.swissid.ch/swissid-ref-app) to explore what claims are available. 
 
 ## Testing the SwissID Custom Social Connection in Auth0
 
