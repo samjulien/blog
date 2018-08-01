@@ -58,15 +58,52 @@ Once this extension is installed, you can use it to setup an integration with Sw
 
 ## Configuring the SwissID Custom Social Connection in Auth0
 
-From your deployment, you can click on the _New Connection_ button. This will bring up the _New Connection_ dialog, which you can use to configure your SwissID connection as described here.
+From your deployment, you can click on the _New Connection_ button. This will bring up the _New Connection_ dialog, which you can use to configure your SwissID connection/
 
+So, in this dialog, you will have to define a name for your connection (something similar to "SwissID-connection" would be descriptive enough). Besides that, you will also have to input your SwissID _Client ID_ and _Client Secret_ properties.
 
+Then, you will have to define the _Fetch User Profile Script_ as follows:
 
+```javascript
+function (accessToken, ctx, cb) {
+  // call SwissID to obtain user profile
+  request.post({
+    url: 'https://login.int.swissid.ch:443/idp/oauth2/userinfo',
+    headers: {
+      'Authorization': 'Bearer ' + accessToken,
+    },
+  }, function (err, res, body) {
+    if (err) return cb(err);
+    if (res.statusCode !== 200) return cb(new Error(body));
 
-Once SwissID sign-up is complete and you have your SwissID registration details, you can configure the SwissID Custom Social Connection within Auth0. Creating a new Custom Social Connection (as described in the section above) will provide a New Connection dialog in which the configuration information for SwissID can entered as shown below: 
+    // validate token using the node-jsonwebtoken library
+    jwt.verify(body, 'SWISS_ID_SECRET', {}, function(err, decoded) {
+      if (err) return cb(err);
 
-The Name of the connection of the connection obviously reflects the fact that it is for SwissID, but can be something else if you so desire. Client ID and Client Secret will typically be provided as part of SwissID registration details; Client ID is typically supplied as-is, and Client Secret is typically supplied as Password. 
-The Fetch User Profile Script is expanded below. The function declared in the script is fully customizable JavaScript, and is used to obtain the various supported claims from SwissID in order to build the profile for a User. SwissID provide a reference application which can be used to explore what claims are available, and also some of the other functions that are provided; their reference application it is located at:  https://login.int.swissid.ch/swissid-ref-app
+      cb(null, {
+          user_id: decoded.sub,
+          family_name: decoded.family_name,
+          given_name: decoded.given_name,
+          gender: decoded.gender,
+          email: decoded.email,
+          provider: 'SwissID',
+      });
+    });
+  });
+}
+```
+
+> **Note:** You will have to replace `SWISS_ID_SECRET` with your own SwissID _Client Secret_.
+
+After implementing the script above, you will have to define three more properties before wrapping up:
+
+1. _Authorization URL_: In this field, you will have to set `https://login.int.swissid.ch:443/idp/oauth2/authorize`.
+2. _Token URL_: In this field you will have to set `https://login.int.swissid.ch:443/idp/oauth2/`.
+3. _Scope_: In this field you will have to set `openid profile email phone`.
+
+With this in place, you can hit the _Save_ button to persist the new settings.
+
+> **Note:** The function declared in the script above is fully customizable and is used to obtain the various supported claims from SwissID. You can tweak this script to build the profile from different perspectives for a particular user (for example, you could ask only for its email address, or its email and its first name, etc). If you need help building up your users' profile, you can check [the reference application provided by SwissID](https://login.int.swissid.ch/swissid-ref-app) to explore what claims are available. 
 
 ## Testing the SwissID Custom Social Connection in Auth0
 
