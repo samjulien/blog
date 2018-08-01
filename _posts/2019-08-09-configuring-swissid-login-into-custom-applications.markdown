@@ -29,7 +29,22 @@ Usually, application vendors implementing support for SwissID would require a wo
 
 ## Signing up to SwissID
 
-As an application vendor (a.k.a. a Relying Party) you will first need to sign-up to SwissID. Starting the sign-up process can be done by contacting SwissID in order to become a Business Partner: https://www.swissid.ch/en/business-partners#become-a-part-of-a-success-story. Signing up with SwissID involves providing information about your redirection URI’s, and in turn you will be provide you with – amongst other things – a Client ID and Client Secret which will be required in order to setup SwissID within you Auth0 tenant. For details on signing up with Auth0 in order to create an Auth0 tenant please visit https://auth0.com)       
+As an application vendor (a.k.a. a [Relying Party](https://auth0.com/identity-glossary#r)) you will first need to sign-up to SwissID. This process starts by [contacting SwissID in order to become a Business Partner](https://www.swissid.ch/en/business-partners#become-a-part-of-a-success-story). After the sign up with SwissID, you will have to provide information about your redirection URI’s. In return, SwissID will provide you a Client ID and a Client Secret. Keep handy this information as you will need both values while setting up SwissID within you Auth0 tenant.
+
+## Signing up to Auth0
+
+If you don't have an Auth0 account yet, <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free one right now</a>.
+
+As part of [the free plan](https://auth0.com/pricing), you will get things like:
+- 7,000 active users.
+- Up to 2 [social identity providers](https://auth0.com/docs/identityproviders).
+- Access to [Auth0's Passwordless feature](https://auth0.com/passwordless).
+
+![Auth0 free plan](https://cdn.auth0.com/blog/swissid/auth0-free-plan.png)
+
+While signing up to Auth0, you will have to define a _Tenant Domain_ (e.g., `your-company.auth0.com`) and you will have to choose a _Region_ (at the time of writing, three regions are available: US, Europe, and Australia). After that, you can complete your account creation and Auth0 will redirect you to your dashboard.
+
+![Auth0 dashboard](https://cdn.auth0.com/blog/secure-your-gaming-company-with-auth0's-user-fraud-score-and-minfraud/auth0-dashboard.png)
 
 ## Setup a SwissID Custom Social Connection in Auth0
 
