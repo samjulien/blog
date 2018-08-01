@@ -58,7 +58,7 @@ Once this extension is installed, you can use it to setup an integration with Sw
 
 ## Configuring the SwissID Custom Social Connection in Auth0
 
-From your deployment, you can click on the _New Connection_ button. This will bring up the _New Connection_ dialog, which you can use to configure your SwissID connection/
+From your deployment, you can click on the _New Connection_ button. This will bring up the _New Connection_ dialog, which you can use to configure your SwissID connection.
 
 So, in this dialog, you will have to define a name for your connection (something similar to "SwissID-connection" would be descriptive enough). Besides that, you will also have to input your SwissID _Client ID_ and _Client Secret_ properties.
 
@@ -97,11 +97,11 @@ function (accessToken, ctx, cb) {
 
 After implementing the script above, you will have to define three more properties before wrapping up:
 
-1. _Authorization URL_: In this field, you will have to set `https://login.int.swissid.ch:443/idp/oauth2/authorize`.
-2. _Token URL_: In this field you will have to set `https://login.int.swissid.ch:443/idp/oauth2/`.
-3. _Scope_: In this field you will have to set `openid profile email phone`.
+1. _Authorization URL_: In this field, you will have to input this: `https://login.int.swissid.ch:443/idp/oauth2/authorize`.
+2. _Token URL_: In this field you will have to input this: `https://login.int.swissid.ch:443/idp/oauth2/`.
+3. _Scope_: In this field you will have to input this: `openid profile email phone`.
 
-With this in place, you can hit the _Save_ button to persist the new settings.
+With these changes in place, you can hit the _Save_ button to persist the new settings.
 
 > **Note:** The function declared in the script above is fully customizable and is used to obtain the various supported claims from SwissID. You can tweak this script to build the profile from different perspectives for a particular user (for example, you could ask only for its email address, or its email and its first name, etc). If you need help building up your users' profile, you can check [the reference application provided by SwissID](https://login.int.swissid.ch/swissid-ref-app) to explore what claims are available. 
 
