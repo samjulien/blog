@@ -115,9 +115,10 @@ That's it! Your custom connection between Auth0 and SwissID is already configure
 
 ![](https://cdn.auth0.com/blog/swissid/activating-the-custom-connection-to-different-apps.png)
 
-## Configuring Auth0 Lock to use SwissID
+## Styling the SwissID Connection on the Auth0 Login Page
 
-By default, the out-of-box hosted Login page (which by default uses the Lock widget; https://auth0.com/docs/hosted-pages/login) will automatically display any and all connections enabled for an application. For out-of-box, first class connections – such as Facebook or Google – the Lock widget will automatically display an appropriate icon for the connection. However for custom connections – such as Swiss ID – only a default icon is displayed. 
-However, Lock supports configuration options that can be used to tailor the look and presentation for any connection on either the login or the registration dialog. This allows you to host a logo for SwissID on your own CDN, and then tell Lock to use this logo – as in the following example (see https://auth0.com/docs/hosted-pages/login#how-to-customize-your-login-page for further details on customizing Lock and the hosted Login page):   
+By default, [the Auth0 Login page](https://auth0.com/docs/hosted-pages/login) will automatically display all connections enabled for an application. For first-class connections like Facebook and Google, the login page will automatically display an appropriate icon for the connection. However, for custom connections (such as SwissID), only a default icon is displayed.
+
+If needed, you can tailor the look and presentation for any connection on either the login or the registration dialogs. This allows you to host a logo for SwissID on your own CDN, and then tell Auth0's login page to use this logo. For more information, check our documentation on [how to customize your login page](https://auth0.com/docs/hosted-pages/login#how-to-customize-your-login-page)
 
 {% include asides/about-auth0.markdown %}
