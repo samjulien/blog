@@ -63,23 +63,27 @@ After installing these dependencies, you will need to install the `create-react-
 npm i -g create-react-app
 ```
 
-### Building the Redux app
+### Scaffolding the React App
 
-With `create-react-app` installed, we have to move to a directory where we want to put our project and execute the following command:
+With `create-react-app` installed, you will have to move to the directory where you want to put your project and execute the following command:
+
 ```bash
-$ create-react-app redux-version
+create-react-app redux-vs-context
 ```
 
-After a few seconds, `create-react-app` will have finished creating our app. So, after that, we have to move into the new directory(`cd redux-version`) and install two libraries:
+After a few seconds, `create-react-app` will have finished creating your app. So, after that, you can move into the new directory created by this tool and install Redux:
 
 ```bash
+# move into your project
+cd redux-vs-context
+
+# install Redux
 npm i --save redux react-redux
 ```
 
-> **Note:** Redux is the main library and`react-redux` helps facilitate the interaction between React and Redux. In short, it acts like a proxy.
+> **Note:** `redux` is the main library and `react-redux` is a library that facilitates the interaction between React and Redux. In short, the latter acts like a proxy between React and Redux.
 
-
-### Developing the Redux Version
+### Developing React Apps with Redux
 
 For starters, we will open our project folder in our preferred IDE and then we will create three files into the `src` folder:
 
