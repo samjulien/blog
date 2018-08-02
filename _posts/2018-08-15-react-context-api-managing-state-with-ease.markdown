@@ -299,36 +299,36 @@ input {
 
 Done! You now have a basic React and Redux app and can start learning about how to migrate to the Context API.
 
-### Redux version completed: Refactoring our App
+## Implementing React Apps with React Context API
 
-Well, we're actually through with our Redux version. As said earlier, Redux isn't necessarily needed as the size of the app matters talkless of the introduction of the new Context API.
+In this section, you will learn how to migrate the Redux version of your app to the React Context API.
 
-### Rewritting Our App - Moving From Redux To Context API
+Fortunately, as you will see, you won't really need to do a lot of refactoring to switch between Redux and the Context API.
 
-Sigh, we won't really do alot of work anymore. Migrating from Redux to the new Context API is quite easy.
+For starter, you will have to remove every trace of Redux from your app. For that, go to your terminal and remove both the `redux` and `react-redux` libraries:
 
-The first step is removing **every** trace of **Redux** from our app. We'll start by removing the libraries from our app
 ```bash
 npm rm redux react-redux
 ```
 
-Then, we remove the below codes from `App.js`:
+After that, you can remove the `import` statements that reference these libraries. So, open the `App.js` file and remove these lines:
 
 ```js
-// Remove these lines of code.
 import {connect} from 'react-redux';
 import actions from './actions';
 ```
 
-and replace the last line of `App.js`
+Then, still in this file, replace the last line (the one that starts with `export default`) with this:
+
 ```js
-from
-export default connect(store => store, actions)(App); 
-to
 export default App;
 ```
 
-With these changes in place, we can rewrite our app with React Context API. So, to convert the previous app from a Redux powered app to using the Context API, we will need a context to store the app's data (this context will replace the Redux Store). Also, we will need a `Context.Provider` component which will have a `state`, `props`, and a normal React component lifecycle.
+With these changes in place, you can rewrite your app with the Context API.
+
+### Migrating from Redux to React Context API
+
+So, to convert the previous app from a Redux powered app to using the Context API, we will need a context to store the app's data (this context will replace the Redux Store). Also, we will need a `Context.Provider` component which will have a `state`, `props`, and a normal React component lifecycle.
 
 Therefore, we will create a `providers.js` file in the `src` folder and add the following code to it:
 
