@@ -332,7 +332,8 @@ To convert the previous app from a Redux powered app to using the Context API, y
 
 Therefore, you will need to create a `providers.js` file in the `src` directory and add the following code to it:
 
-```js
+{% highlight html %}
+{% raw %}
 import React from 'react';
 import Food from './foods';
 
@@ -354,7 +355,8 @@ export default class Provider extends React.Component {
       }}> {this.props.children} </ThemeContext.Provider>);
   }
 }
-```
+{% endraw %}
+{% endhighlight %}
 
 The `Provider` class defined in the code above is responsible for encapsulating other components inside the `ThemeContext.Provider`. By doing that, you enable these components to have access to your app's state and to the `searchTermChanged` function that provides a way to change this state.
 
@@ -362,7 +364,8 @@ To consume these values later in the component tree, you will need to initiate a
 
 So, next, you need to create a filed called `consumer.js` in the `src` directory and write the following code into it:
 
-```js
+{% highlight html %}
+{% raw %}
 import React from 'react';
 import {ThemeContext} from './providers';
 
@@ -392,7 +395,8 @@ export default class Consumer extends React.Component {
     );
   }
 }
-```
+{% endraw %}
+{% endhighlight %}
 
 Now, to finalize the migration, you will open your `index.js` file, and inside the `render()` function, wrap the `App` component with the `Consumer` component. Also, you will wrap the `Consumer` inside the `Provider` component. Exactly as shown here:
 
