@@ -328,30 +328,43 @@ With these changes in place, you can rewrite your app with the Context API.
 
 ### Migrating from Redux to React Context API
 
-So, to convert the previous app from a Redux powered app to using the Context API, we will need a context to store the app's data (this context will replace the Redux Store). Also, we will need a `Context.Provider` component which will have a `state`, `props`, and a normal React component lifecycle.
+To convert the previous app from a Redux powered app to using the Context API, you will need a context to store the app's data (this context will replace the Redux Store). Also, you will need a `Context.Provider` component which will have a `state`, a `props`, and a normal React component lifecycle.
 
-Therefore, we will create a `providers.js` file in the `src` folder and add the following code to it:
-
-```js
-import React from 'react'; 
-import Food from './food';
-
-const DEFAULT_STATE = { allFood: Food, searchTerm: '', };
-export const ThemeContext = React.createContext(DEFAULT_STATE);
-export default class Provider extends React.Component { state = DEFAULT_STATE;
-searchTermChanged = searchTerm => { this.setState({searchTerm}); };
-render() { 
-    return ( 
-        <ThemeContext.Provider value={{ ...this.state, searchTermChanged: this.searchTermChanged, }} > {this.props.children} </ThemeContext.Provider> ); } }
-```
-
-The Provider class is responsible for encapsulating other components inside the `ThemeContext.Provider` so these components can have access to our app's state and to the `searchTermChanged` function that provides a way to change this state.
-
-To consume these values later in the component tree, we will need to initiate a `ThemeContext.Consumer` component. This component will need a render function that will receive the above value props as arguments to use at will. Next, we create another file, `consumer.js` in the `src` directory and write the following code into it:
+Therefore, you will need to create a `providers.js` file in the `src` directory and add the following code to it:
 
 ```js
 import React from 'react';
-import {ThemeContext} from './provider';
+import Food from './foods';
+
+const DEFAULT_STATE = { allFood: Food, searchTerm: '' };
+
+export const ThemeContext = React.createContext(DEFAULT_STATE);
+
+export default class Provider extends React.Component {
+  state = DEFAULT_STATE;
+  searchTermChanged = searchTerm => {
+    this.setState({searchTerm});
+  };
+
+  render() {
+    return (
+      <ThemeContext.Provider value={{
+        ...this.state,
+        searchTermChanged: this.searchTermChanged,
+      }}> {this.props.children} </ThemeContext.Provider>);
+  }
+}
+```
+
+The `Provider` class defined in the code above is responsible for encapsulating other components inside the `ThemeContext.Provider`. By doing that, you enable these components to have access to your app's state and to the `searchTermChanged` function that provides a way to change this state.
+
+To consume these values later in the component tree, you will need to initiate a `ThemeContext.Consumer` component. This component will need a render function that will receive the above value `props` as arguments to use at will.
+
+So, next, you need to create a filed called `consumer.js` in the `src` directory and write the following code into it:
+
+```js
+import React from 'react';
+import {ThemeContext} from './providers';
 
 export default class Consumer extends React.Component {
   render() {
@@ -381,12 +394,12 @@ export default class Consumer extends React.Component {
 }
 ```
 
-Now, to finalise the migration, we will open our `index.js` file, and inside the `render()` function, wrap the `App` component with the Consumer component. Also, wrap the Consumer inside the `Provider` component. Exactly as shown here:
+Now, to finalize the migration, you will open your `index.js` file, and inside the `render()` function, wrap the `App` component with the `Consumer` component. Also, you will wrap the `Consumer` inside the `Provider` component. Exactly as shown here:
 
 ```js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Provider from './provider';
+import Provider from './providers';
 import Consumer from './consumer';
 import App from './App';
 
@@ -400,10 +413,10 @@ ReactDOM.render(
 );
 ```
 
-### Wrapping up
+Done! You just finished migrating from Redux to the React Context API. If you run you app now, you will see that the whole thing is working just like before. The difference now is that your app is not using Redux more.
 
-We have successfully refactored our React App which was formerly powered by `Redux` to use React's own **Context API**.
+{% include asides/about-auth0.markdown %}
 
-## In summary
+## Conclusion
 
-Redux is an **advanced** state management library that should be used when building large scale react apps. That is as a result of fast caching and easing the loading actions conducted by React when loading new changes effected by the state. The Context API on the other hand, should be used in small scale react apps where byte - sized changes are made. Using the Context API, we do not have to write a lot of code such as `reducers`, `actions` etc to work out the logic exhibited by state changes. 
+Redux is an **advanced** state management library that should be used when building large scale React apps. The Context API, on the other hand, can be used in small scale React apps where byte-sized changes are made. By using the Context API, you do not have to write a lot of code such as `reducers`, `actions`, etc to work out the logic exhibited by state changes. 
