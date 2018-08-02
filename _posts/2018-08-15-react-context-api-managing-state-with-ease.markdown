@@ -91,101 +91,88 @@ Now that you have your React app structured and that you installed Redux, open y
 - `reducers.js`: This file will manage the state of the Redux version of your app.
 - `actions.js`: This file that will hold the functions that will trigger changes in the state of the Redux version of your app.
 
-#### Creating a Reducer in Redux
+So, to start, you can open the `foods.json` file and add the following content to it:
 
-The `reducers.js` file that we will create will hold the Redux store. The `store` is the place where the single source of truth of the state in our app will be kept.
+```json
+[
+  {
+    "name": "Chinese Rice",
+    "origin": "China",
+    "continent": "Asia"
+  },
+  {
+    "name": "Amala",
+    "origin": "Nigeria",
+    "continent": "Africa"
+  },
+  {
+    "name": "Banku",
+    "origin": "Ghana",
+    "continent": "Africa"
+  },
+  {
+    "name": "Pão de Queijo",
+    "origin": "Brazil",
+    "continent": "South America"
+  },
+  {
+    "name": "Ewa Agoyin",
+    "origin": "Nigeria",
+    "continent": "Africa"
+  }
+]
+```
 
-Next, we open the newly created file, `reducers.js` and insert the code below:
+As you can see, there is nothing special about this file. It is just an array with different food from different countries.
+
+After defining the `foods.json` file, you can focus on defining your Redux store. To recap, the `store` is the place where you keep the single source of truth of the state of your app. So, open the `reducers.js` file and add the following code to it:
 
 ```js
-import Food from './food';
+import Food from './foods';
 
-// Initializing state.
 const initialState = {
-    food: Food,
-    searchTerm: '',
+  food: Food,
+  searchTerm: '',
 };
 
-// Defining the function that allows us manage state in our app.
-
-export default function food(state = initialState, action) {
-    // switch between the action type
-    switch (action.type) {
-        case 'SEARCH_INPUT_CHANGED':
-            const {searchTerm} = action.payload;
-            return {
-                ...state,
-                searchTerm: searchTerm,
-                food: searchTerm ? Food.filter(
-                    food.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 )
-                    : Food,
-        };
-        default:
-          return state;
-        }
-    }
-
-```
-
-> In the code above, we can see that the food function receives two parameters: `state` and `action`. When we run our application, this function will get the `initialState` defined right before it and, when we dispatch instances of an action, this function will get the current state(not the `initialState` anymore).
-
-Remember we created a `food.js` file, we imported it's content into our `reducer.js` file. However, it was empty and we'll be writing some names of food and their origin in an object form enclosed in an array *as per react rules*. Therefore, we open the `food.js` file and insert the code below:
-
-```js
-export default [
-  {
-    name: "Chinese Rice",
-    origin: "China",
-    continent: "Asia"
-  },
-  {
-    name: "Amala",
-    origin: "Nigeria",
-    continent: "Africa"
-  },
-  {
-    name: "Banku",
-    origin: "Ghana",
-    continent: "Africa"
-  },
-  {
-    name: "Pão de Queijo (Brazillian cheese bread)",
-    origin: "Brazil",
-    continent: "South America"
-  },
-  {
-    name: "Ewa Agoyin",
-    origin: "Nigeria",
-    continent: "Africa"
+export default function reducer(state = initialState, action) {
+  // switch between the action type
+  switch (action.type) {
+    case 'SEARCH_INPUT_CHANGED':
+      const {searchTerm} = action.payload;
+      return {
+        ...state,
+        searchTerm: searchTerm,
+        food: searchTerm ? Food.filter(
+          food.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+          : Food,
+      };
+    default:
+      return state;
   }
-];
+}
 ```
 
-Let's navigate into our `actions.js` file. In our `actions.js` file, we will define the `SEARCH_INPUT_CHANGED` action as pre-defined in the `reducers.js` file to enable the React App return a result after receiving the payload from the search box.
+In the code above, you can see that the `reducer` function receives two parameters: `state` and `action`. When you start your React application, this function will get the `initialState` defined right before it and, when you dispatch instances of an action, this function will get the current state (not the `initialState` anymore). Then, based on the contents of these actions, the `reducer` function will generate a new state for your app.
+
+Next, you have to define what these actions are. Actually, to keep things simple, you will define a single action that will be triggered when users input a search term in your app. So, open the `actions.js` file and insert the following code into it:
 
 ```js
-
 function searchTermChanged(searchTerm) {
-    return {
-        // define action type
-        type: 'SEARCH_INPUT_CHANGED',
-        // define action payload
-        payload: {searchTerm},
-    };
+  return {
+    type: 'SEARCH_INPUT_CHANGED',
+    payload: {searchTerm},
+  };
 }
+
 export default {
   searchTermChanged,
 };
-
 ```
 
-The `react-redux` library comes to play in a few seconds. However, the library has a component, `Provider` that makes our Redux Store available to the rest of our app's component.
+With this `action` creator in place, the next thing you need to do is to wrap your `App` component into the `Provider` component that is available on `react-redux`. This provider is responsible for making your single source of truth (i.e., the `store`) to your React app.
 
-> Providers make our app's state available to all components, to achieve state's availability, we'll encapsulate the `App` component into a Provider.
-
-### Creating the store & Constructing state's general availability
-
-Next, we create our app's `Store` using all the details written down in the reducers file, we'll replace the pre-existing code in `index.js` with the one below:
+To use this provider, first you will create your app's `store` using the `initialState` defined in the `reducers.js` file. Then, you will pass this `store` to your `App` with the help of `Provider`. To accomplish these tasks, you will have to open the `index.js` file and replace its contents with:
 
 ```js
 import React from 'react';
@@ -200,14 +187,16 @@ import App from './App';
 const store = createStore(reducers);
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    document.getElementById('root')
+  <Provider store={store}>
+    <App/>
+  </Provider>,
+  document.getElementById('root')
 );
 ```
 
-### Building the main interface
+That's it! You just finished configuring Redux in your React app. Now, you have to implement the UI (User Interface) so your users can use the features implemented in this section.
+
+### Building the React Interface
 
 We've been working on the state management with `Redux` and neglected the end output. Well, let's navigate to our `App.js` and replace the code in it with the one below:
 
