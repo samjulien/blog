@@ -43,9 +43,15 @@ In Redux, particularly, there are a few things that you have to keep in mind:
 
 If you are not familiar with Redux and you want to learn more, please, check [this practical tutorial on Redux](https://auth0.com/blog/redux-practical-tutorial/).
 
-## Building a Simple React App
+## Creating a React App with Redux
 
-Since we'll be demonstrating how React's new Context API replaces `Redux`, first, we'll build a React app that uses Redux for state management and then we will refactor this app to remove Redux and use the new Context API. The example app we'll be building is an app that consists of some foods and their origin, we'll be adding a search functionality that enables the user get the list of food using a certain keyword.
+As mentioned, the goal of this article is to show you how the new Context API can replace Redux for small apps. Therefore, you will start by creating a simple React app with Redux and, after that, you will learn how to remove this state management library so you can take advantage of the React Context API.
+
+The sample application you will build is an app that handles a list of some popular foods and their origin. This app will also include a search functionality to enable users to filter the list based on some keyword.
+
+In the end, you will have an app that looks like this:
+
+![]()
 
 ### Project Requirements
 
