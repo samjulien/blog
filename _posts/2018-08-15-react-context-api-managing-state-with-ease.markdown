@@ -415,6 +415,8 @@ ReactDOM.render(
 
 Done! You just finished migrating from Redux to the React Context API. If you run you app now, you will see that the whole thing is working just like before. The difference now is that your app is not using Redux more.
 
+{% include tweet_quote.html quote_text = "The new React Context API s a great alternative to Redux in small React applications." %}
+
 {% include asides/about-auth0.markdown %}
 
 ## Conclusion
