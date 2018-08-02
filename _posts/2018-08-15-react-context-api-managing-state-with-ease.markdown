@@ -55,11 +55,12 @@ In the end, you will have an app that looks like this:
 
 ### Project Requirements
 
-As this article uses only React and some NPM libraries, we will need nothing else than NodeJS and NPM installed in our machine. If we haven't installed **NodeJS** and **NPM**, check out the [Official installation procedures](https://nodejs.org/en/download/) to install NodeJS and NPM. After installing NodeJS and NPM, we will need to install the `create-react-app` tool. We will use this tool to scaffold a simple React app, which makes the process of starting a new app easier. To install this tool, we run the command :
+As this article uses only React and some NPM libraries, you will need nothing else than Node.js and NPM installed in your development machine. If you don't have Node.js and NPM yet, check out the [official installation procedures](https://nodejs.org/en/download/) to install both.
+
+After installing these dependencies, you will need to install the `create-react-app` tool. This tool helps developers getting started with React. So, to install it, open a terminal and run the following command:
+
 ```bash
-
 npm i -g create-react-app
-
 ```
 
 ### Building the Redux app
