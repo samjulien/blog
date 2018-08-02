@@ -25,16 +25,17 @@ related:
 - 2018-03-06-time-slice-suspense-react16
 ---
 
-**TL;DR:** The React Context API isn't a new thing on React's ecosystem. However, the React's `16.3.0` release brought a lot of improvements to this API. These improvements are so overwhelming that they greatly reduce the need for Redux and other advanced state management libraries. In this article, we'll learn, through a practical tutorial, how the new React Context API replaces the need for Redux on small React applications.
+**TL;DR:** The React Context API isn't a new thing on React's ecosystem. However, the React's `16.3.0` release brought a lot of improvements to this API. These improvements are so overwhelming that they greatly reduce the need for Redux and other advanced state management libraries. In this article, you will learn, through a practical tutorial, how the new React Context API replaces the need for Redux on small React applications.
 
 {% include tweet_quote.html quote_text = "Learn how to migrate from Redux to the new React Context API in this practical tutorial." %}
 
-## Introduction
+## Quick Review on Redux
 
-### What is Redux ?
-[Redux is a JavaScript library used for state management](https://redux.js.org) in popular JavaScript libraries such as **React** and **Angular**.
+Before diving into the React Context API, we need to do a quick review on Redux, so we can compare both. [Redux is a JavaScript library that facilitates state management](https://redux.js.org). Redux is not tied to React itself. Developers from all around the world have being using Redux with popular JavaScript frontend frameworks such as _React_ and _Angular_.
 
-> State management, in this case, means handling changes that occur upon running / executing a particular action (for example, the click of a button, an async WebSocket message, etc).
+To be clear, in this context, state management means handling changes that occur upon a particular event that occurs on a Single Page App (SPA). For example, events like the click of a button or an async message coming from the server can trigger change to the app's state.
+
+If you are not familiar with Redux and you want to learn more, you can check [this practical tutorial on Redux](https://auth0.com/blog/redux-practical-tutorial/).
 
 ### Basic things to know about Redux
 
