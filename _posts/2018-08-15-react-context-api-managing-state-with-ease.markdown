@@ -31,9 +31,9 @@ related:
 
 ## Quick Review on Redux
 
-Before diving into the React Context API, we need to do a quick review on Redux, so we can compare both. [Redux is a JavaScript library that facilitates state management](https://redux.js.org). Redux is not tied to React itself. Developers from all around the world have being using Redux with popular JavaScript frontend frameworks such as _React_ and _Angular_.
+Before diving into the React Context API, we need to do a quick review on Redux, so we can compare both. [Redux is a JavaScript library that facilitates state management](https://redux.js.org). Redux is not tied to React itself. Developers from all around the world have been using Redux with popular JavaScript frontend frameworks such as _React_ and _Angular_.
 
-To be clear, in this context, state management means handling changes that occur upon a particular event that occurs on a Single Page App (SPA). For example, events like the click of a button or an async message coming from the server can trigger change to the app's state.
+To be clear, in this context, state management means handling changes that occur upon a particular event that occurs on a Single Page App (SPA). For example, events like the click of a button or an async message coming from the server can trigger changes to the app's state.
 
 In Redux, particularly, there are a few things that you have to keep in mind:
 
@@ -93,7 +93,7 @@ cd redux-vs-context
 npm i --save redux react-redux
 ```
 
-> **Note:** `redux` is the main library and `react-redux` is a library that facilitates the interaction between React and Redux. In short, the latter acts like a proxy between React and Redux.
+> **Note:** `redux` is the main library and `react-redux` is a library that facilitates the interaction between React and Redux. In short, the latter acts as a proxy between React and Redux.
 
 ### Developing React Apps with Redux
 
@@ -135,7 +135,7 @@ So, to start, you can open the `foods.json` file and add the following content t
 ]
 ```
 
-As you can see, there is nothing special about this file. It is just an array with different food from different countries.
+As you can see, there is nothing special about this file. It is just an array of different food from different countries.
 
 After defining the `foods.json` file, you can focus on defining your Redux store. To recap, the `store` is the place where you keep the single source of truth of the state of your app. So, open the `reducers.js` file and add the following code to it:
 
@@ -184,7 +184,7 @@ export default {
 
 With this `action` creator in place, the next thing you need to do is to wrap your `App` component into the `Provider` component that is available on `react-redux`. This provider is responsible for making your single source of truth (i.e., the `store`) to your React app.
 
-To use this provider, first you will create your app's `store` using the `initialState` defined in the `reducers.js` file. Then, you will pass this `store` to your `App` with the help of `Provider`. To accomplish these tasks, you will have to open the `index.js` file and replace its contents with:
+To use this provider, first, you will create your app's `store` using the `initialState` defined in the `reducers.js` file. Then, you will pass this `store` to your `App` with the help of `Provider`. To accomplish these tasks, you will have to open the `index.js` file and replace its contents with:
 
 ```js
 import React from 'react';
@@ -206,7 +206,7 @@ ReactDOM.render(
 );
 ```
 
-That's it! You just finished configuring Redux in your React app. Now, you have to implement the UI (User Interface) so your users can use the features implemented in this section.
+That's it! You just finished configuring Redux in your React app. Now, you have to implement the UI (User Interface), so your users can use the features implemented in this section.
 
 ### Building the React Interface
 
@@ -413,7 +413,7 @@ ReactDOM.render(
 );
 ```
 
-Done! You just finished migrating from Redux to the React Context API. If you run you app now, you will see that the whole thing is working just like before. The difference now is that your app is not using Redux more.
+Done! You just finished migrating from Redux to the React Context API. If you run your app now, you will see that the whole thing is working just like before. The difference now is that your app is not using Redux more.
 
 {% include tweet_quote.html quote_text = "The new React Context API s a great alternative to Redux in small React applications." %}
 
@@ -421,4 +421,4 @@ Done! You just finished migrating from Redux to the React Context API. If you ru
 
 ## Conclusion
 
-Redux is an **advanced** state management library that should be used when building large scale React apps. The Context API, on the other hand, can be used in small scale React apps where byte-sized changes are made. By using the Context API, you do not have to write a lot of code such as `reducers`, `actions`, etc to work out the logic exhibited by state changes. 
+Redux is an **advanced** state management library that should be used when building large scale React apps. The Context API, on the other hand, can be used in small-scale React apps where byte-sized changes are made. By using the Context API, you do not have to write a lot of code such as `reducers`, `actions`, etc. to work out the logic exhibited by state changes. 
