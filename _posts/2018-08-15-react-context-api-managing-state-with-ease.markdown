@@ -43,6 +43,18 @@ In Redux, particularly, there are a few things that you have to keep in mind:
 
 If you are not familiar with Redux and you want to learn more, please, check [this practical tutorial on Redux](https://auth0.com/blog/redux-practical-tutorial/).
 
+## React Context API Introduction
+
+The React Context API provides a way to pass data through the component tree without having to pass `props` down manually to every level. In React, data is often passed from a parent to its child component as a property.
+
+Using the new React Context API depends on three main steps:
+
+1. Passing the initial state to `React.createContext`. This function then returns an object with a `Provider` and a `Consumer`.
+2. Using the `Provider` component at the top of the tree and making it accept a prop called `value`. This value can be anything!
+3. Using the `Consumer` component anywhere below the Provider in the component tree to get a subset of the state.
+
+As you can see, the concepts involved are actually not that different from Redux. The fact is, even Redux uses the React Context API underneath its public API. However, only recently the Context API reached a level of maturity high enough to be used in the wild.
+
 ## Creating a React App with Redux
 
 As mentioned, the goal of this article is to show you how the new Context API can replace Redux for small apps. Therefore, you will start by creating a simple React app with Redux and, after that, you will learn how to remove this state management library so you can take advantage of the React Context API.
@@ -290,22 +302,6 @@ Done! You now have a basic React and Redux app and can start learning about how 
 ### Redux version completed: Refactoring our App
 
 Well, we're actually through with our Redux version. As said earlier, Redux isn't necessarily needed as the size of the app matters talkless of the introduction of the new Context API.
-
-#### So What's A Context API ?
-
-Context provides a way to pass data through the component tree without having to pass props down manually at every level. In React, data is often passed from a parent to its child component as a prop. — Context, React.
-
-##### Is the Context API a new thing ?
-
-No, it isn't. Even Redux uses a component in the Context API: `<Provider />`
-
-#### Using the new React Context API - Things to take note of
-
-Using the new Context API depends on three main steps:
-
-1. Passing the initial state to`React.createContext`. This function then returns an object with a Provider and a Consumer.
-2. Using the Provider component at the top of the tree and making it accept a prop called value. This value can be anything!.
-3. Using the Consumer component anywhere below the Provider in the component tree to get a subset of the state.
 
 ### Rewritting Our App - Moving From Redux To Context API
 
