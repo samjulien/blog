@@ -85,11 +85,11 @@ npm i --save redux react-redux
 
 ### Developing React Apps with Redux
 
-For starters, we will open our project folder in our preferred IDE and then we will create three files into the `src` folder:
+Now that you have your React app structured and that you installed Redux, open your project in your preferred IDE. From there, you will create three files into the `src` directory:
 
-- reducers.js
-- actions.js
-- food.js
+- `foods.json`: This file will hold a static array of foods and their origin.
+- `reducers.js`: This file will manage the state of the Redux version of your app.
+- `actions.js`: This file that will hold the functions that will trigger changes in the state of the Redux version of your app.
 
 #### Creating a Reducer in Redux
 
