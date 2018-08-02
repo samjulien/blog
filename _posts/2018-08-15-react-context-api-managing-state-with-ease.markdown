@@ -144,8 +144,8 @@ export default function reducer(state = initialState, action) {
         ...state,
         searchTerm: searchTerm,
         food: searchTerm ? Food.filter(
-          food.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
-          : Food,
+          (food) => (food.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+        ) : Food,
       };
     default:
       return state;
@@ -198,77 +198,81 @@ That's it! You just finished configuring Redux in your React app. Now, you have 
 
 ### Building the React Interface
 
-We've been working on the state management with `Redux` and neglected the end output. Well, let's navigate to our `App.js` and replace the code in it with the one below:
+Now that you have the core of your application ready to go, you can focus on building your user interface. For that, open your `App.js` file and replace its contents with this:
 
-{% highlight js %}
+{% highlight html %}
 {% raw %}
-import React from "react";
-import { connect } from "react-redux";
-import actions from "./actions";
-import "./App.css";
+import React from 'react';
+import {connect} from 'react-redux';
+import actions from './actions';
+import './App.css';
 
-// Define our component.
-function App({ food, searchTerm, searchTermChanged }) {
+function App({food, searchTerm, searchTermChanged}) {
   return (
     <div>
-      <form>
-        <div className="search">
-          <input
-            type="text"
-            name="search"
-            placeholder="Search"
-            value={searchTerm}
-            onChange={e => searchTermChanged(e.target.value)}
-          />
-        </div>
-      </form>
+      <div className="search">
+        <input
+          type="text"
+          name="search"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={e => searchTermChanged(e.target.value)}
+        />
+      </div>
       <table>
         <thead>
-          <tr style={{ textAlign: "center" }}>
-            <th>Name</th>
-            <th>Origin</th>
-            <th>Continent</th>
-          </tr>
+        <tr>
+          <th>Name</th>
+          <th>Origin</th>
+          <th>Continent</th>
+        </tr>
         </thead>
         <tbody>
-          {food.map(theFood => (
-            <tr key={theFood.name}>
-              <td>{theFood.name}</td>
-              <td>{theFood.origin}</td>
-              <td>{theFood.continent}</td>
-            </tr>
-          ))}
+        {food.map(theFood => (
+          <tr key={theFood.name}>
+            <td>{theFood.name}</td>
+            <td>{theFood.origin}</td>
+            <td>{theFood.continent}</td>
+          </tr>
+        ))}
         </tbody>
       </table>
     </div>
   );
 }
-// Export our component.
+
 export default connect(store => store, actions)(App);
 {% endraw %}
 {% endhighlight %}
 
-> Connect as used in the export statement, is a High Order Component(HOC) that enables the accessibility and availability of different set of properties of a state to children component.
+For those not used to Redux, the only thing that they might not be familiar with is the `connect` function used to encapsulate the `App` component. This function is actually a [High Order Component (HOC)](https://reactjs.org/docs/higher-order-components.html) that acts as the glue between your app and Redux.
 
-Next, we run our App to view the result, 
+If you run your app now, you will be able to use it in your browser:
+
 ```bash
 npm run start
 ```
 
-### Beautifying Output
+However, as you can see, the app right now is ugly. So, to make it look a little bit better, you can open the `App.css` file and replace its contents with: 
 
-No doubt the output looks rough, so let's replace the content in the `App.css` with this:
-
-{% highlight css %}
-{% raw %}
+```css
 table {
-  width: 100 %;
+  width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
+  line-height: 25px;
 }
 
 th {
   background-color: #eee;
+}
+
+td, th {
+  text-align: center;
+}
+
+td:first-child {
+  text-align: left;
 }
 
 input {
@@ -277,8 +281,11 @@ input {
   border-radius: 2px;
   line-height: 25px;
 }
-{% endraw %}
-{% endhighlight %}
+```
+
+![React app implemented with Redux](https://cdn.auth0.com/blog/react-context-api/react-app-with-redux.png)
+
+Done! You now have a basic React and Redux app and can start learning about how to migrate to the Context API.
 
 ### Redux version completed: Refactoring our App
 
