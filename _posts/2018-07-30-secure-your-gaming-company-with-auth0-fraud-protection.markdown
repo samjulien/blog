@@ -1,17 +1,17 @@
 ---
 layout: post
-title: "Secure Your Gaming Company With Auth0's User Fraud Score and MinFraud"
-description: "Rapid growth across mobile, console, and PC platforms can lead to disaster without proper protections."
+title: "Secure Your Gaming Company With Auth0's Fraud Protection"
+description: "Rapid gaming industry growth across mobile, console, and PC platforms can lead to disaster without proper security and anti-fraud protections."
 date: 2018-07-30 8:30
 category: Security, Gaming, Enterprise, Fraud
 design: 
   bg_color: "#4A4A4A"
   image: https://cdn.auth0.com/blog/secure-games/logo.png
 author:
-  name: Dan Arias
-  url: http://twitter.com/getDanArias
-  mail: dan.arias@auth.com
-  avatar: https://pbs.twimg.com/profile_images/918124318076256256/wMFapJ1C_400x400.jpg
+  name: Diego Poza
+  url: https://twitter.com/diegopoza
+  avatar: https://avatars3.githubusercontent.com/u/604869?v=3&s=200
+  mail: diego.poza@auth0.com
 tags: 
   - gaming
   - security
@@ -26,14 +26,15 @@ tags:
   - socure
   - ciam
 related:
-  - 
+  - 2018-02-16-the-6-billion-reason-your-business-needs-advanced-fraud-protection
+  - 2017-10-27-where-video-game-authentication-falls-short-and-how-gamers-can-stay-safe
 ---
 
-In April 2018, Epic Games’ _Fortnite_ generated [$296 million](https://techcrunch.com/2018/05/25/fortnite-had-a-296-million-april/)—more than double what it generated in February. Growth was rapid across mobile, console, and PC platforms.
+In April 2018, Epic Games’ [Fortnite generated $296 million](https://techcrunch.com/2018/05/25/fortnite-had-a-296-million-april/)—more than double what it generated in February. Growth was rapid across mobile, console, and PC platforms.
 
-At the same time as users peaked in February 2018 with [3,400,000 simultaneous logins, mysterious charges](https://kotaku.com/whats-really-going-on-with-all-those-hacked-fortnite-ac-1823965781) began to appear in users' accounts, ranging from $99.99 to $149.99. Hackers made off with one-off charges and often racked up multiple thefts from single users. [One player even struggled to pay his rent](https://www.reddit.com/r/FORTnITE/comments/841zdn/account_hacked_epic_please_help_thats_my_rent/) as a result of the total financial damage. Thieves exposed critical data via multiple log-in attempts, posted sign-in codes, and offered upgrades at steep discounts.
+At the same time as users peaked in February 2018 with 3,400,000 simultaneous logins, [mysterious charges began to appear in users' accounts](https://kotaku.com/whats-really-going-on-with-all-those-hacked-fortnite-ac-1823965781), ranging from $99.99 to $149.99. Hackers made off with one-off charges and often racked up multiple thefts from single users. [One player even struggled to pay his rent](https://www.reddit.com/r/FORTnITE/comments/841zdn/account_hacked_epic_please_help_thats_my_rent/) as a result of the total financial damage. Thieves exposed critical data via multiple log-in attempts, posted sign-in codes, and offered upgrades at steep discounts.
 
-The example isn't isolated. Annually, [cyber thieves make off with over 40 percent](https://www.panopticonlabs.com/our-technology/) of video-game publishers' in-game revenue. As the global industry [sales top $100 billion](https://seekingalpha.com/article/4184342-video-games-taking-will-esports-become-larger-sports), more criminals are taking notice, and more companies are at risk.
+The example isn't isolated. Annually, [cyber thieves make off with over 40 percent](https://www.panopticonlabs.com/our-technology/) of video-game publishers' in-game revenue. As the global [gaming industry's sales top $100 billion](https://seekingalpha.com/article/4184342-video-games-taking-will-esports-become-larger-sports), more criminals are taking notice, and more companies are at risk.
 
 In 2018, it will be critical for gaming companies to know exactly who is logging into their system, when, how, and from where — in order to create a safe and productive environment that users trust and continue to visit.
 
@@ -49,7 +50,7 @@ These can be used separately or chained together for modular coding.
 
 The User Fraud score is particularly helpful in confirming that users are who they say they are and in quickly blocking those who are behaving inappropriately. 
 
-[Auth0 has partnered with Socure](https://www.socure.com/) to develop a user fraud score for each account that authenticates, based on their email address and IP address.
+Auth0 has partnered with [Socure](https://www.socure.com/) to develop a user fraud score for each account that authenticates, based on their email address and IP address.
 
 ```javascript
 function (user, context, callback) {
@@ -171,7 +172,7 @@ In cases like _Fortnite_, minFraud could have helped the team block transactions
 
 ## Use Rules As Part of a Larger CIAM Strategy
 
-Adding individual Rules that pertain to certain users on your platform is a step in the right direction. Setting up a comprehensive strategy for more deeply understanding all of your users is the next. Either [building or outsourcing](https://auth0.com/b2c-customer-identity-management) customer identity and access solutions can bring a new dimension to your insights.
+Adding individual Rules that pertain to certain users on your platform is a step in the right direction. Setting up a comprehensive strategy for more deeply understanding all of your users is the next. Either [building or outsourcing](https://auth0.com/b2c-customer-identity-management) customer identity and access management solutions can bring a new dimension to your insights.
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/secure-your-gaming-company-with-auth0's-user-fraud-score-and-minfraud/auth0-dashboard.png" alt="Auth0 dashboard">
