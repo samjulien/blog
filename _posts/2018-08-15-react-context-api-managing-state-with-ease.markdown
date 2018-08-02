@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "React Context API: Managing State with Ease"
-description: "Managing state on React apps with the new Context API is very easy. Do you know how? No? Learn through this practical tutorial."
+description: "Managing state with the new React Context API is very easy. Learn what the differences with Redux are and how to use it in this practical tutorial."
 date: 2018-08-15 08:30
 category: Technical Guide, Frontend, React
 author:
