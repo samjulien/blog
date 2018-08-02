@@ -35,13 +35,13 @@ Before diving into the React Context API, we need to do a quick review on Redux,
 
 To be clear, in this context, state management means handling changes that occur upon a particular event that occurs on a Single Page App (SPA). For example, events like the click of a button or an async message coming from the server can trigger change to the app's state.
 
-If you are not familiar with Redux and you want to learn more, you can check [this practical tutorial on Redux](https://auth0.com/blog/redux-practical-tutorial/).
+In Redux, particularly, there are a few things that you have to keep in mind:
 
-### Basic things to know about Redux
+1. The state of the entire app is stored in a single object (known as the source of truth).
+2. To change the state, you need to dispatch `actions` that describes what needs to happen.
+3. You cannot change properties of objects or make changes to existing arrays. In Redux, you must always return a new reference to a new object or a new array.
 
-- The state of the entire app is stored in a single object within a single store.
-- To change the state, we need to dispatch `actions` that describes what needs to happen.
-- We cannot change properties of objects or make changes to existing arrays. We should always return a new reference to a new object or new array.
+If you are not familiar with Redux and you want to learn more, please, check [this practical tutorial on Redux](https://auth0.com/blog/redux-practical-tutorial/).
 
 ## Building a Simple React App
 
