@@ -8,7 +8,7 @@ author:
   name: "Abdulazeez Adeshina"
   url: "https://twitter.com/kvng_zeez"
   mail: "laisibizness@gmail.com"
-  avatar: ""
+  avatar: "https://cdn.auth0.com/blog/guest-authors/abdulazeez.png"
 design:
   bg_color: "#1A1A1A"
   image: https://cdn.auth0.com/blog/logos/react.png
@@ -421,7 +421,7 @@ Done! You just finished migrating from Redux to the React Context API. If you ru
 
 {% include tweet_quote.html quote_text = "The new React Context API s a great alternative to Redux in small React applications." %}
 
-{% include asides/about-auth0.markdown %}
+{% include asides/react.markdown %}
 
 ## Conclusion
 
