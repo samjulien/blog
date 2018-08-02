@@ -25,7 +25,7 @@ related:
 - 2018-03-06-time-slice-suspense-react16
 ---
 
-**TL; DR:** React's Context API isn't a new thing in the React's ecosystem. However, React 16.3.0's improvement on the Context API is overwhelming such that it reduces / overthrows the need for Redux / Advanced state management libraries in small scale apps. In this article, we'll be looking at how the new React Context API replaces the need for Redux by building a small app.
+**TL;DR:** The React Context API isn't a new thing on React's ecosystem. However, the React's `16.3.0` release brought a lot of improvements to this API. These improvements are so overwhelming that they greatly reduce the need for Redux and other advanced state management libraries. In this article, we'll learn, through a practical tutorial, how the new React Context API replaces the need for Redux on small React applications.
 
 {% include tweet_quote.html quote_text = "Learn how to migrate from Redux to the new React Context API in this practical tutorial." %}
 
