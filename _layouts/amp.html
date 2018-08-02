@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ⚡ lang="en">
+<html ⚡ lang="{% if page.lang == null %}en{% elsif page.lang %}{{page.lang}}{% endif %}">
 <head>
 
 <link href="https://fonts.googleapis.com/css?family=Inconsolata|Montserrat" rel="stylesheet">
