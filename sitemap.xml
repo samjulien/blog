@@ -5,15 +5,14 @@ sitemap:
 ---
 
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   {% for post in site.posts %}
     {% unless post.published == false %}
     <url>
       <loc>{{ site.url }}/blog{{ post.url }}</loc>
       {% unless post.lang == "en" %}
       {% if post.alternate_locale_en %}
-      <xhtml:link
+      <xsi:link
             rel="alternate"
             hreflang="en"
             href="{{ site.url }}/blog/{{post.alternate_locale_en}}/"
@@ -22,7 +21,7 @@ sitemap:
       {% endunless %}
       {% unless post.lang == "es" %}
       {% if post.alternate_locale_es %}
-      <xhtml:link
+      <xsi:link
             rel="alternate"
             hreflang="es"
             href="{{ site.url }}/blog/{{post.alternate_locale_es}}/"
@@ -31,7 +30,7 @@ sitemap:
       {% endunless %}
       {% unless post.lang == "de" %}
       {% if post.alternate_locale_de %}
-      <xhtml:link
+      <xsi:link
             rel="alternate"
             hreflang="de"
             href="{{ site.url }}/blog/{{post.alternate_locale_de}}/"
@@ -40,7 +39,7 @@ sitemap:
       {% endunless %}
       {% unless post.lang == "ja" %}
       {% if post.alternate_locale_ja %}
-      <xhtml:link
+      <xsi:link
             rel="alternate"
             hreflang="ja"
             href="{{ site.url }}/blog/{{post.alternate_locale_ja}}/"
@@ -54,6 +53,9 @@ sitemap:
       {% else %}
         <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
       {% endif %}
+      <!-- <image:image>
+         <image:loc>http://example.com/photo.jpg</image:loc>
+      </image:image> -->
       {% if post.sitemap.changefreq %}
         <changefreq>{{ post.sitemap.changefreq }}</changefreq>
       {% else %}
