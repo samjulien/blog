@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Continuous Deployment Pipelines and Open-Source Node.js Web Apps"
-description: "Learn how to configure a Continuous Deployment pipeline for your open-source Node.js web applications."
+title: "Continuous Deployment Pipelines and Open-Source Web Apps"
+description: "Learn how to configure a Continuous Deployment pipeline for your open-source web applications."
 date: 2018-08-08 08:30
 category: Technical Guide, Backend
 author:
@@ -14,17 +14,17 @@ design:
   image: https://cdn.auth0.com/blog/logos/node.png
 tags:
 - continuous-deployment
-- node-js
 - open-source
 - web-app
+- node-js
 related:
 - 2018-06-07-developing-well-organized-apis-with-nodejs-joi-and-mongo
 - 2018-06-13-vue-js-and-lambda-developing-production-ready-apps-part-1
 ---
 
-**TL;DR:** In this article, you will learn how to configure a Continuous Deployment pipeline for your open-source Node.js web apps. For demonstration purposes, you will use Now.sh, GitHub, and Travis CI to automate the pipeline. However, the strategy can actually be used with other programming languages (e.g. Python, Java, and .NET Core) and tools (like BitBucket, AWS, and CircleCI).
+**TL;DR:** In this article, you will learn how to configure a Continuous Deployment pipeline for your open-source web apps. For demonstration purposes, you will use Now.sh, GitHub, and Travis CI to automate the pipeline. However, the strategy can actually be used with other programming languages (e.g. Python, Java, and .NET Core) and tools (like BitBucket, AWS, and CircleCI).
 
-{% include tweet_quote.html quote_text="Learn how to configure a Continuous Deployment pipeline for your open-source Node.js web applications." %}
+{% include tweet_quote.html quote_text="Learn how to configure a Continuous Deployment pipeline for your open-source web applications." %}
 
 ## Continuous Deployment Overview
 
@@ -40,7 +40,7 @@ In all of these, you need a repository where your code will reside and a Continu
 
 In this post, you will learn how to set up a Continuous Integration server together with a GitHub repository to show Continuous Deployments in practice. Continuous Deployments are important for the following reasons: better integration for large teams, faster and easier releases, faster feedback, increased development productivity as a whole, etc.
 
-## Preparing an Open-Source Node.js Web App for Continuous Deployment
+## Preparing an Open-Source Web App for Continuous Deployment
 
 In this section, you will build a simple hello-world app with Node.js. As such, first, you will need to ensure that you have Node.js installed on your machine before moving ahead.
 
@@ -198,11 +198,11 @@ After click on the _New repository_ option, you will be presented with a form li
 
 ![Creating a new GitHub repository](https://cdn.auth0.com/blog/continuous-deployment/creating-new-github-repo.png)
 
-Fill the form with a name of your repository (e.g. `node-js-cd-pipeline`) and a description (e.g. "Node.js & Continuous Deployment") then hit the _Create repository_ button. When GitHub finishes creating your repository, you will be redirected to it. There, you will be able to copy the repository's `URL` (it must be similar to `https://github.com/KingIdee/node-js-cd-pipeline.git`). Copy it to your clipboard as you will need it soon.
+Fill the form with a name of your repository (e.g. `node-js-cd-pipeline`) and a description (e.g. "Continuous Deployment") then hit the _Create repository_ button. When GitHub finishes creating your repository, you will be redirected to it. There, you will be able to copy the repository's `URL` (it must be similar to `https://github.com/KingIdee/node-js-cd-pipeline.git`). Copy it to your clipboard as you will need it soon.
 
 > **Note:** If you have previously [configured you GitHub account with an SSH key](https://help.github.com/articles/connecting-to-github-with-ssh/), you may be able to copy and use the other URL format. This format is similar to: `git@github.com:KingIdee/node-js-cd-pipeline.git`.
 
-### Pushing your Open-Source Node.js Web App to GitHub
+### Pushing your Open-Source Web App to GitHub
 
 Haven setup your Node.js web app and created a GitHub repository for it, it is time to push your source code online. So, from your project root, run the following command:
 
@@ -252,7 +252,9 @@ If everything works fine, you should see the source code of your project online 
 
 ## Now.sh and Open-Source Apps
 
-[Now](http://now.sh) is a Platform as a Service (PaaS) which allows you to deploy your Node.js (or Docker) powered projects to the cloud with ease. Now aims to make Continuous Deployments easier for developers. Naturally, deploying websites built with Node.js require a sound knowledge of server configurations and management together with a good command of the terminal. With Now, you can focus more on your app logic and worry less about deployments.
+[Now](http://now.sh) is a Platform as a Service (PaaS) which allows you to deploy your projects to the cloud with ease. With Now, you can easily deploy Node.js applications but you can easily deploy apps developed with other languages (like Python, Java, etc). In this case, however, you will need a [Dockerfile](https://docs.docker.com/engine/reference/builder/).
+
+Now aims to make Continuous Deployments easier for developers. Naturally, deploying websites built with Node.js require a sound knowledge of server configurations and management together with a good command of the terminal. With Now, you can focus more on your app logic and worry less about deployments.
 
 Some of the amazing features of Now include:
 
@@ -296,7 +298,7 @@ After a successful signup, you will be able to see [a list of your public reposi
 
 ![Activating the GitHub repository on Travis CI](https://cdn.auth0.com/blog/continuous-deployment/activate-repository-on-travis-ci.png)
 
-### Configuring Travis in your Node.js Web App
+### Configuring Travis in your Open-Source Web App
 
 After activating Travis CI, go back to the project, create a file called `.travis.yml`, and paste the following code on it:
 
@@ -397,7 +399,7 @@ git push
 
 Once you push the changes to your GitHub repository, Travis CI will trigger a deployment process and take over the build process. As the process goes on, you should see the log on your Travis dashboard.
 
-![Travis CI logs while deploying your Node.js web app](https://cdn.auth0.com/blog/continuous-deployment/travis-deploying-your-application.png)
+![Travis CI logs while deploying your open-source web app](https://cdn.auth0.com/blog/continuous-deployment/travis-deploying-your-application.png)
 
 > **Note:** To find the current job, [go to the main Travis CI page while logged in](https://travis-ci.org/). From there, you will be able to find all running jobs.
 
@@ -433,15 +435,15 @@ Once again, after the last command, GitHub will notify Travis CI about the new c
 
 To see it, just go back to [your Now dashboard](https://zeit.co/dashboard) and click on the icon to open the latest URL defined by Now.
 
-![The second deployment of the open-source Node.js web app](https://cdn.auth0.com/blog/continuous-deployment/second-deployment.png)
+![The second deployment of the open-source web app](https://cdn.auth0.com/blog/continuous-deployment/second-deployment.png)
 
-{% include tweet_quote.html quote_text="I just finished configuring a Continuous Deployment pipeline for my open-source Node.js web app." %}
+{% include tweet_quote.html quote_text="I just finished configuring a Continuous Deployment pipeline for my open-source web app." %}
 
 {% include asides/node.markdown %}
 
 ## Conclusion
 
-In this article, you had the chance to deal with one of the buzzing terms in modern software development - Continuous Deployments. You also took a brief look into Git, Continuous Integration servers, and their respective duties in Continuous Deployments. Particularly, you used tools like GitHub, Travis CI, and Now.sh to configure a Continuous Deployment pipeline for open-source Node.js web apps. Isn’t that awesome? 
+In this article, you had the chance to deal with one of the buzzing terms in modern software development - Continuous Deployments. You also took a brief look into Git, Continuous Integration servers, and their respective duties in Continuous Deployments. Particularly, you used tools like GitHub, Travis CI, and Now.sh to configure a Continuous Deployment pipeline for open-source web apps. Isn’t that awesome? 
 
 With this knowledge, you can go ahead and apply Continuous Integration to your much more complex projects. You can even decide to try tools similar to what is used here, like trying different CI servers, or a new Git hosting web service.
 
