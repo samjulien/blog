@@ -9,7 +9,7 @@ design:
   image: https://cdn.auth0.com/blog/security-whitepaper/logo.png
 author:
   name: Diego Poza
-  url: http://twitter.com/getDanArias
+  url: https://twitter.com/diegopoza
   mail: diego.poza@auth0.com
   avatar: https://avatars3.githubusercontent.com/u/604869?v=3&s=200
 tags: 
