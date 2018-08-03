@@ -26,7 +26,7 @@ tags:
   - mobile
   - mobile-attacks
 related:
-  - 
+  - 2018-04-12-common-threats-in-web-app-security
 ---
 
 In 2017, nearly [_179 million records_](https://www.statista.com/statistics/273550/data-breaches-recorded-in-the-united-states-by-number-of-breaches-and-records-exposed/) were exposed due to data breaches. It's clear that cyber criminals are growing more creative with how they gain access to networks and valuable data.
