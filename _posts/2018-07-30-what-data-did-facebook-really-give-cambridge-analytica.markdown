@@ -2,7 +2,7 @@
 layout: post
 title: "What Data Did Facebook Really Give Cambridge Analytica?"
 description: "An honest look at the Cambridge Analytica data breach numbers. What's next for social login authentication? Time to switch social providers?"
-date: 2018-07-30 8:30
+date: 2018-08-03 8:30
 category: Security, Privacy, GDPR, UX
 design: 
   bg_color: "#203259"
