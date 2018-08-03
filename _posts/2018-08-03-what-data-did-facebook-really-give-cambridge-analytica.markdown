@@ -27,7 +27,7 @@ tags:
   - policy
 related:
   - 2018-07-02-breaking-down-master-data-management
-  - 2018-07-30-four-cybersecurity-attacks-you-need-to-know
+  - 2018-08-02-four-cybersecurity-attacks-you-need-to-know
 ---
 
 In 2015 Facebook learned that Dr. Aleksandr Kogan, a psychology professor at the University of Cambridge, illegally passed Facebook data that he collected with his app, “thisisyourdigitallife,” to the political and military strategy firm SCL/Cambridge Analytica.
