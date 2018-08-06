@@ -59,11 +59,11 @@ Our values on trust and respect also include a "No BAP" policy. To put it simply
 
 * No Bull$hit
 * No A$$holes
-* No Politics
+* No internal work Politics
 
 In an anonymous culture survey of current Auth0 employees, people overwhelmingly expressed positive feedback. They most commonly mentioned respectfulness and no BS when asked how they would describe Auth0's culture.
 
-{% include tweet_quote.html quote_text="Auth0's mantra: No BAP = No BS, No A$$holes, No Politics." %}
+{% include tweet_quote.html quote_text="Auth0's mantra: No BAP = No BS, No A$$holes, No internal Politics." %}
 
 ### Culture is Much More Than Perks
 
