@@ -109,7 +109,7 @@ There is a connection between _company culture_ and _diversity and inclusion_. T
 
 {% include tweet_quote.html quote_text="Auth0's values emphasize respect, trust, & collaboration, providing an inclusive environment for all employees." %}
 
-A collaborative and respectful culture fosters equal treatment for everyone, regardless of age, race, gender, seniority, or position level. We are dedicated to upholding these cultural values as we grow as a company.
+A collaborative and respectful culture fosters equal treatment for everyone, regardless of age, race, gender, sexual orientation, religion, disability, seniority, or position level. We are dedicated to upholding these cultural values as we grow as a company.
 
 ## Conclusion
 
