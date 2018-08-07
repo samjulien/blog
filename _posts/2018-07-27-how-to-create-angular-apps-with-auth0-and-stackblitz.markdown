@@ -201,7 +201,8 @@ export const environment = {
   auth: {
     clientID: "YOUR-AUTH0-CLIENT-ID",
     domain: "YOUR-AUTH0-DOMAIN", // e.g., you.auth0.com
-    redirect: "YOUR-AUTH0-CALLBACK"
+    redirect: "YOUR-AUTH0-CALLBACK",
+    scope: "openid profile email"
   }
 };
 ```
@@ -307,11 +308,11 @@ Notice that the only role of the `AuthService` constructor is to inject the Angu
 // src/app/auth/auth.service.ts
 
 export class AuthService {
-    // ...
-    
-    constructor(private router: Router) {}
-    
-    // ...
+  // ...
+	
+  constructor(private router: Router) {}  
+  
+  // ...
 }
 ```
 
@@ -323,16 +324,17 @@ When `AuthService` is instantiated, we also create an instance of `auth0.WebAuth
 // src/app/auth/auth.service.ts
 
 export class AuthService {
-    // ...
-    
-    private auth0 = new auth0.WebAuth({
-        clientID: environment.auth.clientID,
-        domain: environment.auth.domain,
-        responseType: "id_token token",
-        redirectUri: environment.auth.redirect
-      });
-    
-    // ...
+  // Create Auth0 web auth instance
+  
+  private auth0 = new auth0.WebAuth({
+    clientID: environment.auth.clientID,
+    domain: environment.auth.domain,
+    responseType: "id_token token",
+    redirectUri: environment.auth.redirect,
+    scope: environment.auth.scope
+  });
+  
+  // ...
 }
 ```
 
@@ -340,7 +342,7 @@ export class AuthService {
 
 > Earlier, we also updated those values in `src/environments/environment.ts` to match the Settings values.
 
-The other two properties we should define that are optional are `responseType` and `redirectUri`.
+The other two properties we should define that are optional are `responseType`, `redirectUri`, and `scope`.
 
 `responseType` can be any space-separated list of the values `code`, `token`, and `id_token`, which are [tokens used by Auth0](https://auth0.com/docs/tokens). It defaults to `token` unless a `redirectUri` is provided, then it defaults to `code`. Here, we select both `id_token` and `token`. 
 
@@ -350,9 +352,58 @@ The other two properties we should define that are optional are `responseType` a
 
 We are going to display user profile information in the Account view so we need to request `id_token`. We also request `token` as an exercise since we are not going to be making any API request in the scope of this starter app, but it will be there if you decide to do so. 
 
-Finally, `redirectUri` represents the URL that we want Auth0 to call when it authenticates our users.
+`redirectUri` represents the URL that we want Auth0 to call when it authenticates our users.
 
-We'll use the Auth0 application stored in `auth0` throughout `AuthService`.
+Lastly, `scope` is a string that indicates what are the default scope(s) used by the application. 
+
+[OpenID Connect (OIDC)](http://openid.net/connect/) is an authentication protocol that sits on top of [OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749), and allows the application to verify the identity of the users and obtain basic profile information about them in a interoperable way. This information can be returned in the ID Token we specified in the `responseType`, `"id_token token"`.
+
+The basic and required scope for OpenID Connect is the `openid` scope. This scope represents the intent of the application to use the OIDC protocol to verify the identity of the user. In OpenID Connect (OIDC), we have the notion of claims. These claims are user attributes and are intended to provide the application with user details such as email, name, and picture.
+
+Within `src/environments/environment.ts`, we defined scope as follows: 
+
+```typescript
+export const environment = {
+  production: false,
+  auth: {
+    clientID: "YOUR-AUTH0-CLIENT-ID",
+    domain: "YOUR-AUTH0-DOMAIN", // e.g., you.auth0.com
+    redirect: "YOUR-AUTH0-CALLBACK",
+    scope: "openid profile email"
+  }
+};
+```
+
+We specify the required `openid` scope. The basic claim returned for the `openid` scope is the `sub` claim, which uniquely identifies the user. Applications can ask for additional scopes, separated by spaces, to request more information about the user. We also ask for the `profile` and `email` scopes.
+
+The `profile` scope will request the claims representing basic profile information. These are `name`, `family_name`, `given_name`, `middle_name`, `nickname`, `picture`, and `updated_at`.
+                                                                         
+The `email` scope will request the `email` and `email_verified` claims.
+
+When we specify `id_token` as a `responseType`, the Auth0 authentication server replies to our request with an object that will contain the `idTokenPayload` property. `idTokenPayload` has as properties the claims of the `openid`, `profile`, and `email` scopes that we specified. A decoded `id_token` looks like this; 
+
+```json
+{
+  "name": "John Doe",
+  "nickname": "john.doe",
+  "picture": "https://myawesomeavatar.com/avatar.png",
+  "updated_at": "2017-03-30T15:13:40.474Z",
+  "email": "john.doe@test.com",
+  "email_verified": false,
+  "iss": "https://YOUR_AUTH0_DOMAIN/",
+  "sub": "auth0|USER-ID",
+  "aud": "YOUR_CLIENT_ID",
+  "exp": 1490922820,
+  "iat": 1490886820,
+  "nonce": "crypto-value",
+  "at_hash": "IoS3ZGppJKUn3Bta_LgE2A"
+}
+```
+
+
+> You can read our [documentation on OIDC scopes](https://auth0.com/docs/scopes/current) for further details.
+
+We'll use the Auth0 application stored in `auth0` throughout `AuthService` where we'll store the `idTokenPayload` object in an `userProfile$` observable. Within the `AccountComponent`, we are going to use the `name`, `nickname`, and `picture` properties to populate a user profile template.
 
 ### Logging In
 
@@ -362,11 +413,11 @@ The process of authentication is manually kicked when a user clicks on the login
 // src/app/auth/auth.service.ts
 
 export class AuthService {
-    // ...
-    
-    login = () => this.auth0.authorize();
-    
-    // ...
+  // ...
+	
+  login = () => this.auth0.authorize();
+  
+  // ...
 }
 ```
 
@@ -429,51 +480,62 @@ Let's learn more on how we handle the callback from Auth0.
 
 ### Handling the Auth0 Callback from Authentication
 
-`this.auth.handleLoginCallback()` is a method exposed by the public API of `AuthService`. When Auth0 redirects the user to our `/callback` route, it includes an authentication response, which includes all the authentication data we requested, as a URL hash fragment that is appended to the `/callback` route. We need to extract that data from the URL hash and save it in memory. To do that, we need to call the  `webAuth.parseHash` method that we wrap in the private `parseHash()` method to manage it better through a [JavaScript Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise):
+`this.auth.handleLoginCallback()` is a method exposed by the public API of `AuthService`. When Auth0 redirects the user to our `/callback` route, it includes an authentication response, which includes all the authentication data we requested, as a URL hash fragment that is appended to the `/callback` route. We need to extract that data from the URL hash and save it in memory. To do that, we need to call the `webAuth.parseHash` method which we are going to manage using an `Observable`:
 
 ```typescript
 // src/app/auth/auth.service.ts
 
+// Other imports
+import { BehaviorSubject, Observable } from "rxjs";
+
 export class AuthService {
-    // ...
+  // ...
     
-    handleLoginCallback = () => {
-        if (window.location.hash && !this.isLoggedIn()) {
-          this.parseHash()
-            .then(authResult => {
-              this.saveAuthData(authResult);
+  parseHash$ = Observable.create(observer => {
+    this.auth0.parseHash((err, authResult) => {
+      if (err) {
+        observer.error(err);
+      } else if (authResult && authResult.accessToken) {
+        observer.next(authResult);
+      }
+
+      observer.complete();
+    });
+  });
     
-              window.location.hash = "";
+  handleLoginCallback = () => {
+    if (window.location.hash && !this.isLoggedIn()) {
+
+      this.parseHash$.subscribe({
+        next: authResult => {
+          this.saveAuthData(authResult);
+
+          window.location.hash = "";
+
+          this.router.navigate([this.onAuthSuccessURL]);
+
+        },
+        error: err => this.handleError(err)
+      });
+    }
+  };
     
-              this.router.navigate([this.onAuthSuccessURL]);
-            })
-            .catch(this.handleError);
-        }
-      };
-    
-      private parseHash = (): Promise<any> => {
-        return new Promise((resolve, reject) =>
-          this.auth0.parseHash((err, authResult) => {
-            authResult && authResult.accessToken
-              ? resolve(authResult)
-              : reject(err);
-          })
-        );
-      };
-    
-    // ...
+  // ...
 }
 ```
+
+We create an `Observable` instead of using `bindCallback` from RxJS because at this moment the `this.auth0.parseHash` is not bindable. 
+
+> If you need a refresher on Observables, feel free to visit this [RxJS Observable Guide from the Angular Team](https://angular.io/guide/observables).
 
 The contents of the `authResult` object returned by `this.auth0.parseHash` depend upon which authentication parameters were used in the `responseType` of the `auth0` instance configuration. It can include:
 
 * `accessToken`: An Access Token for the API.
 * `expiresIn`: A string containing the expiration time (in seconds) of the `accessToken`.
 * `idToken`: An ID Token JWT containing user profile information.
+* `idTokenPayload`: A payload object that contains the specified `scope` claims.
 
 Since we requested `id_token` and `token`, we get all these properties in the `authResult` object.
-
-With `parseHash`, we are taking an extra precaution: `authResult && authResult.accessToken`. We want to ensure that we only resolve the Promise if `authResult` is defined and if it contains the `accessToken` property.
 
 To save this data in memory, we call the auxiliary method, `saveAuthData`:
 
@@ -481,21 +543,22 @@ To save this data in memory, we call the auxiliary method, `saveAuthData`:
 // src/app/auth/auth.service.ts
 
 export class AuthService {
-    // ...
+
+  // ...
     
-    private saveAuthData = authResult => {
-        // Save authentication data and update login status subject
-    
-        localStorage.setItem(this.loggedInKey, JSON.stringify(true));
-    
-        this.tokenData$.next({
-          expiresAt: authResult.expiresIn * 1000 + Date.now(),
-          accessToken: authResult.accessToken
-        });
-        this.userProfile$.next(authResult.idTokenPayload);
-      };
-    
-    // ...
+  private saveAuthData = authResult => {
+    // Save authentication data and update login status subject
+
+    localStorage.setItem(this.loggedInKey, JSON.stringify(true));
+
+    this.tokenData$.next({
+      expiresAt: authResult.expiresIn * 1000 + Date.now(),
+      accessToken: authResult.accessToken
+    });
+    this.userProfile$.next(authResult.idTokenPayload);
+  };
+  
+  // ... 
 }
 ```
 
@@ -541,23 +604,31 @@ After we save the authentication data, we clear the URL hash and navigate to the
 // src/app/auth/auth.service.ts
 
 export class AuthService {
-    // ...
+  // ...
+	
+  // Authentication Navigation
+  onAuthSuccessURL = "/";
+  returnURL = "http://localhost:4200";
+  onAuthFailureURL = "/";
     
-    handleLoginCallback = () => {
-        if (window.location.hash && !this.isLoggedIn()) {
-          this.parseHash()
-            .then(authResult => {
-              this.saveAuthData(authResult);
-    
-              window.location.hash = "";
-    
-              this.router.navigate([this.onAuthSuccessURL]);
-            })
-            .catch(this.handleError);
-        }
-      };
-    
-    // ...
+  handleLoginCallback = () => {
+    if (window.location.hash && !this.isLoggedIn()) {
+
+      this.parseHash$.subscribe({
+        next: authResult => {
+          this.saveAuthData(authResult);
+
+          window.location.hash = "";
+
+          this.router.navigate([this.onAuthSuccessURL]);
+
+        },
+        error: err => this.handleError(err)
+      });
+    }
+  };
+  
+  // ... 
 }
 ```
 
@@ -567,12 +638,12 @@ At that point, the template of `HomeComponent` is called, which uses the `isLogg
 // src/app/auth/auth.service.ts
 
 export class AuthService {
-    // ...
-    
-    isLoggedIn = (): boolean =>
-        JSON.parse(localStorage.getItem(this.loggedInKey));
-    
-    // ...
+  // ...
+	
+  isLoggedIn = (): boolean =>
+    JSON.parse(localStorage.getItem(this.loggedInKey));
+  
+  // ...
 }
 ```
 
@@ -666,45 +737,49 @@ Let's take a closer look at `refreshAuthData`:
 // src/app/auth/auth.service.ts
 
 export class AuthService {
-    // ...
-    
-    refreshAuthData() {
-        if (this.isLoggedIn()) {
-          this.checkSession()
-            .then(this.saveAuthData)
-            .catch(err => {
-              localStorage.removeItem(this.loggedInKey);
-              this.router.navigate([this.onAuthFailureURL]);
-            });
+  // ...
+	
+  refreshAuthData() {
+    if (this.isLoggedIn()) {
+      this.checkSession$.subscribe({
+        next: authResult => this.saveAuthData(authResult),
+        error: err => {
+          localStorage.removeItem(this.loggedInKey);
+          this.router.navigate([this.onAuthFailureURL]);
         }
-      }
-    
-    // ...
+      });
+    }
+  }
+  
+  // ...
 }
 ```
 
-Notice that we only execute the logic in `refreshAuthData` if we are logged in. If the local storage flag evaluates to `false`, the application knows globally that the user is not logged in. If it evaluates to `true`, we take that value with a grain of salt and verify with the authentication server that we have an active session using `webAuth.checkSession`. This process also let us acquire new session tokens. This method is wrapped in a Promise and called from the private `checkSession` method:
+Notice that we only execute the logic in `refreshAuthData` if we are logged in. If the local storage flag evaluates to `false`, the application knows globally that the user is not logged in. If it evaluates to `true`, we take that value with a grain of salt and verify with the authentication server that we have an active session using `webAuth.checkSession`. This process also let us acquire new session tokens. We also wrap this method in an `Observable`:
 
 ```typescript
 // src/app/auth/auth.service.ts
 
 export class AuthService {
-    // ...
-    
-    private checkSession = (): Promise<any> =>
-        new Promise((resolve, reject) =>
-          this.auth0.checkSession({}, (err, authResult) => {
-            authResult && authResult.accessToken
-              ? resolve(authResult)
-              : reject(err);
-          })
-        );
-    
-    // ...
+  // ...
+	
+  checkSession$ = Observable.create(observer => {
+    this.auth0.checkSession({}, (err, authResult) => {
+      if (err) {
+        observer.error(err);
+      } else if (authResult && authResult.accessToken) {
+        observer.next(authResult);
+      }
+
+      observer.complete();
+    });
+  });
+  
+  // ...
 }
 ```
 
-The [`checkSession`](https://auth0.com/docs/libraries/auth0js/v9#using-checksession-to-acquire-new-tokens) method allows us to acquire a new token from Auth0 for a user who is already authenticated against Auth0 for our domain. This method accepts any valid OAuth2 parameters that would normally be sent to `authorize`. If we omit them, it will use the ones we provided when initializing Auth0, the `auth0` application instance. If the user has a live authentication session with Auth0, we get an `authResult` object that has the authentication data, similar to what happened within `parseHash` earlier. If the user is not authenticated, we get an error and reject the Promise with it.
+The [`checkSession`](https://auth0.com/docs/libraries/auth0js/v9#using-checksession-to-acquire-new-tokens) method allows us to acquire a new token from Auth0 for a user who is already authenticated against Auth0 for our domain. This method accepts any valid OAuth2 parameters that would normally be sent to `authorize`. If we omit them, it will use the ones we provided when initializing Auth0, the `auth0` application instance. If the user has a live authentication session with Auth0, we get an `authResult` object that has the authentication data, similar to what happened within `parseHash` earlier. If the user is not authenticated, we push an error through the stream.
 
 > If you used Google or any other social connection, the [`checkSession` call will always return `login_required`](https://auth0.com/docs/libraries/auth0js/v9#using-checksession-to-acquire-new-tokens) when you are using Auth0 dev keys.
 
@@ -714,24 +789,25 @@ Let's look back at `refreshAuthData`:
 // src/app/auth/auth.service.ts
 
 export class AuthService {
-    // ...
-    
-    refreshAuthData() {
-        if (this.isLoggedIn()) {
-          this.checkSession()
-            .then(this.saveAuthData)
-            .catch(err => {
-              localStorage.removeItem(this.loggedInKey);
-              this.router.navigate([this.onAuthFailureURL]);
-            });
+  // ...
+	
+  refreshAuthData() {
+    if (this.isLoggedIn()) {
+      this.checkSession$.subscribe({
+        next: authResult => this.saveAuthData(authResult),
+        error: err => {
+          localStorage.removeItem(this.loggedInKey);
+          this.router.navigate([this.onAuthFailureURL]);
         }
-      }
-    
-    // ...
+      });
+    }
+  }
+  
+  // ...
 }
 ```
 
-If `this.checkSession` resolves with `authResult`, we call `this.saveAuthData` to save the authentication data in memory. If the Promise is rejected, we remove the logged-in flag from `localStorage` and we redirect the user to the URL defined with `this.onAuthFailureURL`. 
+On success, `checkSession$` calls the `next` method of our Observer, and we call `this.saveAuthData` to save the authentication data in memory. On error, the `error` method is called. We then remove the logged-in flag from `localStorage` and redirect the user to the URL defined with `this.onAuthFailureURL`. 
 
 This refresh logic is run at any time the application is built.
 
@@ -743,18 +819,18 @@ Finally, the last step we can take in this authentication workflow is to log out
 // src/app/auth/auth.service.ts
 
 export class AuthService {
-    // ...
-    
-    logout = () => {
-        localStorage.setItem(this.loggedInKey, JSON.stringify(false));
-    
-        this.auth0.logout({
-          returnTo: this.returnURL,
-          clientID: environment.auth.clientID
-        });
-      };
-    
-    // ...
+  // ...
+	
+  logout = () => {
+    localStorage.setItem(this.loggedInKey, JSON.stringify(false));
+
+    this.auth0.logout({
+      returnTo: this.returnURL,
+      clientID: environment.auth.clientID
+    });
+  };
+  
+  // ...
 }
 ```
 
