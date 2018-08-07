@@ -27,25 +27,19 @@ related:
   - 2018-06-19-Eugenio-pace-auth0-CEO-wins-ey-entrepreneur-award
 ---
 
+**BELLEVUE, Wash. -- August 7, 2018 --** [Auth0](https://auth0.com/), a global leader in Identity-as-a-Service (IDaaS), today announced that its Universal Identity Platform is being used to authenticate users for [Philz Coffee](https://www.philzcoffee.com/)’s new mobile app. The highly-publicized app has been getting attention for its unique user experience, and serves as an easy way for Philz Coffee loyalists to easily place a custom order from their phones. 
 
-**BELLEVUE, Wash. -- August 7, 2018 --** [_Auth0_](https://auth0.com/), a global leader in Identity-as-a-Service (IDaaS), today announced that its Universal Identity Platform is being used to authenticate users for [_Philz Coffee_](https://www.philzcoffee.com/)’s new mobile app. The highly-publicized app has been getting attention for its unique user experience, and serves as an easy way for Philz Coffee loyalists to easily place a custom order from their phones. 
-
-
-Philz, a national coffee company with more than 40 locations in California and Washington DC, is expanding rapidly and wanted to cater to coffee drinkers devoted to its highly personalized “One Cup at a Time” approach. As an extension of its dedication to customers, the Philz mobile app provides a simple and quick way for people to order online, preview the full menu of drink offerings, and view additional locations. 
-
+Philz, a national coffee company with more than 40 locations in California and Washington DC, is expanding rapidly and wanted to cater to coffee drinkers devoted to its highly personalized "One Cup at a Time" approach. As an extension of its dedication to customers, the Philz mobile app provides a simple and quick way for people to order online, preview the full menu of drink offerings, and view additional locations. 
 
 Philz is using Auth0 to provide authentication to its mobile app for both iOS and Android. They implemented Auth0 for the release of the new app, and since its launch, there has been a dramatic increase in downloads and it is now being used by more than 50,000 customers. App adoption is expected to continue growing as more store locations are added.
 
-
 "Our mission at Philz is to better people's days through warmth and connection, ‘One Cup at a Time'," said Francisca Hawkins, VP of Digital at Philz Coffee. "When we set out to make our app, we wanted it to reflect the care we take with each customer interaction, and Auth0 provided the best authentication platform to support our app goals." 
 
-
-“Anyone who knows Philz Coffee knows that it’s a brand dedicated to a highly-personalized experience,” said Eugenio Pace, CEO and Co-founder of Auth0. “The app is part of the holistic Philz Coffee experience and we are happy to provide our technology to the brand and its very loyal following.”
-
+"Anyone who knows Philz Coffee knows that it’s a brand dedicated to a highly-personalized experience," said Eugenio Pace, CEO and Co-founder of Auth0. "The app is part of the holistic Philz Coffee experience and we are happy to provide our technology to the brand and its very loyal following."
 
 {% include asides/about-auth0.markdown %}
 
-### Media Contact:
+### **Media Contact:**
 
 Jeana Tahnk<br>
 Corporate Communications<br>
