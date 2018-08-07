@@ -2,7 +2,7 @@
 layout: post
 title: How B2B SaaS Teams Can Stay Up To Date With Identity Management
 description: "Outsourcing cloud-based Identity as a Service (IDaaS) and Identity and Access Management (IAM) solutions are increasing in popularity amongst a variety of SaaS startups."
-date: 2018-08-01 12:30
+date: 2018-08-06 12:30
 category: Growth, Security
 is_non-tech: true
 author:
