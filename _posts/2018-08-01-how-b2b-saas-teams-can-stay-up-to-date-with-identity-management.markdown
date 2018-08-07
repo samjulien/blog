@@ -1,7 +1,7 @@
 ---
 layout: post
 title: How B2B SaaS Teams Can Stay Up To Date With Identity Management
-description: "Outsourcing IAM is an increasingly popular option for teams at all stages of growth."
+description: "Outsourcing cloud-based Identity as a Service (IDaaS) and Identity and Access Management (IAM) solutions are increasing in popularity amongst a variety of SaaS startups."
 date: 2018-08-01 12:30
 category: Growth, Security
 is_non-tech: true
@@ -57,7 +57,7 @@ Asking yourself the following questions will help you determine whether it's tim
 * How will the user experience your solution?
 * What [analytics](https://auth0.com/learn/powering-user-analytics-identity/) will you need for account creation and authentication events? 
 * How will you use your system to stay on top of potential security vulnerabilities? 
-* How will you [flag and mitigate anomalies](https://manage.auth0.com/#/anomaly) in user management and authentication events?
+* How will you [flag and mitigate anomalies](https://auth0.com/learn/anomaly-detection/) in user management and authentication events?
 * How will you onboard new [B2B customers wanting SSO](https://auth0.com/learn/the-b2b-customer-value-journey/) for your product or service? 
 
 For an even more comprehensive checklist, see Auth0's [guide](https://auth0.com/learn/build-or-buy-20-identity-management-questions/).
@@ -72,7 +72,7 @@ Instead of having multiple login boxes for each category of users, which can add
 
 Once Auth0 Lock is implemented, your company can add features like [social login](https://auth0.com/learn/social-login/), [passwordless login](https://auth0.com/passwordless), or [single sign-on](https://auth0.com/single-sign-on) (SS0), or a combination of all three to further secure and enhance the UX of authentication. It's simple to [customize](https://auth0.com/docs/libraries/lock/v9/ui-customization) Lock based on your company's needs and how you want the experience to be for your users. 
 
-### the power of Auth0 Connections
+### The Power of Auth0 Connections
 
 Auth0 sits between your app and the Identity Provider (like Twitter and Facebook, or enterprise providers like Active Directory and LDAP) that authenticates your users. Auth0 Lock is just [one tool of many](https://auth0.com/b2b-saas) that will help secure this connection. 
 
