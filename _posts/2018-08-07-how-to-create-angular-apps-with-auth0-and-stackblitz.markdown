@@ -146,7 +146,7 @@ How does [Universal Login work](https://auth0.com/docs/hosted-pages/login#how-do
 
 Auth0 shows the login page whenever something (or someone) triggers an authentication request. Users will see the login page provided by Auth0. Once they log in, they will be redirected back to our application. With security in mind, for this to happen, we have to specify in the Auth0 Settings to what URLs Auth0 can redirect users once they are authenticated.
 
-Let's click on the Auth0 Settings page.
+Let's click on the **Settings** tab.
 
 <p style="text-align: center;">
  <img src="https://cdn.auth0.com/blog/sb/auth0-applications-settings.png" alt="Auth0 application settings tab">
