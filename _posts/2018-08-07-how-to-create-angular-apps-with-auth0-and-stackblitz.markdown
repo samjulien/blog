@@ -85,6 +85,8 @@ I am naming mine `angular-cloud`. If we take a look at my browser preview domain
   <img src="https://cdn.auth0.com/blog/sb/stackblitz-custom-domain.png" alt="StackBlitz live project custom domain">
 </p>
 
+We are going to refer to this URL as the `<STACKBLITZ_URL>` throughout this tutorial. It is the root URL of our StackBlitz application.
+
 This is very similar to what GitHub does with Github pages! I can share that link with anyone I want to check out my app online. The biggest and most useful difference is that the code is alive on StackBlitz! Other people can interact with my code instead of it being static. They can also fork my project to make it their own and make any changes to it. That is definitely one of the best features of **StackBlitz: living code**.
 
 {% include tweet_quote.html quote_text="The best feature of StackBlitz is that it acts as a repository of living code. Share, fork, and change your code right within the browser!" %}
@@ -156,21 +158,29 @@ Let's click on the **Settings** tab.
  <img src="https://cdn.auth0.com/blog/sb/auth0-applications-settings.png" alt="Auth0 application settings tab">
 </p>
 
-Once there, let's scroll down until we see **"Allowed Callback URLs"**. We are going to specify here where we want Auth0 to redirect our users. In my case, I am going to paste my StackBlitz root URL with a `/callback` path appended:
+Once there, let's scroll down until we see **"Allowed Callback URLs"**. We are going to specify here where we want Auth0 to redirect our users after they are authenticated: `<STACKBLITZ_URL>/callback`.
+
+In my case, I am going to paste the following URL:
 
 `https://angular-cloud.stackblitz.io/callback`
 
 As before, use the value of your StackBlitz app URL. Why do we need to append `/callback` to the root domain? As we are going to see later, we'd want to redirect users to a special Angular component (a view) that processes and saves authentication data in memory and sets a flag in `localStorage` indicating that the user is logged in.
 
-We also need to tell Auth0 where to redirect a user when they log out. We are going to use the root domain of our application as that target route. Therefore, I am going to paste `https://angular-cloud.stackblitz.io` in the **"Allowed Logout URLs"** field.
+We also need to tell Auth0 where to redirect a user when they log out. We are going to use the root URL of our application as that target route. Therefore, let's paste the `<STACKBLITZ_URL>` in the **"Allowed Logout URLs"** field.
 
-> After the user authenticates Auth0 will only call back to any of the URLs listed in that field.
+In my case, I am going to paste `https://angular-cloud.stackblitz.io` there.
+
+After the user authenticates Auth0 will only call back to any of the URLs listed in that field.
+
+> **Note:** If you copy the `<STACKBLITZ_URL>` from the browser it may come with a forward slash at the end (`/`). You may remove it after pasting it in the field.
 
 Finally, we need to enable Cross-Origin Authentication. [What is Cross-Origin Authentication?](https://auth0.com/docs/cross-origin-authentication#what-is-cross-origin-authentication-) When authentication requests are made from our application to Auth0, the user's credentials are sent to a domain which differs from the one that serves our application. Collecting user credentials in an application served from one origin and then sending them to another origin can present certain security vulnerabilities, including the possibility of a phishing attack.
 
 Auth0 provides a [cross-origin authentication flow](https://raw.githubusercontent.com/jaredhanson/draft-openid-connect-cross-origin-authentication/master/Draft-1.0.txt) which makes use of [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies). The use of third-party cookies allows Auth0 to perform the necessary checks to allow for secure authentication transactions across different origins. This **helps to prevent phishing** when creating a single sign-on experience with the Lock widget or a custom login form in our application and it also helps to create a secure login experience even if single sign-on is not the goal.
 
-To allow transactions between our Angular app origin and Auth0, we need to add our root domain to the **Allowed Web Origins** field in the "Settings". In my case, I am adding `https://angular-cloud.stackblitz.io/` as its value.
+To allow transactions between our Angular app origin and Auth0, we need to add our root URL, `<STACKBLITZ_URL>`, to the **Allowed Web Origins** field in the "Settings".
+
+In my case, I am adding `https://angular-cloud.stackblitz.io/` as its value.
 
 Save these settings by scrolling down and clicking on `Save Changes` or pressing `CMD`/`CTRL` + `S`.
 
