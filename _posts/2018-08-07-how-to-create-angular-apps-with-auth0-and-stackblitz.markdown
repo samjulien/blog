@@ -505,7 +505,9 @@ Let's learn more on how we handle the callback from Auth0.
 
 ### Handling the Auth0 Callback from Authentication
 
-`this.auth.handleLoginCallback()` is a method exposed by the public API of `AuthService`. When Auth0 redirects the user to our `/callback` route, it includes an authentication response, which includes all the authentication data we requested, as a URL hash fragment that is appended to the `/callback` route. We need to extract that data from the URL hash and save it in memory. To do that, we need to call the `webAuth.parseHash` method which we are going to manage using an `Observable`:
+`this.auth.handleLoginCallback()` is a method exposed by the public API of `AuthService`. When Auth0 redirects the user to our `/callback` route, it includes an authentication response with all the authentication data we requested as a URL hash fragment, which is appended to the `/callback` route.
+
+We need to extract that data from the URL hash and save it in memory. To do that, we call the `webAuth.parseHash` method which we are going to manage using an `Observable`:
 
 ```typescript
 // src/app/auth/auth.service.ts
@@ -775,7 +777,7 @@ export class AuthService {
 }
 ```
 
-Notice that we only execute the logic in `refreshAuthData` if we are logged in. If the local storage flag evaluates to `false`, the application knows globally that the user is not logged in. If it evaluates to `true`, we take that value with a grain of salt and verify with the authentication server that we have an active session using `webAuth.checkSession`. This process also let us acquire new session tokens. We also wrap this method in an `Observable`:
+Notice that we only execute the logic in `refreshAuthData` if we are logged in. If the local storage flag evaluates to `false`, the application knows globally that the user is not logged in. If it evaluates to `true`, we take that value with a grain of salt and verify with the authentication server that we have an active session using `webAuth.checkSession`. This process also let us acquire new session tokens. We also manage this method with an `Observable`:
 
 ```typescript
 // src/app/auth/auth.service.ts
