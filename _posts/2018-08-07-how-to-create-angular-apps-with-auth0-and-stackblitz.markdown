@@ -428,7 +428,7 @@ When we specify `id_token` as a `responseType`, the Auth0 authentication server 
 
 > You can read our [documentation on OIDC scopes](https://auth0.com/docs/scopes/current) for further details.
 
-We'll use the Auth0 application stored in `auth0` throughout `AuthService` where we'll store the `idTokenPayload` object in an `userProfile$` observable. Within the `AccountComponent`, we are going to use the `name`, `nickname`, and `picture` properties to populate a user profile template.
+We'll use the Auth0 application stored in `auth0` throughout `AuthService`. We'll store the `idTokenPayload` object in an `userProfile$` observable. Within the `AccountComponent`, we are going to use the `name`, `nickname`, and `picture` properties to populate a user profile template.
 
 ### Logging In
 
@@ -476,7 +476,7 @@ const routes: Routes = [
 // ...
 ```
 
-`CallbackComponent` is a super lean component. Its constructor injects the `AuthService` service and it has a method within its `ngOnInit` lifecycle hook that calls another method that processes the successful login from Auth0, `handleLoginCallback()`:
+`CallbackComponent` is a super lean component. Its constructor injects `AuthService` and it has a method within its `ngOnInit` lifecycle hook that processes the successful login from Auth0, `handleLoginCallback()`:
 
 ```typescript
 // src/app/callback/callback.component.ts
