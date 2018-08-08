@@ -260,6 +260,8 @@ The `/account` route guard prevents navigation to it if the user is not authenti
 
 That's it! All that is left is for you to continue building your project in StackBlitz or to export the project locally by downloading it. Feel free to dive deeper into the [Auth0 Documentation](https://auth0.com/docs/getting-started) to learn more about how Auth0 helps you save time on implementing and managing identity. However, in the next sections, we'll explore what is happening under-the-hood of our Angular application in relation to authentication with Auth0.
 
+> As a bonus, feel free to click the logout button. You'll be taken to the home page as specified in `environment.ts`.
+
 ## Auth0 Angular Starter
 
 This application was created using the [Angular CLI](https://cli.angular.io/); thus, the project structure may feel familiar. Our application code centers around the contents of the `src` folder.
