@@ -5,8 +5,8 @@ description: "Learn more about how Auth0 architects its services to ensure scala
 date: 2018-08-12 8:30
 category: Architecture, Engineering, Enterprise, Cloud
 design: 
-  bg_color: "#222228"
-  image: https://cdn.auth0.com/blog/security-whitepaper/logo.png
+  bg_color: "#1B395E"
+  image: https://cdn.auth0.com/blog/logos/auth0-architecture.png
 author:
   name: Dirceu Tiegs
   url: https://twitter.com/dirceu
