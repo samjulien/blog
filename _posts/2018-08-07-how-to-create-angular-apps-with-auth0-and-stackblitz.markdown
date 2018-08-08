@@ -67,7 +67,11 @@ Some cool StackBlitz features to mention here:
 
 - Our profile showcases all of the work that we have saved in the platform, which effectively allows us to use StackBlitz as an online portfolio that we can share with others. We can think of it as a **live code resume**!
 
-- We can also import our GitHub projects into StackBlitz and continue their development in the online editor. Use StackBlitz to develop team projects, prototypes, whatever you desire, it's all portable and easily accessible through the universal platform that is the web. More on this feature later on.
+- We can also run our GitHub projects in StackBlitz and continue their development in the online editor. StackBlitz currently supports projects using `@angular/cli` and `create-react-app`. Support for Ionic, Vue, and custom webpack configs is coming soon!
+
+  - Run the project GitHub repo by providing the username + repo name: `stackblitz.com/github/{GH_USERNAME}/{REPO_NAME}`
+
+  - Optionally, specify a branch, tag, or commit: `.../github/{GH_USERNAME}/{REPO_NAME}/tree/{TAG|BRANCH|COMMIT}`
 
 - We can also provide our project with a custom name that would be reflected in its URL. To do this, locate the project name in the top-left corner, click on the pencil icon, and provide it a new unique name.
 
