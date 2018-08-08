@@ -113,7 +113,7 @@ The best part of the Auth0 platform is how streamlined is to get started. Let's 
   <img src="https://cdn.auth0.com/blog/sb/authentication-steps-view.png" alt="StackBlitz live browser preview at custom domain">
 </p>
 
-### Step 1: Signing Up and Getting Credentials for Auth0
+### Step 1: Signing Up and Creating an Auth0 Application
 
 <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">Sign up for a free Auth0 account here</a> or click on the sign up button in the page. You can start for free and save time with Auth0. A free account offers us:
 
