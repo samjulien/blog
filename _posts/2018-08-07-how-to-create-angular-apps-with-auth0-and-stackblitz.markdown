@@ -200,11 +200,7 @@ When we created our new account with Auth0, we were asked to pick a name for our
 
 > **Warning:** Another important piece of information present in the "Settings" is the **Client Secret**. It [protects your resources by only granting tokens to requestors if they're authorized](https://auth0.com/docs/applications/how-to-rotate-client-secret). Think of it as your application's password which must be kept confidential at all times. If anyone gains access to your Client Secret they can impersonate your application and access protected resources.
 
-In the next section, we will discuss the Angular project structure present on StackBlitz. For now, to start wiring our Angular app with Auth0, use the values of `Client ID` and `Domain` from the "Settings" to replace the values of `clientID` and `domain` in the `environment.ts` file present in `src/environments/` in our project directory.
-
-Within this file, we also need to replace the value of `redirect` with the value of the URL that we set in **"Allowed Callback URLs"**, `<STACKBLITZ_URL>/callback`.
-
-With these three variables in place, our application can identify itself as an authorized party to interact with the Auth0 authentication server.
+In the next section, we will discuss the Angular project structure present on StackBlitz. For now, let's start wiring our Angular app with Auth0. Open the `environment.ts` file present in the `src/environments/` folder. We need to replace the property values of the `auth` object with values from the "Settings" as follows:
 
 ```typescript
 // src/environments/environment.ts
@@ -215,10 +211,18 @@ export const environment = {
     clientID: "YOUR-AUTH0-CLIENT-ID",
     domain: "YOUR-AUTH0-DOMAIN", // e.g., you.auth0.com
     redirect: "YOUR-AUTH0-CALLBACK",
-    scope: "openid profile email"
+    scope: "openid profile email",
+    logoutURL: "YOUR-AUTH0-LOGOUT-URL"
   }
 };
 ```
+
+- `clientID` value with the "Client ID" value.
+- `domain` value with "Domain" value.
+- `redirect` value with "Allowed Callback URLs" value.
+- `logoutURL` value with "Allowed Logout URLs" value.
+
+We'll use these variables to let our application identify itself as an authorized party to interact with the Auth0 authentication server.
 
 ### Step 4: Log in
 
@@ -619,7 +623,7 @@ export class AuthService {
 
   // Authentication Navigation
   onAuthSuccessURL = "/";
-  returnURL = "http://localhost:4200";
+  returnURL = environment.auth.logoutURL;
   onAuthFailureURL = "/";
 
   handleLoginCallback = () => {
