@@ -63,7 +63,11 @@ The most vulnerable locations in any smart city are the centers of utilities and
 
 In Kiev in 2016, hackers shut down 20% of the city's power by hacking into an electrical substation.
 
-Penetration testing is a common method that cities and municipalities use to test for vulnerabilities with their utilities. A security firm is hired to attempt to break in and gain access to the system. Afterward, they produce a report with their findings and give [recommendations for how to avoid the a real cyberattack](https://www.redteamsecure.com/business-insider-rides-shotgun-as-redteam-security-hacks-the-power-grid/).
+Penetration testing is a common method that cities and municipalities use to test for vulnerabilities with their utilities. A security firm is hired to attempt to break in and gain access to the system. Afterward, they produce a report with their findings and give [recommendations for how to avoid the a real attack](https://www.redteamsecure.com/business-insider-rides-shotgun-as-redteam-security-hacks-the-power-grid/).
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/smart-cities-security/gaining-physical-access-to-facility.png" alt="A person trying to gain physical access to a facility">
+</p>
 
 Pen testing isn't just about lurking around a facility late at night and trying to gain physical access. It might also mean dropping a USB key, loaded with a virus, in the parking lot to see whether an employee happens to pick it up and stick it in their laptop; if they do, the key can be formatted to sit on the device as a keylogger, attempt to gain remote access, or send out phishing emails.
 
@@ -78,6 +82,11 @@ Facilities that provide critical utilities, such as power and water, need to be 
 The essential technology of any smart city must employ cryptography to protect data. Otherwise, video feeds of your citizenry can wind up being streamed on the internet, or your street lights can end up flashing on and off for hours on end.
 
 Data should be encrypted both at rest and in transit. Any systems that allow access from any parties must accept a username and a password and should go a step forward and enable two-factor authentication. Two-factor authentication is the easiest and most effective step you can take to prevent unauthorized access because it immediately cuts out the most obvious and available attack vectors.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/smart-cities-security/two-factor-authentication-using-smartphone.png" alt="Two-factor authentication demonstration using a smartphone to grant access">
+</p>
+
 [Two-factor authentication](https://auth0.com/learn/two-factor-authentication/), at root, is about ensuring that anyone accessing your systems has two methods of proving their identity. That might mean a username, password, and something like a biometric key or a one-time password delivered through an app on their phone, like [Auth0 Guardian](https://auth0.com/docs/multifactor-authentication/guardian) or Google Authenticator.
 
 ## Education For Citizens and Leaders
