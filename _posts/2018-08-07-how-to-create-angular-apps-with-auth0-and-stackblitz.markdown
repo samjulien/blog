@@ -170,9 +170,9 @@ We also need to tell Auth0 where to redirect a user when they log out. We are go
 
 In my case, I am going to paste `https://angular-cloud.stackblitz.io` there.
 
-After the user authenticates Auth0 will only call back to any of the URLs listed in that field.
-
 > **Note:** If you copy the `<STACKBLITZ_URL>` from the browser it may come with a forward slash at the end (`/`). You may remove it after pasting it in the field.
+
+After the user authenticates or logs out, Auth0 will only call back to any of the URLs listed in these fields.
 
 Finally, we need to enable Cross-Origin Authentication. [What is Cross-Origin Authentication?](https://auth0.com/docs/cross-origin-authentication#what-is-cross-origin-authentication-) When authentication requests are made from our application to Auth0, the user's credentials are sent to a domain which differs from the one that serves our application. Collecting user credentials in an application served from one origin and then sending them to another origin can present certain security vulnerabilities, including the possibility of a phishing attack.
 
@@ -227,10 +227,6 @@ Press the login button to test that we are communicating correctly with Auth0 an
 If everything was set up correctly, we are going to be redirected to the [Universal Login page](https://auth0.com/docs/hosted-pages/login). As explained earlier, this login page is provided by Auth0 with batteries included. It powers not only the login but also the signup of new users into our application. If you have any existing user already, go ahead and log in; otherwise, sign up as a new user.
 
 > Alternatively, you may also sign up and log in with Google.
-
-<p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/create-secure-cloud-apps-with-auth0-and-stackblitz/7-hosted-login-page.png" alt="Auth0 Universal Login page">
-</p>
 
 An advantage of the Universal Login page is that it is part of the Auth0 domain, not StackBlitz or our Angular app. It lets us delegate the process of user authentication, including registration, to Auth0 which makes it both convenient and secure.
 
