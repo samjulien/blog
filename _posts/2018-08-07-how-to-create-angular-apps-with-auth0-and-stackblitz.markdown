@@ -202,7 +202,7 @@ When we created our new account with Auth0, we were asked to pick a name for our
 
 In the next section, we will discuss the Angular project structure present on StackBlitz. For now, to start wiring our Angular app with Auth0, use the values of `Client ID` and `Domain` from the "Settings" to replace the values of `clientID` and `domain` in the `environment.ts` file present in `src/environments/` in our project directory.
 
-Within this file, we also need to replace the value of `redirect` with the value of the URL that we set in **"Allowed Callback URLs"**.
+Within this file, we also need to replace the value of `redirect` with the value of the URL that we set in **"Allowed Callback URLs"**, `<STACKBLITZ_URL>/callback`.
 
 With these three variables in place, our application can identify itself as an authorized party to interact with the Auth0 authentication server.
 
