@@ -78,7 +78,9 @@ After some [bad outages in 2016](https://auth0.statuspage.io/incidents/vbfz8x03t
 
 - Writing better automation: we revamped our automation, completely embracing infrastructure as code using TerraForm and SaltStack to provision new Auth0 environments (and also to replace existing ones). This allowed us to grow from partially automated environments doing ~300 logins per second to fully automated environments doing more than ~3.4 thousand logins per second; using the new tooling makes it easier to scale up (and down, whenever it makes sense). The level of automation we achieved is not perfect but is allowing us to grow to new regions and create new environments in a much more convenient way.
 
-* Writing better playbooks: with more time and focus, we saw that besides automation we also needed better playbooks in order to understand, manage, and respond to incidents related to our ever-growing mesh of services. This vastly improved scalability and reliability, besides allowing us to onboard new employees faster.
+- Writing better playbooks: with more time and focus, we saw that besides automation we also needed better playbooks in order to understand, manage, and respond to incidents related to our ever-growing mesh of services. This vastly improved scalability and reliability while also allowing us to onboard new employees faster.
+
+{% include tweet_quote.html quote_text="Writing better automation let us grow from partially automated environments doing ~300 logins per second to fully automated environments doing more than ~3.4 thousand logins per second" %}
 
 Let's take a look at our US environment architecture, for instance. We have this general structure:
 
@@ -96,6 +98,7 @@ In this case, we use two AWS regions: us-west-2 (our primary) and us-west-1 (our
 
 This is how we achieve high availability: all services (including databases) have running instances on every availability zone (AZ). If one AZ is down due to a data center failure, we still have two AZs to serve requests from. If the entire region is down or having errors, we can update Route53 to failover to us-west-1 and resume operations.
 
+{% include tweet_quote.html quote_text="We achieve high availability by running all services instances on every AWS availability zone" %}
 
 We have different maturity levels for service failover: some services, like user search v2 (that builds a cache on Elasticsearch) might work but with slightly stale data; still, core functionality keeps working as expected.
 
@@ -123,7 +126,9 @@ The highlights:
 
 - We use Pingdom probes that run every minute to check core functionality.
 
-* We use a mix of Selenium and CodeceptJS-based functional tests before and after every deployment. The functional test suites test different API endpoints, authentication flows, identity providers, and much more.
+- We use a mix of Selenium and CodeceptJS-based functional tests before and after every deployment. The functional test suites test different API endpoints, authentication flows, identity providers, and much more.
+
+{% include tweet_quote.html quote_text="Besides unit test coverage on every project, we have multiple functional test suites that run in every environment: staging before deploying to production and again in production after finishing deployment." %}
 
 ## CDN
 
