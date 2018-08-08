@@ -339,7 +339,7 @@ export class AuthService {
 
 When `AuthService` is instantiated, we also create an instance of `auth0.WebAuth` that we store in a private variable called `auth0`. What is this?
 
-[`auth0.WebAuth`](https://auth0.com/docs/libraries/auth0js/v9#initialization) initialize a new instance of an Auth0 application as follows:
+[`auth0.WebAuth`](https://auth0.com/docs/libraries/auth0js/v9#initialization) initializes a new instance of an Auth0 application as follows:
 
 ```typescript
 // src/app/auth/auth.service.ts
