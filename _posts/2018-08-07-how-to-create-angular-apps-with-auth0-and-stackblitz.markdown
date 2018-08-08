@@ -148,9 +148,14 @@ In the next step, we are going to discuss how to help Angular and Auth0 communic
 
 One of the offerings of Auth0 to reduce the overhead of adding and managing authentication is our [Universal Login](https://auth0.com/docs/hosted-pages/login) page. Auth0's Universal Login is the most secure way to easily authenticate users for your applications.
 
-How does [Universal Login work](https://auth0.com/docs/hosted-pages/login#how-does-universal-login-work)?
+How does [Universal Login work](https://auth0.com/docs/hosted-pages/login#how-does-universal-login-work)
 
 Auth0 shows the login page whenever something (or someone) triggers an authentication request. Users will see the login page provided by Auth0. Once they log in, they will be redirected back to our application. With security in mind, for this to happen, we have to specify in the Auth0 Settings to what URLs Auth0 can redirect users once they are authenticated.
+
+<video controls style="margin: 35px 0;">
+  <source src="https://cdn.auth0.com/blog/stackblitz/sso_new_diagram_video.mp4" type="video/mp4">
+   Your browser doesn't support HTML5 video. Here is a <a href="https://cdn.auth0.com/blog/stackblitz/sso_new_diagram_video.mp4">link to Universal Login video</a> instead.
+</video>
 
 Let's click on the **Settings** tab.
 
