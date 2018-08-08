@@ -46,6 +46,10 @@ This can also make it difficult to help users in real time both with larger issu
 
 For companies looking to avoid these issues, a central dashboard can help [consolidate previously disparate streams of information](https://auth0.com/user-management) within an organization. In addition, if it's high quality, this product can, at any given moment, show which customers are logged in and provide their locations and current behavior.
 
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/how-utilities-can-use-ciam-to-avoid-3-common-problems/central-dashboard-consolidates-information-streams.png" alt="Central dashboard consolidates information streams">
+</p>
+
 A robust dashboard will offer several ways to visualize the information, such as with a heat map of logins, along with pictures and users' personal details to help verify and learn more about them.
 
 ### Make Password Resets More Efficient
@@ -53,6 +57,11 @@ A robust dashboard will offer several ways to visualize the information, such as
 Internet users average [37 password resets a year](https://blog.dashlane.com/wp-content/uploads/2015/07/MailboxSecurity_infographic_EN_final1.jpg). Without an efficient process to tackle these, a simple fix can become frustrating and time-consuming. For utilities, a dashboard is an easy way for system admins to connect directly with end users on tasks like these.
 
 In addition to greater overall user management, a dashboard allows admins to create a specific [password-reset page](https://auth0.com/docs/hosted-pages/password-reset), which they can tailor to their company's specific needs:
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/how-utilities-can-use-ciam-to-avoid-3-common-problems/hosted-login-page-for-better-password-management.png" alt="Hosted login page for better password management">
+</p>
+
 The tool will enable users to change their passwords independently, without the added burden of IT support. It also allows a company to maintain consistency in the appearance of all associated pages—from login through password reset and more.
 
 This approach can also help a team track the number of password resets happening at any given moment or determine how frequently specific users are requesting resets, helping admins identify and solve larger problems, including suspicious behavior.
@@ -62,6 +71,10 @@ This approach can also help a team track the number of password resets happening
 Many believe that [utilities are falling short in meeting customer needs](https://www.publicpower.org/periodical/article/utilities-missing-out-personalized-marketing-opportunities). As many [startups push the bar higher for customer success](https://www.forbes.com/sites/matthunckler/2017/08/23/the-top-3-strategies-for-customer-success-for-high-growth-tech-startups/#73ff49206805), a strong CIAM system can help buck the stereotype that established utilities aren’t innovative.
 
 Being able to understand and meet the expectations of your customers is critical to [customer retention](https://www.appcues.com/blog/proven-customer-retention-strategies). CIAM technology will help you paint a fuller picture of each customer. In addition to incorporating data on their logins, devices, and utility usage, you can you can use [progressive profiling](https://auth0.com/blog/progressive-profiling/) to pull details like their location and their email addresses and even the interests they indicated at the login stage.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/how-utilities-can-use-ciam-to-avoid-3-common-problems/progressive-profiling-flow.png" alt="Progressive profiling flow">
+</p>
 
 With a more comprehensive collection of data, teams can proactively match the right users to the right promotions. It can help organizations develop new services, boost engagement, and avoid being branded as a company that sends irrelevant spam messages and push notifications.
 
