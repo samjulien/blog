@@ -381,7 +381,7 @@ Lastly, `scope` is a string that indicates what are the default scope(s) used by
 
 The basic and required scope for OpenID Connect is the `openid` scope. This scope represents the intent of the application to use the OIDC protocol to verify the identity of the user. In OpenID Connect (OIDC), we have the notion of claims. These claims are user attributes and are intended to provide the application with user details such as email, name, and picture.
 
-Within `src/environments/environment.ts`, we defined scope as follows:
+Within `src/environments/environment.ts`, we defined `scope` as follows:
 
 ```typescript
 export const environment = {
@@ -390,9 +390,14 @@ export const environment = {
     clientID: "YOUR-AUTH0-CLIENT-ID",
     domain: "YOUR-AUTH0-DOMAIN", // e.g., you.auth0.com
     redirect: "YOUR-AUTH0-CALLBACK",
-    scope: "openid profile email"
+    scope: "openid profile email",
+    logoutURL: "YOUR-AUTH0-LOGOUT-URL"
   }
 };
+```
+
+```text
+ scope: "openid profile email"
 ```
 
 We specify the required `openid` scope. The basic claim returned for the `openid` scope is the `sub` claim, which uniquely identifies the user. Applications can ask for additional scopes, separated by spaces, to request more information about the user. We also ask for the `profile` and `email` scopes.
