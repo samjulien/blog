@@ -188,7 +188,7 @@ If you don’t have an account with GitHub, visit the [website](https://www.gith
 
 After registration, you will be required to verify your account through your email address to gain full access.
 
-### Creating a GitHub Repository
+### GitHub 101: Create an Account and a New Repository
 
 GitHub is free for public repositories (i.e. for open-source projects), which is just what you need for this article. To create a new repository, open your profile, click the plus button, and select _New repository_. Your profile should look like this:
 
