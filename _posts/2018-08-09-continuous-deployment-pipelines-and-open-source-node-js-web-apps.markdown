@@ -4,6 +4,7 @@ title: "Continuous Deployment Pipelines and Open-Source Node.js Web Apps"
 description: "How to configure a Continuous Deployment pipeline utilizing Now.sh, GitHub, and Travis CI to automate your open-source Node.js web apps."
 date: 2018-08-09 08:30
 category: Technical Guide, Backend, NodeJS
+auth0_aside: true
 author:
   name: "Idorenyin Obong"
   url: "https://twitter.com/kingidee/"
