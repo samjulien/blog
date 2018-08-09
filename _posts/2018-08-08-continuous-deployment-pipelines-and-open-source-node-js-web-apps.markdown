@@ -170,7 +170,7 @@ node index.js
 
 Now, if you visit [`http://localhost:5000`](http://localhost:5000), you should see something like this:
 
-![Node.js web app showing a hello-world page.](https://cdn.auth0.com/blog/continuous-deployment/hello-world-node-js-web-app.png)
+![Node.js web app localhost "hello world" starting page](https://cdn.auth0.com/blog/continuous-deployment/hello-world-node-js-web-app.png)
 
 That's it! For the purposes of this article, the current project will be enough. Now, you will need to submit your project to a version control system.
 
@@ -184,7 +184,7 @@ Earlier in this article, I mentioned the need for a repository to demonstrate Co
 
 If you don’t have an account with GitHub, visit the [website](https://www.github.com) and create a new one. If you do have an account, make sure you are logged in to your profile. Creating an account requires a unique username, email with any password of your choice. 
 
-![Creating a GitHub account](https://cdn.auth0.com/blog/continuous-deployment/creating-a-github-account.png)
+![Creating a GitHub account - Github.com signup form](https://cdn.auth0.com/blog/continuous-deployment/creating-a-github-account.png)
 
 After registration, you will be required to verify your account through your email address to gain full access.
 
@@ -192,7 +192,7 @@ After registration, you will be required to verify your account through your ema
 
 GitHub is free for public repositories (i.e. for open-source projects), which is just what you need for this article. To create a new repository, open your profile, click the plus button, and select _New repository_. Your profile should look like this:
 
-![GitHub profile and "New Repository" button](https://cdn.auth0.com/blog/continuous-deployment/github-profile.png)
+![GitHub profile view and creating a new repository](https://cdn.auth0.com/blog/continuous-deployment/github-profile.png)
 
 After click on the _New repository_ option, you will be presented with a form like this:
 
@@ -248,7 +248,7 @@ The first command (`git add`) adds all files affected by changes to Git, except 
 
 If everything works fine, you should see the source code of your project online when you visit the repository you created.
 
-![Pushing changes to the GitHub remote repository.](https://cdn.auth0.com/blog/continuous-deployment/pushing-changes-to-the-github-remote-repo.png)
+![Pushing local changes to the GitHub remote repository](https://cdn.auth0.com/blog/continuous-deployment/pushing-changes-to-the-github-remote-repo.png)
 
 ## Now.sh and Open-Source Apps
 
@@ -272,7 +272,7 @@ Besides that, if you chose the _Signup with GitHub_ option, a verification mail 
 
 After verifying your email, you will be able [log in to Now](https://zeit.co/login). If you are a new user, after logging in, your dashboard should look like this:
 
-![Signing up to Now.sh](https://cdn.auth0.com/blog/continuous-deployment/signing-up-to-now.png)
+![Signing up for a Now.sh account](https://cdn.auth0.com/blog/continuous-deployment/signing-up-to-now.png)
 
 ### Obtaining a Now Token
 
@@ -405,7 +405,7 @@ Once you push the changes to your GitHub repository, Travis CI will trigger a de
 
 Once Travis CI completes the build process, you can visit [your Now dashboard](https://zeit.co/dashboard) to see the current deployment instance. There, you will see, under the _Events_ section, a link to your new deployment.
 
-![Now dashboard after the first deployment.](https://cdn.auth0.com/blog/continuous-deployment/now-dashboard-after-deployment.png)
+![Now.sh dashboard events after the first deployment](https://cdn.auth0.com/blog/continuous-deployment/now-dashboard-after-deployment.png)
 
 Clicking on it will open your open-source, Node.js app in a new browser tab.
 
