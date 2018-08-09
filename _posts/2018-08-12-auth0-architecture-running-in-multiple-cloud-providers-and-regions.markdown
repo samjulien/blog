@@ -38,7 +38,7 @@ A lot has changed since then in Auth0. These are some of the highlights:
 
 - We went from processing a couple of million logins per month to 1.5+ billion logins per month, serving thousands of customers, including FuboTV, Mozilla, JetPrivilege, and more.
 
-- We implemented new features like [_custom domains_](https://auth0.com/docs/custom-domains) and improved existing ones.
+- We implemented new features like [custom domains](https://auth0.com/docs/custom-domains), [scaled bcrypt operations](https://auth0.engineering/bcrypt-as-a-service-9e71707bda47), vastly [improved user search](https://auth0.com/docs/users/search/v3), and much more.
 
 - The number of services that compose our product in order to scale our organization and handle the increases in traffic went from under 10 to over 30 services.
 
