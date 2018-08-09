@@ -6,6 +6,7 @@ date: 2018-mm-dd 8:30
 category: Technical guide, Thing, Thing2, PR, Press
 (!CanRemoveIfFalse)press_release: true
 (!CanRemoveIfFalse)is_non-tech: true
+(!If post has technical Auth0 Aside)auth0_aside: true
 banner:
   text: "Auth0 makes it easy to add authentication to your ___ application."
 author:
