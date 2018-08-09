@@ -58,12 +58,10 @@ We _strongly_ value the ability to refine, add, and remove values that, as a col
 Our values on trust and respect also include a "No BAP" policy. To put it simply, this means:
 
 * No Bull$hit
-* No A$$holes
-* No internal work Politics
+* No A$$holes (no matter how talented)
+* No internal office Politics (abuse of position within the company to damage or take advantage of coworkers will not be tolerated)
 
 In an anonymous culture survey of current Auth0 employees, people overwhelmingly expressed positive feedback. They most commonly mentioned respectfulness and no BS when asked how they would describe Auth0's culture.
-
-{% include tweet_quote.html quote_text="Auth0's mantra: No BAP = No BS, No A$$holes, No internal Politics." %}
 
 ### Culture is Much More Than Perks
 
@@ -78,6 +76,8 @@ As stated above, our culture is the _personality_ of our company and its aspirat
 * Etc.
 
 However, perks are only a minor component of _culture_. A company can have perks that sound great on paper, but if the culture doesn't truly support the _use_ of those perks, they become pointless, or even damaging. For example, if employees are told they have unlimited vacation but then are shamed for taking advantage of it, this becomes a _dark perk_. If a company has an arcade machine and a sofa that gather dust because the culture discourages taking breaks, the perk backfires.
+
+{% include tweet_quote.html quote_text="Perks are only a minor component of culture: the company must endorse and encourage use of perks." %}
 
 Perks are integrated into the culture at Auth0. Employees and senior leadership are tremendously hard-working, while we also understand and value the necessity of vacations, social time, and expenses that promote both a comfortable work environment (onsite or remote) and continuous learning.
 
