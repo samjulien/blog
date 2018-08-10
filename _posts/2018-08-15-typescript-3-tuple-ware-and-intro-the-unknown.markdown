@@ -30,6 +30,9 @@ TypeScript 3.0 is out! It comes with enhancements for the type system, compiler,
 
 For this blog post, we are going to focus on the enhancements made to tuples and the `unknown` type! Feel free to check the handbook for an in-depth view of [TypeScript Project References](https://www.typescriptlang.org/docs/handbook/project-references.html).
 
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">I&#39;m getting more and more intrigued by TypeScript. Curious if you&#39;re: (poll)</p>&mdash; Sarah Drasner (@sarah_edo) <a href="https://twitter.com/sarah_edo/status/986305983742791681?ref_src=twsrc%5Etfw">April 17, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 ## TypeScript Quick Setup
 
 If you want to follow along with the example in this post, you can follow these quick steps to get a TypeScript 3.0 project up and running.
@@ -52,6 +55,8 @@ tsc --version
 ```
 
 The version that comes up should be `3.0.0` or higher.
+
+> If you want to learn more about how `tsc` and other TypeScript internals work check out this [TypeScript missing introduction by Todd Motto](https://toddmotto.com/typescript-introduction).
 
 ### Setting Up a TypeScript Project
 
@@ -603,5 +608,8 @@ TypeError: loc.toLowerCase is not a function
 ```
 
 I recommend starting to use `unknown` instead of `any` for handling responses from APIs that may have anything on the response. Having `unknown` in place forces us to check for the integrity and structure of the response and promotes defensive but sane coding.
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Since <a href="https://twitter.com/hashtag/typescript?src=hash&amp;ref_src=twsrc%5Etfw">#typescript</a> 3.0 is now out here&#39;s a tip for using unknown vs any. If you don&#39;t care about the type, use any. If you&#39;re not 100% sure about the underlying type, such as parsing a JSON response from the server, use unknown.</p>&mdash; Charlie Koster (@ckoster22) <a href="https://twitter.com/ckoster22/status/1024276200749981698?ref_src=twsrc%5Etfw">July 31, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 {% include asides/about-auth0.markdown %}
