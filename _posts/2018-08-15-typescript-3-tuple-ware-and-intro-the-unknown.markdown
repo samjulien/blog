@@ -349,3 +349,45 @@ In `--strictNullChecks mode`, using the `?` modifier automatically includes `und
 [Source](http://www.tupperware.com/media/catalog/product/cache/1/image/600x/9df78eab33525d08d6e5fb8d27136e95/l/u/lunchits_2018_mid_july-1.jpg)
 
 > Tuples are like Tupperware containers that let you store different types of food on each container. We can collect and bundle the containers and we can disperse them. At the same time, we can make it optional to fill a container. However, it would be a good idea to keep the containers with uncertain content at the bottom of the stack to make the containers with guaranteed content both easy to find and predictable.
+
+### Rest Elements In Tuple Types
+
+In TypeScript 3.0, the last element of a tuple can be a rest element, `...element`. The one restriction for this rest element is that it has to be an array type. This structure is useful when we want to create open-ended tuples that may have zero or more additional elements. It's a boost over the optional `?` postfix as it allows us to specify a variable number of optional elements with the one condition that they have to be of the same type.
+
+For example, `[string, ...number[]]` represents a tuple with a string element followed by any amount of `number` elements. This tuple could represent a student name followed by test scores:
+
+```typescript
+type TestScores = [string, ...number[]];
+
+const thaliaTestScore = ["Thalia", ...[100, 98, 99, 100]];
+const davidTestScore = ["David", ...[100, 98, 100]];
+
+console.log(thaliaTestScore);
+console.log(davidTestScore);
+```
+
+Output:
+
+```shell
+[ 'Thalia', 100, 98, 99, 100 ]
+[ 'David', 100, 98, 100 ]
+```
+
+Don't forget to add the `...` operator to the `array`. Otherwise, the tuple could get the array as it second element and nothing else. The `array` elements won't spread out into the tuple:
+
+```typescript
+type TestScores = [string, ...number[]];
+
+const thaliaTestScore = ["Thalia", ...[100, 98, 99, 100]];
+const davidTestScore = ["David", ...[100, 98, 100]];
+
+console.log(thaliaTestScore);
+console.log(davidTestScore);
+```
+
+Output:
+
+```shell
+[ 'Thalia', [ 100, 98, 99, 100 ] ]
+[ 'David', [ 100, 98, 100 ] ]
+```
