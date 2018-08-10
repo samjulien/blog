@@ -63,8 +63,6 @@ The sample application you will build is an app that handles a list of some popu
 
 In the end, you will have an app that looks like this:
 
-![]()
-
 ### Project Requirements
 
 As this article uses only React and some NPM libraries, you will need nothing else than Node.js and NPM installed in your development machine. If you don't have Node.js and NPM yet, check out the [official installation procedures](https://nodejs.org/en/download/) to install both.
