@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "TypeScript 3: Tuple Ware and Into the Unknown"
-description: ""
+description: "TypeScript is a typed superset of Javascript. Learn how Typescript 3.0 improves tuples and introduces a new type!"
 date: 2018-08-08 8:30
-category: 
+category: Technical Guide, TypeScript, JavaScript
 design: 
   bg_color: "#003A60"
   image: https://pbs.twimg.com/profile_images/743155381661143040/bynNY5dJ_400x400.jpg
@@ -13,7 +13,15 @@ author:
   mail: dan.arias@auth.com
   avatar: https://pbs.twimg.com/profile_images/1002301567490449408/1-tPrAG__400x400.jpg
 tags: 
-  - 
+  - typescript
+  - frontend
+  - javascript
+  - static
+  - types
+  - unknown
+  - tuples
+  - type-safe
+  - angular
 related:
   - 
 ---
