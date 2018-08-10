@@ -144,7 +144,9 @@ Messages about `nodemon` will come up. Since `index.ts` is empty as of now, ther
 
 You are all set up! Now join me in exploring what new features come with TypeScript 3.
 
-## Tuple Ware
+## TupleWare
+
+### What Are Tuples?
 
 TypeScript 3 comes with a couple of changes to how tuples can be used. Therefore, let's quickly review the [basics of TypeScript tuples].
 
@@ -196,7 +198,7 @@ On the other hand, associated data that is loosely tied is not beneficial. For e
 
 That's it for tuples! They provide us with a fixed size container that can store all values of all kinds of types. Now, let's see what TypeScript changes about using tuples in version `3.0` of the language.
 
-## Using TypeScript Tuples in Rest Parameters
+### Using TypeScript Tuples in Rest Parameters
 
 In JavaScript, the [rest parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters) syntax allows us to "represent an indefinite number of arguments as an array."
 
@@ -244,7 +246,7 @@ As before, we would access each point coordinate as follows: `point3D[0]` for `x
 
 How is this different from just passing an array? An array would allow us to pass only one number, the first element of `point3D` that maps to the `x` coordinate. It would not force us to pass a number for `y` and `z`. A tuple will throw an error if we are not passing exactly 3 numbers to the `draw` function.
 
-## Spread Expressions with TypeScript Tuples
+### Spread Expressions with TypeScript Tuples
 
 The rest parameter syntax looks very familiar to the spread operator; however, they are very different. As we learned earlier, the rest parameter syntax collects parameter into a single variable and then expands them under its variable name. The spread operator expands the elements of an array or object. With TypeScript 3.0, the spread operator can also expand the elements of a tuple.
 
@@ -286,7 +288,7 @@ draw(...xyzCoordinate);
 
 As we can see, using the spread operator is a fast and clean option to passing tuple as arguments.
 
-## Optional Tuple Elements
+### Optional Tuple Elements
 
 With TypeScript 3.0, our tuples can have optional elements that are specified using the `?` postfix.
 
