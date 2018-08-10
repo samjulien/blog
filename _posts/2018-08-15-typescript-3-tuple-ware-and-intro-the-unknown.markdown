@@ -243,3 +243,45 @@ declare function draw(...point3D: [number, number, number]): void;
 As before, we would access each point coordinate as follows: `point3D[0]` for `x`, `point3D[1]` for `y`, and `point3D[2]` for `z`.
 
 How is this different from just passing an array? An array would allow us to pass only one number, the first element of `point3D` that maps to the `x` coordinate. It would not force us to pass a number for `y` and `z`. A tuple will throw an error if we are not passing exactly 3 numbers to the `draw` function.
+
+## Spread Expressions with TypeScript Tuples
+
+The rest parameter syntax looks very familiar to the spread operator; however, they are very different. As we learned earlier, the rest parameter syntax collects parameter into a single variable and then expands them under its variable name. The spread operator expands the elements of an array or object. With TypeScript 3.0, the spread operator can also expand the elements of a tuple.
+
+Let's see this in action using our `Point3D` tuple:
+
+```typescript
+type Point3D = [number, number, number];
+
+const draw = (...point3D: Point3D) => {
+  console.log(point3D);
+};
+
+const xyzCoordinate: Point3D = [10, 20, 10];
+
+draw(10, 20, 10);
+draw(xyzCoordinate[0], xyzCoordinate[1], xyzCoordinate[2]);
+draw(...xyzCoordinate);
+```
+
+We create a `Point3D` to represent the `(10, 20, 10)` coordinate and store it in the `xyzCoordinate` constant. Notice that we have three ways to pass point to the `draw` function:
+
+- Passing the values as literals:
+
+```typescript
+draw(10, 20, 10);
+```
+
+- Passing indexes to the corresponding `xyzCoordinate` tuple:
+
+```typescript
+draw(xyzCoordinate[0], xyzCoordinate[1], xyzCoordinate[2]);
+```
+
+- Using the spread operator to pass the full `xyzCoordinate` tuple:
+
+```typescript
+draw(...xyzCoordinate);
+```
+
+As we can see, using the spread operator is a fast and clean option to passing tuple as arguments.
