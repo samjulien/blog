@@ -194,6 +194,12 @@ type Point3D = [number, number, number];
 
 Therefore, `Point3D[0]`, `Point3D[1]`, and `Point3D[2]` would be logically digestable and easier to map than other disjointed data.
 
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/typescript-3/coordinate-system.svg" alt="3D coordinate system">
+</p>
+
+[Source](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/3D_coordinate_system.svg/2000px-3D_coordinate_system.svg.png)
+
 On the other hand, associated data that is loosely tied is not beneficial. For example, we could have three pieces of `customerData` that are `email`, `phoneNumber`, and `dateOfBirth`. `customerData[0]`, `customerData[1]`, and `customerData[2]` say nothing about what type of data each represents. We would need to trace the code or read documentation to find out how the data is being mapped. This is not an ideal scenario and using an `interface` would be much better.
 
 That's it for tuples! They provide us with a fixed size container that can store all values of all kinds of types. Now, let's see what TypeScript changes about using tuples in version `3.0` of the language.
