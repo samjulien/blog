@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "TypeScript 3: Tuple Ware and Intro the Unknown"
+title: "TypeScript 3: Tuple Ware and Into the Unknown"
 description: ""
 date: 2018-08-08 8:30
 category: 
