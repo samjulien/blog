@@ -32,7 +32,7 @@ For this blog post, we are going to focus on the enhancements made to tuples and
 
 ## TypeScript Quick Setup
 
-If you want to follow along the example in this post, you can follow these quick steps to get a TypeScript 3.0 project up and running.
+If you want to follow along with the example in this post, you can follow these quick steps to get a TypeScript 3.0 project up and running.
 
 If you prefer to test Typescript 3.0 on a sandbox environment, you can use the [TypeScript playground](https://www.typescriptlang.org/play/) instead to follow along.
 
@@ -62,7 +62,7 @@ mkdir ts3
 cd ts3
 ```
 
-Once `ts3` is the current working directory, initalize a [Node.js](https://nodejs.org/) with default values:
+Once `ts3` is the current working directory, initialize a [Node.js](https://nodejs.org/) with default values:
 
 ```shell
 npm init -y
@@ -98,9 +98,9 @@ You will also have a `tsconfig.json` file with sensible started defaults enabled
 
 ### Compiling, Running, and Watching TypeScript
 
-In a development world where everything build related is now automated, an easy way to compile, run, and watch TypeScript files is needed. This can be done through `nodemon` and `ts-node`:
+In a development world where everything build-related is now automated, an easy way to compile, run, and watch TypeScript files is needed. This can be done through `nodemon` and `ts-node`:
 
-- [`nodemon`](https://github.com/remy/nodemon): It's a tool that monitors for any changes in a Node.js application and automatically restart the server.
+- [`nodemon`](https://github.com/remy/nodemon): It's a tool that monitors for any changes in a Node.js application and automatically restarts the server.
 
 - [`ts-node`](https://github.com/TypeStrong/ts-node): It's a TypeScript execution and REPL for Node.js, with source map support. Works with `typescript@>=2.0`.
 
@@ -132,7 +132,7 @@ The `watch` script is doing a lot of hard work:
 nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts
 ```
 
-The `nodemon` executable takes a `--watch`. The `--watch` option is followed by a string that specifed the directors that need to be watched and follows the [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming).
+The `nodemon` executable takes a `--watch`. The `--watch` option is followed by a string that specifies the directories that need to be watched and follows the [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming).
 
 Next, the `--exec` option is passed. The [`--exec`](https://github.com/remy/nodemon#running-non-node-scripts) option is used to run non-node scripts. `nodemon` will read the file extension of the script being run and monitor that extension instead of `.js`. In this case, `--exec` runs `ts-node`.
 
@@ -160,7 +160,7 @@ You are all set up! Now join me in exploring what new features come with TypeScr
 
 TypeScript 3 comes with a couple of changes to how tuples can be used. Therefore, let's quickly review the [basics of TypeScript tuples].
 
-A tuple is a TypeScript that let works like an array with a some special considerations:
+A tuple is a TypeScript type that works like an array with some special considerations:
 
 - The number of elements of the array is fixed.
 - The type of the elements of is known.
@@ -194,15 +194,15 @@ src/index.ts(8,11): error TS2322: Type 'true' is not assignable to type 'string'
 src/index.ts(8,17): error TS2322: Type 'string' is not assignable to type 'boolean'.
 ```
 
-Let's delete the incorrect example from our code and move forward with the understanding that, with tuples, the order of values is critical. Relying on order can make code difficult to read, maintain, and use. For that reason, it's a good idea to use tuples with data that is related to each other in a sequential manner. That way, accessing the elements in order is part of a predictable and expect pattern.
+Let's delete the incorrect example from our code and move forward with the understanding that, with tuples, the order of values is critical. Relying on order can make code difficult to read, maintain, and use. For that reason, it's a good idea to use tuples with data that is related to each other in a sequential manner. That way, accessing the elements in order is part of a predictable and expected pattern.
 
-The coordinates of a point are examples of data that is sequential. A three-dimensional coordinate always comes in a three-number pattern: `(x, y, z)`. On a cartesian plane, the order of the points will always be sequential. We could represent this three-dimensional coordinate as the following tuple:
+The coordinates of a point are examples of data that is sequential. A three-dimensional coordinate always comes in a three-number pattern: `(x, y, z)`. On a Cartesian plane, the order of the points will always be sequential. We could represent this three-dimensional coordinate as the following tuple:
 
 ```typescript
 type Point3D = [number, number, number];
 ```
 
-Therefore, `Point3D[0]`, `Point3D[1]`, and `Point3D[2]` would be logically digestable and easier to map than other disjointed data.
+Therefore, `Point3D[0]`, `Point3D[1]`, and `Point3D[2]` would be logically digestible and easier to map than other disjointed data.
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/typescript-3/coordinate-system.svg" alt="3D coordinate system">
@@ -210,7 +210,7 @@ Therefore, `Point3D[0]`, `Point3D[1]`, and `Point3D[2]` would be logically diges
 
 [Source](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/3D_coordinate_system.svg/2000px-3D_coordinate_system.svg.png)
 
-On the other hand, associated data that is loosely tied is not beneficial. For example, we could have three pieces of `customerData` that are `email`, `phoneNumber`, and `dateOfBirth`. `customerData[0]`, `customerData[1]`, and `customerData[2]` say nothing about what type of data each represents. We would need to trace the code or read documentation to find out how the data is being mapped. This is not an ideal scenario and using an `interface` would be much better.
+On the other hand, associated data that is loosely tied is not beneficial. For example, we could have three pieces of `customerData` that are `email`, `phoneNumber`, and `dateOfBirth`. `customerData[0]`, `customerData[1]`, and `customerData[2]` say nothing about what type of data each represents. We would need to trace the code or read the documentation to find out how the data is being mapped. This is not an ideal scenario and using an `interface` would be much better.
 
 That's it for tuples! They provide us with a fixed size container that can store all values of all kinds of types. Now, let's see what TypeScript changes about using tuples in version `3.0` of the language.
 
@@ -218,9 +218,9 @@ That's it for tuples! They provide us with a fixed size container that can store
 
 In JavaScript, the [rest parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters) syntax allows us to "represent an indefinite number of arguments as an array."
 
-However as we reviewed earlier, in TypeScript, tuples are special arrays that can contain elements of different types.
+However, as we reviewed earlier, in TypeScript, tuples are special arrays that can contain elements of different types.
 
-With TypeScript 3, the rest paramater syntax allow us to represent a finite number of arguments of different types as a tuple. The rest parameter expands the elements of the tuple into discrete parameters.
+With TypeScript 3, the rest parameter syntax allows us to represent a finite number of arguments of different types as a tuple. The rest parameter expands the elements of the tuple into discrete parameters.
 
 Let's look at the following function signature as an example:
 
@@ -228,7 +228,7 @@ Let's look at the following function signature as an example:
 declare function example(...args: [string, boolean, number]): void;
 ```
 
-Here, the `args` parameter is a tuple type that contains three elemenets of type `string,`boolean`, and`number`. Using the rest parameter syntax, (`...`),`args` is expanded in a way that makes the function signature above equivalent to this one:
+Here, the `args` parameter is a tuple type that contains three elements of type `string,`boolean`, and`number`. Using the rest parameter syntax, (`...`),`args` is expanded in a way that makes the function signature above equivalent to this one:
 
 ```typescript
 declare function example(args_0: string, args_1: boolean, args_2: number): void;
@@ -282,7 +282,7 @@ draw(xyzCoordinate[0], xyzCoordinate[1], xyzCoordinate[2]);
 draw(...xyzCoordinate);
 ```
 
-We create a `Point3D` to represent the `(10, 20, 10)` coordinate and store it in the `xyzCoordinate` constant. Notice that we have three ways to pass point to the `draw` function:
+We create a `Point3D` to represent the `(10, 20, 10)` coordinate and store it in the `xyzCoordinate` constant. Notice that we have three ways to pass a point to the `draw` function:
 
 - Passing the values as literals:
 
@@ -302,7 +302,7 @@ draw(xyzCoordinate[0], xyzCoordinate[1], xyzCoordinate[2]);
 draw(...xyzCoordinate);
 ```
 
-As we can see, using the spread operator is a fast and clean option to passing tuple as arguments.
+As we can see, using the spread operator is a fast and clean option for passing a tuple as an argument.
 
 ### Optional Tuple Elements
 
@@ -342,7 +342,7 @@ The code above outputs the following in the console:
 
 Notice that the length of each `Point` tuples varies by the number of elements the tuple has. The `length` property of a tuple with optional elements is the "union of the numeric literal types representing the possible lengths" as states in the [TypeScript release](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html).
 
-The type of the length property in the `Point` tuple type [number, number?, number?] is `1 | 2 | 3`.
+The type of the length property in the `Point` tuple type `[number, number?, number?]` is `1 | 2 | 3`.
 
 As a rule, if we need to list multiple optional elements, they have to be listed with the postfix `?` modifier on its type at the end of the tuple. An optional element cannot have required elements to its right but it can have as many optional elements as desired.
 
@@ -432,7 +432,7 @@ itemLocation();
 const iPhoneLoc = new itemLocation();
 ```
 
-We try to access a `coordinates` property from `itemLocation` that doesn't exist. We also pass it as an argument to a function that takes an argument of type `string`, call it as a function, and finally use it as a constructor. Throughout the execution of these statement, TypeScript throws errors but it doesn't get angry enough to stop compilation.
+We tried to access a `coordinates` property from `itemLocation` that doesn't exist. We also passed it as an argument to a function that takes an argument of type `string`. We called it as a function. Lastly, we used it as a constructor. Throughout the execution of these statements, TypeScript throws errors but it doesn't get angry enough to stop compilation.
 
 ```shell
 TypeError: Cannot read property 'x' of undefined
@@ -578,7 +578,7 @@ cows
 undefined
 ```
 
-Nothing crashed but we did print `undefined` for the value of `w`. What this is telling us is that TypeScript is not super strict about the actual check done on the type `unknown` but that it is strict about a check being performed.
+Nothing crashed but we did print `undefined` for the value of `w`. What this is telling us is that TypeScript is not super strict about the actual check being done on the type `unknown` but that it is strict about a check being performed.
 
 ### Performing a Type Assertion
 
@@ -602,6 +602,6 @@ Despite not `itemLocation` not being a `string`, TypeScript is not too upset abo
 TypeError: loc.toLowerCase is not a function
 ```
 
-I recommend to start using `unknown` instead of `any` for handling responses from APIs that may have anything on the response. Having `unknown` in place forces us to check for the integrity and structure of the response and promotes defensive but sane coding.
+I recommend starting to use `unknown` instead of `any` for handling responses from APIs that may have anything on the response. Having `unknown` in place forces us to check for the integrity and structure of the response and promotes defensive but sane coding.
 
 {% include asides/about-auth0.markdown %}
