@@ -77,17 +77,26 @@ npm install -g @angular/cli
 
 > **Note:** By adding `-g` in the command above, you make NPM install the Angular CLI tool globally. That is, after issuing this command, you will have the `ng` command in all new sessions of your terminal. 
 
-## Building the Golang API
-Now we are going to build our Golang API. We will be using the web server framework 'Gin' for this. Gin is, like many other go frameworks, an open source project which simplifies creating API endpoints. Keep in mind, that nothing we will be building in this article is impossible to do with the standard library of go. The only reason we are using gin, is because it simplifies and standardises our process a little, making life easier. We like life, when life is easy.
+## Building Backend APIs with Golang
 
-### Creating our In-Memory ToDo List
-Before we start writing our web server, we will start writing our component for handling a Todo list. Our implementation will be a static object, which will store all todo items in-memory and perform CRUD operations on these todo items. Essentially, we are mocking a very simple database. Typically, this is not a bad way to start out development; Implementing a mock version of your database, before implementing your actual database. Not only does it makes testing easier (and something that you can do from the beginning of your project), but it also helps implying an interface for our store (or database). 
+In this section, you will learn how to build backend APIs with Golang. To facilitate your life, you will use [Gin](https://github.com/gin-gonic/gin), an HTTP web framework written in Golang. Gin is, like many other frameworks, an open-source project that simplifies creating API endpoints.
 
-So let's get started with our project. Golang by default will look for pacakges in the GO_PATH environment variable, which is places in the user directory of the system (i.e on unix systems ~/go & on windows %USERPROFILE%/go). Packages are then stored in ~/go/src/, and therefore, placing our projects here, will make our lives a lot easier (remember, we like this). I have placed mine in the directory ~/go/src/github.com/Pungyeon/golang-auth0-example and will refer to this directory as root (or './') from here on.
+What is good to keep in mind is that nothing that you will build in this article is impossible to do with the standard library of Golang. The only reason why you are using Gin is because it simplifies and standardizes the process a little, making your life easier.
 
-In our root directory, create a new folder named 'todo' and in this folder place a new file called todo.go. In this file, we will write the following content:
+### Creating an In-Memory To-Do List with Golang
 
-#### ./todo/todo.go
+Before you start developing your web server, you will start writing the component that will handle the to-do list. To keep things simple, the implementation of this component will consist of a static object that will store all to-do items in-memory. Essentially, this component will work a very simple database (one that does not persist data to disk though).
+
+Typically, this is not a bad way to start out the development process. Implementing a mock version of your database (before implementing your actual database) not only makes testing easier (and something that you can do from the beginning of your project) but it also helps implying an interface for your store (or database).
+
+Enough said, it's time to get started with your backend API. Golang, by default, will look for packages in the `GO_PATH` environment variable. This variable usually refers to a place in the user directory (i.e., on Unix-like systems, this would be `~/go`, and on Windows, this would be `%USERPROFILE%/go`).
+
+Packages are then stored in `$GO_PATH/src/` and, therefore, placing your projects there will make your live a lot easier. For this tutorial, you can place your Golang project in the `~/go/src/github.com/<YOUR_GITHUB_USER>/golang-angular` (you might have to create some of these directories). For the rest of the article, this directory will be referred to as the project root or simply `./`.
+
+> **Note:** You will have to replace `<YOUR_GITHUB_USER>` with your own GitHub username. That is, you do have a GitHub account, right?
+
+So, in your project root (`./`), create a new directory called `todo`. Then, inside this directory, create a new file called `todo.go` with the following code:
+
 ```go
 package todo
 
@@ -162,6 +171,17 @@ func newTodo(msg string) Todo {
 	}
 }
 
+func findTodoLocation(id string) (int, error) {
+	mtx.RLock()
+	defer mtx.RUnlock()
+	for i, t := range list {
+		if isMatchingID(t.ID, id) {
+			return i, nil
+		}
+	}
+	return 0, errors.New("could not find todo based on id")
+}
+
 func removeElementByLocation(i int) {
 	mtx.Lock()
 	list = append(list[:i], list[i+1:]...)
@@ -174,50 +194,38 @@ func setTodoCompleteByLocation(location int) {
 	mtx.Unlock()
 }
 
-func findTodoLocation(id string) (int, error) {
-	mtx.RLock()
-	defer mtx.RUnlock()
-	for i, t := range list {
-		if isMatchingID(t.ID, id) {
-			return i, nil
-		}
-	}
-	return 0, errors.New("could not find todo based on id")
-}
-
 func isMatchingID(a string, b string) bool {
 	return a == b
 }
 ```
 
-Explaining everything from top to bottom, we begin with our global variables for this package:
-* list -> Is a type of a Todo array 
-* mtx is our global mutex for all variables of this package. 
-* once contains a golang native functionality `sync.Once`, which will ensure an operation only is run once. 
+In the very top of the bottom (right after defining the package and importing a few other packages), you will find the variables that will be globally-available in this file:
 
-Our `init()` will run our `initialiseList()`, but ensure that it is only run once. The `init()` function is another golang native function, which is run on package initialisation (whenever the package is loaded). The `initialiseList()` function will reset / initialise our todo list, so we want to make sure that this is only executed once per runtime.
+- `list`: This is the array that will hold all to-do items.
+- `mtx`: This is the [mutex](https://gobyexample.com/mutexes) that will allow you to safely access/manipulate the data in this package across different [_goroutines_](https://gobyexample.com/goroutines).
+- `once`: This is a Golang native functionality ([`sync.Once`](https://golang.org/pkg/sync/#Once)), which will help you assuring that a specific operation will run only once.
 
-Next, we write our Todo struct, which is the base of our store. If other packages used this struct, we would place it, in another package for itself. But for this simple application, placing it here, will suffice. The struct defines the id, the contained message and whether the todo item is complete or active. We also map all properties of our struct to it's json equivalent. This is a very useful feature in go. The struct property naming convention in go, makes all properties starting with a capital letter public and all starting with a small letter private. In json, usually all properties of an object starts with a non-capital letter, and therefore this mapping ensures we can stick to both naming conventions.
+After the declaration of these variables, you will find the `init()` function and you will see that it runs another function called `initialiseList()`. The latter is responsible for initializing the array of to-do items, but will ensure that this initialization will run only once. As Golang runs the `init()` function whenever the package is initialized (i.e., whenever the package is loaded), you needed to wrap the `initialiseList` function inside the `once.Do`. In this way, you avoid reseting the array on the runtime.
 
+Then, after these two functions that initialize the package, you will find the `Todo` structure. This struct defines that to-do items will have an `ID`, a `Message` and whether the todo item is `Complete` or not. Also, while defining this struct, you are also mapping all properties of your struct into its JSON equivalent. This is a very useful feature in Golang and, if needed, [you can find more info about it here](https://blog.golang.org/json-and-go). As the naming convention in Golang defines that all properties starting with a capital letter are public and all starting with a small letter are private in a struct, this mapping also helps you ensure you can stick with the naming conventions available in JSON.
+
+> **Note:** If you were to define other packages that wold use this struct, it would be a good idea to place it in another package for itself. However, for this simple application, placing it here will suffice.
+
+Right after the definition of the `Todo` struct, you will find the first method of your to-do store: `Get()`. This method starts with a capital letter and, therefore, is public (meaning it can be accessed by other packages). The `Get()` method implementation is very simply, it simply returns your current static to-do list (the global `list` variable).
+
+Then, below this method, you will find the `Add()` method, which will create a new to-do (based on an user input message) and append to the global `list`. Notice that you are using your `mutex` to `Lock()` before you append new items to your list and then `Unlock()` again once the operation ends. As your server might handle multiple operations at the same time, this is a _very_ important step. If these operations try to access the same memory, you can run into a race-condition that might make Golang crash. To avoid this, you are using `mutex`, which is scoped to your package.
+
+After `Add()`, you will find the last two public functions. First, you will find `Delete()`, which, as the name states, will remove an item from the `list`. Then, you will find `Complete()`, which will mark a to-do item as complete (based on its `ID`) in your `list`.
+
+Then, after the public functions, you will find the private functions of your package. For starter, you will find the `newTodo()` function, which will take in a `msg` in form of a `string` and return a new instance of the `Todo` struct. This instance will contain an `ID` (i.e., an UUID in the form of a string) and the `complete` flag set to false.
+
+The next private function you will find is the `findTodoLocation()` function. You will use this function to find the index location of a to-do item based on its `ID`. If no matches are found after iterating over all the items, this function will return an error saying that it couldn't find the desired item. Notice that you are using `mutex` again in this method. This time, you are using the `RLock` (Read Lock) function since you will only be reading from your list and not writing to it.
+
+If you take a close look into the source code of this package, you will notice that it is using a third-party package called `xid` for generating UUIDs (Universally Unique Identifiers). As such, you will need to obtain this package before compiling your application. To do so, you will have to run the following command:
+
+```bash
+go get github.com/rs/xid
 ```
-This feature is also exceptionally useful when mapping json to a struct. Let's say that you don't like the naming convention used in the json, or it represents something other than your data, you can easily map the json key to a different property name, using this method.
-```
-
-Next, we will implement the first method of our todo store: `Get()`. This method is capitalised and is therefore public, meaning it can be accessed by other packages. Get very simply returns our current static todo list (the global list variable).
-
-The next method is `Add()`, which will create a new Todo based on a user input message and then append this todo to our list. Notice that we are using our mutex to `Lock()` before we append to our list and then `Unlock()` again once this operation has ended. This is very important, as we might send multiple operations at the same time. If these operations try to access the same memory, we can run into a race-condition. This would be bad, and would actually cause golang to crash. To avoid this, we use the mutex, which is scoped to our package.
-
-The third public method is `Delete()` which will remove an item from the list. The last public method one is `Complete()` which will mark a todo item as complete in our list, based on it's `id`. 
-
-```
-Notice that all our public functions are very simply. They aren't doing much more than a single operation. Finding an item and then either deleting or completing them. This makes our code really easy to read and easy to understand. These principles come from 'Clean Code' written by Robert C. Martin, whose material I can whole-heartedly recommend!
-```
-
-Now, we dive deep into the private functions of our package. Our `newTodo` function will take in a message in form of a string, and return a new Todo object, with a newly created UUID (in form of a string) and the complete flag set to false. The next function `findTodoLocation`, will take an input `id` and find a todo item, with a matching `id`. If there are no matches found after iterating over all the items in our list, we will return an error saying that we didn't find any items. Notice, that we are using our mutex again. This time, we are just using the `RLock` function, since we will only be reading our list and not writing to it and `RLock` is slightly more efficient than `Lock`.
-
-Be aware, that we are using a third party package, `xid`, for generating our GUID. To obtain this package before compiling our application, we will have to run the following command:
-
-> go get github.com/rs/xid
 
 Next, we have our `removeElementByLocation` function. We are setting our list variable to a new list, which contains all elements of our list up to a given location, appended with all elements after (but not including) the same given location. This means, we can give our function a location and it will set our list to an new list, without that given location, essentially deleting it from our list.
 
