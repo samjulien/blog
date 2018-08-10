@@ -231,16 +231,16 @@ Lastly, if you take a close look into the source code of this package, you will 
 go get github.com/rs/xid
 ```
 
-### Initilialising our Web Server & Serving Static Files
-Now to the web server!
+### Building the Golang Web Server and Serving Static Files
 
-As mentioned earlier, we will write this package in gin. This package can be obtained by writing the following command:
+Right on! Now is the time to develop a web server with Golang and Gin. So, for starters, you will need to grab Gin from the internet. To do this, run the following code:
 
-> go get github.com/gin-gonic/gin
+```bash
+go get github.com/gin-gonic/gin
+```
 
-Great. Now, in our root folder, we will create our main file (wuhuuu), main.go and write th following code:
+Great. Now, in your project root (`./`), you will create a file called `main.go` and insert the following code into it:
 
-#### ./main.go
 ```go
 package main
 
@@ -268,21 +268,28 @@ func main() {
 }
 ```
 
-First we instatiate our gin server using `gin.Default()`, this will return an object, which we can configure and run our web server from. Then we do something, which is a little hacky, so let's explain. Routing in gin is quite specific and cannot have ambiguous routes for the root path. Essentially, gin will complain if you have something matching a route such as `/*`, because this will interfere with every other route in our web server, which will then never be called. In Nodejs (for example), we are able to do this, because the path routing is determined by most specific to least specific. So a route such as `/api/something` will have precedence over `/*` and this is not the case by default in gin. However, we implement this in our server, by creating a `NoRoute`, matching all routes that have not been specified already. This route function will assume that this call is asking for a file and attempt to find this file. 
+Compared to the package you built in the last section, this file is pretty straightforward. First, you create your Gin server using `gin.Default()`. This command will return an object that you can use to configure and run the web server.
 
-If the client asks for a the root path, or if the file is not found, we will serve them 'index.html' (which will be produced from our angular project at a later point). Otherwise, we will serve the client, the file they requested. There are other ways to do this and depending on what you want to achieve, better ways to achieve that. However, for the purpose of this tutorial, this will do just fine. 
+Then, you do something that can be considered little bit _hacky_. As you may know, routing in Gin is quite specific and cannot have ambiguous routes for the root path. Essentially, Gin will complain if you have a configuration like `/*` because this will interfere with every other route in your web server (those would never be called). In Node.js (and other popular web server), you are able to do this because the path routing is determined by the most specific to the least specific configuration. So, in that case, a route like `/api/something` would have precedence over `/*`.
 
-Now, we can add our routes to fetch the data from our todo list. They are all pointing to the same path '/todo', but are all using different methods:
-* GET: Retrieves our entire todo list
-* POST: Adds a new todo to the list
-* DELETE: Deletes a todo from the list based on an id 
-* PUT: Will change a todo item from uncomplete to complete
+Unfortunately, this is not the case by default in Gin. However, to implement this in your server, you will take advantage of the `NoRoute` function, which matches all routes that have not been specified already. This route function will assume that this call is asking for a file and attempt to find this file.
 
-Each of our endpoints will be structed in the same manner `r.<METHOD>(<PATH>, <Gin function>)`. Our gin function is basically any function that takes the parameter of a gin.Context pointer. If you go look at the `NoRoute` function, you will see an example of a anonymous function, with the input of a gin.Context pointer.
+If a client asks for the root path, or if the file is not found, you will serve them the `index.html`file (which will be produced from your Angular project at a later point). Otherwise, you will serve the file requested by the client.
 
-Quite simple. The last thing our main function does, is to run our web server on port 3000 and panic if an error occurs, while running the web server.
+> **Note:** There are other ways to do this and, depending on what you want to achieve, better ways to achieve that. However, for the purpose of this tutorial, this will do just fine. 
 
-Of course, we are not quite finished, because our handlers don't actually exist. So, we will need to implement them, before we can start our web server.
+Now, after this generic endpoint, you are adding routes to fetch the data from your to-do list. They are all pointing to the same path '/todo', but they all use different HTTP methods:
+
+- `GET`: This endpoint enables users to retrieve the entire to-do list.
+- `POST`: This endpoint enables users to add new items to the list.
+- `DELETE`: This endpoint enables users to delete a to-do from the list based on an `ID`. 
+- `PUT`: This endpoint enables users to change a to-do item from incomplete to complete.
+
+Each one of these endpoints is structured in the same manner (i.e., `r.<METHOD>(<PATH>, <Gin function>)`. Your Gin function is basically any function that takes the parameter of a `gin.Context` pointer. If you look at the `NoRoute` function, you will see an example of a anonymous function with the input of a `gin.Context` pointer.
+
+Lastly, the `main.go` script runs your web server on port `3000` and `panic` if any error occurs while running the web server.
+
+In the next section, you will learn how to develop the handlers that will manage the incoming HTTP requests.
 
 ### Developing the API Endpoints
 So, we are going to create a new folder named `handlers`, in this folder, we will write a new file called `handlers.go`. In this file, we will write the code for the implementation of our api endpoints (GET, POST, PUT, DELETE -> for '/todo'). 
