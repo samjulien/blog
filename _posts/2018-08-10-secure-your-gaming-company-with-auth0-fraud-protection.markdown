@@ -2,8 +2,8 @@
 layout: post
 title: "Secure Your Gaming Company With Auth0's Fraud Protection"
 description: "Rapid gaming industry growth across mobile, console, and PC platforms can lead to disaster without proper security and anti-fraud protections."
-date: 2018-07-30 8:30
-category: Security, Gaming, Enterprise, Fraud
+date: 2018-08-10 8:30
+category: Security, Identity
 design: 
   bg_color: "#4A4A4A"
   image: https://cdn.auth0.com/blog/secure-games/logo.png
@@ -28,6 +28,7 @@ tags:
 related:
   - 2018-02-16-the-6-billion-reason-your-business-needs-advanced-fraud-protection
   - 2017-10-27-where-video-game-authentication-falls-short-and-how-gamers-can-stay-safe
+  - 2017-08-30-battlefy-is-major-player-in-esports-arena-with-help-from-auth0
 ---
 
 In April 2018, Epic Games’ [Fortnite generated $296 million](https://techcrunch.com/2018/05/25/fortnite-had-a-296-million-april/)—more than double what it generated in February. Growth was rapid across mobile, console, and PC platforms.
