@@ -25,7 +25,7 @@ related:
 - 2016-04-13-authentication-in-golang
 ---
 
-**TL;DR:** In this article, you will learn how to build modern applications with Golang and Angular. Throughout the article, you will build a secure Golang API that will support a ToDo list application that you will develop with Angular. To facilitate the identity management, you will integrate Auth0 both in your backend and in your frontend.
+**TL;DR:** In this article, you will learn how to build modern applications with Golang and Angular. For starters, you will build a secure backend API with Golang that will support a to-do list application. Then, you will use Angular to develop the frontend of the to-do list app. To facilitate the identity management, you will use Auth0 both in your backend API and in your Angular app to authenticate users. If needed, you can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/golang-angular).
 
 ## Why Choosing Golang and Angular
 The technologies of choice for this article, is golang for the backend and angular for the frontend. But why have we chosen these two technologies? 
