@@ -18,7 +18,15 @@ related:
   - 
 ---
 
-TypeScript 3.0 is out!
+TypeScript 3.0 is out! It comes with enhancements for the type system, compiler, and language service. This release is shipping with the following:
+
+- Project References: Lets TypeScript projects depend on other TypeScript projects by allowing `tsconfig.json` files to reference other `tsconfig.json` files.
+
+- Tuples in rest parameters and spread expressions with optional elements.
+
+- **New** `unknown` top type! It's the type-safe counterpart of `any`.
+
+For this blog post, we are going to focus on the enhancements made to tuples and the `unknown` type! Feel free to check the handbook for an in-depth view of [TypeScript Project References](https://www.typescriptlang.org/docs/handbook/project-references.html).
 
 ## TypeScript Quick Setup
 
