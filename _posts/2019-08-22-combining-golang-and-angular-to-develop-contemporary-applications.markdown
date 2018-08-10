@@ -291,12 +291,12 @@ Lastly, the `main.go` script runs your web server on port `3000` and `panic` if 
 
 In the next section, you will learn how to develop the handlers that will manage the incoming HTTP requests.
 
-### Developing the API Endpoints
-So, we are going to create a new folder named `handlers`, in this folder, we will write a new file called `handlers.go`. In this file, we will write the code for the implementation of our api endpoints (GET, POST, PUT, DELETE -> for '/todo'). 
+### Developing the API Endpoints with Gin Handlers
 
-Since we have already implemented all this functionality in our todo package, this will be a relatively simple exercise. The final product will look as such:
+To handle the incoming HTTP requests, in this section, you will learn how to develop Gin handlers. To begin with, you will create a new directory called `handlers` in the project root. Then, inside this directory you will create a file called `handlers.go`. In this file, you will write the code necessary to handle all methods (`GET`, `POST`, `PUT`,  and `DELETE`) available in your API endpoints (`/todo`).
 
-#### ./handlers/handlers.go
+Since you already implemented most of the functionality necessary in the `todo` package, this will be a relatively simple exercise. The final code in the `handlers.go` file will look as such:
+
 ```go
 package handlers
 
@@ -367,17 +367,19 @@ func convertJSONBodyToTodo(jsonBody []byte) (todo.Todo, int, error) {
 	return todoItem, http.StatusOK, nil
 }
 ```
-As mentioned earler, all of our handler functions take in the parameter of a gin.Context pointer. This variable essentially contains the http.Request reader and our http.ResponseWriter writer (which are used as input parameters for http handlers in the standard library). It also contains a lot of metadata about these requests and helpful functions, making it easier for us to process the data, both incoming and outgoing.
 
-The majority of this code is structed as such:
-1. Grab input and convert if necessary
-2. Check for errors
-3. Perform operation
-4. Return error or status ok
+As mentioned earlier, all of your handler functions take a pointer to `gin.Context` as a parameter. This parameter essentially contains the `http.Request` reader and a `http.ResponseWriter` writer. Besides this functionalities that allow you to read from the request and to write a response, this pointer contains a lot of metadata about the request.
 
-At the bottom of the code, I have added two helper functions, specific to parsing input. `convertHTTPBodyToTodo` will read the body from the request, and return it as a `Todo` object. This is done by using the `ioutil.ReadAll` which will read all bytes from an `io.Reader` stream. Once all the bytes have been read, we will convert them from JSON (which is the format the request has sent them in) to a Todo object. This is the code seen in `convertJSONBodyToTodo`. We use the standard library `json.Unmarshal` to try and parse a json object to a specified `interface{}` in this case a Todo. Of course, if we fail at doing so, we return an error.
+Basically speaking, this code is structured as follows:
 
-With these two functions written, it's pretty easy to keep our handler logic really simple and neat. The only other actions we use are `c.JSON` using our gin.Context, to return a response and `gin.H` to create a JSON return. In our `DeleteTodoHandler` function, we are also using c.Param. This function will take the parameter that we specified in our routing in our main function and return a string. Basically, if  our client requests `DELETE /todo/ID123`, this will result in our function extracting `ID123` as an id string, then invoking our `todo.Delete` function, deleting the todo with this id (assuming that it exists).
+1. Grab input and convert if necessary.
+2. Check for errors.
+3. Perform operation.
+4. Return `error` or the `ok` status.
+
+At the bottom of the code, you will notice two helper functions specific tailored to parse input. The `convertHTTPBodyToTodo` function will read the body from the request and return it as a `Todo` object. This is done by using the `ioutil.ReadAll` which will read all bytes from an `io.Reader` stream. Once this function reads all bytes, you use `convertJSONBodyToTodo` to convert them from JSON (which is the original format of the request body) to a `Todo` object.
+
+With these convert operations encapsulated in their own functions, it's pretty easy to keep your handlers logic simple and neat. The only other thing that might be worth mentioning the usage of the `c.JSON` function. You are using this function to convert the response into JSON objects before sending the to your users.
 
 ### Securing the Golang API with Auth0
 So, our web server is working as intended now. We can add, edit, complete and delete our todo list via. our API. I suggest that you try this out, by going to the root and running:
