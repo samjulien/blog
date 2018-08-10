@@ -63,16 +63,19 @@ Instead of making versions such as `2.2.1.1`, the team responsible for Angular d
 
 Despite all of this, I still think that Angular is an excellent frontend framework for web applications. I love that it leverages the use of TypeScript and, thereby standardising the structure of code and as mentioned earlier, I love the `angular-cli` toolbox (which comes with all the tools I need and expect out of the box).
 
-## Prequisites for Golang and Angular
-### Golang
-We need to install Golang. That's easy. Golang is awesome in that way. For installation instructaions, please visit https://golang.org/doc/install
+## Prequisites
 
-### Angular
-First we need to install npm and node. That can be done using these instructions https://nodejs.org/en/download/. From here on, we can type this command in our terminal or command line: 
+For this tutorial, you will need to install Golang, Node.js, and Angular. However, as you will see, the process is quite simple. For starters, you can visit [the official installation instructions provided by Golang](https://golang.org/doc/install) to install the programming language.
 
-> npm install -g @angular/cli
+After that, you will need to install Node.js (which comes with NPM). For that, you can follow [the instructions described here](https://nodejs.org/en/download/).
 
-Boom, we are ready.
+Then, after installing Node.js and NPM, you can issue the following command to install the [Angular CLI](https://cli.angular.io/) tool:
+
+```bash
+npm install -g @angular/cli
+```
+
+> **Note:** By adding `-g` in the command above, you make NPM install the Angular CLI tool globally. That is, after issuing this command, you will have the `ng` command in all new sessions of your terminal. 
 
 ## Building the Golang API
 Now we are going to build our Golang API. We will be using the web server framework 'Gin' for this. Gin is, like many other go frameworks, an open source project which simplifies creating API endpoints. Keep in mind, that nothing we will be building in this article is impossible to do with the standard library of go. The only reason we are using gin, is because it simplifies and standardises our process a little, making life easier. We like life, when life is easy.
