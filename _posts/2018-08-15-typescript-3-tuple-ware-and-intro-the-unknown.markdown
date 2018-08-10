@@ -285,3 +285,65 @@ draw(...xyzCoordinate);
 ```
 
 As we can see, using the spread operator is a fast and clean option to passing tuple as arguments.
+
+## Optional Tuple Elements
+
+With TypeScript 3.0, our tuples can have optional elements that are specified using the `?` postfix.
+
+We could create a generic `Point` tuple that could become two or three-dimensional depending on how many tuple elements are specified:
+
+```typescript
+type Point = [number, number?, number?];
+
+const x: Point = [10];
+const xy: Point = [10, 20];
+const xyz: Point = [10, 20, 10];
+```
+
+We could determine what kind of point is being represented by the constant by checking the `length` of the tuple:
+
+```typescript
+type Point = [number, number?, number?];
+
+const x: Point = [10];
+const xy: Point = [10, 20];
+const xyz: Point = [10, 20, 10];
+
+console.log(x.length);
+console.log(xy.length);
+console.log(xyz.length);
+```
+
+The code above outputs the following in the console:
+
+```shell
+1
+2
+3
+```
+
+Notice that the length of each `Point` tuples varies by the number of elements the tuple has. The `length` property of a tuple with optional elements is the "union of the numeric literal types representing the possible lengths" as states in the [TypeScript release](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html).
+
+The type of the length property in the `Point` tuple type [number, number?, number?] is `1 | 2 | 3`.
+
+As a rule, if we need to list multiple optional elements, they have to be listed with the postfix `?` modifier on its type at the end of the tuple. An optional element cannot have required elements to its right but it can have as many optional elements as desired.
+
+The following code would result in an error:
+
+```
+type Point = [number, number?, number];
+```
+
+```shell
+error TS1257: A required element cannot follow an optional element.
+```
+
+In `--strictNullChecks mode`, using the `?` modifier automatically includes `undefined` in the tuple element type. This behavior is similar to what TypeScript does with optional parameters.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/typescript-3/tupleware.png" alt="Tuples are like Tupperware containers.">
+</p>
+
+[Source](http://www.tupperware.com/media/catalog/product/cache/1/image/600x/9df78eab33525d08d6e5fb8d27136e95/l/u/lunchits_2018_mid_july-1.jpg)
+
+> Tuples are like Tupperware containers that let you store different types of food on each container. We can collect and bundle the containers and we can disperse them. At the same time, we can make it optional to fill a container. However, it would be a good idea to keep the containers with uncertain content at the bottom of the stack to make the containers with guaranteed content both easy to find and predictable.
