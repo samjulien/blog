@@ -397,3 +397,201 @@ Output:
 [ 'Thalia', [ 100, 98, 99, 100 ] ]
 [ 'David', [ 100, 98, 100 ] ]
 ```
+
+## Into the Unknown
+
+TypeScript 3.0 introduces a new type called `unknown`. `unknown` acts like a type-safe version of `any` by requiring us to perform some type of checking before we can use the value of the `unknown` variable or any of its properties. Let's explore the rules around this wicked type!
+
+`any` is too flexible. As the name suggests, it can encompass the type of every possible value in TypeScript. What's not so ideal of this premise is that `any` doesn't require us to do any kind of checking before we make use of the properties of its value.
+
+In the following code, `itemLocation` is defined as having type `any` and it's assigned the value of `10`, but we use it unsafely:
+
+```typescript
+let itemLocation: any = 10;
+
+itemLocation.coordinates.x;
+itemLocation.coordinates.y;
+itemLocation.coordinates.z;
+
+const findItem = (loc: string) => {
+  console.log(loc.toLowerCase());
+};
+
+itemLocation();
+
+const iPhoneLoc = new itemLocation();
+```
+
+We try to access a `coordinates` property from `itemLocation` that doesn't exist. We also pass it as an argument to a function that takes an argument of type `string`, call it as a function, and finally use it as a constructor. Throughout the execution of these statement, TypeScript throws errors but it doesn't get angry enough to stop compilation.
+
+```shell
+TypeError: Cannot read property 'x' of undefined
+```
+
+Let's see what happen when we change the type of `itemLocation` from `any` to `unknown`:
+
+```typescript
+let itemLocation: unknown = 10;
+
+itemLocation.coordinates.x;
+itemLocation.coordinates.y;
+itemLocation.coordinates.z;
+
+const findItem = (loc: string) => {
+  console.log(loc.toLowerCase());
+};
+
+findItem(itemLocation);
+
+itemLocation();
+
+const iPhoneLoc = new itemLocation();
+```
+
+Our IDE or code editor will instantly underline `itemLocation` with red in any of the instances where we are accessing its properties unsafely. This time around, TypeScript doesn't merely throw an error but actually stops compilation:
+
+```shell
+TSError: ⨯ Unable to compile TypeScript:
+src/index.ts(3,1): error TS2571: Object is of type 'unknown'.
+src/index.ts(4,1): error TS2571: Object is of type 'unknown'.
+src/index.ts(5,1): error TS2571: Object is of type 'unknown'.
+src/index.ts(11,10): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'string'.
+src/index.ts(13,1): error TS2571: Object is of type 'unknown'.
+src/index.ts(15,23): error TS2571: Object is of type 'unknown'.
+```
+
+We can use an `unknown` type if and only if we perform some form of checking on its structure. We can either check that the value contains the properties that we want to use, or we can use type assertion to tell TypeScript that we are confident about the type of the value. Let's see this in code.
+
+### Performing an Explicit Structural Check
+
+First, we perform type checking on `itemLocationCheck`:
+
+```typescript
+let itemLocation: unknown = 10;
+
+const itemLocationCheck = (
+  loc: any
+): loc is { coordinates: { x: any; y: any; z: any } } => {
+  return (
+    !!loc &&
+    typeof loc === "object" &&
+    "coordinates" in loc &&
+    "x" in loc.coordinates &&
+    "y" in loc.coordinates &&
+    "x" in loc.coordinates
+  );
+};
+
+if (itemLocationCheck(itemLocation)) {
+  itemLocation.coordinates.x;
+  itemLocation.coordinates.y;
+  itemLocation.coordinates.z;
+}
+```
+
+When we pass `itemLocation` to `itemLocationCheck` as a parameter, `itemLocationCheck` performs a structure check on it:
+
+- It checks that `loc` is defined.
+- It checks that `loc` is of type object.
+- It checks that `loc` has a property named `coordinates`.
+  - Once this is done, it checks that `coordinates` has properties named `x`, `y`, and `z`.
+
+Only if all these checks pass is the logic within the `if` statement executed. These checks are enough to convince TypeScript that we have done our due diligence for it to let us not only use `itemLocation` within the `if` statement but also for it to let the code compile.
+
+Despite the structure rigidity, the structural check still has some degree of flexibility: the values of `x`, `y`, and `z` can have any type of value:
+
+```typescript
+let itemLocation: unknown = {
+  coordinates: { x: 10, y: "cows", z: true }
+};
+
+const itemLocationCheck = (
+  loc: any
+): loc is { coordinates: { x: any; y: any; z: any } } => {
+  return (
+    !!loc &&
+    typeof loc === "object" &&
+    "coordinates" in loc &&
+    "x" in loc.coordinates &&
+    "y" in loc.coordinates &&
+    "x" in loc.coordinates
+  );
+};
+
+if (itemLocationCheck(itemLocation)) {
+  console.log(itemLocation.coordinates.x);
+  console.log(itemLocation.coordinates.y);
+  console.log(itemLocation.coordinates.z);
+}
+```
+
+Output:
+
+```shell
+10
+cows
+true
+```
+
+What would happen if we change the name of `z` to `w`? Will TypeScript be upset that `z` is not found as a property of `coordinates` and crash the compilation? Let's find out:
+
+```typescript
+let itemLocation: unknown = {
+  coordinates: { x: 10, y: "cows", w: true }
+};
+
+const itemLocationCheck = (
+  loc: any
+): loc is { coordinates: { x: any; y: any; z: any } } => {
+  return (
+    !!loc &&
+    typeof loc === "object" &&
+    "coordinates" in loc &&
+    "x" in loc.coordinates &&
+    "y" in loc.coordinates &&
+    "x" in loc.coordinates
+  );
+};
+
+if (itemLocationCheck(itemLocation)) {
+  console.log(itemLocation.coordinates.x);
+  console.log(itemLocation.coordinates.y);
+  console.log(itemLocation.coordinates.z);
+}
+```
+
+Output:
+
+```shell
+10
+cows
+undefined
+```
+
+Nothing crashed but we did print `undefined` for the value of `w`. What this is telling us is that TypeScript is not super strict about the actual check done on the type `unknown` but that it is strict about a check being performed.
+
+### Performing a Type Assertion
+
+We can also satisfy TypeScript `unknown` check by doing a type assertion:
+
+```typescript
+let itemLocation: unknown = {
+  coordinates: { x: 10, y: "cows", w: true }
+};
+
+const printLocation = (loc: string) => {
+  console.log(loc.toLowerCase());
+};
+
+printLocation(itemLocation as string);
+```
+
+Despite not `itemLocation` not being a `string`, TypeScript is not too upset about this and only throws an error but still compiles the code:
+
+```shell
+TypeError: loc.toLowerCase is not a function
+```
+
+I recommend to start using `unknown` instead of `any` for handling responses from APIs that may have anything on the response. Having `unknown` in place forces us to check for the integrity and structure of the response and promotes defensive but sane coding.
+
+{% include asides/about-auth0.markdown %}
