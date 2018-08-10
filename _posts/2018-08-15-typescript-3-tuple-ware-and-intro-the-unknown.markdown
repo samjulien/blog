@@ -143,3 +143,55 @@ npm run watch
 Messages about `nodemon` will come up. Since `index.ts` is empty as of now, there's no other output in the shell.
 
 You are all set up! Now join me in exploring what new features come with TypeScript 3.
+
+## Tuple Ware
+
+TypeScript 3 comes with a couple of changes to how tuples can be used. Therefore, let's quickly review the [basics of TypeScript tuples].
+
+A tuple is a TypeScript that let works like an array with a some special considerations:
+
+- The number of elements of the array is fixed.
+- The type of the elements of is known.
+- The type of the elements of the array need not be the same.
+
+For example, through a tuple, we can represent a value as a pair of a string and a boolean. Let's head to `index.ts` and populate it with the following code:
+
+```typescript
+// Declare the tuple
+let option: [string, boolean];
+
+// Correctly initialize it
+option = ["uppercase", true];
+```
+
+If we change value of `option` to `[true, "uppercase"]`, we'll get an error:
+
+```typescript
+// Declare the tuple
+let option: [string, boolean];
+
+// Correctly initialize it
+option = ["uppercase", true];
+
+// Incorrect value order
+option = [true, "uppercase"];
+```
+
+```shell
+src/index.ts(8,11): error TS2322: Type 'true' is not assignable to type 'string'.
+src/index.ts(8,17): error TS2322: Type 'string' is not assignable to type 'boolean'.
+```
+
+Let's delete the incorrect example from our code and move forward with the understanding that, with tuples, the order of values is critical. Relying on order can make code difficult to read, maintain, and use. For that reason, it's a good idea to use tuples with data that is related to each other in a sequential manner. That way, accessing the elements in order is part of a predictable and expect pattern.
+
+The coordinates of a point are examples of data that is sequential. A three-dimensional coordinate always comes in a three-number pattern: `(x, y, z)`. On a cartesian plane, the order of the points will always be sequential. We could represent this three-dimensional coordinate as the following tuple:
+
+```typescript
+type Point3D = [number, number, number];
+```
+
+Therefore, `Point3D[0]`, `Point3D[1]`, and `Point3D[2]` would be logically digestable and easier to map than other disjointed data.
+
+On the other hand, associated data that is loosely tied is not beneficial. For example, we could have three pieces of `customerData` that are `email`, `phoneNumber`, and `dateOfBirth`. `customerData[0]`, `customerData[1]`, and `customerData[2]` say nothing about what type of data each represents. We would need to trace the code or read documentation to find out how the data is being mapped. This is not an ideal scenario and using an `interface` would be much better.
+
+That's it for tuples! They provide us with a fixed size container that can store all values of all kinds of types. Now, let's see what TypeScript changes about using tuplus in version `3.0` of the language.
