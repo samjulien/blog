@@ -194,4 +194,52 @@ Therefore, `Point3D[0]`, `Point3D[1]`, and `Point3D[2]` would be logically diges
 
 On the other hand, associated data that is loosely tied is not beneficial. For example, we could have three pieces of `customerData` that are `email`, `phoneNumber`, and `dateOfBirth`. `customerData[0]`, `customerData[1]`, and `customerData[2]` say nothing about what type of data each represents. We would need to trace the code or read documentation to find out how the data is being mapped. This is not an ideal scenario and using an `interface` would be much better.
 
-That's it for tuples! They provide us with a fixed size container that can store all values of all kinds of types. Now, let's see what TypeScript changes about using tuplus in version `3.0` of the language.
+That's it for tuples! They provide us with a fixed size container that can store all values of all kinds of types. Now, let's see what TypeScript changes about using tuples in version `3.0` of the language.
+
+## Using TypeScript Tuples in Rest Parameters
+
+In JavaScript, the [rest parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters) syntax allows us to "represent an indefinite number of arguments as an array."
+
+However as we reviewed earlier, in TypeScript, tuples are special arrays that can contain elements of different types.
+
+With TypeScript 3, the rest paramater syntax allow us to represent a finite number of arguments of different types as a tuple. The rest parameter expands the elements of the tuple into discrete parameters.
+
+Let's look at the following function signature as an example:
+
+```typescript
+declare function example(...args: [string, boolean, number]): void;
+```
+
+Here, the `args` parameter is a tuple type that contains three elemenets of type `string,`boolean`, and`number`. Using the rest parameter syntax, (`...`),`args` is expanded in a way that makes the function signature above equivalent to this one:
+
+```typescript
+declare function example(args_0: string, args_1: boolean, args_2: number): void;
+```
+
+To access `args_0`, `args_1`, and `args_2` within the body of a function we would use array notation: `args[0]`, args[1]`, and`args[2]`.
+
+The goal of the rest parameter syntax is to collect "argument overflow" into a single structure: an array or a tuple.
+
+In action, we could call the `example` function as follows:
+
+```typescript
+example("TypeScript example", true, 100);
+```
+
+TypeScript will pack that into the following tuple since `example`, as first defined, only takes one parameter:
+
+```typescript
+["TypeScript example", true, 100];
+```
+
+Then the rest parameter syntax unpacks it within the parameter list and makes it easily accessible to the body of the function based on array index notation with the same of the rest parameter as the name of the tuple, `args[0]`.
+
+Using our `Point3D` tuple example, we could have a function like this one:
+
+```typescript
+declare function draw(...point3D: [number, number, number]): void;
+```
+
+As before, we would access each point coordinate as follows: `point3D[0]` for `x`, `point3D[1]` for `y`, and `point3D[2]` for `z`.
+
+How is this different from just passing an array? An array would allow us to pass only one number, the first element of `point3D` that maps to the `x` coordinate. It would not force us to pass a number for `y` and `z`. A tuple will throw an error if we are not passing exactly 3 numbers to the `draw` function.
