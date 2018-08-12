@@ -565,9 +565,12 @@ curl -H 'Authorization: Bearer '$ACCESS_TOKEN localhost:3000/todo -d '{"message"
 curl -H 'Authorization: Bearer '$ACCESS_TOKEN localhost:3000/todo
 ```
 
-## Conclusion
-So, we finally made it! The application itself that we created was pretty simple. Just a todo list, where we can add delete and complete some todo items. However, the framework around our application is quite sound. We have handled authentication via. Auth0, creating a very strong starting point for our application, by starting with security in mind.
+## Conclusion and Next Steps
 
-Adding features to our application becomes a lot easier, once we have established a strong fundament in security. We can add different todo lists for different users, relatively easily, without having to worry about how this will affect our application down the road. Using a third party security solution like Auth0, is also a great advantage, because we can rest assured that this solution will keep our application data safe. With a few changes here and there (such as serving our API and static files over HTTPS), we could quite confidently deploy this code to production. 
+Done! You just finished developing a secure backend API with Golang, Gin, and Auth0. The application that you created was pretty simple, just a todo list where you can add, delete, and to-do items as complete. However, the framework around your application is quite sound. You handled authentication via Auth0, which creates a very strong starting point for your application (it is important to think about security and identity management from the start).
 
-I hope this article has been helpful, and has given some insight to how easy it is to implement Auth0 as a third-party authentication service, as well as using Angular as a frontend and Golang as a backend. Feedback and questions are very welcome!
+Adding features to your application now becomes a lot easier. Once you have established a strong fundament in security, you can add different to-do lists for different users. Using a third party security solution like Auth0 is also a great advantage because you can rest assured that this solution will keep your users' personal data safe. With a few changes here and there (such as serving your API and static files over HTTPS), you can quite confidently deploy this code to production.
+
+I hope the first part of this series has been helpful and that it has given some insight on how easy it is to implement Auth0 as a third-party authentication service on Golang. In the second part of this series, you will learn how to implement the frontend client of your to-do list with Angular and how to integrate it with your Golang backend API.
+
+Stay tuned!
