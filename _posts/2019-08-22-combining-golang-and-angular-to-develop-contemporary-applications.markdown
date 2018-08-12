@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Combining Golang and Angular to Develop Contemporary Applications"
-description: "Learn how to develop modern applications with Golang and Angular."
+title: "Golang & Angular Series - Part 1: Developing and Securing Golang APIs"
+description: "A series that will show you how to develop modern applications with Golang and Angular."
 date: 2018-08-22 08:30
 category: Technical Guide, Frontend, Angular
 author:
@@ -25,11 +25,11 @@ related:
 - 2016-04-13-authentication-in-golang
 ---
 
-**TL;DR:** In this article, you will learn how to build modern applications with Golang and Angular. For starters, you will build a secure backend API with Golang that will support a to-do list application. Then, you will use Angular to develop the frontend of the to-do list app. To facilitate the identity management, you will use Auth0 both in your backend API and in your Angular app to authenticate users. If needed, you can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/golang-angular).
+**TL;DR:** In this series, you will learn how to build modern applications with Golang and Angular. In the first article, you will build a secure backend API with Golang that will support a to-do list application. Then, in the second part, you will use Angular to develop the frontend of the to-do list app. To facilitate the identity management, you will use Auth0 both in your backend API and in your Angular app to authenticate users. If needed, you can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/golang-angular).
 
 ## Why Choosing Golang and Angular
 
-As mentioned, the technologies of choice for this article is [Golang](https://golang.org/) for the backend and [Angular](https://angular.io/) for the frontend. In this section, you will learn more about both platforms and why they are great options to develop applications nowadays.
+As mentioned, the technologies of choice for this series is [Golang](https://golang.org/) for the backend and [Angular](https://angular.io/) for the frontend. In this section, you will learn more about both platforms and why they are great options to develop applications nowadays.
 
 ### Golang Overview
 
