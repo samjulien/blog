@@ -381,31 +381,44 @@ At the bottom of the code, you will notice two helper functions specific tailore
 
 With these convert operations encapsulated in their own functions, it's pretty easy to keep your handlers logic simple and neat. The only other thing that might be worth mentioning the usage of the `c.JSON` function. You are using this function to convert the response into JSON objects before sending the to your users.
 
+After these changes, you are ready to run your Golang API. So, go to your project root and issue the following command:
+
+```bash
+go run main.go
+```
+
+This will make your server start listening requests on `localhost:3000`. To test it, you can then use a command-line tool like `curl` or a graphical solution like [Postman](https://www.getpostman.com/). Using `curl`, you can test your application like this:
+
+```bash
+# add a new to-do item
+curl localhost:3000/todo -d '{"message": "finish writing the article"}'
+
+# get all to-do items
+curl localhost:3000/todo
+```
+
+![Running your Golang backend API](https://cdn.auth0.com/blog/golang-angular/running-golang-backend-api.png)
+
 ### Securing the Golang API with Auth0
-So, our web server is working as intended now. We can add, edit, complete and delete our todo list via. our API. I suggest that you try this out, by going to the root and running:
 
-> go run main.go
+That's awesome, you now have a Golang backend API up and running. Time to celebrate? Not quite yet... you have one big issue. Right now, anyone can issue requests to your API. That's not ideal. You probably want to make sure that only people that you trust can access and edit your to-do list. To do this, you will use [Auth0 as the Identity and Access Management (IAM) system](https://auth0.com/learn/cloud-identity-access-management/) of your service.
 
-Which will start our web server on `localhost:3000`. You can then use curl (or a program like Postman) to fiddle around with the different actions of our web server. As an example:
+If you don't have an Auth0 account yet, you can <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free one here</a>.
 
-Add a new todo:
-> curl POST localhost:3000/todo -d '{"message": "finish writing the article"}'
+After signing up to Auth0, you will have to go to your [Auth0 dashboard](https://manage.auth0.com/) and proceed as follows:
 
-Get all our current todos:
-> curl GET localhost:3000/todo
+1. go to [the _APIs_ section](https://manage.auth0.com/#/apis);
+2. click on _Create API_;
+3. define a _Name_ for your API (e.g., "Golang API");
+4. define an _Identifier_ for it (e.g., `https://my-golang-api`);
+5. and click on the _Create_ button (leave the _Signing Algorithm_ with RS256).
 
-If this works, we will now get a response with our single todo item on our list, suggesting that I should finish writing this article. Great! Time to celebrate! Not quite... we have one issue. Right now, anyone can use our todo list. That's not good, we want to make sure that only people that we trust can access and edit our todo list. To do this, we will utilise Auth0 as a backend authentication service. So, let's signup for a free Auth0 account and get our application setup:
+![Creating an Auth0 API to represent a Golang backend](https://cdn.auth0.com/blog/golang-angular/creating-an-auth0-api.png)
 
-1. Go to https://auth0.com/signup and create a new free account. If you already have an account, you can skip this step.
-2. Login to your account and to the `Applications` tab of your Dashboard.
-3. Click the `Create New Application` button, write the desired name for your application and choose `Single Page Web Application`, before clicking the `Create` button.
-4. This will redirect you to the quickstart section of your application. From here, go to the `Settings` tabs. Here, you will find all the important information about your application, that we will need to communicate with Auth0 from both our backend and frontend applications. Most importantly: `Domain` and `Client ID`.
-5. Stay on this page, there is two additional setup steps. Go to the `Allowed Callback URLs` section of the page and add: `http://localhost:3000/callback, http://localhost:4200/callback`
-6. ...and last thing to setup. Go to the `Allowed Logout URLs` section of the page and add: `http://localhost:3000/home, http://localhost:3000/`
+In a second or two, Auth0 will redirect you to your new Auth0 API. For this article, you won't have to change any other configuration on Auth0's dashboard. However, you can leave it open as you will have to copy a few values from it soon.
 
-Now that our account has been setup, we need to make some changes on our backend. Essentially, we want our web api to check a service every time that a request is made towards. To do this, we will change our `main.go` file to the following:
+So, back in your code, you will want to refactor your API to check if the requests arriving have [access tokens](https://auth0.com/docs/tokens/access-token) issued by Auth0. To do this, open your `main.go` file and replace its code with this:
 
-#### ./main.go
 ```go
 package main
 
@@ -416,7 +429,7 @@ import (
 	"path"
 	"path/filepath"
 
-	"github.com/auth0-community/auth0"
+	"github.com/auth0-community/go-auth0"
 	"github.com/gin-gonic/gin"
 	jose "gopkg.in/square/go-jose.v2"
 
@@ -457,17 +470,18 @@ func main() {
 }
 
 func setAuth0Variables() {
-	audience = os.Getenv("AUTH0_CLIENT_ID")
+	audience = os.Getenv("AUTH0_API_IDENTIFIER")
 	domain = os.Getenv("AUTH0_DOMAIN")
 }
 
 // ValidateRequest will verify that a token received from an http request
-// is valid and signy by authority
+// is valid and signyed by Auth0
 func authRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		client := auth0.NewJWKClient(auth0.JWKClientOptions{URI: domain + ".well-known/jwks.json"}, nil)
-		configuration := auth0.NewConfiguration(client, []string{audience}, domain, jose.RS256)
+		var auth0Domain = "https://" + domain + "/"
+		client := auth0.NewJWKClient(auth0.JWKClientOptions{URI: auth0Domain + ".well-known/jwks.json"}, nil)
+		configuration := auth0.NewConfiguration(client, []string{audience}, auth0Domain, jose.RS256)
 		validator := auth0.NewValidator(configuration, nil)
 
 		_, err := validator.ValidateRequest(c.Request)
@@ -487,714 +501,68 @@ func terminateWithError(statusCode int, message string, c *gin.Context) {
 }
 ```
 
-In our main function we have added a routing group, called authorized. We then tell gin that this routing group should use a middleware function called `authRequired` and then change all our todo operations, to make them a part of this group, rather than being directly attached to our gin router.
+If you analyze the new version of this code carefully, you will notice that you added a routing group (called `authorized`) to secure all endpoints in your backend. That is, by calling `authorized.Use(authRequired())` and putting all endpoint definitions inside the `authorized` routing group, you are telling Gin that all requests made to these endpoints must be evaluated by the `authRequired` function first.
 
-We have also written a middlware function. A middleware function is basically a function that is run, before (or after) our actual handler. So, a request towards `GET '/todo'` is now processed in the `authRequired` function first and then the `handlers.GetTodoListHandler`.
+Another change in this code is the addition of two new global variables: `audience` and `domain`. You need these variables so you can validate access tokens against Auth0. As you can see, these variables will be retrieved from your environment variables on start, using the `setAuth0Variables` function. You will set them with your Auth0 values before running your backend again.
 
-Another addition is two new global variables audience and domain, which we will need for our authentication against Auth0. These will be retrieved from our environment variables on start, using the function `setAuth0Variables`.
+As the core piece of validation is the `authRequired` function, a better explanation about it is required. The `authRequired` function is what is known as a middleware function. In Gin terms, a middleware must return a `gin.HandlerFunc` function that contains a call to `Next()` in the body. Basically, your function validates a token, which is found in the `Authorization` header of the incoming request. The middleware does this by using JWKS (JSON Web Key Set). Essentially, [JWKS is a method for verifying JWT, using a public/private key infrastructure](https://auth0.com/docs/jwks).
 
-The function `authRequired` is a middleware function. In gin terms, this must return a gin.HandlerFunc, which contains a `Next()` invokation in the body. Basically, our function validates a token which is provided in the incoming request 'Authorization' header. We do this using JWKS (JSON Web Key Set). Essentially, JWKS is a method for verifying JWT, using a public/private key infrastructure. In our case, both the private and public keys are provided by Auth0, so we don't have to do any additional work.
+Luckily for you, using Auth0's Golang library makes this process extremely simple. All you have to do is to write a few lines of code to validate the incoming token. If this results in an error, you terminate the current connection, responding to it with an `http.StatusUnauthorized` (401) status. If the token is valid, then you send the request onto the next function (by calling `Next()`) in the handler chain.
 
-```
-To read about JWKS: https://auth0.com/docs/jwks
-```
+Before wrapping up, you still need to install the two new libraries that this code is now using:
 
-Using the auth0 golang library, makes this extremely simple. All we have to do, is four lines of code to validate our incoming token. If this results in an error we will terminate the current connection, responding to the incoming request with a `http.StatusUnauthorized` (401) and terminating the connection. If the token is validated, then we will send the request onto the next function in the handler chain. 
-
-So let's make sure that this works, by spinning up our server:
-
-> go run main.go
-
-... and then without getting a token, we will send a request to our API expecting a 401 unauthorized:
-
-> curl GET localhost:3000/todo
-
-If this results in a 200, we have done something wrong. If not, awesome. Then it is time to create our UI!
-
-## Developing a ToDo List with Angular
-Now that we have our backend sorted, we will proceed with creating a frontend. As stated earlier, this will consist of simple home page with a button to redirect us to the todo list. To access to the todo list, we must be authenticated. Let's get going!
-
-### Initialising the Angular Project
-Our new angular project, will be placed in the folder `ui`. This folder will be auto-created on initialisation. So, to initialise the project, use the following command:
-
-> ng new ui
-
-This will place a new angular quickstart project in a new folder: ui. Now, we need to go into our ui folder and download all of our node modules, which are dependencies for our angular project. To do this, run the following command:
-
-> npm install
-
-The command will look at the `package.json` file and see which dependencies are stated (and check their dependencies) and download all of them. Last thing we need to do, before we start writing our application, is to add a few CDN links to our index.html file. All of these are also possible to get from `npm install`, or to download locally, but this is the simplest solution as of right now. So, edit the file `./ui/src/app/index.html` to the following:
-
-#### ./ui/src/index.html
-```html
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Auth0 Golang Exaple</title>
-  <base href="/">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
-</head>
-<body>
-  <app-root></app-root>
-</body>
-</html>
+```bash
+go get github.com/auth0-community/go-auth0 gopkg.in/square/go-jose.v2
 ```
 
-All we have done is change the title to "Auth0 Golang Example" and added three external CDN dependencies:
-1. Bootstrap CSS - to make everything look pretty
-2. Font Awesome - to have cool icons for buttons and such
-3. Auth0 - Which is a JS library for using Auth0 authentication
+That's it. Securing a Golang backend API with Auth0 is as simple as that. To see this in action, hit `Ctrl` + `c` to stop the previous running instance of your API and then run it again:
 
-Another change that we would like to do for preparation, is to edit the environment files found in `./ui/src/environments`. These files will act as global variables for our application and differentiate between whether we are running a local dev environment, or we are running in production. Change the `environment.prod.ts` to:
+```bash
+# set env variables
+export AUTH0_API_IDENTIFIER=<YOUR_AUTH0_API>
+export AUTH0_DOMAIN=<YOUR_AUTH0_TENANT>.auth0.com
 
-#### ./ui/src/environments/environment.prod.ts
-```js
-export const environment = {
-  production: true,
-  gateway: '',
-  callback: 'http://localhost:3000/callback',
-  domain: 'pungy.eu.auth0.com', // insert your domain here
-  clientId: '<insert your client id here>'
-};
+go run main.go
 ```
 
-And if you want to develop using `ng serve`, then change the `environment.ts` (which is considered our dev environment by default), to the following:
+> **Note:** You have to replace `<YOUR_AUTH0_API>` with the identifier you set in your Auth0 API while creating it. Also, you have to replace `<YOUR_AUTH0_TENANT>` with the subdomain you chose while creating your Auth0 account.
 
-#### ./ui/src/environments/environment.ts
-```js
-export const environment = {
-  production: false,
-  gateway: 'http://localhost:3000',
-  callback: 'http://localhost:4200/callback',
-  domain: 'pungy.eu.auth0.com', // insert your domain here
-  clientId: '<insert your client id here>'
-};
+Now, if you try to issue a request to your API without sending an access token retrieved from Auth0:
+
+```bash
+curl GET localhost:3000/todo
 ```
 
-```
-NOTE: The command "ng serve" will start a local web server on port 4200. This web server will detect whenever changes are made to the code base, transpile and reload to serve our angular project with the new changes. This will only transpile the changes, so therefore this is much faster than having to rebuild our project for every change and therefore preferred when developing.
-```
+You will get a nice error sent back:
 
-### Creating the Welcome & Todo Page
-First, we will make a new Angular component. We will quickstart this, using the angular-cli:
-
-> ng g c home
-
-Essentially, this is the shortened version of:
-
-> ng generate component home
-
-This will create a new folder in our `app` folder, named `todo` and place four files in the folder:
-* home.component.css - for styling our html
-* home.component.html - the html for our page
-* home.component.spec.ts - testing file (we won't be using this, you are free to delete it)
-* home.component.ts - the TypeScript file for all the javascript to support the html page
-
-```
-NOTE: The CLI will also automatically add this newly created class to our `app.module.ts`, in the `@NgModule.declarations` section.
-```
-
-Our welcome page, will be extremely simple and we will only have to touch our `home.component.html` file and change it to this:
-
-#### ./ui/src/app/home/home.component.html
-```html
-<div class="c-block">
-  <h3> Welcome Home!</h3>
-  <a routerLink="/todo">
-    <button class="btn-primary"> Show Todo List </button>
-  </a>
-</div>
-```
-
-All we are doing is creating a title with a link (with a nested button) that will redirect the user to `/todo`. We haven't determined the routing yet, so that won't work right now. We will get to that soon.
-
-However, before we do, let's create a todo component in the same way as our home component:
-
-> ng g c todo
-
-### Developing the ToDo Page & Service
-Our todo functionality will be split into two, a component (the one we created in the last section) and a service. The service will be in charge of communicating with the backend via. HTTP. This service may then be used by our component, for ease of use, to communicate with our backend and display the correct information retrieved by the service.
-
-So, let's begin by creating our service. Best practice tells us to create a new folder called `service` and place a new file in there named `todo.service.ts`. This file will consist of the following code: 
-
-#### ./ui/src/app/service/todo.service.ts
-```js
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../environments/environment";
-
-@Injectable()
-export class TodoService {
-    constructor(private httpClient: HttpClient) {}
-
-    getTodoList() {
-        return this.httpClient.get(environment.gateway + '/todo');
-    }
-
-    addTodo(todo: Todo) {
-        return this.httpClient.post(environment.gateway + '/todo', todo);
-    }
-
-    completeTodo(todo: Todo) {
-        return this.httpClient.put(environment.gateway + '/todo', todo);
-    }
-
-    deleteTodo(todo: Todo) {
-        return this.httpClient.delete(environment.gateway + '/todo/' + todo.id);
-    }
-}
-
-export class Todo {
-    id: string;
-    message: string;
-    complete: boolean;
-}
-```
-
-Here we are stating that we want to `export` our TodoService class, thereby making it available for other components to use. On initialisation of our class, we expect an HttpClient as input, which will be available for usage of our class (under the property name `this.httpClient`). This pattern is called dependency injection... but that is a topic for another article. 
-
-```
-NOTE: the @Injectable() decorator ensures that we can inject the HttpClient. Without this, you will get some strange console errors.
-```
-
-At the bottom of the file, we are exporting another class `Todo` which is a mirror of our todo class from our backend. We use this class throughout our project, to ensure a more accurate description in code, what we are sending and retrieving from our backend. The rest of the service is some very basic HTTP calls to our backend. Notice that we are using the `environment.gateway` variable to determine where our http calls are headed, making it easier to change environments.
-
-```
-NOTE: This service must also be added to our app.module.ts file, just like all our components. However, since this is a service our components use, we must add it to the 'providers' section in @NgModule. We will also need to add HttpClientModule to the imports section. There is a reference to where and how, at a later point in the tutorial
-```
-
-Now, let's use our new todo service, for usage in our todo component. First, let's write our TypeScript logic in the `todo.component.ts` file:
-
-#### ./ui/src/app/todo/todo.component.ts
-```js
-import { Component, OnInit } from '@angular/core';
-import { TodoService, Todo } from '../service/todo.service';
-
-@Component({
-  selector: 'app-todo',
-  templateUrl: './todo.component.html',
-  styleUrls: ['./todo.component.css']
-})
-export class TodoComponent implements OnInit {
-
-  activeTodos: Todo[];
-  completedTodos: Todo[]
-  todoMessage: string;
-
-  constructor(private todoService: TodoService) { }
-
-  ngOnInit() {
-    this.getAll();
-  }
-
-  getAll() {
-    this.todoService.getTodoList().subscribe((data: Todo[]) => {
-      this.activeTodos = data.filter((a) => !a.complete);
-      this.completedTodos = data.filter((a) => a.complete);
-    });
-  }
-
-  addTodo() {
-    var newTodo : Todo = {
-      message: this.todoMessage,
-      id: '',
-      complete: false
-    }
-    this.todoService.addTodo(newTodo).subscribe(() => {
-      this.getAll();
-      this.todoMessage = '';
-    });
-  }
-
-  completeTodo(todo: Todo) {
-    this.todoService.completeTodo(todo).subscribe(() => {
-      this.getAll();
-    });
-  }
-
-  deleteTodo(todo: Todo) {
-    this.todoService.deleteTodo(todo).subscribe(() => {
-      this.getAll();
-    })
-  }
-}
-```
-
-Starting from the `export class TodoComponent`, what we have is three properties, which respectively contain our active todo list, our completed todo list and a user input string. Our constructor of our component will expect a TodoService object and store this as a private property todoService.
-
-The first function of our component, `ngOnInit` is a built-in standard of angular and derives from the interface `OnInit`. Essentially and implementation on `OnInit`, will wait for the component to be loaded, before executing the `ngOnInit` function. Essentially, we are waiting to retrieve data, until our component has loaded successfully. In our function, we are executing the method `getAll`. This method, will invoke the `todoService.getTodoList` function. As we know, this function is an http call to our backend to get all of our todo items. The HttpClient in angular does not return with the response, but rather with an Observable. Essentially, this is an object, which we can 'subscribe' to and then whenever new data is retrieved, we will be notified and can hereby respond in some way or another. In this scenario, we are using the observable more like a callback, but I strongly recommend reading up on RxJs and Observables. They are super useful in modern Javascript.
-
-Anyway... the `getAll` function subscribes to data from the `todoService.getTodoList` and whenever data is received, will assigned all active todos to our `activeTodos`, by filtering out any complete items, and do the opposite for our `completedTodos` property. The rest of our class methods are corresponding to our todo service, which in turn was mapped up against our backend api. In other words, we have an add, complete and delete, and whenever an operation is performed, we update our todo list, by retrieving the data again with `getAll`.
-
-Now that our TypeScript logic is done, here is our HTML code:
-
-#### ./ui/src/app/todo/todo.component.html
-```html
-<h3> Todos </h3>
-<table class="table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Description</th>
-      <th>Complete</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let todo of activeTodos">
-      <td>{{todo.id}}</td>
-      <td>{{todo.message}}</td>
-      <td>
-        <button *ngIf="!todo.complete" class="btn btn-secondary" (click)="completeTodo(todo)">
-          <i class="fa fa-check"></i>
-        </button>
-        <button *ngIf="todo.complete" class="btn btn-success" disabled>
-          <i class="fa fa-check"></i>
-        </button>
-
-        <button class="btn btn-danger" (click)="deleteTodo(todo)">
-            <i class="fa fa-trash"></i>
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<h3>Completed</h3>
-<table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Description</th>
-        <th>Complete</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let todo of completedTodos">
-        <td>{{todo.id}}</td>
-        <td>{{todo.message}}</td>
-        <td>
-          <button *ngIf="!todo.complete" class="btn btn-secondary" (click)="completeTodo(todo)">
-            <i class="fa fa-check"></i>
-          </button>
-          <button *ngIf="todo.complete" class="btn btn-success" disabled>
-            <i class="fa fa-check"></i>
-          </button>
-  
-          <button class="btn btn-danger" (click)="deleteTodo(todo)">
-              <i class="fa fa-trash"></i>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-<input placeholder="description..." [(ngModel)]="todoMessage">
-<button class="btn btn-primary" (click)="addTodo()"> Add </button>
-```
-
-Our todo html is essentially two tables, that use the `*ngFor` directive to iterate over all the todo items in our variable activeTodos and completedTodos, which have been set by the `getAll` function. The table then contains the id and message of the todo item, as well as two button which will complete and delete the given todo. We also indicate whether the todo item has been completed already. We do this using an `*ngIf` directive. If the `todo.complete` property is false, we show an active green button, and if the todo is already completed, we show a grey disabled button.
-
-```
-NOTE: It would be best practice to extract these tables as a component by themselves. But for the simplicity of this tutorial, I have chosen to keep this in a single file.
-```
-
-At the very bottom of the html page, we have an input string and a button whose click is mapped to our `addTodo` function. This is what gives our users the possibility of adding new todo items. The input content is mapped to our `todoMessage` variable via. our ngModel directive. This directive works like a two-way binding, meaning that the variable is tied to the input element and the element is tied to the variable, should one change, so will the other. This is why our `addTodo` function creates a new Todo item, using the `todoMessage` variable.
-
-Let's also add a little bit of style to our local css styling file `todo.component.css`. Keep in mind, the css in this file, will only be applied to our `TodoComponent`:
-
-#### ./ui/src/app/todo/todo.component.css
-```css
-button {
-    width: auto;
-    margin: 5px;
-}
-
-td {
-    vertical-align: unset;
-}
-```
-
-If we were to spin up our project now, none of our hard work would show. We aren't routing our clients anyway and even if we were, we are not authenticated to get the todo list from our backend. So, let's setup routing together with an authentication service next, so we can get access to our data.
-
-### Setting up Routing and Securing it with Auth0
-We will start by creating our authentication service. This service will be using the Auth0 CDN import, which was inserted at the start of this article. Keep in mind, that this is an in-memory authentication service, the authentication token that we retrieve will not be saved anywhere, so if a user is to reload the web page, they will have to re-authorize against auth0. For this authentication service, we will be using that javascript auth0 library. To install this, use the following command:
-
-> npm install --save auth0-js
-
-```
-NOTE: We could also use localStorage for this, however, this has been deemed against best-practice and unsafe. There are other measures to save session state, but that will be for another article.
-```
-
-Either way, our authentication service, will look like this:
-
-#### ./ui/src/app/service/auth.service.ts
-```js
-import { Injectable } from "@angular/core";
-import { environment } from "src/environments/environment";
-import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
-import { Router } from "@angular/router";
-
-import * as auth0 from 'auth0-js';
-
-(window as any).global = window;
-
-@Injectable()
-export class AuthService {
-    constructor(public router: Router)  {}
-
-    access_token: string;
-    id_token: string;
-    expires_at: string;
-
-    auth0 = new auth0.WebAuth({
-        clientID: 'bpF1FvreQgp1PIaSQm3fpCaI0A3TCz5T',
-        domain: environment.domain,
-        responseType: 'token id_token',
-        audience: 'https://' + environment.domain + '/userinfo',
-        redirectUri: environment.callback,
-        scope: 'openid'
-    });
-
-    public login(): void {
-        this.auth0.authorize();
-    }
-
-    // ...
-    public handleAuthentication(): void {
-        this.auth0.parseHash((err, authResult) => {
-            if (authResult && authResult.accessToken && authResult.idToken) {
-                window.location.hash = '';
-                this.setSession(authResult);
-                this.router.navigate(['/home']);
-            } else if (err) {
-                this.router.navigate(['/home']);
-                console.log(err);
-            }
-        });
-    }
-
-    private setSession(authResult): void {
-        // Set the time that the Access Token will expire at
-        const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-        this.access_token = authResult.accessToken;
-        this.id_token = authResult.idToken;
-        this.expires_at = expiresAt;
-    }
-
-    public logout(): void {
-        this.access_token = null;
-        this.id_token = null;
-        this.expires_at = null;
-        // Go back to the home route
-        this.router.navigate(['/']);
-    }
-
-    public isAuthenticated(): boolean {
-        // Check whether the current time is past the
-        // Access Token's expiry time
-        const expiresAt = JSON.parse(this.expires_at || '{}');
-        return new Date().getTime() < expiresAt;
-    }
-
-    public createAuthHeaderValue(): string {
-        if (this.id_token == "") {
-            "";
-        }
-        return 'Bearer ' + this.id_token;
-    }
-}
-```
-
-As you can see, we have the familiar `@Injectable()` decorator, which we use for injecting an angular Router into our service on initialisation. We then define three string properties and a single `auth0.WebAuth` object. This object is what is used for authenticating against Auth0, so we will need to use the information from our environment files. The `auth0.WebAuth` object will in turn use this information to send to Auth0 and inform which application we are trying to get access to.
-
-Our `login` function is quite simple looking, but essentially, this will initialise authentication with Auth0, redirecting the client to the Auth0 login site. If the user is authenticated, they will be sent to the specified callback location, with a tailing hash on the URL. This url will be parsed by the `handleAuthentication` function, which if successful calls the `setSession` function, which very simple sets our three properties with the appropriate values.
-
-The `lougout` function resets all tokens from memory and the `isAuthenticated` method just returns whether the token as expired or not. We will use this later, for getting an authentication status of our client.
-
-Lastly, we have our `createAuthHeaderValue`, returns a string in the form of an `Authorization` bearer header. In other words, it appends the `id_token` property, to 'Bearer '.
-
-Easy peasy! Just remember to add this service to the `providers` section of our `app.module.ts` file.
-
-Now we need to create our callback component, which will be done like the other components:
-
-> ng g c callback
-
-Change the `callback.component.ts` to the following:
-
-#### ./ui/src/app/callback/callback.component.ts
-```js
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../service/auth.service';
-
-@Component({
-  selector: 'app-callback',
-  templateUrl: './callback.component.html',
-  styleUrls: ['./callback.component.css']
-})
-export class CallbackComponent implements OnInit {
-
-  constructor(private auth: AuthService) { }
-
-  ngOnInit() {
-    this.auth.handleAuthentication();
-  }
-}
-```
-
-All we are doing, is invoking the `handleAuthentication` method of our authentication service, once the component is initialised, parsing the url hash and redirecting the client to '/home'.
-
-```
-If you want you can add your favourite loading gif to this component, to let your users know that something is happening. However, this is not mandatory.
-```
-
-Once we have set our authentication session with our callback component, we need to make sure that all future requests include our retrieved token, in the `Authorization` header. To do this, we will create yet another service. So, create a new file: `./ui/src/app/service/token.interceptor.ts`. This is our interceptor service, which will intercept all of our outgoing requests and add an authentication header, if a token is available.
-
-#### ./ui/src/app/service/token.interceptor.ts
-```js
-import { Injectable } from "@angular/core";
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from "@angular/common/http";
-import { AuthService } from "src/app/service/auth.service";
-import { Observable } from "rxjs/internal/Observable";
-
-@Injectable()
-export class TokenInterceptor implements HttpInterceptor {
-  constructor(public auth: AuthService) {}
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    request = request.clone({
-      setHeaders: {
-        Authorization: this.auth.createAuthHeaderValue()
-      }
-    });
-    return next.handle(request);
-  }
-}
-```
-
-This service implements HttpInterceptor, which has the constraint of needing the `intercept` function, which will be revoked upon an http request. Much like our middleware in our backend, this will return a 'next request', which basically forwards the modified request to the original destination. The `intercept` function in this case is quite simple. We are cloning in the incoming request, but adding an Authorization header, using our `auth.createAuthHeaderValue` from our AuthService. Remember, if no token is found, nothing is added. Once the request has been altered, we invoke the `next.handle` passing the modified request.
-
-The reason why we are creating this service, is to ensure that all of our requests contain the appropriate Authorization header. Centralising the header management like this, makes it easier in the future, if changes are made to authentication or if new requests are added to the project.
-
-To include this in our `app.module.ts` file, we will need to add the following object to our providers array, importing all the necessary dependencies:
-
-```js
+```json
 {
-    provide: HTTP_INTERCEPTORS,
-    useClass: TokenInterceptor,
-    multi: true
+  "error":"token is not valid"
 }
 ```
 
-Almost there! Now, we need to change our `app.component.ts` page to include routing and actually define our routes. Let's start by creating our routing definition. Create a new file: `./ui/src/app/app-routing.module.ts` and in this file, write the following code:
+To fetch a temporary access token to validate that your server still works, you can go to the _Test_ section of your Auth0 API and copy the `curl` command shown there.
 
-#### ./ui/src/app/app-routing.module.ts
-```js
-import { HomeComponent } from "./home/home.component";
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from "@angular/core";
-import { AuthGuardService } from "./service/auth-guard.service";
-import { CallbackComponent } from "./callback/callback.component";
-import { TodoComponent } from "./todo/todo.component";
+![Auth0 showing a curl command to generate access tokens.](https://cdn.auth0.com/blog/golang-angular/fetching-an-access-token-with-auth0.png)
 
-const routes: Routes = [
-    { path: '', redirectTo: 'home', pathMatch: 'full' },
-    { path: 'home', component: HomeComponent },
-    { path: 'todo', component: TodoComponent,  canActivate: [AuthGuardService] },
-    { path: 'callback', component: CallbackComponent }
-  ];
-  
-  @NgModule({
-    imports: [ RouterModule.forRoot(routes) ],
-    exports: [ RouterModule ]
-  })
-  export class AppRoutingModule { }
+Executing this `curl` command will make Auth0 generate an access token that you can use to communicate with your backend API.
+
+![Terminal window showing access token generated by Auth0.](https://cdn.auth0.com/blog/golang-angular/access-token-generated-by-auth0.png)
+
+To facilitate issuing requests to your backend, you can copy the access token generated and save it in an environment variable:
+
+```bash
+ACCESS_TOKEN="eyJ0eX...WXaTRg"
 ```
 
-The only important aspect of this, if our constant routes. This defines an array of paths. Our root path will redirect to our HomeComponent (and os will '/home'). Our todo path will redirect to our TodoComponent and callback to our CallbackComponent. However, you will notice, that the todo path is slightly different, in that it is using the `canActivate` property and using the `AuthGuardService`. Now... we haven't written our AuthGuardService yet, so let's do that right away.
+After that, you can issue authenticated requests like this:
 
-The `canActivate` property basically asks a service (which implements CanActivate) for a boolean response of whether or not a user is able to activate this page. So let's quickly create this service as well. Create a new file:  `./ui/src/app/service/auth-guard.service.ts`, which will contain the logic to whether or not a user is authentorized.
+```bash
+# authenticated req to add a new to-do item
+curl -H 'Authorization: Bearer '$ACCESS_TOKEN localhost:3000/todo -d '{"message": "finish writing the article"}'
 
-#### ./ui/src/app/service/auth-guard.service.ts
-```js
-import { CanActivate, Router } from "@angular/router";
-import { Injectable } from "@angular/core";
-import { AuthService } from "./auth.service";
-import { environment } from "src/environments/environment";
-import { HttpErrorResponse } from "@angular/common/http";
-import { Observable } from "rxjs";
-
-
-@Injectable()
-export class AuthGuardService implements CanActivate {
-    constructor(private auth: AuthService, private router: Router) {}
-
-    canActivate(): boolean {
-        if (this.auth.isAuthenticated()) {
-            return true;
-        }
-
-        this.auth.login()
-    }
-}
-```
-
-Really a quite simple service, which calls our AuthService, asking whether the current user is authenticated. If the user is authenticated, we will return a true forwarding the user to the request route. If not, we will invoke the `auth.login` function, which will send our user to the Auth0 login page.
-
-Now, we will include our routing and our auth service in our `app.module.ts` file, so the finalised version will look as such:
-
-#### ./ui/src/app/app.module.ts
-```js
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
-import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { AuthGuardService } from './service/auth-guard.service';
-import { AuthService } from 'src/app/service/auth.service';
-import { CallbackComponent } from 'src/app/callback/callback.component';
-import { TodoComponent } from './todo/todo.component';
-import { TodoService } from './service/todo.service';
-import { FormsModule } from '@angular/forms';
-import { TokenInterceptor } from 'src/app/service/token.interceptor';
-
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    CallbackComponent,
-    TodoComponent
-  ],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    FormsModule,
-    HttpClientModule
-  ],
-  providers: [AuthGuardService, AuthService, TodoService, {
-    provide: HTTP_INTERCEPTORS,
-    useClass: TokenInterceptor,
-    multi: true
-  }],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-```
-
-For the routing, as you can see, we have imported our `AppRoutingModule`. So, now we can finally include this routing to our application, which will be the last part of this tutorial.
-
-## Putting it all together
-So, it's been a long while, but now we are finally going to add routing to the application. As well as creating a little menu bar, for navigation and logging out. First we need to edit the `./ui/src/app/app.component.ts` to add our AuthService to our AppComponent.
-
-#### ./ui/src/app/app.component.ts
-```js
-import { Component } from '@angular/core';
-import { AuthService } from 'src/app/service/auth.service';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
-})
-export class AppComponent {
-
-  constructor(public auth: AuthService) {}
-}
-```
-
-Next, we need to edit the `./ui/src/app/app.component.html` file and set it to the following code:
-
-#### ./ui/src/app/app.component.html
-```html
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">Auth0 - Angular</a>
-  
-        <button
-          class="btn btn-light btn-margin"
-          routerLink="/">
-            Home
-        </button>
-  
-        <button
-          class="btn btn-light btn-margin"
-          *ngIf="!auth.isAuthenticated()"
-          (click)="auth.login()">
-            Log In
-        </button>
-  
-        <button
-          class="btn btn-light btn-margin "
-          *ngIf="auth.isAuthenticated()"
-          (click)="auth.logout()">
-            Log Out
-        </button>
-      </div>
-    </div>
-  </nav>
-  
-<router-outlet></router-outlet>
-```
-
-We are creating a new nav bar including functions from our auth service to login and logout. Underneath this nav bar, we are including the `router-outlet` component. This is what tells Angular to ask the routing module, which page it should load.
-
-```
-NOTE: As with our todo list tables, following best practice, we would have created a new component for our navigation bar.
-```
-
-It's a very common practice to include the navigation bar together with the routing component. This ensures that the menu is present on all of our pages, without having to reload the navigation bar for each individual page.
-
-The final touch to our project, will be adding some style to it. So, let's add the following code to our `style.css` file:
-
-#### ./ui/src/styles.css
-```css
-.c-block {
-    width: 50%;
-    margin-left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-}
-
-button {
-    margin: 5px;
-    border-radius: 5px;
-    width: 200px;
-}
-
-img {
-    margin: 20px;
-}
-
-h3 {
-    margin-top: 30px;
-}
-```
-
-Finally, we are done! Our todo list is working as intended and we can now rejoice in creating a todo list that only users which we have specified are granted access to. The last thing we need to do is build our ui and start our web server. Build the UI with the following command:
-
-> ng build --prod 
-
-This will place a few transpiled and compressed javascript files in the `./ui/dist` folder. Which (luckily) is where we are serving our static files from, with our web server.
-
-So, go to the root of the project and first set the environment variables:
-
-> export AUTH0_CLIENT_ID=[your client id]
-
-> export AUTH0_DOMAIN=https://[your domain]/
-
-Finally, we can run our server:
-
-> go run main.go
-
-And the server will be up and running! Go to `localhost:3000/` and celebrate by creating all your secured todo items!
-
-```
-NOTE: You can also compile the go code into a binary using the command: go build -o todo-server main.go, which will create an executable file called todo-server. The file will be compiled to your system, but that can be modified using the GOOS and GOARCH environment variables, read more here: https://golang.org/cmd/compile/
+# authenticated req to get all to-do items
+curl -H 'Authorization: Bearer '$ACCESS_TOKEN localhost:3000/todo
 ```
 
 ## Conclusion
