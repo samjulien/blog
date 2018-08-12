@@ -27,6 +27,8 @@ related:
 
 **TL;DR:** In this series, you will learn how to build modern applications with Golang and Angular. In the first article, you will build a secure backend API with Golang that will support a to-do list application. Then, in the second part, you will use Angular to develop the frontend of the to-do list app. To facilitate the identity management, you will use Auth0 both in your backend API and in your Angular app to authenticate users. If needed, you can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/golang-angular).
 
+{% include tweet_quote.html quote_text="I'm developing a modern applications with @angular and @golang." %}
+
 ## Why Choosing Golang and Angular
 
 As mentioned, the technologies of choice for this series is [Golang](https://golang.org/) for the backend and [Angular](https://angular.io/) for the frontend. In this section, you will learn more about both platforms and why they are great options to develop applications nowadays.
@@ -55,7 +57,7 @@ Nevertheless, I feel like you deserve an explanation on why I chose Angular for 
 
 React is also a super strong library (and a great alternative for this job). However, I have OCD (Obsessive-Compulsive Disorder) issues with HTML elements being added into JavaScript files. Just like many people have issues with their different foods touching one another on their plate.
 
-Lastly, we have Vue.js, which is also a very strong and popular framework. As of now, I cannot tell you a technical reason to choose Angular over Vue.js. One thing I know, though, is that Angular still is much more popular and well supported than Vue.js. However, I started out with Angular and Angular does the job for me.
+Lastly, there is Vue.js, which is also a very strong and popular framework. As of now, I cannot tell you a technical reason to choose Angular over Vue.js. One thing I know, though, is that Angular still is much more popular and well supported than Vue.js. However, I started out with Angular and Angular does the job for me.
 
 Either way, Angular is another project backed by Google, much like Golang. This framework has sprouted from it's old brother AngularJS, which was **THE** JavaScript framework a few years ago. The new Angular is not as popular, which I think there are a few reasons for. For example, nowadays there is more competition, mainly with React and Vue.js. Also, there were a lot of breaking changes during the first Angular versions released (even when no breaking changes were supposed to be published). And, the last reason (which causes a lot of confusion) is the versioning convention.
 
@@ -515,6 +517,8 @@ Before wrapping up, you still need to install the two new libraries that this co
 go get github.com/auth0-community/go-auth0 gopkg.in/square/go-jose.v2
 ```
 
+{% include tweet_quote.html quote_text="Securing a @golang backend API with @auth0 is really, really simple." %}
+
 That's it. Securing a Golang backend API with Auth0 is as simple as that. To see this in action, hit `Ctrl` + `c` to stop the previous running instance of your API and then run it again:
 
 ```bash
@@ -564,6 +568,8 @@ curl -H 'Authorization: Bearer '$ACCESS_TOKEN localhost:3000/todo -d '{"message"
 # authenticated req to get all to-do items
 curl -H 'Authorization: Bearer '$ACCESS_TOKEN localhost:3000/todo
 ```
+
+{% include tweet_quote.html quote_text="I just finished building a @golang backend API for my to-do list." %}
 
 ## Conclusion and Next Steps
 
