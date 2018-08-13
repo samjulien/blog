@@ -36,7 +36,7 @@ In this post, we'll talk more about our public SaaS deployments and provide a br
 
 A lot has changed since then in Auth0. These are some of the highlights:
 
-- We went from processing a couple of million logins per month to 1.5+ billion logins per month, serving thousands of customers, including FuboTV, Mozilla, JetPrivilege, and more.
+- We went from processing a couple of million logins per month to 1.5+ billion logins per month, serving thousands of customers, including [FuboTV](https://auth0.com/learn/sports-centric-streaming-service-fubotv-sees-50-roi-just-auth0s-security/), [Mozilla](https://auth0.com/blog/auth0-mozilla-partnership/), [JetPrivilege](https://auth0.com/learn/jetprivilege-case-study/), and more.
 
 - We implemented new features like [custom domains](https://auth0.com/docs/custom-domains), [scaled bcrypt operations](https://auth0.engineering/bcrypt-as-a-service-9e71707bda47), vastly [improved user search](https://auth0.com/docs/users/search/v3), and much more.
 
@@ -144,7 +144,7 @@ There are a few downsides, like the fact that we need to run Lambdas to perform 
 
 ## Extend
 
-One of the features we provide is the ability to run custom code as part of the login transaction, either via [_authentication rules_](https://auth0.com/docs/rules/current) or [_custom database connections_](https://auth0.com/docs/connections/database/custom-db). These features are powered by [_Extend_](https://auth0.com/extend), an extensibility platform that grew out of Auth0 and is now being used by other companies as well. With Extend, our customers can write anything they want in those scripts and rules, allowing them to extend profiles, normalize attributes, send notifications, and much more.
+One of the features we provide is the ability to run custom code as part of the login transaction, either via [_authentication rules_](https://auth0.com/docs/rules/current) or [_custom database connections_](https://auth0.com/docs/connections/database/custom-db). These features are powered by [_Extend_](https://goextend.io/), an extensibility platform that grew out of Auth0 and is now being used by other companies as well. With Extend, our customers can write anything they want in those scripts and rules, allowing them to extend profiles, normalize attributes, send notifications, and much more.
 
 We have Extend clusters specifically for Auth0; they use a combination of EC2 auto-scaling groups, Docker containers, and custom proxies to handle requests from our tenants, processing thousands of requests per second and responding fast to variations of load. For more details about how this is built and run, check out this post on [how to build your own serverless platform](https://tomasz.janczuk.org/2018/03/how-to-build-your-own-serverless-platform.html).
 
