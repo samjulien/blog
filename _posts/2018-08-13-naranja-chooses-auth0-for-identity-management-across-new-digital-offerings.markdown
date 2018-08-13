@@ -33,7 +33,7 @@ As a leading financial services provider in Argentina, Naranja – along with Na
 
 “The potential reach of Naranja’s digital app rollout is astounding and something we’re very excited to be part of,” said Eugenio Pace, CEO and Co-founder of Auth0. “Flexibility and the ability to scale easily to tens of millions of users are foundational principles of our platform. Given the growth and breadth of Naranja’s use cases, we anticipate widespread growth across Latin America, and are honored to serve as the core identity platform across these new services.”
 
-As financial service organizations modernize their offerings to suit the needs of today’s consumer, they realize the importance of a comprehensive identity platform to maximize customer experience, personalize interaction, and create a single view of the customer across every touchpoint. This is why they’re increasingly turning to Auth0. For more information on Auth0 in this sector, please visit: https://auth0.com/financial-services. 
+As financial service organizations modernize their offerings to suit the needs of today’s consumer, they realize the importance of a comprehensive identity platform to maximize customer experience, personalize interaction, and create a single view of the customer across every touchpoint. This is why they’re increasingly turning to Auth0. For more information on Auth0 in this sector, please visit: [https://auth0.com/financial-services](https://auth0.com/financial-services). 
 
 {% include asides/about-auth0.markdown %}
 
