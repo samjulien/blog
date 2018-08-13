@@ -5,8 +5,8 @@ description: "TypeScript is a typed superset of Javascript. Learn how Typescript
 date: 2018-08-08 8:30
 category: Technical Guide, TypeScript, JavaScript
 design: 
-  bg_color: "#003A60"
-  image: https://pbs.twimg.com/profile_images/743155381661143040/bynNY5dJ_400x400.jpg
+  bg_color: "#182D4A"
+  image: https://cdn.auth0.com/blog/logos/Full_TypeScript_Logo.png
 author:
   name: Dan Arias
   url: http://twitter.com/getDanArias
@@ -28,7 +28,7 @@ related:
 
 TypeScript 3.0 is out! It comes with enhancements for the type system, compiler, and language service. This release is shipping with the following:
 
-- Project References: Lets TypeScript projects depend on other TypeScript projects by allowing `tsconfig.json` files to reference other `tsconfig.json` files.
+- Project References let TypeScript projects depend on other TypeScript projects by allowing `tsconfig.json` files to reference other `tsconfig.json` files.
 
 - Support for `defaultProps` in JSX.
 
@@ -38,6 +38,7 @@ TypeScript 3.0 is out! It comes with enhancements for the type system, compiler,
 
 For this blog post, we are going to focus on the enhancements made to tuples and the `unknown` type! Feel free to check the handbook for an in-depth view of [TypeScript Project References](https://www.typescriptlang.org/docs/handbook/project-references.html).
 
+<br />
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">I&#39;m getting more and more intrigued by TypeScript. Curious if you&#39;re: (poll)</p>&mdash; Sarah Drasner (@sarah_edo) <a href="https://twitter.com/sarah_edo/status/986305983742791681?ref_src=twsrc%5Etfw">April 17, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
@@ -87,13 +88,15 @@ Next, install core packages that are needed to compile and monitor changes in Ty
 npm i typescript nodemon ts-node --save-dev
 ```
 
-A TypeScript project needs a `tsconfig.json` file. Since `typescript` is installed locally this can be done through `npm` by using the `npx` command that is available in `npm >= 5.2`:
+A TypeScript project needs a `tsconfig.json` file. This can be done in two ways: using the global `tsc` command or using `npx tsc`.
+
+The `npx` command is available in `npm >= 5.2` and it lets us create a `tsconfig.json` file as follows:
 
 ```shell
 npx tsc --init
 ```
 
-Here, npx executes the local `typescript` package that has been installed.
+Here, `npx` executes the local `typescript` package that has been installed locally.
 
 If you prefer to do so using the global package that is installed, you can run the following:
 
@@ -145,11 +148,11 @@ The `watch` script is doing a lot of hard work:
 nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts
 ```
 
-The `nodemon` executable takes a `--watch`. The `--watch` option is followed by a string that specifies the directories that need to be watched and follows the [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming).
+The `nodemon` executable takes a `--watch` argument. The `--watch` option is followed by a string that specifies the directories that need to be watched and follows the [glob pattern](<https://en.wikipedia.org/wiki/Glob_(programming)>).
 
 Next, the `--exec` option is passed. The [`--exec`](https://github.com/remy/nodemon#running-non-node-scripts) option is used to run non-node scripts. `nodemon` will read the file extension of the script being run and monitor that extension instead of `.js`. In this case, `--exec` runs `ts-node`.
 
-`ts-node` execute any passed TypeScript files as `node` + `tsc`. In this case, it receives and executes `src/index.ts`.
+`ts-node` executes any passed TypeScript files as `node` + `tsc`. In this case, it receives and executes `src/index.ts`.
 
 > In some other setups, two different shells may be used: One to compile and watch the TypeScript files and another one to run resultant JavaScript file through `node` or `nodemon`.
 
@@ -157,7 +160,7 @@ Finally, create a `src` folder under the project directory, `ts3`, and create `i
 
 ### Running a TypeScript Project
 
-With everything dependencies installed and scripts set up, you are ready to run the project. Execute the following command in the shell:
+With all dependencies installed and scripts set up, you are ready to run the project. Execute the following command in the shell:
 
 ```shell
 npm run watch
@@ -171,12 +174,12 @@ You are all set up! Now join me in exploring what new features come with TypeScr
 
 ### What Are Tuples?
 
-TypeScript 3 comes with a couple of changes to how tuples can be used. Therefore, let's quickly review the [basics of TypeScript tuples].
+TypeScript 3 comes with a couple of changes to how tuples can be used. Therefore, let's quickly review the [basics of TypeScript tuples](https://www.typescriptlang.org/docs/handbook/basic-types.html).
 
 A tuple is a TypeScript type that works like an array with some special considerations:
 
 - The number of elements of the array is fixed.
-- The type of the elements of is known.
+- The type of the elements is known.
 - The type of the elements of the array need not be the same.
 
 For example, through a tuple, we can represent a value as a pair of a string and a boolean. Let's head to `index.ts` and populate it with the following code:
@@ -209,7 +212,13 @@ src/index.ts(8,17): error TS2322: Type 'string' is not assignable to type 'boole
 
 Let's delete the incorrect example from our code and move forward with the understanding that, with tuples, the order of values is critical. Relying on order can make code difficult to read, maintain, and use. For that reason, it's a good idea to use tuples with data that is related to each other in a sequential manner. That way, accessing the elements in order is part of a predictable and expected pattern.
 
-The coordinates of a point are examples of data that is sequential. A three-dimensional coordinate always comes in a three-number pattern: `(x, y, z)`. On a Cartesian plane, the order of the points will always be sequential. We could represent this three-dimensional coordinate as the following tuple:
+The coordinates of a point are examples of data that is sequential. A three-dimensional coordinate always comes in a three-number pattern:
+
+```shell
+(x, y, z)
+```
+
+On a Cartesian plane, the order of the points will always be sequential. We could represent this three-dimensional coordinate as the following tuple:
 
 ```typescript
 type Point3D = [number, number, number];
@@ -218,14 +227,14 @@ type Point3D = [number, number, number];
 Therefore, `Point3D[0]`, `Point3D[1]`, and `Point3D[2]` would be logically digestible and easier to map than other disjointed data.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/typescript-3/coordinate-system.svg" alt="3D coordinate system">
+  <img src="https://cdn.auth0.com/blog/typescript3/3D_coordinate_system.png" alt="3D coordinate system">
 </p>
 
 [Source](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/3D_coordinate_system.svg/2000px-3D_coordinate_system.svg.png)
 
 On the other hand, associated data that is loosely tied is not beneficial. For example, we could have three pieces of `customerData` that are `email`, `phoneNumber`, and `dateOfBirth`. `customerData[0]`, `customerData[1]`, and `customerData[2]` say nothing about what type of data each represents. We would need to trace the code or read the documentation to find out how the data is being mapped. This is not an ideal scenario and using an `interface` would be much better.
 
-That's it for tuples! They provide us with a fixed size container that can store all values of all kinds of types. Now, let's see what TypeScript changes about using tuples in version `3.0` of the language.
+That's it for tuples! They provide us with a fixed size container that can store values of all kinds of types. Now, let's see what TypeScript changes about using tuples in version `3.0` of the language.
 
 ### Using TypeScript Tuples in Rest Parameters
 
@@ -241,13 +250,13 @@ Let's look at the following function signature as an example:
 declare function example(...args: [string, boolean, number]): void;
 ```
 
-Here, the `args` parameter is a tuple type that contains three elements of type `string,`boolean`, and`number`. Using the rest parameter syntax, (`...`),`args` is expanded in a way that makes the function signature above equivalent to this one:
+Here, the `args` parameter is a tuple type that contains three elements of type `string`, `boolean`, and `number`. Using the rest parameter syntax, (`...`), `args` is expanded in a way that makes the function signature above equivalent to this one:
 
 ```typescript
 declare function example(args_0: string, args_1: boolean, args_2: number): void;
 ```
 
-To access `args_0`, `args_1`, and `args_2` within the body of a function we would use array notation: `args[0]`, args[1]`, and`args[2]`.
+To access `args_0`, `args_1`, and `args_2` within the body of a function we would use array notation: `args[0]`, `args[1]`, and `args[2]`.
 
 The goal of the rest parameter syntax is to collect "argument overflow" into a single structure: an array or a tuple.
 
@@ -263,23 +272,23 @@ TypeScript will pack that into the following tuple since `example`, as first def
 ["TypeScript example", true, 100];
 ```
 
-Then the rest parameter syntax unpacks it within the parameter list and makes it easily accessible to the body of the function based on array index notation with the same of the rest parameter as the name of the tuple, `args[0]`.
+Then the rest parameter syntax unpacks it within the parameter list and makes it easily accessible to the body of the function using array index notation with the same name of the rest parameter as the name of the tuple, `args[0]`.
 
-Using our `Point3D` tuple example, we could have a function like this one:
+Using our `Point3D` tuple example, we could define a function like this:
 
 ```typescript
 declare function draw(...point3D: [number, number, number]): void;
 ```
 
-As before, we would access each point coordinate as follows: `point3D[0]` for `x`, `point3D[1]` for `y`, and `point3D[2]` for `z`.
+As before, we would access each coordinate point as follows: `point3D[0]` for `x`, `point3D[1]` for `y`, and `point3D[2]` for `z`.
 
-How is this different from just passing an array? An array would allow us to pass only one number, the first element of `point3D` that maps to the `x` coordinate. It would not force us to pass a number for `y` and `z`. A tuple will throw an error if we are not passing exactly 3 numbers to the `draw` function.
+How is this different from just passing an array? A tuple type forces us to pass a number for `x`, `y`, and `z` while an array could be empty. A tuple will throw an error if we are not passing exactly 3 numbers to the `draw` function.
 
 ### Spread Expressions with TypeScript Tuples
 
-The rest parameter syntax looks very familiar to the spread operator; however, they are very different. As we learned earlier, the rest parameter syntax collects parameter into a single variable and then expands them under its variable name. The spread operator expands the elements of an array or object. With TypeScript 3.0, the spread operator can also expand the elements of a tuple.
+The rest parameter syntax looks very familiar to the spread operator; however, they are very different. As we learned earlier, the rest parameter syntax collects parameter into a single variable and then expands them under its variable name. On the other hand, the spread operator expands the elements of an array or object. With TypeScript 3.0, the spread operator can also expand the elements of a tuple.
 
-Let's see this in action using our `Point3D` tuple:
+Let's see this in action using our `Point3D` tuple. Let's replace the code in `index.ts` and populate it with the following:
 
 ```typescript
 type Point3D = [number, number, number];
@@ -331,7 +340,7 @@ const xy: Point = [10, 20];
 const xyz: Point = [10, 20, 10];
 ```
 
-We could determine what kind of point is being represented by the constant by checking the `length` of the tuple:
+We could determine what kind of point is being represented by the constant by checking the `length` of the tuple. Let's replace the content of `index.ts` with the following:
 
 ```typescript
 type Point = [number, number?, number?];
@@ -353,11 +362,11 @@ The code above outputs the following in the console:
 3
 ```
 
-Notice that the length of each `Point` tuples varies by the number of elements the tuple has. The `length` property of a tuple with optional elements is the "union of the numeric literal types representing the possible lengths" as states in the [TypeScript release](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html).
+Notice that the length of each of the `Point` tuples varies by the number of elements the tuple has. The `length` property of a tuple with optional elements is the "union of the numeric literal types representing the possible lengths" as stated in the [TypeScript release](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html).
 
 The type of the length property in the `Point` tuple type `[number, number?, number?]` is `1 | 2 | 3`.
 
-As a rule, if we need to list multiple optional elements, they have to be listed with the postfix `?` modifier on its type at the end of the tuple. An optional element cannot have required elements to its right but it can have as many optional elements as desired.
+As a rule, if we need to list multiple optional elements, they have to be listed with the postfix `?` modifier on its type at the end of the tuple. An optional element cannot have required elements to its right but it can have as many optional elements as desired instead.
 
 The following code would result in an error:
 
@@ -369,7 +378,7 @@ type Point = [number, number?, number];
 error TS1257: A required element cannot follow an optional element.
 ```
 
-In `--strictNullChecks mode`, using the `?` modifier automatically includes `undefined` in the tuple element type. This behavior is similar to what TypeScript does with optional parameters.
+In `--strictNullChecks` mode, using the `?` modifier automatically includes `undefined` in the tuple element type. This behavior is similar to what TypeScript does with optional parameters.
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/typescript-3/tupleware.png" alt="Tuples are like Tupperware containers.">
@@ -377,13 +386,15 @@ In `--strictNullChecks mode`, using the `?` modifier automatically includes `und
 
 [Source](http://www.tupperware.com/media/catalog/product/cache/1/image/600x/9df78eab33525d08d6e5fb8d27136e95/l/u/lunchits_2018_mid_july-1.jpg)
 
-> Tuples are like Tupperware containers that let you store different types of food on each container. We can collect and bundle the containers and we can disperse them. At the same time, we can make it optional to fill a container. However, it would be a good idea to keep the containers with uncertain content at the bottom of the stack to make the containers with guaranteed content both easy to find and predictable.
+> Tuples are like Tupperware containers that let you store different types of food on each container. We can collect and bundle the containers and we can disperse them as well. At the same time, we can make it optional to fill a container. However, it would be a good idea to keep the containers with uncertain content at the bottom of the stack to make the containers with guaranteed content both easy to find and predictable.
 
 ### Rest Elements In Tuple Types
 
 In TypeScript 3.0, the last element of a tuple can be a rest element, `...element`. The one restriction for this rest element is that it has to be an array type. This structure is useful when we want to create open-ended tuples that may have zero or more additional elements. It's a boost over the optional `?` postfix as it allows us to specify a variable number of optional elements with the one condition that they have to be of the same type.
 
-For example, `[string, ...number[]]` represents a tuple with a string element followed by any amount of `number` elements. This tuple could represent a student name followed by test scores:
+For example, `[string, ...number[]]` represents a tuple with a string element followed by any amount of `number` elements. This tuple could represent a student name followed by test scores.
+
+Replace the content of `index.ts` with the following:
 
 ```typescript
 type TestScores = [string, ...number[]];
@@ -402,13 +413,13 @@ Output:
 [ 'David', 100, 98, 100 ]
 ```
 
-Don't forget to add the `...` operator to the `array`. Otherwise, the tuple could get the array as it second element and nothing else. The `array` elements won't spread out into the tuple:
+> Don't forget to add the `...` operator to the `array`. Otherwise, the tuple will get the array as it second element and nothing else. The `array` elements won't spread out into the tuple:
 
 ```typescript
 type TestScores = [string, ...number[]];
 
-const thaliaTestScore = ["Thalia", ...[100, 98, 99, 100]];
-const davidTestScore = ["David", ...[100, 98, 100]];
+const thaliaTestScore = ["Thalia", [100, 98, 99, 100]];
+const davidTestScore = ["David", [100, 98, 100]];
 
 console.log(thaliaTestScore);
 console.log(davidTestScore);
@@ -427,7 +438,7 @@ TypeScript 3.0 introduces a new type called `unknown`. `unknown` acts like a typ
 
 `any` is too flexible. As the name suggests, it can encompass the type of every possible value in TypeScript. What's not so ideal of this premise is that `any` doesn't require us to do any kind of checking before we make use of the properties of its value.
 
-In the following code, `itemLocation` is defined as having type `any` and it's assigned the value of `10`, but we use it unsafely:
+In the following code, `itemLocation` is defined as having type `any` and it's assigned the value of `10`, but we use it unsafely. Replace the content of `index.ts` with this:
 
 ```typescript
 let itemLocation: any = 10;
@@ -439,6 +450,8 @@ itemLocation.coordinates.z;
 const findItem = (loc: string) => {
   console.log(loc.toLowerCase());
 };
+
+findItem(itemLocation);
 
 itemLocation();
 
@@ -556,7 +569,7 @@ cows
 true
 ```
 
-What would happen if we change the name of `z` to `w`? Will TypeScript be upset that `z` is not found as a property of `coordinates` and crash the compilation? Let's find out:
+What would happen if we change the name of `z` to `w`? Will TypeScript be upset that `w` is not found as a property of `coordinates` and crash the compilation? Let's find out:
 
 ```typescript
 let itemLocation: unknown = {
@@ -591,7 +604,7 @@ cows
 undefined
 ```
 
-Nothing crashed but we did print `undefined` for the value of `w`. What this is telling us is that TypeScript is not super strict about the actual check being done on the type `unknown` but that it is strict about a check being performed.
+Nothing crashed but we did print `undefined` for the value of `w`. What this is telling us is that TypeScript is not super strict about the comprehensiveness of the check being done on the `unknown` type but that it is strict about a check being performed.
 
 ### Performing a Type Assertion
 
@@ -609,7 +622,7 @@ const printLocation = (loc: string) => {
 printLocation(itemLocation as string);
 ```
 
-Despite not `itemLocation` not being a `string`, TypeScript is not too upset about this and only throws an error but still compiles the code:
+Despite `itemLocation` not being a `string`, TypeScript is not too upset about this. It only throws an error but still compiles the code:
 
 ```shell
 TypeError: loc.toLowerCase is not a function
