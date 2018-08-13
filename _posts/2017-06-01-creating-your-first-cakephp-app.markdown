@@ -717,13 +717,13 @@ public function index()
 }
 ```
 
-This code will call `initialize` method from the `AppController` to load the Auth component, then get the Auth0 credentials to build the [authorization URL](https://auth0.com/docs/application-auth/current/server-side-web#call-the-authorization-url) and assign it to the view.
+This code will call the `initialize` method from the `AppController` to load the Auth component, then get the Auth0 credentials to build the [authorization URL](https://auth0.com/docs/application-auth/current/server-side-web#call-the-authorization-url) and assign it to the view.
 
 Open up `List/index.ctp` and add the following:
 
 {% highlight html %}
 {% raw %}
-<h5> You need to login to have access to this list <?= $this->Html->link('Login', $loginUrl, ['class' => 'btn btn-info']); ?></h5>
+<h5> You need to log in to have access to this list <?= $this->Html->link('Log In', $loginUrl, ['class' => 'btn btn-info']); ?></h5>
 ...
 ...
 {% endraw %}
