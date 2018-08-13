@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Configuring SwissID Login into Custom Applications
-description: Learn how to support SwissID login into your custom applications with ease.
+title: Supporting Government-Issued IDs as Social Connections with Auth0
+description: Learn how to support government-issued IDs (like SwissID) as Social Connections into your applications with Auth0.
 date: 2018-08-09 08:30
 category: Technical Guide, Identity
 author:
@@ -22,6 +22,12 @@ related:
 - 2015-12-16-how-to-use-social-login-to-drive-your-apps-growth
 - 2017-11-06-authenticated-identity-trusted-key-auth0
 ---
+
+**TL;DR:** In this article, you will learn how Auth0 can help you support government-issued IDs as social connections in your own applications with ease. For demonstration purposes, you will learn how Auth0 can help you support SwissID (a popular digital identity solution in Switzerland) in your applications. However, the process explained here will be quite similar for other similar government-issued IDs.
+
+{% include tweet_quote.html quote_text="With @auth0, developers can easily support government-issued IDs in their applications." %}
+
+## SwissID Introduction
 
 [SwissID](https://swissid.ch) is the standardized digital identity initiative for use across Switzerland. This initiative is a joint venture of state-affiliated businesses, financial institutions, and health insurance companies (like [Swiss Post](https://www.post.ch/en) and [SBB](https://www.sbb.ch/en/)) that provide a third-party [Identity Provider](https://auth0.com/docs/identityproviders) service to application vendors. With SwissID, users retain exclusive ownership over their personal data making online transactions easier to process and, more importantly, more secure.
 
@@ -48,7 +54,7 @@ While signing up to Auth0, you will have to define a _Tenant Domain_ (e.g., `you
 
 ![Auth0 dashboard](https://cdn.auth0.com/blog/secure-your-gaming-company-with-auth0's-user-fraud-score-and-minfraud/auth0-dashboard.png)
 
-## Setup a SwissID Custom Social Connection in Auth0
+## Setup a Government-Issued ID as a Custom Social Connection in Auth0
 
 With your Auth0 account properly created, you will have to install [the _Custom Social Connections_ extension](https://auth0.com/docs/extensions/custom-social-extensions) in your tenant. This extension provides an easy way to manage social connections within Auth0 that are not supplied as "first-class citizens" (i.e., they are not available out of the box). To install it, go to [the _Extensions_ section of your dashboard](https://manage.auth0.com/#/extensions) and click on the _Custom Social Connections_ option.
 
@@ -58,7 +64,7 @@ Once this extension is installed, you can use it to set up an integration with S
 
 ![The Custom Social Connection extension' deployment](https://cdn.auth0.com/blog/swissid/custom-social-connect-deployment.png)
 
-## Configuring the SwissID Custom Social Connection in Auth0
+## Configuring the Government-Issued ID Connection in Auth0
 
 From your deployment, you can click on the _New Connection_ button. This will bring up the _New Connection_ dialog, which you can use to configure your SwissID connection.
 
