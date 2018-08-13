@@ -25,7 +25,7 @@ related:
 - 2018-05-14-information-warfare-offensive
 ---
 
-Want to know what it takes to be a successful women in infosec?
+Want to know what it takes to be a successful woman in infosec?
 
 Join us at [Women Who Code Portland’s Networking Night](https://www.meetup.com/Women-Who-Code-Portland/events/253324140/) on Thursday, Aug. 16 from 5 - 8:30 p.m. to hear what this group of notable women have to say about how they got into InfoSec, what their roles are like, and advice for someone breaking into the field. (Special thanks to sponsor [Mozilla](https://www.mozilla.org/en-US/).) The panel will include:
 
@@ -43,5 +43,5 @@ Recently, Joan expanded her Auth0 CISO role, adding VP of Operations to her titl
 </video>
 
 
-{% include tweet_quote.html quote_text="Stretching into a new role? Here’s some advice from @CloudCISO_Joan — and an opp to hear her in person in Portland this week! #WWC" %}
+{% include tweet_quote.html quote_text="Stretching into a new role? Here’s some advice from @CloudCISO_Joan — and an opp to hear her in person in Portland this week! #WWCode" %}
 
