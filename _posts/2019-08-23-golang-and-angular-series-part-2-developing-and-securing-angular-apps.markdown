@@ -163,42 +163,38 @@ Now, back into your project, open both the `environment.prod.ts` and `environmen
 
 > **Note:** You have to make sure you replace both placeholders on both files. Otherwise, you might end up with a buggy sign in feature.
 
-### Creating the Welcome & Todo Page
-First, we will make a new Angular component. We will quickstart this, using the angular-cli:
+### Creating the Welcome Component
 
-> ng g c home
+Ok, after configuring the environments of your Angular app, you are ready to start developing it. So, for starters, you will make a new Angular component to show the home page of your app. To do so, you will use Angular CLI one more time:
 
-Essentially, this is the shortened version of:
-
-> ng generate component home
-
-This will create a new folder in our `app` folder, named `todo` and place four files in the folder:
-* home.component.css - for styling our html
-* home.component.html - the html for our page
-* home.component.spec.ts - testing file (we won't be using this, you are free to delete it)
-* home.component.ts - the TypeScript file for all the javascript to support the html page
-
-```
-NOTE: The CLI will also automatically add this newly created class to our `app.module.ts`, in the `@NgModule.declarations` section.
+```bash
+# make sure you are executing this from the ui directory
+ng g c home
 ```
 
-Our welcome page, will be extremely simple and we will only have to touch our `home.component.html` file and change it to this:
+> **Note:** The command above is the shortened version of `ng generate component home`.
 
-#### ./ui/src/app/home/home.component.html
-```html
+This command will create a new directory inside`app`, named `home`, and it will place four files in it:
+
+- `home.component.css`: This is the CSS file that will allow you style your new component.
+- `home.component.html` - This is the HTML representation of your new component.
+- `home.component.spec.ts` - This is where you would write automated tests for your component.
+- `home.component.ts` - This is the main piece of your component.
+
+> **Note:** The CLI will also automatically add this newly created class to our `app.module.ts`, in the `@NgModule.declarations` section.
+
+To keep things simple, your home page will be extremely simple. Actually, the only file you will have to change is the `home.component.html` one. So, open it and replace its content with this:
+
+{% highlight html %}
+{% raw %}
 <div class="c-block">
-  <h3> Welcome Home!</h3>
-  <a routerLink="/todo">
-    <button class="btn-primary"> Show Todo List </button>
-  </a>
+  <h2>Welcome Home!</h2>
+  <a class="btn btn-primary" routerLink="/todo">Show Todo List</a>
 </div>
-```
+{% endraw %}
+{% endhighlight %}
 
-All we are doing is creating a title with a link (with a nested button) that will redirect the user to `/todo`. We haven't determined the routing yet, so that won't work right now. We will get to that soon.
-
-However, before we do, let's create a todo component in the same way as our home component:
-
-> ng g c todo
+In this case, all you are doing is creating a title and a link that will redirect users to the `/todo` route. You haven't determined the routing yet, so that won't work right now. You will get to that soon.
 
 ### Developing the ToDo Page & Service
 Our todo functionality will be split into two, a component (the one we created in the last section) and a service. The service will be in charge of communicating with the backend via. HTTP. This service may then be used by our component, for ease of use, to communicate with our backend and display the correct information retrieved by the service.
