@@ -67,27 +67,40 @@ go run main.go
 
 > **Note:** You will have to replace `<YOUR_AUTH0_API>` with the identifier you set in your Auth0 API while creating it. Also, you will have to replace `<YOUR_AUTH0_TENANT>` with the subdomain you chose while creating your Auth0 account.
 
-## Developing a ToDo List with Angular
-Now that we have our backend sorted, we will proceed with creating a frontend. As stated earlier, this will consist of simple home page with a button to redirect us to the todo list. To access to the todo list, we must be authenticated. Let's get going!
+## Developing a To-Do List Application with Angular
 
-### Initialising the Angular Project
-Our new angular project, will be placed in the folder `ui`. This folder will be auto-created on initialisation. So, to initialise the project, use the following command:
+Now that you have your backend sorted out, you will proceed with the creation of the frontend app with Angular. This application will consist of a simple home page with a button to redirect users to the to-do list. To access this list, users will have to be authenticated.
 
-> ng new ui
+### Initializing the Angular Project
 
-This will place a new angular quickstart project in a new folder: ui. Now, we need to go into our ui folder and download all of our node modules, which are dependencies for our angular project. To do this, run the following command:
+For starter, you will have to scaffold your new Angular project. You will do this in a new directory called `ui` inside the project root of your Golang. To create this directory and to scaffold your Angular application, you will use the Angular CLI tool. So, head to the project root of your Golang API and issue the following command:
 
-> npm install
+```bash
+# make sure your are on your backend project root
+ng new ui
+```
 
-The command will look at the `package.json` file and see which dependencies are stated (and check their dependencies) and download all of them. Last thing we need to do, before we start writing our application, is to add a few CDN links to our index.html file. All of these are also possible to get from `npm install`, or to download locally, but this is the simplest solution as of right now. So, edit the file `./ui/src/app/index.html` to the following:
+This will place a new Angular quick-start project inside the `ui` directory. Now, you need to go into this new directory and download all your project's dependencies. To do this, run the following commands:
 
-#### ./ui/src/index.html
-```html
+```bash
+# move into the ui directory
+cd ui
+
+# install all dependencies
+npm install
+```
+
+The last command issued will look at the `package.json` file and see what are the dependencies defined there so it can download everything.
+
+Then, another thing you will need to do before start writing your application is to add CDN links to [Bootstrap](https://getbootstrap.com/) and [Font Awesome](https://fontawesome.com/). These libraries (or UI frameworks) will help your application look a little bit better without the need of investing too much time on CSS files and icons. So, open the `./ui/src/index.html` file and replace its contents with this:
+
+{% highlight html %}
+{% raw %}
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Auth0 Golang Exaple</title>
+  <title>Auth0 Golang Example</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -99,42 +112,36 @@ The command will look at the `package.json` file and see which dependencies are 
   <app-root></app-root>
 </body>
 </html>
-```
+{% endraw %}
+{% endhighlight %}
 
-All we have done is change the title to "Auth0 Golang Example" and added three external CDN dependencies:
-1. Bootstrap CSS - to make everything look pretty
-2. Font Awesome - to have cool icons for buttons and such
-3. Auth0 - Which is a JS library for using Auth0 authentication
+Then, the last change that you will have to do is to edit the environment files found inside the `./ui/src/environments` directory. These files will act as global variables for your application and distinguish between whether you are running a local development environment or if you are running in production.
 
-Another change that we would like to do for preparation, is to edit the environment files found in `./ui/src/environments`. These files will act as global variables for our application and differentiate between whether we are running a local dev environment, or we are running in production. Change the `environment.prod.ts` to:
+So, first, you will open the `environment.prod.ts` file and replace its content with this:
 
-#### ./ui/src/environments/environment.prod.ts
 ```js
 export const environment = {
   production: true,
   gateway: '',
-  callback: 'http://localhost:3000/callback',
-  domain: 'pungy.eu.auth0.com', // insert your domain here
-  clientId: '<insert your client id here>'
+  callback: 'http://localhost:4200/callback',
+  domain: '<YOUR_AUTH0_TENANT>.auth0.com',
+  clientId: '<YOUR_AUTH0_APPLICATION_CLIENT_ID>'
 };
 ```
 
-And if you want to develop using `ng serve`, then change the `environment.ts` (which is considered our dev environment by default), to the following:
+Then, as you will spend most of your time developing, you will have to open the `environment.ts` file (which is considered the config for your development environment by default) and replace its contents with this:
 
-#### ./ui/src/environments/environment.ts
 ```js
 export const environment = {
   production: false,
   gateway: 'http://localhost:3000',
   callback: 'http://localhost:4200/callback',
-  domain: 'pungy.eu.auth0.com', // insert your domain here
-  clientId: '<insert your client id here>'
+  domain: '<YOUR_AUTH0_TENANT>.auth0.com',
+  clientId: '<YOUR_AUTH0_APPLICATION_CLIENT_ID>'
 };
 ```
 
-```
-NOTE: The command "ng serve" will start a local web server on port 4200. This web server will detect whenever changes are made to the code base, transpile and reload to serve our angular project with the new changes. This will only transpile the changes, so therefore this is much faster than having to rebuild our project for every change and therefore preferred when developing.
-```
+In the next section, you will create an Auth0 Application and then you will replace the placeholders used above with your own values.
 
 ### Creating the Welcome & Todo Page
 First, we will make a new Angular component. We will quickstart this, using the angular-cli:
