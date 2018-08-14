@@ -143,6 +143,26 @@ export const environment = {
 
 In the next section, you will create an Auth0 Application and then you will replace the placeholders used above with your own values.
 
+### Creating an Auth0 Application
+
+Now that you have scaffolded your Angular application, you will need to register it at Auth0 so you can properly offer authentication and authorization features to your users. So, head to [the Applications section of your Auth0 dashboard](https://manage.auth0.com/#/applications) and hit the _Create Application_ button. When Auth0 shows you the form to create your Application, fill in the following information:
+
+- _Name:_ You can name your application with anything that might help you identifying it in the future. For example, "To-Do Angular App".
+- _Application Type:_ For this one, you will **have to** choose the _Single Page Web Applications_ option, as this is exactly what you are going to create.
+
+![Creating an Auth0 application for an Angular app.](https://cdn.auth0.com/blog/golang-angular/creating-an-auth0-application.png)
+
+Then, when you hit the _Create_ button, Auth0 will redirect you to the _Quick Start_ section of your new application. From there, you will have to move to the _Settings_ section so you can finish configuring your application.
+
+So, now that you are in the _Settings_ section, search for the _Allowed Callback URLs_ field and insert `http://localhost:4200/callback` there. You need this configuration because, after the authentication process, Auth0 will only redirect users to the URLs listed in this field (this is a security measure that Auth0 puts in place). After that, you can hit _Save_ to persist the change and leave this page open. You will copy values from it in a moment.
+
+Now, back into your project, open both the `environment.prod.ts` and `environment.ts` files and replace the placeholders as follows:
+
+- `<YOUR_AUTH0_TENANT>`: In the place of this placeholder, you will have to insert the Auth0 subdomain you chose while creating your account. In the end, you will have something similar to `domain: 'pungyeon.auth0.com'`.
+- `<YOUR_AUTH0_APPLICATION_CLIENT_ID>`: In the place of this placeholder, you will have to insert the value that Auth0 shows in the _Client ID_ field of your new application. This will be a random string similar to `z4Z09pinlP93aqTVaIBkCzzQ9vjZ6eEX`.
+
+> **Note:** You have to make sure you replace both placeholders on both files. Otherwise, you might end up with a buggy sign in feature.
+
 ### Creating the Welcome & Todo Page
 First, we will make a new Angular component. We will quickstart this, using the angular-cli:
 
