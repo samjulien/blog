@@ -196,63 +196,72 @@ To keep things simple, your home page will be extremely simple. Actually, the on
 
 In this case, all you are doing is creating a title and a link that will redirect users to the `/todo` route. You haven't determined the routing yet, so that won't work right now. You will get to that soon.
 
-### Developing the ToDo Page & Service
-Our todo functionality will be split into two, a component (the one we created in the last section) and a service. The service will be in charge of communicating with the backend via. HTTP. This service may then be used by our component, for ease of use, to communicate with our backend and display the correct information retrieved by the service.
+### Creating the To-Do Component
 
-So, let's begin by creating our service. Best practice tells us to create a new folder called `service` and place a new file in there named `todo.service.ts`. This file will consist of the following code: 
+After creating the home page, you can focus on creating the component that will provide the to-do list functionality. So, the first step here will be using Angular CLI to create the component:
 
-#### ./ui/src/app/service/todo.service.ts
-```js
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../environments/environment";
+```bash
+# make sure you are executing this from the ui directory
+ng g c todo
+```
+
+For this article, you will split the to-do functionality into two thing: a component (the one you just created) and a service. The service will be in charge of issuing HTTP requests to your Golang backend API. After creating this service, your component will be able to use it to communicate with your backend so it can display the correct information retrieved by the service.
+
+So, to create your service, issue the following command:
+
+```bash
+# make sure you are executing this from the ui directory
+ng g s todo
+```
+
+Then, open the `todo.service.ts` file and replace its content with this:
+
+```typescript
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class TodoService {
-    constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
-    getTodoList() {
-        return this.httpClient.get(environment.gateway + '/todo');
-    }
+  getTodoList() {
+    return this.httpClient.get(environment.gateway + '/todo');
+  }
 
-    addTodo(todo: Todo) {
-        return this.httpClient.post(environment.gateway + '/todo', todo);
-    }
+  addTodo(todo: Todo) {
+    return this.httpClient.post(environment.gateway + '/todo', todo);
+  }
 
-    completeTodo(todo: Todo) {
-        return this.httpClient.put(environment.gateway + '/todo', todo);
-    }
+  completeTodo(todo: Todo) {
+    return this.httpClient.put(environment.gateway + '/todo', todo);
+  }
 
-    deleteTodo(todo: Todo) {
-        return this.httpClient.delete(environment.gateway + '/todo/' + todo.id);
-    }
+  deleteTodo(todo: Todo) {
+    return this.httpClient.delete(environment.gateway + '/todo/' + todo.id);
+  }
 }
 
 export class Todo {
-    id: string;
-    message: string;
-    complete: boolean;
+  id: string;
+  message: string;
+  complete: boolean;
 }
 ```
 
-Here we are stating that we want to `export` our TodoService class, thereby making it available for other components to use. On initialisation of our class, we expect an HttpClient as input, which will be available for usage of our class (under the property name `this.httpClient`). This pattern is called dependency injection... but that is a topic for another article. 
+In the new version of this file, you are stating that you want to `export` your `TodoService` class, thereby making it available for other components to use. On the initialization of this class, you are defining that it needs an instance of `HttpClient`. Then, you are defining four methods to issue HTTP requests to your backend API: `getTodoList`, `addTodo`, `completeTodo`, and `deleteTodo`.
 
-```
-NOTE: the @Injectable() decorator ensures that we can inject the HttpClient. Without this, you will get some strange console errors.
-```
+> **Note:** [The `@Injectable()` decorator ensures this class is available to `Injector` for creation](https://angular.io/api/core/Injectable).
 
-At the bottom of the file, we are exporting another class `Todo` which is a mirror of our todo class from our backend. We use this class throughout our project, to ensure a more accurate description in code, what we are sending and retrieving from our backend. The rest of the service is some very basic HTTP calls to our backend. Notice that we are using the `environment.gateway` variable to determine where our http calls are headed, making it easier to change environments.
+Also, at the bottom of the file, you are exporting a class called `Todo`, which is a mirror of the `todo` structure you used in the backend. You use this class throughout your project to ensure a more accurate description in code of what you are sending and receiving from your backend.
 
-```
-NOTE: This service must also be added to our app.module.ts file, just like all our components. However, since this is a service our components use, we must add it to the 'providers' section in @NgModule. We will also need to add HttpClientModule to the imports section. There is a reference to where and how, at a later point in the tutorial
-```
+One important thing to notice in this service is that you are using the `environment.gateway` variable to determine where your HTTP calls are headed. This makes running the same code base in different environments easier.
 
-Now, let's use our new todo service, for usage in our todo component. First, let's write our TypeScript logic in the `todo.component.ts` file:
+Now, to take your new service out for a spin, you can open the `todo.component.ts` file and replace its code with this:
 
-#### ./ui/src/app/todo/todo.component.ts
-```js
+```typescript
 import { Component, OnInit } from '@angular/core';
-import { TodoService, Todo } from '../service/todo.service';
+import { TodoService, Todo } from '../todo.service';
 
 @Component({
   selector: 'app-todo',
@@ -262,7 +271,7 @@ import { TodoService, Todo } from '../service/todo.service';
 export class TodoComponent implements OnInit {
 
   activeTodos: Todo[];
-  completedTodos: Todo[]
+  completedTodos: Todo[];
   todoMessage: string;
 
   constructor(private todoService: TodoService) { }
@@ -283,7 +292,8 @@ export class TodoComponent implements OnInit {
       message: this.todoMessage,
       id: '',
       complete: false
-    }
+    };
+
     this.todoService.addTodo(newTodo).subscribe(() => {
       this.getAll();
       this.todoMessage = '';
@@ -304,99 +314,98 @@ export class TodoComponent implements OnInit {
 }
 ```
 
-Starting from the `export class TodoComponent`, what we have is three properties, which respectively contain our active todo list, our completed todo list and a user input string. Our constructor of our component will expect a TodoService object and store this as a private property todoService.
+Starting from the `export class TodoComponent`, what you have is three properties that respectively contain your `activeTodos` list, your `completedTodos` list, and a `todoMessage` that will hold data inputted by users. Then, you have the constructor of your component, which is expecting a `TodoService` instance and that stores it as a private property called `todoService`.
 
-The first function of our component, `ngOnInit` is a built-in standard of angular and derives from the interface `OnInit`. Essentially and implementation on `OnInit`, will wait for the component to be loaded, before executing the `ngOnInit` function. Essentially, we are waiting to retrieve data, until our component has loaded successfully. In our function, we are executing the method `getAll`. This method, will invoke the `todoService.getTodoList` function. As we know, this function is an http call to our backend to get all of our todo items. The HttpClient in angular does not return with the response, but rather with an Observable. Essentially, this is an object, which we can 'subscribe' to and then whenever new data is retrieved, we will be notified and can hereby respond in some way or another. In this scenario, we are using the observable more like a callback, but I strongly recommend reading up on RxJs and Observables. They are super useful in modern Javascript.
+Then, the first function of your component, `ngOnInit`, is a built-in standard of Angular and derives from the interface `OnInit`. Essentially, the implementation of the `OnInit` interface will wait for the component to be loaded before executing the `ngOnInit` function. Then, `ngOnInit` will retrieve data from your backend with the help of the `getAll` method. This method, will invoke the `todoService.getTodoList` function. As you know, this function is an HTTP call to your backend to get all of your todo items.
 
-Anyway... the `getAll` function subscribes to data from the `todoService.getTodoList` and whenever data is received, will assigned all active todos to our `activeTodos`, by filtering out any complete items, and do the opposite for our `completedTodos` property. The rest of our class methods are corresponding to our todo service, which in turn was mapped up against our backend api. In other words, we have an add, complete and delete, and whenever an operation is performed, we update our todo list, by retrieving the data again with `getAll`.
+The `HttpClient` in Angular does not return with the response but, rather, with an `Observable`. Essentially, this is an object that you can 'subscribe' so, whenever new data is retrieved, you get notified and can act in some way or another. In this scenario, you are using the observable more like a callback, but it's strongly recommend reading up on RxJs and Observables. They are super useful in modern JavaScript.
 
-Now that our TypeScript logic is done, here is our HTML code:
+So, the `getAll` function subscribes to data from the `todoService.getTodoList` and, whenever data is received, it assigns all active todos to your `activeTodos` property (by filtering out any complete items) and do the opposite for the `completedTodos` property.
 
-#### ./ui/src/app/todo/todo.component.html
-```html
-<h3> Todos </h3>
+The rest of your class methods are corresponding to your `TodoService`, which in turn was mapped up against your backend api. In other words, you have functions to add, complete, delete, and update your to-do lists.
+
+Now that your TypeScript logic is done, you can open the `todo.component.html` file and replace its contents with this:
+
+{% highlight html %}
+{% raw %}
+<h2>Todos</h2>
 <table class="table">
   <thead>
-    <tr>
-      <th>ID</th>
-      <th>Description</th>
-      <th>Complete</th>
-    </tr>
+  <tr>
+    <th>ID</th>
+    <th>Description</th>
+    <th>Complete</th>
+  </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let todo of activeTodos">
-      <td>{{todo.id}}</td>
-      <td>{{todo.message}}</td>
-      <td>
-        <button *ngIf="!todo.complete" class="btn btn-secondary" (click)="completeTodo(todo)">
-          <i class="fa fa-check"></i>
-        </button>
-        <button *ngIf="todo.complete" class="btn btn-success" disabled>
-          <i class="fa fa-check"></i>
-        </button>
+  <tr *ngFor="let todo of activeTodos">
+    <td>{{todo.id}}</td>
+    <td>{{todo.message}}</td>
+    <td>
+      <button *ngIf="!todo.complete" class="btn btn-secondary" (click)="completeTodo(todo)">
+        <i class="fa fa-check"></i>
+      </button>
+      <button *ngIf="todo.complete" class="btn btn-success" disabled>
+        <i class="fa fa-check"></i>
+      </button>
 
-        <button class="btn btn-danger" (click)="deleteTodo(todo)">
-            <i class="fa fa-trash"></i>
-        </button>
-      </td>
-    </tr>
+      <button class="btn btn-danger" (click)="deleteTodo(todo)">
+        <i class="fa fa-trash"></i>
+      </button>
+    </td>
+  </tr>
   </tbody>
 </table>
 <h3>Completed</h3>
 <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Description</th>
-        <th>Complete</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let todo of completedTodos">
-        <td>{{todo.id}}</td>
-        <td>{{todo.message}}</td>
-        <td>
-          <button *ngIf="!todo.complete" class="btn btn-secondary" (click)="completeTodo(todo)">
-            <i class="fa fa-check"></i>
-          </button>
-          <button *ngIf="todo.complete" class="btn btn-success" disabled>
-            <i class="fa fa-check"></i>
-          </button>
-  
-          <button class="btn btn-danger" (click)="deleteTodo(todo)">
-              <i class="fa fa-trash"></i>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Description</th>
+    <th>Complete</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let todo of completedTodos">
+    <td>{{todo.id}}</td>
+    <td>{{todo.message}}</td>
+    <td>
+      <button *ngIf="!todo.complete" class="btn btn-secondary" (click)="completeTodo(todo)">
+        <i class="fa fa-check"></i>
+      </button>
+      <button *ngIf="todo.complete" class="btn btn-success" disabled>
+        <i class="fa fa-check"></i>
+      </button>
+      <button class="btn btn-danger" (click)="deleteTodo(todo)">
+        <i class="fa fa-trash"></i>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
 <input placeholder="description..." [(ngModel)]="todoMessage">
-<button class="btn btn-primary" (click)="addTodo()"> Add </button>
-```
+<button class="btn btn-primary" (click)="addTodo()">Add</button>
+{% endraw %}
+{% endhighlight %}
 
-Our todo html is essentially two tables, that use the `*ngFor` directive to iterate over all the todo items in our variable activeTodos and completedTodos, which have been set by the `getAll` function. The table then contains the id and message of the todo item, as well as two button which will complete and delete the given todo. We also indicate whether the todo item has been completed already. We do this using an `*ngIf` directive. If the `todo.complete` property is false, we show an active green button, and if the todo is already completed, we show a grey disabled button.
+Basically, your to-do page consists of two tables that use the `*ngFor` directive to iterate over all the to-do items in `activeTodos` and `completedTodos`. These table contain the `id` and `message` of the to-do items, as well as two buttons that allow users to complete and delete items. Also, this page indicates whether the to-do items are completed or not. This happens by the usage of `*ngIf` directives. If the `todo.complete` property is false, this page shows an active green button and, if the todo is already completed, it shows a grey disabled button.
 
-```
-NOTE: It would be best practice to extract these tables as a component by themselves. But for the simplicity of this tutorial, I have chosen to keep this in a single file.
-```
+At the very bottom of this HTML page, you have an input text and a button that, when clicked, triggers the `addTodo` function. This is what gives your users the possibility of adding new to-do items. The input content is mapped to the `todoMessage` property via the `ngModel` directive. This directive works like a two-way data binding, meaning that the property is tied to the input element and the element is tied to the variable. In other words, should one change so will the other.
 
-At the very bottom of the html page, we have an input string and a button whose click is mapped to our `addTodo` function. This is what gives our users the possibility of adding new todo items. The input content is mapped to our `todoMessage` variable via. our ngModel directive. This directive works like a two-way binding, meaning that the variable is tied to the input element and the element is tied to the variable, should one change, so will the other. This is why our `addTodo` function creates a new Todo item, using the `todoMessage` variable.
+Then, to have a component that looks good, you can open the `todo.component.css` and insert the following code:
 
-Let's also add a little bit of style to our local css styling file `todo.component.css`. Keep in mind, the css in this file, will only be applied to our `TodoComponent`:
-
-#### ./ui/src/app/todo/todo.component.css
 ```css
 button {
-    width: auto;
-    margin: 5px;
+  width: auto;
+  margin: 5px;
 }
 
 td {
-    vertical-align: unset;
+  vertical-align: unset;
 }
 ```
 
-If we were to spin up our project now, none of our hard work would show. We aren't routing our clients anyway and even if we were, we are not authenticated to get the todo list from our backend. So, let's setup routing together with an authentication service next, so we can get access to our data.
+If you were to spin up your project now, none of your hard work would show. That happens because you are not routing your clients anyway and, even if you were, they are not authenticated to get the to-do list from your backend. In the next section, you address both issues.
 
 ### Setting up Routing and Securing it with Auth0
 We will start by creating our authentication service. This service will be using the Auth0 CDN import, which was inserted at the start of this article. Keep in mind, that this is an in-memory authentication service, the authentication token that we retrieve will not be saved anywhere, so if a user is to reload the web page, they will have to re-authorize against auth0. For this authentication service, we will be using that javascript auth0 library. To install this, use the following command:
