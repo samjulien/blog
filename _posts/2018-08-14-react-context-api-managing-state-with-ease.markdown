@@ -2,7 +2,7 @@
 layout: post
 title: "React Context API: Managing State with Ease"
 description: "Managing state with the new React Context API is very easy. Learn what the differences with Redux are and how to use it in this practical tutorial."
-date: 2018-08-15 08:30
+date: 2018-08-14 08:30
 category: Technical Guide, Frontend, React
 author:
   name: "Abdulazeez Adeshina"
@@ -23,9 +23,10 @@ tags:
 related:
 - 2017-11-28-redux-practical-tutorial
 - 2018-03-06-time-slice-suspense-react16
+- 2018-02-15-developing-web-apps-with-asp-dot-net-core-2-dot-0-and-react-part-1
 ---
 
-**TL;DR:** The React Context API isn't a new thing on React's ecosystem. However, the React's `16.3.0` release brought a lot of improvements to this API. These improvements are so overwhelming that they greatly reduce the need for Redux and other advanced state management libraries. In this article, you will learn, through a practical tutorial, how the new React Context API replaces the need for Redux on small React applications.
+**TL;DR:** The React Context API isn't a new thing on React's ecosystem. However, the React's `16.3.0` release [brought a lot of improvements to this API](https://auth0.com/blog/whats-new-in-react-16-3/). These improvements are so overwhelming that they greatly reduce the need for Redux and other advanced state management libraries. In this article, you will learn, through a practical tutorial, how the new React Context API replaces the need for Redux on small React applications.
 
 {% include tweet_quote.html quote_text = "Learn how to migrate from Redux to the new React Context API in this practical tutorial." %}
 
