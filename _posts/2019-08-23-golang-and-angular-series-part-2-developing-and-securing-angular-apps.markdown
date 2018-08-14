@@ -125,7 +125,8 @@ export const environment = {
   gateway: '',
   callback: 'http://localhost:4200/callback',
   domain: '<YOUR_AUTH0_TENANT>.auth0.com',
-  clientId: '<YOUR_AUTH0_APPLICATION_CLIENT_ID>'
+  clientId: '<YOUR_AUTH0_APPLICATION_CLIENT_ID>',
+  audience: '<YOUR_AUTH0_API_IDENTIFIER>'
 };
 ```
 
@@ -137,11 +138,12 @@ export const environment = {
   gateway: 'http://localhost:3000',
   callback: 'http://localhost:4200/callback',
   domain: '<YOUR_AUTH0_TENANT>.auth0.com',
-  clientId: '<YOUR_AUTH0_APPLICATION_CLIENT_ID>'
+  clientId: '<YOUR_AUTH0_APPLICATION_CLIENT_ID>',
+  audience: '<YOUR_AUTH0_API_IDENTIFIER>'
 };
 ```
 
-In the next section, you will create an Auth0 Application and then you will replace the placeholders used above with your own values.
+Now, as you already created your Auth0 API in the last part of this series, you can replace `<YOUR_AUTH0_API_IDENTIFIER>` in both files (for example, you can replace this placeholder with `https://my-golang-api`). In the next section, you will create an Auth0 Application and then you will be able to replace the other placeholders used above with your own Auth0 values.
 
 ### Creating an Auth0 Application
 
@@ -407,23 +409,27 @@ td {
 
 If you were to spin up your project now, none of your hard work would show. That happens because you are not routing your clients anyway and, even if you were, they are not authenticated to get the to-do list from your backend. In the next section, you address both issues.
 
-### Setting up Routing and Securing it with Auth0
-We will start by creating our authentication service. This service will be using the Auth0 CDN import, which was inserted at the start of this article. Keep in mind, that this is an in-memory authentication service, the authentication token that we retrieve will not be saved anywhere, so if a user is to reload the web page, they will have to re-authorize against auth0. For this authentication service, we will be using that javascript auth0 library. To install this, use the following command:
+### Setting up Routing and Securing Angular with Auth0
 
-> npm install --save auth0-js
+For starters, you will have to install `auth0-js` as a dependency to your project:
 
+```bash
+# from the ui directory, run:
+npm install --save auth0-js
 ```
-NOTE: We could also use localStorage for this, however, this has been deemed against best-practice and unsafe. There are other measures to save session state, but that will be for another article.
+
+Then, you will have to create a service to handle the authentication process. To do this, use Angular CLI as follows:
+
+```bash
+ng g s auth
 ```
 
-Either way, our authentication service, will look like this:
+Now that you have your `AuthService` created, open its file (`auth.service.ts`) and replace its code with this:
 
-#### ./ui/src/app/service/auth.service.ts
-```js
-import { Injectable } from "@angular/core";
-import { environment } from "src/environments/environment";
-import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
-import { Router } from "@angular/router";
+```typescript
+import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 import * as auth0 from 'auth0-js';
 
@@ -431,91 +437,85 @@ import * as auth0 from 'auth0-js';
 
 @Injectable()
 export class AuthService {
-    constructor(public router: Router)  {}
+  constructor(public router: Router)  {}
 
-    access_token: string;
-    id_token: string;
-    expires_at: string;
+  access_token: string;
+  id_token: string;
+  expires_at: string;
 
-    auth0 = new auth0.WebAuth({
-        clientID: 'bpF1FvreQgp1PIaSQm3fpCaI0A3TCz5T',
-        domain: environment.domain,
-        responseType: 'token id_token',
-        audience: 'https://' + environment.domain + '/userinfo',
-        redirectUri: environment.callback,
-        scope: 'openid'
+  auth0 = new auth0.WebAuth({
+    clientID: 'bpF1FvreQgp1PIaSQm3fpCaI0A3TCz5T',
+    domain: environment.domain,
+    responseType: 'token id_token',
+    audience: environment.audience,
+    redirectUri: environment.callback,
+    scope: 'openid'
+  });
+
+  public login(): void {
+    this.auth0.authorize();
+  }
+
+  public handleAuthentication(): void {
+    this.auth0.parseHash((err, authResult) => {
+      if (err) console.log(err);
+      if (!err && authResult && authResult.accessToken && authResult.idToken) {
+        window.location.hash = '';
+        this.setSession(authResult);
+      }
+      this.router.navigate(['/home']);
     });
+  }
 
-    public login(): void {
-        this.auth0.authorize();
-    }
+  private setSession(authResult): void {
+    // Set the time that the Access Token will expire at
+    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+    this.access_token = authResult.accessToken;
+    this.id_token = authResult.idToken;
+    this.expires_at = expiresAt;
+  }
 
-    // ...
-    public handleAuthentication(): void {
-        this.auth0.parseHash((err, authResult) => {
-            if (authResult && authResult.accessToken && authResult.idToken) {
-                window.location.hash = '';
-                this.setSession(authResult);
-                this.router.navigate(['/home']);
-            } else if (err) {
-                this.router.navigate(['/home']);
-                console.log(err);
-            }
-        });
-    }
+  public logout(): void {
+    this.access_token = null;
+    this.id_token = null;
+    this.expires_at = null;
+    // Go back to the home route
+    this.router.navigate(['/']);
+  }
 
-    private setSession(authResult): void {
-        // Set the time that the Access Token will expire at
-        const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-        this.access_token = authResult.accessToken;
-        this.id_token = authResult.idToken;
-        this.expires_at = expiresAt;
-    }
+  public isAuthenticated(): boolean {
+    // Check whether the current time is past the
+    // Access Token's expiry time
+    const expiresAt = JSON.parse(this.expires_at || '{}');
+    return new Date().getTime() < expiresAt;
+  }
 
-    public logout(): void {
-        this.access_token = null;
-        this.id_token = null;
-        this.expires_at = null;
-        // Go back to the home route
-        this.router.navigate(['/']);
-    }
-
-    public isAuthenticated(): boolean {
-        // Check whether the current time is past the
-        // Access Token's expiry time
-        const expiresAt = JSON.parse(this.expires_at || '{}');
-        return new Date().getTime() < expiresAt;
-    }
-
-    public createAuthHeaderValue(): string {
-        if (this.id_token == "") {
-            "";
-        }
-        return 'Bearer ' + this.id_token;
-    }
+  public createAuthHeaderValue(): string {
+    return 'Bearer ' + this.id_token;
+  }
 }
 ```
 
-As you can see, we have the familiar `@Injectable()` decorator, which we use for injecting an angular Router into our service on initialisation. We then define three string properties and a single `auth0.WebAuth` object. This object is what is used for authenticating against Auth0, so we will need to use the information from our environment files. The `auth0.WebAuth` object will in turn use this information to send to Auth0 and inform which application we are trying to get access to.
+As you can see, you have the familiar `@Injectable()` decorator that makes this service injectable into other components. Then, you define three string properties and a single `auth0.WebAuth` object. This object is what is used for authenticating against Auth0. As such, you will need to use the information from your environment files with this object to send your users to Auth0 and to inform which application they are trying to get access to.
 
-Our `login` function is quite simple looking, but essentially, this will initialise authentication with Auth0, redirecting the client to the Auth0 login site. If the user is authenticated, they will be sent to the specified callback location, with a tailing hash on the URL. This url will be parsed by the `handleAuthentication` function, which if successful calls the `setSession` function, which very simple sets our three properties with the appropriate values.
+Your `login` function is quite simple looking but, essentially, this will initialize the authentication process on Auth0. If the user is authenticated, Auth0 will send them to the specified callback location with a tailing hash on the URL. Then, `auth0-js` will parse this hash with the `parseHash` function. If everything goes ok, your code will call the `setSession` function which will set three properties with the appropriate values: `access_token`, `id_token`, and `expires_at`.
 
-The `lougout` function resets all tokens from memory and the `isAuthenticated` method just returns whether the token as expired or not. We will use this later, for getting an authentication status of our client.
+The `lougout` function resets all tokens from memory and the `isAuthenticated` method just returns whether the token has expired or not. You will use this information later, while getting an authentication status of your user.
 
-Lastly, we have our `createAuthHeaderValue`, returns a string in the form of an `Authorization` bearer header. In other words, it appends the `id_token` property, to 'Bearer '.
+Lastly, you have the `createAuthHeaderValue` function, which returns a string in the form of an `Authorization` bearer header.
 
-Easy peasy! Just remember to add this service to the `providers` section of our `app.module.ts` file.
+Now you need to create the callback component, which will be done like the other components:
 
-Now we need to create our callback component, which will be done like the other components:
+```bash
+# from the ui directory
+ng g c callback
+```
 
-> ng g c callback
+After creating it, change the content of the `callback.component.ts` file with this:
 
-Change the `callback.component.ts` to the following:
-
-#### ./ui/src/app/callback/callback.component.ts
-```js
+```typescript
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../service/auth.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-callback',
@@ -532,20 +532,17 @@ export class CallbackComponent implements OnInit {
 }
 ```
 
-All we are doing, is invoking the `handleAuthentication` method of our authentication service, once the component is initialised, parsing the url hash and redirecting the client to '/home'.
+All you are doing here is to invoke the `handleAuthentication` method of your authentication service once the component is initialized. As you learned, this function parses the URL hash and redirects users to the `/home` route.
 
-```
-If you want you can add your favourite loading gif to this component, to let your users know that something is happening. However, this is not mandatory.
-```
+Once you have set your authentication session with your callback component, you will need to make sure that all future requests include the token retrieved from Auth0 in the `Authorization` header. To do this, you will create an Angular interceptor.
 
-Once we have set our authentication session with our callback component, we need to make sure that all future requests include our retrieved token, in the `Authorization` header. To do this, we will create yet another service. So, create a new file: `./ui/src/app/service/token.interceptor.ts`. This is our interceptor service, which will intercept all of our outgoing requests and add an authentication header, if a token is available.
+So, create a new file called `token.interceptor.ts` under the `./src/app/` directory and insert the following code into it:
 
-#### ./ui/src/app/service/token.interceptor.ts
-```js
-import { Injectable } from "@angular/core";
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from "@angular/common/http";
-import { AuthService } from "src/app/service/auth.service";
-import { Observable } from "rxjs/internal/Observable";
+```typescript
+import { Injectable } from '@angular/core';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { AuthService } from './auth.service';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -561,78 +558,89 @@ export class TokenInterceptor implements HttpInterceptor {
 }
 ```
 
-This service implements HttpInterceptor, which has the constraint of needing the `intercept` function, which will be revoked upon an http request. Much like our middleware in our backend, this will return a 'next request', which basically forwards the modified request to the original destination. The `intercept` function in this case is quite simple. We are cloning in the incoming request, but adding an Authorization header, using our `auth.createAuthHeaderValue` from our AuthService. Remember, if no token is found, nothing is added. Once the request has been altered, we invoke the `next.handle` passing the modified request.
+This interceptor service intercept (of course) all of the outgoing HTTP requests and add an authentication header if a token is available. To do this, this interceptor implements `HttpInterceptor`, which has the constraint of needing the `intercept` function. This function is then invoked upon an HTTP request.
 
-The reason why we are creating this service, is to ensure that all of our requests contain the appropriate Authorization header. Centralising the header management like this, makes it easier in the future, if changes are made to authentication or if new requests are added to the project.
+Much like the middleware in your backend, this will return a `next.handle`, which basically forwards the modified request to the original destination. The `intercept` function in this case is quite simple. You are cloning the incoming request to add an `Authorization` header. Remember, if no token is found, nothing is added. Once the request has been altered, this interceptor invokes the `next.handle` passing the modified request.
 
-To include this in our `app.module.ts` file, we will need to add the following object to our providers array, importing all the necessary dependencies:
+The reason why you are creating this interceptor is to ensure that all of your requests contain the appropriate `Authorization` header. Centralizing the header management like this makes it easier in the future. If changes are made to authentication or if new requests are added to the project, no changes are needed.
 
-```js
-{
+To include this in your `app.module.ts` file, you will need to add the following object to the `providers` array:
+
+```typescript
+// ... other imports ...
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {TokenInterceptor} from './token.interceptor';
+
+@NgModule({
+  // ... declarations and imports ...
+  providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,
     multi: true
-}
+  }],
+  // ... bootstrap ...
+})
+export class AppModule { }
 ```
 
-Almost there! Now, we need to change our `app.component.ts` page to include routing and actually define our routes. Let's start by creating our routing definition. Create a new file: `./ui/src/app/app-routing.module.ts` and in this file, write the following code:
+Almost there! Now, you need to change your `app.component.ts` page to include routing and actually define your routes. You can start by creating the routes. So, create a new file called `app-routing.module.ts` inside `./src/app` and insert the following code into it:
 
-#### ./ui/src/app/app-routing.module.ts
-```js
-import { HomeComponent } from "./home/home.component";
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from "@angular/core";
-import { AuthGuardService } from "./service/auth-guard.service";
-import { CallbackComponent } from "./callback/callback.component";
-import { TodoComponent } from "./todo/todo.component";
+```typescript
+import { HomeComponent } from './home/home.component';
+import { RouterModule, Routes } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { AuthGuardService } from './auth-guard.service';
+import { CallbackComponent } from './callback/callback.component';
+import { TodoComponent } from './todo/todo.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'home', pathMatch: 'full' },
-    { path: 'home', component: HomeComponent },
-    { path: 'todo', component: TodoComponent,  canActivate: [AuthGuardService] },
-    { path: 'callback', component: CallbackComponent }
-  ];
-  
-  @NgModule({
-    imports: [ RouterModule.forRoot(routes) ],
-    exports: [ RouterModule ]
-  })
-  export class AppRoutingModule { }
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: 'todo', component: TodoComponent,  canActivate: [AuthGuardService] },
+  { path: 'callback', component: CallbackComponent }
+];
+
+@NgModule({
+  imports: [ RouterModule.forRoot(routes) ],
+  exports: [ RouterModule ]
+})
+export class AppRoutingModule { }
 ```
 
-The only important aspect of this, if our constant routes. This defines an array of paths. Our root path will redirect to our HomeComponent (and os will '/home'). Our todo path will redirect to our TodoComponent and callback to our CallbackComponent. However, you will notice, that the todo path is slightly different, in that it is using the `canActivate` property and using the `AuthGuardService`. Now... we haven't written our AuthGuardService yet, so let's do that right away.
+The only important aspect of this file is your `routes` constant. This constant defines an array of paths. The root (`''`) path will redirect to your `HomeComponent`, the `todo` path will redirect to the `TodoComponent`, and `callback` to the `CallbackComponent`. However, as you will notice, that the `todo` path is slightly different in that it is using the `canActivate` property and using `AuthGuardService`. Well... you haven't written the `AuthGuardService` yet. So, you can do that right away.
 
-The `canActivate` property basically asks a service (which implements CanActivate) for a boolean response of whether or not a user is able to activate this page. So let's quickly create this service as well. Create a new file:  `./ui/src/app/service/auth-guard.service.ts`, which will contain the logic to whether or not a user is authentorized.
+The `canActivate` property basically asks a service (which implements `CanActivate`) for a boolean response of whether or not a user is able to activate this page. To create this service, execute the following command:
 
-#### ./ui/src/app/service/auth-guard.service.ts
-```js
-import { CanActivate, Router } from "@angular/router";
-import { Injectable } from "@angular/core";
-import { AuthService } from "./auth.service";
-import { environment } from "src/environments/environment";
-import { HttpErrorResponse } from "@angular/common/http";
-import { Observable } from "rxjs";
+```bash
+# from the ui directory
+ng g s auth-guard
+```
 
+Then, open the `auth-guard.service.ts` file and replace its code with this:
+
+```typescript
+import { CanActivate, Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
-    constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
-    canActivate(): boolean {
-        if (this.auth.isAuthenticated()) {
-            return true;
-        }
-
-        this.auth.login()
+  canActivate(): boolean {
+    if (this.auth.isAuthenticated()) {
+      return true;
     }
+
+    this.auth.login()
+  }
 }
 ```
 
-Really a quite simple service, which calls our AuthService, asking whether the current user is authenticated. If the user is authenticated, we will return a true forwarding the user to the request route. If not, we will invoke the `auth.login` function, which will send our user to the Auth0 login page.
+This is actually a really simple service. This service simply calls the `AuthService`, asking whether the current user is authenticated or not. If the user is authenticated, it returns true, forwarding the user to the request route. If not, it will invoke the `auth.login` function, which will send your user to the Auth0 login page.
 
-Now, we will include our routing and our auth service in our `app.module.ts` file, so the finalised version will look as such:
+Now, to make sure all components, services, interceptors, and routers are include in your app, open the `app.module.ts` file and update it as follows:
 
-#### ./ui/src/app/app.module.ts
 ```js
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -642,13 +650,13 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { AuthGuardService } from './service/auth-guard.service';
-import { AuthService } from 'src/app/service/auth.service';
+import { AuthGuardService } from './auth-guard.service';
+import { AuthService } from './auth.service';
 import { CallbackComponent } from 'src/app/callback/callback.component';
 import { TodoComponent } from './todo/todo.component';
-import { TodoService } from './service/todo.service';
+import { TodoService } from './todo.service';
 import { FormsModule } from '@angular/forms';
-import { TokenInterceptor } from 'src/app/service/token.interceptor';
+import { TokenInterceptor } from './token.interceptor';
 
 @NgModule({
   declarations: [
@@ -673,7 +681,7 @@ import { TokenInterceptor } from 'src/app/service/token.interceptor';
 export class AppModule { }
 ```
 
-For the routing, as you can see, we have imported our `AppRoutingModule`. So, now we can finally include this routing to our application, which will be the last part of this tutorial.
+For the routing, as you can see, you have imported the `AppRoutingModule` class. So, now you can finally include this routing to your application, which will be the last part of this tutorial.
 
 ## Putting it all together
 So, it's been a long while, but now we are finally going to add routing to the application. As well as creating a little menu bar, for navigation and logging out. First we need to edit the `./ui/src/app/app.component.ts` to add our AuthService to our AppComponent.
