@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "TypeScript 3: Tuple Ware and Into the Unknown"
-description: "TypeScript is a typed superset of Javascript. Learn how Typescript 3.0 improves tuples and introduces a new type!"
+description: "Learn how TypeScript 3.0, a typed superset of JavaScript, improves tuples and introduces a new type!"
 date: 2018-08-08 8:30
 category: Technical Guide, TypeScript, JavaScript
 design: 
@@ -15,6 +15,7 @@ author:
 tags: 
   - typescript
   - frontend
+  - backend
   - javascript
   - static
   - types
@@ -28,7 +29,7 @@ related:
 
 TypeScript 3.0 is out! It comes with enhancements for the type system, compiler, and language service. This release is shipping with the following:
 
-- Project References let TypeScript projects depend on other TypeScript projects by allowing `tsconfig.json` files to reference other `tsconfig.json` files.
+- **Project references** let TypeScript projects depend on other TypeScript projects by allowing `tsconfig.json` files to reference other `tsconfig.json` files.
 
 - Support for `defaultProps` in JSX.
 
@@ -46,26 +47,7 @@ For this blog post, we are going to focus on the enhancements made to tuples and
 
 If you want to follow along with the example in this post, you can follow these quick steps to get a TypeScript 3.0 project up and running.
 
-If you prefer to test Typescript 3.0 on a sandbox environment, you can use the [TypeScript playground](https://www.typescriptlang.org/play/) instead to follow along.
-
-### Install Typescript
-
-In order for TypeScript to work correctly with code editors and IDE's it's necessary to [install TypeScript globally](https://www.typescriptlang.org/index.html#download-links):
-
-```shell
-npm install -g typescript
-```
-
-This command will install the newest version of TypeScript in your system. To verify that the installation was successful, run the following command:
-
-```shell
-tsc --version
-// Version 3.0.1
-```
-
-The version that comes up should be `3.0.0` or higher.
-
-> If you want to learn more about how `tsc` and other TypeScript internals work check out this [TypeScript missing introduction by Todd Motto](https://toddmotto.com/typescript-introduction).
+If you prefer to test TypeScript 3.0 on a sandbox environment, you can use the [TypeScript playground](https://www.typescriptlang.org/play/) instead to follow along.
 
 ### Setting Up a TypeScript Project
 
@@ -76,7 +58,7 @@ mkdir ts3
 cd ts3
 ```
 
-Once `ts3` is the current working directory, initialize a [Node.js](https://nodejs.org/) with default values:
+Once `ts3` is the current working directory, initialize a [Node.js](https://nodejs.org/) project with default values:
 
 ```shell
 npm init -y
@@ -88,9 +70,9 @@ Next, install core packages that are needed to compile and monitor changes in Ty
 npm i typescript nodemon ts-node --save-dev
 ```
 
-A TypeScript project needs a `tsconfig.json` file. This can be done in two ways: using the global `tsc` command or using `npx tsc`.
+A TypeScript project needs a `tsconfig.json` file. This can be done in two ways: using the global `tsc` command or using `npx tsc`. I recommend using `npx`.
 
-The `npx` command is available in `npm >= 5.2` and it lets us create a `tsconfig.json` file as follows:
+The `npx` command is available in `npm >= 5.2` and it lets you create a `tsconfig.json` file as follows:
 
 ```shell
 npx tsc --init
@@ -98,7 +80,7 @@ npx tsc --init
 
 Here, `npx` executes the local `typescript` package that has been installed locally.
 
-If you prefer to do so using the global package that is installed, you can run the following:
+If you prefer to do so using a global package, ensure that you [install TypeScript globally](https://www.typescriptlang.org/#download-links) and run the following:
 
 ```shell
 tsc --init
@@ -116,7 +98,7 @@ You will also have a `tsconfig.json` file with sensible started defaults enabled
 
 In a development world where everything build-related is now automated, an easy way to compile, run, and watch TypeScript files is needed. This can be done through `nodemon` and `ts-node`:
 
-- [`nodemon`](https://github.com/remy/nodemon): It's a tool that monitors for any changes in a Node.js application and automatically restarts the server.
+- [`nodemon`](https://github.com/remy/nodemon): It's a tool that monitors for any changes in a Node.js application directory and automatically restarts the server.
 
 - [`ts-node`](https://github.com/TypeStrong/ts-node): It's a TypeScript execution and REPL for Node.js, with source map support. Works with `typescript@>=2.0`.
 
@@ -124,21 +106,11 @@ The executables of these two packages need to be run together through an `npm` s
 
 ```json
 {
-  "name": "ts3",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  // ...
   "scripts": {
-    "watch": "npx nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^1.18.3",
-    "ts-node": "^7.0.0",
-    "typescript": "^3.0.1"
+    "watch": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts"
   }
+  // ...
 }
 ```
 
@@ -170,9 +142,9 @@ Messages about `nodemon` will come up. Since `index.ts` is empty as of now, ther
 
 You are all set up! Now join me in exploring what new features come with TypeScript 3.
 
-## TupleWare
+## TypeScript TupleWare
 
-### What Are Tuples?
+### What Are TypeScript Tuples?
 
 TypeScript 3 comes with a couple of changes to how tuples can be used. Therefore, let's quickly review the [basics of TypeScript tuples](https://www.typescriptlang.org/docs/handbook/basic-types.html).
 
@@ -256,7 +228,7 @@ Here, the `args` parameter is a tuple type that contains three elements of type 
 declare function example(args_0: string, args_1: boolean, args_2: number): void;
 ```
 
-To access `args_0`, `args_1`, and `args_2` within the body of a function we would use array notation: `args[0]`, `args[1]`, and `args[2]`.
+To access `args_0`, `args_1`, and `args_2` within the body of a function, we would use array notation: `args[0]`, `args[1]`, and `args[2]`.
 
 The goal of the rest parameter syntax is to collect "argument overflow" into a single structure: an array or a tuple.
 
@@ -286,7 +258,7 @@ How is this different from just passing an array? A tuple type forces us to pass
 
 ### Spread Expressions with TypeScript Tuples
 
-The rest parameter syntax looks very familiar to the spread operator; however, they are very different. As we learned earlier, the rest parameter syntax collects parameter into a single variable and then expands them under its variable name. On the other hand, the spread operator expands the elements of an array or object. With TypeScript 3.0, the spread operator can also expand the elements of a tuple.
+The rest parameter syntax looks very familiar to the spread operator; however, they are very different. As we learned earlier, the rest parameter syntax collects parameters into a single variable and then expands them under its variable name. On the other hand, the spread operator expands the elements of an array or object. With TypeScript 3.0, the spread operator can also expand the elements of a tuple.
 
 Let's see this in action using our `Point3D` tuple. Let's replace the code in `index.ts` and populate it with the following:
 
@@ -432,7 +404,7 @@ Output:
 [ 'David', [ 100, 98, 100 ] ]
 ```
 
-## Into the Unknown
+## TypeScript: Into the Unknown
 
 TypeScript 3.0 introduces a new type called `unknown`. `unknown` acts like a type-safe version of `any` by requiring us to perform some type of checking before we can use the value of the `unknown` variable or any of its properties. Let's explore the rules around this wicked type!
 
@@ -532,7 +504,7 @@ When we pass `itemLocation` to `itemLocationCheck` as a parameter, `itemLocation
 - It checks that `loc` has a property named `coordinates`.
   - Once this is done, it checks that `coordinates` has properties named `x`, `y`, and `z`.
 
-Only if all these checks pass is the logic within the `if` statement executed. These checks are enough to convince TypeScript that we have done our due diligence for it to let us not only use `itemLocation` within the `if` statement but also for it to let the code compile.
+If all these checks pass, the logic within the `if` statement is executed. These checks are enough to convince TypeScript that we have done our due diligence for it to let us not only use `itemLocation` within the `if` statement but also for it to let the code compile.
 
 Despite the structure rigidity, the structural check still has some degree of flexibility: the values of `x`, `y`, and `z` can have any type of value:
 
