@@ -25,7 +25,33 @@ related:
 - 2016-04-13-authentication-in-golang
 ---
 
- **TL;DR:** In this series, you will learn how to build modern applications with Golang and Angular. [In the first article](https://auth0.com/blog/golang-and-angular-series-part-2-developing-and-securing-golang-apis/), you learned how to build a secure backend API with Golang to support a to-do list application. Now, in the second part, you will use Angular to develop the frontend of the to-do list app. To facilitate the identity management, you will use Auth0 both in your backend API and in your Angular app to authenticate users. If needed, you can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/golang-angular-2).
+**TL;DR:** In this series, you will learn how to build modern applications with Golang and Angular. [In the first article](https://auth0.com/blog/golang-and-angular-series-part-2-developing-and-securing-golang-apis/), you learned how to build a secure backend API with Golang to support a to-do list application. Now, in the second part, you will use Angular to develop the frontend of the to-do list app. To facilitate the identity management, you will use Auth0 both in your backend API and in your Angular app to authenticate users. If needed, you can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/golang-angular-2).
+
+## Part 1: Recap
+
+In the first part of this series, you have developed a secure backend API with Golang and Gin. If you have followed the previous article, you can jump to the next section. Otherwise, you can still follow this article along. However, you will have to fork and clone [this GitHub repository](https://github.com/auth0-blog/golang-angular) and, after that, you will have to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account here</a> so you can properly configure and run your backend API.
+
+After signing up for Auth0, you will have to go to your [Auth0 dashboard](https://manage.auth0.com/) and proceed as follows:
+
+1. go to [the _APIs_ section](https://manage.auth0.com/#/apis);
+2. click on _Create API_;
+3. define a _Name_ for your API (e.g., "Golang API");
+4. define an _Identifier_ for it (e.g., `https://my-golang-api`);
+5. and click on the _Create_ button (leave the _Signing Algorithm_ with RS256).
+
+![Creating an Auth0 API to represent a Golang backend](https://cdn.auth0.com/blog/golang-angular/creating-an-auth0-api.png)
+
+Then, to run your API, you will have to issue the following commands:
+
+```bash
+# set env variables
+export AUTH0_API_IDENTIFIER=<YOUR_AUTH0_API>
+export AUTH0_DOMAIN=<YOUR_AUTH0_TENANT>.auth0.com
+
+go run main.go
+```
+
+> **Note:** You will have to replace `<YOUR_AUTH0_API>` with the identifier you set in your Auth0 API while creating it. Also, you will have to replace `<YOUR_AUTH0_TENANT>` with the subdomain you chose while creating your Auth0 account.
 
 ## Developing a ToDo List with Angular
 Now that we have our backend sorted, we will proceed with creating a frontend. As stated earlier, this will consist of simple home page with a button to redirect us to the todo list. To access to the todo list, we must be authenticated. Let's get going!
