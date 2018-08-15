@@ -27,6 +27,8 @@ related:
 
 **TL;DR:** In this series, you will learn how to build modern applications with Golang and Angular. [In the first article](https://auth0.com/blog/golang-and-angular-series-part-2-developing-and-securing-golang-apis/), you learned how to build a secure backend API with Golang to support a to-do list application. Now, in the second part, you will use Angular to develop the frontend of the to-do list app. To facilitate the identity management, you will use Auth0 both in your backend API and in your Angular app to authenticate users. If needed, you can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/golang-angular-2).
 
+{% include tweet_quote.html quote_text="I'm developing a modern application with @angular and @golang." %}
+
 ## Prerequisites
 
 For this tutorial, you will need to install Golang, Node.js, and Angular. However, as you will see, the process is quite simple. For starters, you can visit [the official installation instructions provided by Golang](https://golang.org/doc/install) to install the programming language.
@@ -834,6 +836,8 @@ When properly logged in, you can click on _Show Todo List_ and start using your 
 ![To-Do Angular app up and running.](https://cdn.auth0.com/blog/golang-angular/to-do-app-completed.png)
 
 Fun, right?
+
+{% include tweet_quote.html quote_text="I just finished building a full-stack app with @golang and @angular." %}
 
 ## Conclusion
 
