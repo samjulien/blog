@@ -2,8 +2,8 @@
 layout: post
 title: "Auth0 Architecture: Running In Multiple Cloud Providers And Regions"
 description: "Learn more about how Auth0 architects its services to ensure scalability and high availability to handle more than 1.5 billion logins per month."
-date: 2018-08-12 8:30
-category: Architecture, Engineering, Enterprise, Cloud
+date: 2018-08-15 8:30
+category: Technical Guide, Auth0 Engineering, Enterprise
 design: 
   bg_color: "#1B395E"
   image: https://cdn.auth0.com/blog/logos/auth0-architecture.png
@@ -27,7 +27,9 @@ tags:
   - automation
   - cdn
 related:
-  -
+  - 2016-03-22-how-we-hire-engineers.markdown
+  - 2018-07-26-cloud-scale-thinking-from-day-one-for-your-saas-products
+  - 2017-11-29-5-massive-benefits-of-identity-as-a-service-for-developers
 ---
 
 Auth0 provides authentication, authorization, and single sign-on services for apps of any type (mobile, web, native) on any stack. Authentication is critical for the vast majority of apps. We designed Auth0 from the beginning so that it could run anywhere: on our cloud, on your cloud, or even on your own private infrastructure.
