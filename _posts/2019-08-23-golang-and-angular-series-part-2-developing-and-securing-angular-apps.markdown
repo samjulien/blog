@@ -444,7 +444,7 @@ export class AuthService {
   expires_at: string;
 
   auth0 = new auth0.WebAuth({
-    clientID: 'bpF1FvreQgp1PIaSQm3fpCaI0A3TCz5T',
+    clientID: environment.clientId,
     domain: environment.domain,
     responseType: 'token id_token',
     audience: environment.audience,
@@ -491,7 +491,7 @@ export class AuthService {
   }
 
   public createAuthHeaderValue(): string {
-    return 'Bearer ' + this.id_token;
+    return 'Bearer ' + this.access_token;
   }
 }
 ```
@@ -652,7 +652,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuardService } from './auth-guard.service';
 import { AuthService } from './auth.service';
-import { CallbackComponent } from 'src/app/callback/callback.component';
+import { CallbackComponent } from './callback/callback.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoService } from './todo.service';
 import { FormsModule } from '@angular/forms';
@@ -683,13 +683,13 @@ export class AppModule { }
 
 For the routing, as you can see, you have imported the `AppRoutingModule` class. So, now you can finally include this routing to your application, which will be the last part of this tutorial.
 
-## Putting it all together
-So, it's been a long while, but now we are finally going to add routing to the application. As well as creating a little menu bar, for navigation and logging out. First we need to edit the `./ui/src/app/app.component.ts` to add our AuthService to our AppComponent.
+### Putting it all together
 
-#### ./ui/src/app/app.component.ts
-```js
+So, it's been a long while, but now you are finally going to add routing to your Angular application. Also, you will create a little menu bar for navigation and to allow users to log out. First, you need to edit the `app.component.ts` file to add `AuthService` to it:
+
+```typescript
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/service/auth.service';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -702,9 +702,8 @@ export class AppComponent {
 }
 ```
 
-Next, we need to edit the `./ui/src/app/app.component.html` file and set it to the following code:
+Next, you need to edit the `app.component.html` file and set it with the following code:
 
-#### ./ui/src/app/app.component.html
 ```html
 <nav class="navbar navbar-default">
     <div class="container-fluid">
@@ -734,20 +733,21 @@ Next, we need to edit the `./ui/src/app/app.component.html` file and set it to t
     </div>
   </nav>
   
-<router-outlet></router-outlet>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
 ```
 
-We are creating a new nav bar including functions from our auth service to login and logout. Underneath this nav bar, we are including the `router-outlet` component. This is what tells Angular to ask the routing module, which page it should load.
+Here, you are creating a new navigation bar including functions from `AuthService` to allow users to login and logout. Underneath this navigation bar, you are including the `router-outlet` component inside a `div.container-fluid` element (this is part of Bootstrap). The outlet element is what tells Angular to ask to the routing module which page it should load.
 
-```
-NOTE: As with our todo list tables, following best practice, we would have created a new component for our navigation bar.
-```
+It's a very common practice to include the navigation bar together with the routing component. This ensures that the menu is present on all of your pages, without having to reload the navigation bar for each individual page.
 
-It's a very common practice to include the navigation bar together with the routing component. This ensures that the menu is present on all of our pages, without having to reload the navigation bar for each individual page.
+The final touch to your Angular project will be adding some style to it. So, open the `styles.css` file and insert the following CSS rules:
 
-The final touch to our project, will be adding some style to it. So, let's add the following code to our `style.css` file:
-
-#### ./ui/src/styles.css
 ```css
 .c-block {
     width: 50%;
@@ -771,31 +771,73 @@ h3 {
 }
 ```
 
-Finally, we are done! Our todo list is working as intended and we can now rejoice in creating a todo list that only users which we have specified are granted access to. The last thing we need to do is build our ui and start our web server. Build the UI with the following command:
+Finally, you are done developing your Angular project! Your to-do list is now ready for prime time. So, to test your Angular app, go to your terminal and run this:
 
-> ng build --prod 
-
-This will place a few transpiled and compressed javascript files in the `./ui/dist` folder. Which (luckily) is where we are serving our static files from, with our web server.
-
-So, go to the root of the project and first set the environment variables:
-
-> export AUTH0_CLIENT_ID=[your client id]
-
-> export AUTH0_DOMAIN=https://[your domain]/
-
-Finally, we can run our server:
-
-> go run main.go
-
-And the server will be up and running! Go to `localhost:3000/` and celebrate by creating all your secured todo items!
-
+```bash
+# from the ui directory
+ng serve
 ```
-NOTE: You can also compile the go code into a binary using the command: go build -o todo-server main.go, which will create an executable file called todo-server. The file will be compiled to your system, but that can be modified using the GOOS and GOARCH environment variables, read more here: https://golang.org/cmd/compile/
+
+Then, open a new terminal window and go to the project root. There, you will just need to tweak one more configuration. As you backend runs on a different "domain" (`http://localhost:3000`) than your Angular app (`http://localhost:4200`) you will have to enable Cross-Origin Resource Sharing (CORS) in your Golang backend API.
+
+To do this, you can install [CORS Gin's middleware](https://github.com/gin-contrib/cors) by issuing this command:
+
+```bash
+# from the backend project root
+go get github.com/gin-contrib/cors
 ```
+
+Then, you can update the `main.go` file as follows:
+
+```go
+package main
+
+import (
+	// ... other import statements ...
+	"github.com/gin-contrib/cors"
+)
+
+// ... var definitions ...
+
+func main() {
+    setAuth0Variables()
+	r := gin.Default()
+    r.Use(cors.Default())
+    
+    // ... the rest of the function ...
+}
+
+// ... setAuth0Variables, authRequired, terminateWithError functions ...
+```
+
+From there, execute the following commands:
+
+```bash
+# set env variables
+export AUTH0_API_IDENTIFIER=<YOUR_AUTH0_API>
+export AUTH0_DOMAIN=<YOUR_AUTH0_TENANT>.auth0.com
+
+go run main.go
+```
+
+> **Note:** You have to replace `<YOUR_AUTH0_API>` with the identifier you set in your Auth0 API while creating it. Also, you have to replace `<YOUR_AUTH0_TENANT>` with the subdomain you chose while creating your Auth0 account.
+
+Now, if you open [`http://localhost:4200`](http://localhost:4200) in a web browser, you will see the following screen:
+
+![The home page of your Angular to-do list](https://cdn.auth0.com/blog/golang-angular/home-page.png)
+
+Then, if you click on _Log In_ or on _Show Todo List_, your app will redirect you to Auth0 so you can authenticate. After authenticating, Auth0 will redirect you back to your app so you can proceed using it.
+
+When properly logged in, you can click on _Show Todo List_ and start using your app.
+
+![To-Do Angular app up and running.](https://cdn.auth0.com/blog/golang-angular/to-do-app-completed.png)
+
+Fun, right?
 
 ## Conclusion
-So, we finally made it! The application itself that we created was pretty simple. Just a todo list, where we can add delete and complete some todo items. However, the framework around our application is quite sound. We have handled authentication via. Auth0, creating a very strong starting point for our application, by starting with security in mind.
 
-Adding features to our application becomes a lot easier, once we have established a strong fundament in security. We can add different todo lists for different users, relatively easily, without having to worry about how this will affect our application down the road. Using a third party security solution like Auth0, is also a great advantage, because we can rest assured that this solution will keep our application data safe. With a few changes here and there (such as serving our API and static files over HTTPS), we could quite confidently deploy this code to production. 
+So, you finally made it! The application that you created was pretty simple. Just a to-do list where you can add, delete, and complete some to-do items. However, the framework around your application is quite sound. You have handled authentication via Auth0, creating a very strong starting point for your application, by starting with security in mind.
 
-I hope this article has been helpful, and has given some insight to how easy it is to implement Auth0 as a third-party authentication service, as well as using Angular as a frontend and Golang as a backend. Feedback and questions are very welcome!
+Adding features to your application becomes a lot easier once you have established a strong fundament in security. You can add different to-do lists for different users relatively easily without having to worry about how this will affect your application down the road. Using a third-party security solution like Auth0 is also a great advantage because you can rest assured that this solution will keep your application data safe. With a few changes here and there (such as serving our API and static files over HTTPS), you could quite confidently deploy this code to production. 
+
+I hope this series has been helpful and that it has given some insight on how easy it is to implement a full-stack application with Golang and Angular. Feedback and questions are very welcome!
