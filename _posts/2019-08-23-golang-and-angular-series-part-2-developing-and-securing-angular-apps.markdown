@@ -78,7 +78,7 @@ Now that you have your backend sorted out, you will proceed with the creation of
 For starter, you will have to scaffold your new Angular project. You will do this in a new directory called `ui` inside the project root of your Golang. To create this directory and to scaffold your Angular application, you will use the Angular CLI tool. So, head to the project root of your Golang API and issue the following command:
 
 ```bash
-# make sure your are on your backend project root
+# make sure you are on your backend project root
 ng new ui
 ```
 
@@ -151,7 +151,7 @@ Now, as you already created your Auth0 API in the last part of this series, you 
 
 Now that you have scaffolded your Angular application, you will need to register it at Auth0 so you can properly offer authentication and authorization features to your users. So, head to [the Applications section of your Auth0 dashboard](https://manage.auth0.com/#/applications) and hit the _Create Application_ button. When Auth0 shows you the form to create your Application, fill in the following information:
 
-- _Name:_ You can name your application with anything that might help you identifying it in the future. For example, "To-Do Angular App".
+- _Name:_ You can name your application with anything that might help you identify it in the future. For example, "To-Do Angular App".
 - _Application Type:_ For this one, you will **have to** choose the _Single Page Web Applications_ option, as this is exactly what you are going to create.
 
 ![Creating an Auth0 application for an Angular app.](https://cdn.auth0.com/blog/golang-angular/creating-an-auth0-application.png)
@@ -165,7 +165,7 @@ Now, back into your project, open both the `environment.prod.ts` and `environmen
 - `<YOUR_AUTH0_TENANT>`: In the place of this placeholder, you will have to insert the Auth0 subdomain you chose while creating your account. In the end, you will have something similar to `domain: 'pungyeon.auth0.com'`.
 - `<YOUR_AUTH0_APPLICATION_CLIENT_ID>`: In the place of this placeholder, you will have to insert the value that Auth0 shows in the _Client ID_ field of your new application. This will be a random string similar to `z4Z09pinlP93aqTVaIBkCzzQ9vjZ6eEX`.
 
-> **Note:** You have to make sure you replace both placeholders on both files. Otherwise, you might end up with a buggy sign in feature.
+> **Note:** You have to make sure you replace both placeholders on both files. Otherwise, you might end up with a buggy sign-in feature.
 
 ### Creating the Welcome Component
 
@@ -180,7 +180,7 @@ ng g c home
 
 This command will create a new directory inside`app`, named `home`, and it will place four files in it:
 
-- `home.component.css`: This is the CSS file that will allow you style your new component.
+- `home.component.css`: This is the CSS file that will allow you to style your new component.
 - `home.component.html` - This is the HTML representation of your new component.
 - `home.component.spec.ts` - This is where you would write automated tests for your component.
 - `home.component.ts` - This is the main piece of your component.
@@ -209,7 +209,7 @@ After creating the home page, you can focus on creating the component that will 
 ng g c todo
 ```
 
-For this article, you will split the to-do functionality into two thing: a component (the one you just created) and a service. The service will be in charge of issuing HTTP requests to your Golang backend API. After creating this service, your component will be able to use it to communicate with your backend so it can display the correct information retrieved by the service.
+For this article, you will split the to-do functionality into two things: a component (the one you just created) and a service. The service will be in charge of issuing HTTP requests to your Golang backend API. After creating this service, your component will be able to use it to communicate with your backend so it can display the correct information retrieved by the service.
 
 So, to create your service, issue the following command:
 
@@ -322,11 +322,11 @@ Starting from the `export class TodoComponent`, what you have is three propertie
 
 Then, the first function of your component, `ngOnInit`, is a built-in standard of Angular and derives from the interface `OnInit`. Essentially, the implementation of the `OnInit` interface will wait for the component to be loaded before executing the `ngOnInit` function. Then, `ngOnInit` will retrieve data from your backend with the help of the `getAll` method. This method, will invoke the `todoService.getTodoList` function. As you know, this function is an HTTP call to your backend to get all of your todo items.
 
-The `HttpClient` in Angular does not return with the response but, rather, with an `Observable`. Essentially, this is an object that you can 'subscribe' so, whenever new data is retrieved, you get notified and can act in some way or another. In this scenario, you are using the observable more like a callback, but it's strongly recommend reading up on RxJs and Observables. They are super useful in modern JavaScript.
+The `HttpClient` in Angular does not return with the response but, rather, with an `Observable`. Essentially, this is an object that you can 'subscribe' so, whenever new data is retrieved, you get notified and can act in some way or another. In this scenario, you are using the observable more like a callback, but it's strongly recommended reading up on RxJs and Observables. They are super useful in modern JavaScript.
 
 So, the `getAll` function subscribes to data from the `todoService.getTodoList` and, whenever data is received, it assigns all active todos to your `activeTodos` property (by filtering out any complete items) and do the opposite for the `completedTodos` property.
 
-The rest of your class methods are corresponding to your `TodoService`, which in turn was mapped up against your backend api. In other words, you have functions to add, complete, delete, and update your to-do lists.
+The rest of your class methods are corresponding to your `TodoService`, which in turn was mapped up against your backend API. In other words, you have functions to add, complete, delete, and update your to-do lists.
 
 Now that your TypeScript logic is done, you can open the `todo.component.html` file and replace its contents with this:
 
@@ -392,7 +392,7 @@ Now that your TypeScript logic is done, you can open the `todo.component.html` f
 {% endraw %}
 {% endhighlight %}
 
-Basically, your to-do page consists of two tables that use the `*ngFor` directive to iterate over all the to-do items in `activeTodos` and `completedTodos`. These table contain the `id` and `message` of the to-do items, as well as two buttons that allow users to complete and delete items. Also, this page indicates whether the to-do items are completed or not. This happens by the usage of `*ngIf` directives. If the `todo.complete` property is false, this page shows an active green button and, if the todo is already completed, it shows a grey disabled button.
+Basically, your to-do page consists of two tables that use the `*ngFor` directive to iterate over all the to-do items in `activeTodos` and `completedTodos`. These tables contain the `id` and `message` of the to-do items, as well as two buttons that allow users to complete and delete items. Also, this page indicates whether the to-do items are completed or not. This happens in the usage of `*ngIf` directives. If the `todo.complete` property is false, this page shows an active green button and, if the todo is already completed, it shows a grey disabled button.
 
 At the very bottom of this HTML page, you have an input text and a button that, when clicked, triggers the `addTodo` function. This is what gives your users the possibility of adding new to-do items. The input content is mapped to the `todoMessage` property via the `ngModel` directive. This directive works like a two-way data binding, meaning that the property is tied to the input element and the element is tied to the variable. In other words, should one change so will the other.
 
@@ -502,7 +502,7 @@ As you can see, you have the familiar `@Injectable()` decorator that makes this 
 
 Your `login` function is quite simple looking but, essentially, this will initialize the authentication process on Auth0. If the user is authenticated, Auth0 will send them to the specified callback location with a tailing hash on the URL. Then, `auth0-js` will parse this hash with the `parseHash` function. If everything goes ok, your code will call the `setSession` function which will set three properties with the appropriate values: `access_token`, `id_token`, and `expires_at`.
 
-The `lougout` function resets all tokens from memory and the `isAuthenticated` method just returns whether the token has expired or not. You will use this information later, while getting an authentication status of your user.
+The `lougout` function resets all tokens from memory and the `isAuthenticated` method just returns whether the token has expired or not. You will use this information later while getting an authentication status of your user.
 
 Lastly, you have the `createAuthHeaderValue` function, which returns a string in the form of an `Authorization` bearer header.
 
@@ -560,9 +560,9 @@ export class TokenInterceptor implements HttpInterceptor {
 }
 ```
 
-This interceptor service intercept (of course) all of the outgoing HTTP requests and add an authentication header if a token is available. To do this, this interceptor implements `HttpInterceptor`, which has the constraint of needing the `intercept` function. This function is then invoked upon an HTTP request.
+This interceptor service intercepts (of course) all of the outgoing HTTP requests and add an authentication header if a token is available. To do this, this interceptor implements `HttpInterceptor`, which has the constraint of needing the `intercept` function. This function is then invoked upon an HTTP request.
 
-Much like the middleware in your backend, this will return a `next.handle`, which basically forwards the modified request to the original destination. The `intercept` function in this case is quite simple. You are cloning the incoming request to add an `Authorization` header. Remember, if no token is found, nothing is added. Once the request has been altered, this interceptor invokes the `next.handle` passing the modified request.
+Much like the middleware in your backend, this will return a `next.handle`, which basically forwards the modified request to the original destination. The `intercept` function, in this case, is quite simple. You are cloning the incoming request to add an `Authorization` header. Remember, if no token is found, nothing is added. Once the request has been altered, this interceptor invokes the `next.handle` passing the modified request.
 
 The reason why you are creating this interceptor is to ensure that all of your requests contain the appropriate `Authorization` header. Centralizing the header management like this makes it easier in the future. If changes are made to authentication or if new requests are added to the project, no changes are needed.
 
@@ -609,7 +609,7 @@ const routes: Routes = [
 export class AppRoutingModule { }
 ```
 
-The only important aspect of this file is your `routes` constant. This constant defines an array of paths. The root (`''`) path will redirect to your `HomeComponent`, the `todo` path will redirect to the `TodoComponent`, and `callback` to the `CallbackComponent`. However, as you will notice, that the `todo` path is slightly different in that it is using the `canActivate` property and using `AuthGuardService`. Well... you haven't written the `AuthGuardService` yet. So, you can do that right away.
+The only important aspect of this file is your `routes` constant. This constant defines an array of paths. The root (`''`) path will redirect to your `HomeComponent`, the `todo` path will redirect to the `TodoComponent`, and `callback` to the `CallbackComponent`. However, as you will notice, the `todo` path is slightly different in that it is using the `canActivate` property and using `AuthGuardService`. Well... you haven't written the `AuthGuardService` yet. So, you can do that right away.
 
 The `canActivate` property basically asks a service (which implements `CanActivate`) for a boolean response of whether or not a user is able to activate this page. To create this service, execute the following command:
 
@@ -639,9 +639,9 @@ export class AuthGuardService implements CanActivate {
 }
 ```
 
-This is actually a really simple service. This service simply calls the `AuthService`, asking whether the current user is authenticated or not. If the user is authenticated, it returns true, forwarding the user to the request route. If not, it will invoke the `auth.login` function, which will send your user to the Auth0 login page.
+This is actually a really simple service. This service simply calls the `AuthService` asking whether the current user is authenticated or not. If the user is authenticated, it returns true, forwarding the user to the request route. If not, it will invoke the `auth.login` function, which will send your user to the Auth0 login page.
 
-Now, to make sure all components, services, interceptors, and routers are include in your app, open the `app.module.ts` file and update it as follows:
+Now, to make sure all components, services, interceptors, and routers are included in your app, open the `app.module.ts` file and update it as follows:
 
 ```js
 import { BrowserModule } from '@angular/platform-browser';
@@ -744,7 +744,7 @@ Next, you need to edit the `app.component.html` file and set it with the followi
 </div>
 ```
 
-Here, you are creating a new navigation bar including functions from `AuthService` to allow users to login and logout. Underneath this navigation bar, you are including the `router-outlet` component inside a `div.container-fluid` element (this is part of Bootstrap). The outlet element is what tells Angular to ask to the routing module which page it should load.
+Here, you are creating a new navigation bar including functions from `AuthService` to allow users to log in and log out. Underneath this navigation bar, you are including the `router-outlet` component inside a `div.container-fluid` element (this is part of Bootstrap). The outlet element is what tells Angular to ask to the routing module which page it should load.
 
 It's a very common practice to include the navigation bar together with the routing component. This ensures that the menu is present on all of your pages, without having to reload the navigation bar for each individual page.
 
