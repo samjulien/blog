@@ -780,34 +780,35 @@ ng serve
 
 Then, open a new terminal window and go to the project root. There, you will just need to tweak one more configuration. As you backend runs on a different "domain" (`http://localhost:3000`) than your Angular app (`http://localhost:4200`) you will have to enable Cross-Origin Resource Sharing (CORS) in your Golang backend API.
 
-To do this, you can install [CORS Gin's middleware](https://github.com/gin-contrib/cors) by issuing this command:
-
-```bash
-# from the backend project root
-go get github.com/gin-contrib/cors
-```
-
-Then, you can update the `main.go` file as follows:
+To do this, you will have to update the `main.go` file as follows:
 
 ```go
-package main
-
-import (
-	// ... other import statements ...
-	"github.com/gin-contrib/cors"
-)
-
-// ... var definitions ...
+// ... package definition, import statements, and var definitions ...
 
 func main() {
     setAuth0Variables()
 	r := gin.Default()
-    r.Use(cors.Default())
+    r.Use(CORSMiddleware())
     
     // ... the rest of the function ...
 }
 
 // ... setAuth0Variables, authRequired, terminateWithError functions ...
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, POST, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
+}
 ```
 
 From there, execute the following commands:
