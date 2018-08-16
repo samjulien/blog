@@ -53,7 +53,6 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/ionic-framework.png
 ```
 
-
 ### JavaScript
 
 ```
