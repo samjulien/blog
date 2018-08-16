@@ -208,11 +208,11 @@ function App(props) {
 export default withRouter(App);
 ```
 
-In this case, your are actually defining two components inside the same file (just for the sake of simplicity). You are defining a `HomePage` component that shows a message with the name of the logged-in user (that is, when the user is logged in, of course), and a message telling unauthenticated users to log in.
+In this case, you are actually defining two components inside the same file (just for the sake of simplicity). You are defining a `HomePage` component that shows a message with the name of the logged-in user (that is, when the user is logged in, of course), and a message telling unauthenticated users to log in.
 
 Also, this file is making the `App` component responsible for deciding what component it must render. If the user is requesting the home page (i.e., the `/` route), the `HomePage` component is shown. If the user is requesting the callback page (i.e., `/callback`), then the `Callback` component is shown.
 
-Note that you are using the `Auth` service in all your components (`App`, `HomePage`, and `Callback`) and also inside the `Auth` service. As such, you need to have a global instance for this service and you have to include it in your `App` component.
+Note that you are using the `Auth` service in all your components (`App`, `HomePage`, and `Callback`) and also inside the `Auth` service. As such, you need to have a global instance for this service, and you have to include it in your `App` component.
 
 So, to create this global `Auth` instance and to wrap things up, you will need to update your `index.js` file as shown here:
 
@@ -238,11 +238,11 @@ ReactDOM.render(
 registerServiceWorker();
 ```
 
-After that, you are done! You just finished securing your React application with Auth0. If you take your app for a spin now (`npm start`), you will be able to authenticate yourself with the help of Auth0 and you will be able to see your React app show your name (that is, if your identity provider does provide a name).
+After that, you are done! You just finished securing your React application with Auth0. If you take your app for a spin now (`npm start`), you will be able to authenticate yourself with the help of Auth0, and you will be able to see your React app show your name (that is, if your identity provider does provide a name).
 
 If you are interested in learning more, please, refer to [the official React Quick Start guide](https://auth0.com/docs/quickstart/spa/react/01-login) to see, step by step, how to properly secure a React application. Besides the steps shown in this section, the guide also shows:
 
 - [How to manage profile information of authenticated users](https://auth0.com/docs/quickstart/spa/react/02-user-profile).
 - [How to properly call an API](https://auth0.com/docs/quickstart/spa/react/03-calling-an-api).
 - [How to control which routes users can see/interact with](https://auth0.com/docs/quickstart/spa/react/04-authorization).
-- [How to deal with expiry time of users' tokens](https://auth0.com/docs/quickstart/spa/react/05-token-renewal).
+- [How to deal with the expiry time of users' tokens](https://auth0.com/docs/quickstart/spa/react/05-token-renewal).
