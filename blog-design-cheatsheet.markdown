@@ -11,6 +11,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/angular.png
 ```
 
+### Android
+
+```
+  bg_color: "#2C4721"
+  image: https://cdn.auth0.com/blog/android-libraries/logo.png
+```
+
 ### Aurelia
 
 ```
@@ -25,11 +32,46 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/auth0-architecture.png
 ```
 
+### Auth0 Generic
+
+```
+  bg_color: "#222228"
+  image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
+```
+
+### Bootstrap
+
+```
+  bg_color: "#31135C"
+  image: https://cdn.auth0.com/blog/new-bootstrap4/logo.png
+```
+
+### Chrome
+
+```
+  bg_color: "#2D6189"
+  image: https://cdn.auth0.com/blog/ChromedevSummitLogo.png
+```
+
+### Cypress
+
+```
+  bg_color: "#0700BA"
+  image: https://cdn.auth0.com/blog/cypress-tests/logo.png
+```
+
 ### Ember
 
 ```
   bg_color: "#412b13"
   image: https://cdn.auth0.com/blog/ember-simple-auth/ember-logo-small.png
+```
+
+### Extend
+
+```
+  bg_color: "#3445DC"
+  image: https://cdn.auth0.com/website/blog/extend/auth0-extend_avatar.png
 ```
 
 ### Firebase
@@ -46,6 +88,20 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/secure-games/logo.png
 ```
 
+### Gatsby
+
+```
+  bg_color: "#2B1743"
+  image: https://cdn.auth0.com/blog/gatsby-react-webtask/logo.png
+```
+
+### Hapi
+
+```
+  bg_color: "#4F4D40"
+  image: https://cdn.auth0.com/blog/hapi/hapi-logo-1.png
+```
+
 ### Ionic
 
 ```
@@ -53,12 +109,18 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/ionic-framework.png
 ```
 
-
 ### JavaScript
 
 ```
   bg_color: "#222228"
   image: https://cdn.auth0.com/blog/logos/js.png
+```
+
+### JWT
+
+```
+  bg_color: "#222228"
+  image: https://cdn.auth0.com/blog/jwtalgos/logo.png
 ```
 
 ### Laravel
@@ -75,6 +137,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/lumen.png
 ```
 
+### Mithril
+
+```
+  bg_color: "#222228"
+  image: https://cdn.auth0.com/blog/mithril/logo.png
+```
+
 ### Nest.js
 
 ```
@@ -87,6 +156,27 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
 ```
   bg_color: "#333333"
   image: https://cdn.auth0.com/blog/logos/node.png
+```
+
+### .NET
+
+```
+  bg_color: "#3A1C5D"
+  image: https://cdn.auth0.com/blog/asp-net-core-tutorial/logo.png
+```
+
+### NPM
+
+```
+  bg_color: "#1D4E69"
+  image: https://cdn.auth0.com/blog/npm-package-development/logo.png
+```
+
+### Phoenix
+
+```
+  bg_color: "#531D6D"
+  image: https://cdn.auth0.com/blog/elixir-phoenix/Logo.png
 ```
 
 ### PHP
@@ -103,6 +193,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/polymer-project.png
 ```
 
+### Python
+
+```
+  bg_color: "#4A4A4A"
+  image: https://cdn.auth0.com/blog/python-restful/logo.png
+```
+
 ### React
 
 ```
@@ -115,6 +212,20 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
 ```
   bg_color: "#4E0F08"
   image: https://cdn.auth0.com/blog/logos/redis-icon-logo.png
+```
+
+### Redux
+
+```
+  bg_color: "#461A8D"
+  image: https://cdn.auth0.com/blog/redux-tutorial/logo.png
+```
+
+### RxJS
+
+```
+  bg_color: "#572D89"
+  image: https://cdn.auth0.com/blog/reactive-programming/logo.png
 ```
 
 ### Spring Boot
@@ -150,4 +261,25 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
 ```
   bg_color: "#35495E"
   image: https://cdn.auth0.com/blog/logos/vue.png
+```
+
+### W3C
+
+```
+  bg_color: "#0F3454"
+  image: https://cdn.auth0.com/blog/webauthn/logo.png
+```
+
+### Webpack
+
+```
+  bg_color: "#165B91"
+  image: https://cdn.auth0.com/blog/logos/webpack.png
+```
+
+### Webtask.io
+
+```
+  bg_color: "#3445DC"
+  image: https://cdn.auth0.com/website/blog/extend/webtask-io-migrating-to-node-8/logo-webstask.io.png
 ```
