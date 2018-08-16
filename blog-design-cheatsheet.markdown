@@ -25,6 +25,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/auth0-architecture.png
 ```
 
+### Auth0 Generic
+
+```
+  bg_color: "#222228"
+  image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
+```
+
 ### Ember
 
 ```
