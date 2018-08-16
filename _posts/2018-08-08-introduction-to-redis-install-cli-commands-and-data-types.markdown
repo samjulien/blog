@@ -10,7 +10,7 @@ design:
 author:
   name: Dan Arias
   url: http://twitter.com/getDanArias
-  mail: dan.arias@auth.com
+  mail: dan.arias@auth0.com
   avatar: https://pbs.twimg.com/profile_images/1002301567490449408/1-tPrAG__400x400.jpg
 tags: 
   - redis
@@ -45,7 +45,7 @@ It supports basic data structures such as strings, lists, sets, sorted sets with
 
 > "We use Redis as a caching layer and a session store for our Slack Bot conversation engine. Because it stores data in memory (RAM), it provides ultra-fast read and write speeds; responses are usually in the single-digit milliseconds."
 
-In this Redis tutorial, we'll learn how to set up Redis in our systems and how to store data in Redis using its core and most frequently used data structures. With this foundation, in future posts we'll learn how to use Redis for caching, session storage, messaging, and real-time analytics. Let's get started! 
+In this Redis tutorial, we'll learn how to set up Redis in our systems and how to store data in Redis using its core and most frequently used data structures. With this foundation, in future posts we'll learn how to use Redis for caching, session storage, messaging, and real-time analytics. Let's get started!
 
 ## Installing Redis
 
@@ -158,7 +158,7 @@ redis-server
 
 If everything is working as expected, the shell will receive as outline a giant ASCII Redis logo that shows the Redis version installed, the running mode, the `port` where the server is running and it's `PID` ([process identification number](http://www.linfo.org/pid.html)).
 
-```shell
+````shell
                 _._
            _.-``__ ''-._
       _.-``    `.  `_.  ''-._           Redis 4.0.10 (00000000/0) 64 bit
@@ -176,7 +176,7 @@ If everything is working as expected, the shell will receive as outline a giant 
       `-._    `-.__.-'    _.-'
           `-._        _.-'
               `-.__.-'
-```
+````
 
 We started Redis without any explicit configuration file; therefore, we'll be using the internal default configuration. This is acceptable for the scope of this blog post: understanding and using the basic Redis data structures.
 
@@ -485,8 +485,6 @@ We have already covered Strings during the "Write, Read, Update, and Delete Data
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Every time some site gets &quot;slashdotted&quot; and is no longer reachable, I think at my little blog in a 5$/mo VM that resists any HN top position pressure without being even remotely affected. And think that many people are sincerely missing an opportunity to use Redis.</p>&mdash; ANTIREZ (@antirez) <a href="https://twitter.com/antirez/status/1017447676789641217?ref_src=twsrc%5Etfw">July 12, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-
-
 ## Lists
 
 A List is a sequence of ordered elements. For example, `1 2 4 5 6 90 19 3` is a List of numbers. In Redis, it's important to note that Lists are implemented as [linked lists](https://en.wikipedia.org/wiki/Linked_list). This has some important implications regarding performance. It is fast to add elements to the head and tail of the List but it's slower to search for elements within the List as we do not have indexed access to the elements (like we do in an array).
@@ -512,12 +510,11 @@ RPUSH engineers "Carmen"
 // 3
 ```
 
-Each time we insert an element, Redis replies with the length of the List after that insertion. We would expect the `users` list to resemble this: 
+Each time we insert an element, Redis replies with the length of the List after that insertion. We would expect the `users` list to resemble this:
 
 ```shell
 Alice Bob Carmen
 ```
-
 
 How can we verify that? We can use the `LRANGE` command.
 
@@ -768,7 +765,7 @@ SISMEMBER languages "german"
 // 0
 ```
 
-Since we removed `"german"` in the last section, we get `0`. 
+Since we removed `"german"` in the last section, we get `0`.
 
 ### SMEMBERS
 
@@ -864,11 +861,11 @@ HSET computer disk 512
 HSET computer ram 16
 // 1
 ```
- 
+
 For each `HSET` command, Redis replies with an integer as follows:
 
-* `1` if `field` is a new field in the hash and value was set.
-* `0` if `field` already exists in the hash and the value was updated.
+- `1` if `field` is a new field in the hash and value was set.
+- `0` if `field` already exists in the hash and the value was updated.
 
 Let's update the value of the `year` field to `2018`:
 
@@ -878,7 +875,7 @@ HSET computer year 2018
 ```
 
 ### HGET
- 
+
 [`HGET`](https://redis.io/commands/hget) returns the value associated with `field` in a Hash:
 
 ```shell
@@ -907,7 +904,7 @@ Let's test it out:
 HGETALL computer
 ```
 
-Reply: 
+Reply:
 
 ```shell
 1) "name"
@@ -933,7 +930,7 @@ HMSET key field value [field value ...]
 Let's create a `tablet` hash with it:
 
 ```shell
-HMSET tablet name "iPad" year 2016 disk 64 ram 4 
+HMSET tablet name "iPad" year 2016 disk 64 ram 4
 ```
 
 `HMSET` returns `OK` to let us know the `tablet` hash was created successfully.
@@ -967,10 +964,10 @@ Introduced in Redis 1.2, a Sorted Set is, in essence, a Set: it contains [unique
 
 > In Redis, a Sorted Set could be seen as a hybrid of a Set and a Hash.
 
-How is the order of members of a Sorted Set determined? As stated in the [Redis documentation](https://redis.io/topics/data-types-intro#redis-sorted-sets): 
+How is the order of members of a Sorted Set determined? As stated in the [Redis documentation](https://redis.io/topics/data-types-intro#redis-sorted-sets):
 
-* If A and B are two members with a different score, then A > B if A.score is > B.score.
-* If A and B have exactly the same score, then A > B if the A string is lexicographically greater than the B string. **A and B strings can't be equal since Sorted Sets only have unique elements**.
+- If A and B are two members with a different score, then A > B if A.score is > B.score.
+- If A and B have exactly the same score, then A > B if the A string is lexicographically greater than the B string. **A and B strings can't be equal since Sorted Sets only have unique elements**.
 
 Some of the commands that we use to interact with Sorted Sets are similar to the commands we used with Sets: we replace the `S` in the Set command and replace it with a `Z`. For example, `SADD` => `ZADD`. However, we have commands that are unique to both. Let's check them out.
 
@@ -986,10 +983,10 @@ As with Sets, if `key` does not exist, a new Sorted Set with the specified membe
 
 Starting in Redis 3.0.2, [`ZADD` has optional arguments](https://redis.io/commands/zadd#zadd-options-redis-302-or-greater) that gives us control of insertions:
 
-* `XX`: Only update members that already exist. Never add members.
-* `NX`: Don't update already existing members. Always add new members.
-* `CH`: Modify the return value from the number of new members added, to the total number of members changed (CH is an abbreviation of changed). Changed members are new members added **and** members already existing for which the score was updated. So members specified in the command line having the same score as they had in the past are not counted.
-* `INCR`: When this option is specified ZADD acts like [`ZINCRBY`](https://redis.io/commands/zincrby). Only one score-members pair can be specified in this mode.
+- `XX`: Only update members that already exist. Never add members.
+- `NX`: Don't update already existing members. Always add new members.
+- `CH`: Modify the return value from the number of new members added, to the total number of members changed (CH is an abbreviation of changed). Changed members are new members added **and** members already existing for which the score was updated. So members specified in the command line having the same score as they had in the past are not counted.
+- `INCR`: When this option is specified ZADD acts like [`ZINCRBY`](https://redis.io/commands/zincrby). Only one score-members pair can be specified in this mode.
 
 It's good to know that these optional arguments are there and what they do, but for this introduction, we are going to focus on adding members without using any of them, but feel free to explore them! In future posts, we are going to revisit them in more complex use cases!
 
@@ -1008,7 +1005,7 @@ ZADD tickets 180 HELP330
 
 ### ZRANGE
 
-We'd like now to see how our Sorted Set looks. With Sets, we used `SMEMBERS` to list the unordered members. With Sorted Sets, we use a command that is more in tune with what we used with Lists, a command that shows us a range of elements. 
+We'd like now to see how our Sorted Set looks. With Sets, we used `SMEMBERS` to list the unordered members. With Sorted Sets, we use a command that is more in tune with what we used with Lists, a command that shows us a range of elements.
 
 [`ZRANGE`](https://redis.io/commands/zrange) returns the specified range of members in the Sorted Set:
 
@@ -1053,7 +1050,7 @@ Notice how the `member` and the `score` are listed in sequence and not next to e
 
 The most relevant use of Redis in the authentication and authorization workflows of a web application is to serve as a session store.
 
-As recognized by [Amazon Web Services](https://aws.amazon.com/redis/), the in-memory architecture of Redis provides developers with high availability and persistence that makes it a popular choice to store and manage session data for internet-scale applications. Its lightning-fast performance provides us with the super low latency, optimal scale, and resiliency that we need to manage session data such as user profiles, user settings, session state, and credential management. 
+As recognized by [Amazon Web Services](https://aws.amazon.com/redis/), the in-memory architecture of Redis provides developers with high availability and persistence that makes it a popular choice to store and manage session data for internet-scale applications. Its lightning-fast performance provides us with the super low latency, optimal scale, and resiliency that we need to manage session data such as user profiles, user settings, session state, and credential management.
 
 [Roshan Kumar](https://twitter.com/roshankumar), from [Redis Labs](https://redislabs.com/), explains on his ["Cache vs. Session Store"](https://redislabs.com/blog/cache-vs-session-store/) article that a session-oriented web application starts a session when the user logs in. The session is active until the user logs out or the session times out. During the session lifecycle, the web application stores all session-related data in the main memory (RAM) or in a session store that doesn't lose the data when the application goes down. This session store can be implemented using Redis that, despite being an in-memory store, is able to persist data by [writing transaction logs sequentially in the disk](https://medium.com/@denisanikin/what-an-in-memory-database-is-and-how-it-persists-data-efficiently-f43868cff4c1).
 
