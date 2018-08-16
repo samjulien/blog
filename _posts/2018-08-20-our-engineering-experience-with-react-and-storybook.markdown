@@ -38,7 +38,7 @@ This team builds a variety of different projects such as the software that runs 
   <img src="https://cdn.auth0.com/blog/storybook-intro/auth0-customer-success-team.png" alt="Auth0 Customer Success Infrastructure Team">
 </p>
 
-> Would you like to be part of a Team like this? We are currently hiring engineers to [join the Customer Success Infrastructure Team](https://auth0.com/careers/job/engineer-customer-success-tools:28144879-ee27-41bc-ae30-fd3cba1f309a)!
+> Would you like to be part of a Team like this? We are currently hiring engineers to [join the Customer Success Infrastructure team](https://auth0.com/careers/job/engineer-customer-success-tools:28144879-ee27-41bc-ae30-fd3cba1f309a)!
 
 [Guillermo Rodas](https://twitter.com/glrodasz) is one of the Engineers of the Customer Success Infrastructure Team. He recently led a project initiative known as _Support Center Components_ that solved a problem centered around having duplicate React components in our customer-facing and internal tools site.
 
@@ -51,7 +51,7 @@ In this blog post, through Guillermo's insight, we are going to explore how the 
 [Auth0 Support Center](https://support.auth0.com/), a customer-facing site, and Customer Success Tools, an internal site, have similar elements on their interfaces. For example, despite having a different business context in each interface, the _Quota Utilization_ feature in both interfaces uses the same structure to report data to the user.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/auth-storybook/support-center-vs-cs-tools-component.png" alt="Two identical React component defined in different codecases">
+  <img src="https://cdn.auth0.com/blog/auth-storybook/support-center-vs-cs-tools-component.png" alt="Two identical React component defined in different codebases">
 </p>
 
 The problem that we had was that this structure was being implemented as a React component separately for each interface instead of sharing the implementation. The development team was duplicating components to solve the same problem. This approach inherently created pain points for developers as _Quota Utilization_ was just one of a few other features that had overlapping front-end architectures within our sites.
@@ -84,7 +84,7 @@ For example, when creating a component, we started asking the following question
 
 It was critical to be able to answer these questions visually and in an organized manner to help us iterate cleanly through our feature development process. This process typically consists of:
 
-- Creating an MVP (Minimum Viable Product) or POC (Proof of Concept)
+- Creating an MVP (Minimum Viable Product) or POC (Proof of Concept).
 - Getting feedback on the MVP/POC.
 - Integrating feedback through development iterations.
 
@@ -127,7 +127,7 @@ Our Customer Success Infrastructure team had a second problem: documenting and t
 
 In Guillermo's words:
 
-> "We have strong tests along with continuous integration because we want to have nice weekends without worrying about our production builds failing. The most common phrase in a PR is: Please add the tests."
+> "We have strong tests along with continuous integration because we want to have nice weekends without worrying about our production builds failing. The most common phrase in a [Pull Request (PR)](https://help.github.com/articles/about-pull-requests/) is: Please add the tests."
 
 Aside from testing, we place high value in documenting code. It's our legacy for anyone who will be working with our codebase in the future. Fortunately, having a component library like Storybook allows us to document components visually and declaratively. Storybook provides a developer with all the information needed to understand the structure and state of a component.
 
