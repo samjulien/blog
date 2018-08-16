@@ -46,6 +46,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/ember-simple-auth/ember-logo-small.png
 ```
 
+### Extend
+
+```
+  bg_color: "#3445DC"
+  image: https://cdn.auth0.com/website/blog/extend/auth0-extend_avatar.png
+```
+
 ### Firebase
 
 ```
@@ -72,6 +79,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
 ```
   bg_color: "#222228"
   image: https://cdn.auth0.com/blog/logos/js.png
+```
+
+### JWT
+
+```
+  bg_color: "#222228"
+  image: https://cdn.auth0.com/blog/jwtalgos/logo.png
 ```
 
 ### Laravel
@@ -177,4 +191,11 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
 ```
   bg_color: "#0F3454"
   image: https://cdn.auth0.com/blog/webauthn/logo.png
+```
+
+### Webtask.io
+
+```
+  bg_color: "#3445DC"
+  image: https://cdn.auth0.com/website/blog/extend/webtask-io-migrating-to-node-8/logo-webstask.io.png
 ```
