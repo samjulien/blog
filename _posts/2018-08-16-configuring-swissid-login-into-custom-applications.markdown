@@ -123,6 +123,8 @@ After hitting _Save_, a new set of buttons will appear on the screen. One of the
 
 That's it! Your custom connection between Auth0 and SwissID is already configured. Now, you can use the _Apps_ tab available on your custom connection to enable the applications you want to use with SwissID. For example, the screenshot below shows a configuration where only the _Some Awesome Product_ application has the SwissID custom connection active.
 
+> **Note:** If you are experiencing problems with your SwissID Connection, please, ensure that the SwissID team have set the configuration to use client secret in the body of POST requests to their `access_token` endpoint.
+
 ![](https://cdn.auth0.com/blog/swissid/activating-the-custom-connection-to-different-apps.png)
 
 {% include tweet_quote.html quote_text="With Auth0, developers can support SwissID login alongside with other features like multifactor authentication, single sign on, etc." %}
