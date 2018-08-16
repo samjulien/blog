@@ -32,6 +32,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
 ```
 
+### Chrome
+
+```
+  bg_color: "#2D6189"
+  image: https://cdn.auth0.com/blog/ChromedevSummitLogo.png
+```
+
 ### Cypress
 
 ```
@@ -116,6 +123,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/node.png
 ```
 
+### NPM
+
+```
+  bg_color: "#1D4E69"
+  image: https://cdn.auth0.com/blog/npm-package-development/logo.png
+```
+
 ### PHP
 
 ```
@@ -191,6 +205,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
 ```
   bg_color: "#0F3454"
   image: https://cdn.auth0.com/blog/webauthn/logo.png
+```
+
+### Webpack
+
+```
+  bg_color: "#165B91"
+  image: https://cdn.auth0.com/blog/logos/webpack.png
 ```
 
 ### Webtask.io
