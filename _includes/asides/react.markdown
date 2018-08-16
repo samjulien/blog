@@ -10,18 +10,18 @@ Also, if you want to follow this section in a clean environment, you can easily 
 npx create-react-app react-auth0
 ```
 
-Then, you can move into your new React app (which was created inside a new directory called `react-auth0` by the `create-react-app` tool), and start working as explained in this section.
+Then, you can move into your new React app (which was created inside a new directory called `react-auth0` by the `create-react-app` tool), and start working as explained in the following subsections.
 
 ### Setting Up an Auth0 Application
 
 To represent your React application in your Auth0 account, you will need to create an [Auth0 Application](https://auth0.com/docs/applications). So, head to [the Applications section on your Auth0 dashboard](https://manage.auth0.com/#/applications) and proceed as follows:
 
 1. click on the [_Create Application_](https://manage.auth0.com/#/applications/create) button;
-2. then define a name to your new application (e.g., "React Demo");
+2. then define a _Name_ to your new application (e.g., "React Demo");
 3. then select _Single Page Web Applications_ as its type.
 4. and hit the _Create_ button to end the process.
 
-After creating your application, Auth0 will redirect you to its _Quick Start_ tab. From there, you will have to click on the _Settings_ tab to whitelist some URLs that Auth0 can call after the authentication process. This is a security measure implemented by Auth0 to avoid leaking of sensitive data (like [ID Tokens](https://auth0.com/docs/tokens/id-token)).
+After creating your application, Auth0 will redirect you to its _Quick Start_ tab. From there, you will have to click on the _Settings_ tab to whitelist some URLs that Auth0 can call after the authentication process. This is a security measure implemented by Auth0 to avoid the leaking of sensitive data (like [ID Tokens](https://auth0.com/docs/tokens/id-token)).
 
 So, when you arrive at the _Settings_ tab, search for the _Allowed Callback URLs_ field and add `http://localhost:3000/callback` into it. For this tutorial, this single URL will suffice.
 
@@ -41,7 +41,7 @@ To install these dependencies, move into your project root and issue the followi
 npm install --save auth0-js react-router react-router-dom
 ```
 
-> **Note:** As you want the best security available, you are going to rely on the [Auth0 login page](https://auth0.com/docs/hosted-pages/login). This method consists of redirecting users to a login page hosted by Auth0 that is easily customizable right from the [Dashboard](https://manage.auth0.com/). If you want to learn why this is the best approach, check [the _Universal vs. Embedded Login_ article](https://auth0.com/docs/guides/login/universal-vs-embedded).
+> **Note:** As you want the best security available, you are going to rely on the [Auth0 login page](https://auth0.com/docs/hosted-pages/login). This method consists of redirecting users to a login page hosted by Auth0 that is easily customizable right from [your Auth0 dashboard](https://manage.auth0.com/). If you want to learn why this is the best approach, check [the _Universal vs. Embedded Login_ article](https://auth0.com/docs/guides/login/universal-vs-embedded).
 
 After installing all three libraries, you can create a service to handle the authentication process. You can call this service `Auth` and create it in the `src/Auth/` directory with the following code:
 
@@ -113,11 +113,11 @@ export default class Auth {
 The `Auth` service that you just created contains functions to deal with different steps of the sign in/sign up process. The following list briefly summarizes these functions and what they do:
 
 - `getProfile`: This function returns the profile of the logged-in user.
-- `handleAuthentication`: This function looks for the result of the authentication process in the URL hash. Then, process the result with the `parseHash` method from `auth0-js`.
-- `isAuthenticated`: This function checks whether the expiry time for the user's access token has passed.
+- `handleAuthentication`: This function looks for the result of the authentication process in the URL hash. Then, the function processes the result with the `parseHash` method from `auth0-js`.
+- `isAuthenticated`: This function checks whether the expiry time for the user's ID token has passed.
 - `login`: This function initiates the login process, redirecting users to the login page.
-- `logout`: This function removes the user's tokens and expiry time from browser storage.
-- `setSession`: This function sets the user's access token and the access token's expiry time.
+- `logout`: This function removes the user's tokens and expiry time.
+- `setSession`: This function sets the user's ID token, profile, and expiry time.
 
 Besides these functions, the class contains a field called `auth0` that is initialized with values extracted from your Auth0 application. It is important to keep in mind that you **have to** replace the `<AUTH0_DOMAIN>` and `<AUTH0_CLIENT_ID>` placeholders that you are passing to the `auth0` field.
 
@@ -208,13 +208,13 @@ function App(props) {
 export default withRouter(App);
 ```
 
-In this case, your are actually defining two components inside the same file (just for the sake of simplicity). You are defining a `HomePage` component that shows a message with the name of the logged-in user (that is, when the use is logged in, of course), and a message telling unauthenticated users to log in.
+In this case, your are actually defining two components inside the same file (just for the sake of simplicity). You are defining a `HomePage` component that shows a message with the name of the logged-in user (that is, when the user is logged in, of course), and a message telling unauthenticated users to log in.
 
 Also, this file is making the `App` component responsible for deciding what component it must render. If the user is requesting the home page (i.e., the `/` route), the `HomePage` component is shown. If the user is requesting the callback page (i.e., `/callback`), then the `Callback` component is shown.
 
 Note that you are using the `Auth` service in all your components (`App`, `HomePage`, and `Callback`) and also inside the `Auth` service. As such, you need to have a global instance for this service and you have to include it in your `App` component.
 
-So, to wrap things up, you will need to update your `index.js` file as shown here:
+So, to create this global `Auth` instance and to wrap things up, you will need to update your `index.js` file as shown here:
 
 ```js
 // src/index.js
@@ -238,11 +238,11 @@ ReactDOM.render(
 registerServiceWorker();
 ```
 
-After that, you are done! You just finished securing your React application with Auth0. If you take your app to a spin now (`npm start`), you will be able to authenticate yourself with the help of Auth0 and you will be able to see your React app show your name (that is, if your identity provider does provide a name).
+After that, you are done! You just finished securing your React application with Auth0. If you take your app for a spin now (`npm start`), you will be able to authenticate yourself with the help of Auth0 and you will be able to see your React app show your name (that is, if your identity provider does provide a name).
 
-If you are interested in learning more, please, refer to [the official React Quick Start Guide](https://auth0.com/docs/quickstart/spa/react/01-login) to see, step by step, how to properly secure a React application. Besides the steps shown in this section, the guide also shows:
+If you are interested in learning more, please, refer to [the official React Quick Start guide](https://auth0.com/docs/quickstart/spa/react/01-login) to see, step by step, how to properly secure a React application. Besides the steps shown in this section, the guide also shows:
 
 - [How to manage profile information of authenticated users](https://auth0.com/docs/quickstart/spa/react/02-user-profile).
 - [How to properly call an API](https://auth0.com/docs/quickstart/spa/react/03-calling-an-api).
 - [How to control which routes users can see/interact with](https://auth0.com/docs/quickstart/spa/react/04-authorization).
-- [How to deal with expiry time of users' access token](https://auth0.com/docs/quickstart/spa/react/05-token-renewal).
+- [How to deal with expiry time of users' tokens](https://auth0.com/docs/quickstart/spa/react/05-token-renewal).
