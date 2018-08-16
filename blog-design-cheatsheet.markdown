@@ -88,6 +88,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/spring-boot.png
 ```
 
+### TypeScript
+
+```
+  bg_color: "#182D4A"
+  image: https://cdn.auth0.com/blog/logos/Full_TypeScript_Logo.png
+```
+
 ### Vue
 
 ```
