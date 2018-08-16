@@ -102,6 +102,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/polymer-project.png
 ```
 
+### Python
+
+```
+  bg_color: "#4A4A4A"
+  image: https://cdn.auth0.com/blog/python-restful/logo.png
+```
+
 ### React
 
 ```
