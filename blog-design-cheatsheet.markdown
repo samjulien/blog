@@ -164,3 +164,10 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   bg_color: "#35495E"
   image: https://cdn.auth0.com/blog/logos/vue.png
 ```
+
+### W3C
+
+```
+  bg_color: "#0F3454"
+  image: https://cdn.auth0.com/blog/webauthn/logo.png
+```
