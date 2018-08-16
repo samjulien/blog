@@ -49,6 +49,7 @@ title: #{title.gsub(/&/,'&amp;')}
 description: <A SHORT DESCRIPTION OF THE POST <= 200 CHARACTERS >
 date: #{Time.now.strftime('%Y-%m-%d %H:%M')}
 category: <FROM HERE: https://docs.google.com/spreadsheets/d/1e_RKzi8kVwzqPG8si8kyDOWPiBk9tI-XNGh0KgRIF7Q>
+auth0_aside: <true|false (FOR FALSE YOU COULD ALSO REMOVE THIS LINE)>
 press_release: <true|false (FOR FALSE YOU COULD ALSO REMOVE THIS LINE)>
 is_non-tech: <true|false (FOR FALSE YOU COULD ALSO REMOVE THIS LINE)>
 author:
