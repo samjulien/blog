@@ -88,6 +88,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/gatsby-react-webtask/logo.png
 ```
 
+### Hapi
+
+```
+  bg_color: "#4F4D40"
+  image: https://cdn.auth0.com/blog/hapi/hapi-logo-1.png
+```
+
 ### Ionic
 
 ```
@@ -144,11 +151,25 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/node.png
 ```
 
+### .NET
+
+```
+  bg_color: "#3A1C5D"
+  image: https://cdn.auth0.com/blog/asp-net-core-tutorial/logo.png
+```
+
 ### NPM
 
 ```
   bg_color: "#1D4E69"
   image: https://cdn.auth0.com/blog/npm-package-development/logo.png
+```
+
+### Phoenix
+
+```
+  bg_color: "#531D6D"
+  image: https://cdn.auth0.com/blog/elixir-phoenix/Logo.png
 ```
 
 ### PHP
