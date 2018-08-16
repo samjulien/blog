@@ -2,16 +2,16 @@
 layout: post
 title: Supporting Government-Issued IDs as Social Connections with Auth0
 description: Learn how to support government-issued IDs (like SwissID) as Social Connections into your applications with Auth0.
-date: 2018-08-09 08:30
-category: Technical Guide, Identity
+date: 2018-08-16 08:30
+category: Technical Guide, Identity, SwissID
 author:
   name: Peter Fernandez
   url: https://twitter.com/HandsumQbn
   mail: peter.fernandez@auth0.com
   avatar: https://cdn.auth0.com/blog/guest-authors/peter-fernandez.png
 design:
-  bg_color: #4236c9
-  image: https://cdn.auth0.com/blog/ml-kit-sdk/android-ml-kit-machine-learning-sdk-logo.png
+  bg_color: #222228
+  image: https://cdn.auth0.com/blog/swissid/swissid-social-connections-logo.png
 tags:
 - swissid
 - oauth
@@ -21,6 +21,8 @@ tags:
 related:
 - 2015-12-16-how-to-use-social-login-to-drive-your-apps-growth
 - 2017-11-06-authenticated-identity-trusted-key-auth0
+- 2018-06-11-how-social-login-can-pave-the-way-for-a-digital-shift-in-grocery
+
 ---
 
 **TL;DR:** In this article, you will learn how Auth0 can help you support government-issued IDs as social connections in your own applications with ease. For demonstration purposes, you will learn how Auth0 can help you support SwissID (a popular digital identity solution in Switzerland) in your applications. However, the process explained here will be quite similar for other similar government-issued IDs.
