@@ -11,6 +11,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/angular.png
 ```
 
+### Auth0 Architecture
+
+```
+  bg_color: "#1B395E"
+  image: https://cdn.auth0.com/blog/logos/auth0-architecture.png
+```
+
 ### Firebase
 
 ```
