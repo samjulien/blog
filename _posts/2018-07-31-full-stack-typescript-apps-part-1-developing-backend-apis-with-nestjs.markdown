@@ -10,8 +10,8 @@ author:
   mail: "aninhacostaribeiro@gmail.com"
   avatar: "https://cdn.auth0.com/blog/guest-authors/ana-ribeiro.jpg"
 design:
-  bg_color: "#003A60"
-  image: "https://cdn.auth0.com/blog/typescript-intro/typescript-logo.png"
+  bg_color: "#182D4A"
+  image: "https://cdn.auth0.com/blog/logos/Full_TypeScript_Logo.png"
 tags:
 - typescript
 - angular
