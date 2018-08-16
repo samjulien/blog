@@ -32,6 +32,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/series-c/auth0-logo.png
 ```
 
+### Bootstrap
+
+```
+  bg_color: "#31135C"
+  image: https://cdn.auth0.com/blog/new-bootstrap4/logo.png
+```
+
 ### Chrome
 
 ```
@@ -74,6 +81,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/secure-games/logo.png
 ```
 
+### Gatsby
+
+```
+  bg_color: "#2B1743"
+  image: https://cdn.auth0.com/blog/gatsby-react-webtask/logo.png
+```
+
 ### Ionic
 
 ```
@@ -107,6 +121,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
 ```
   bg_color: "#5B1C14"
   image: https://cdn.auth0.com/blog/logos/lumen.png
+```
+
+### Mithril
+
+```
+  bg_color: "#222228"
+  image: https://cdn.auth0.com/blog/mithril/logo.png
 ```
 
 ### Nest.js
