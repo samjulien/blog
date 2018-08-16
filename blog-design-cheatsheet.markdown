@@ -25,6 +25,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/auth0-architecture.png
 ```
 
+### Ember
+
+```
+  bg_color: "#412b13"
+  image: https://cdn.auth0.com/blog/ember-simple-auth/ember-logo-small.png
+```
+
 ### Firebase
 
 ```
@@ -115,6 +122,20 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
 ```
   bg_color: "#222228"
   image: https://cdn.auth0.com/blog/logos/spring-boot.png
+```
+
+### Stencil
+
+```
+  bg_color: "#2f333b"
+  image: https://cdn.auth0.com/blog/creating-web-components-with-stencil/logo.png
+```
+
+### Symfony
+
+```
+  bg_color: "#000000"
+  image: https://cdn.auth0.com/blog/symfony-blog/logo.png
 ```
 
 ### TypeScript
