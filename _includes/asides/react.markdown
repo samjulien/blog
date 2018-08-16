@@ -10,7 +10,7 @@ Also, if you want to follow this section in a clean environment, you can easily 
 npx create-react-app react-auth0
 ```
 
-Then, you can move into your new React app (which was created inside a new directory called `react-auth0 ` by the `create-react-app` tool), and start working as explained in this section.
+Then, you can move into your new React app (which was created inside a new directory called `react-auth0` by the `create-react-app` tool), and start working as explained in this section.
 
 ### Setting Up an Auth0 Application
 
@@ -46,6 +46,7 @@ npm install --save auth0-js react-router react-router-dom
 After installing all three libraries, you can create a service to handle the authentication process. You can call this service `Auth` and create it in the `src/Auth/` directory with the following code:
 
 ```js
+// src/Auth/Auth.js
 import auth0 from 'auth0-js';
 
 export default class Auth {
@@ -127,6 +128,7 @@ Since you are using the Auth0 login page, your users are taken away from the app
 So, create a new file called `Callback.js` inside `src/Callback` (i.e., you will need to create the `Callback` directory) and insert the following code into it:
 
 ```jsx
+// src/Callback/Callback.js
 import React from 'react';
 import { withRouter } from 'react-router';
 
@@ -150,6 +152,8 @@ This component, as you can see, is responsible for triggering the `handleAuthent
 After creating the `Auth` service and the `Callback` component, you can refactor your `App` component to integrate everything together:
 
 ```jsx
+// src/App.js
+
 import React from 'react';
 import {withRouter} from 'react-router';
 import {Route} from 'react-router-dom';
@@ -213,6 +217,8 @@ Note that you are using the `Auth` service in all your components (`App`, `HomeP
 So, to wrap things up, you will need to update your `index.js` file as shown here:
 
 ```js
+// src/index.js
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -232,7 +238,7 @@ ReactDOM.render(
 registerServiceWorker();
 ```
 
-After that, you are done! You just finished securing your React application with Auth0. If you take your app to a spin now, you will be able to authenticate yourself with the help of Auth0 and you will be able to see your React app show your name (that is, if your identity provider does provide a name).
+After that, you are done! You just finished securing your React application with Auth0. If you take your app to a spin now (`npm start`), you will be able to authenticate yourself with the help of Auth0 and you will be able to see your React app show your name (that is, if your identity provider does provide a name).
 
 If you are interested in learning more, please, refer to [the official React Quick Start Guide](https://auth0.com/docs/quickstart/spa/react/01-login) to see, step by step, how to properly secure a React application. Besides the steps shown in this section, the guide also shows:
 
