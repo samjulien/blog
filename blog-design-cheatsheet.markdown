@@ -207,6 +207,20 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/redis-icon-logo.png
 ```
 
+### Redux
+
+```
+  bg_color: "#461A8D"
+  image: https://cdn.auth0.com/blog/redux-tutorial/logo.png
+```
+
+### RxJS
+
+```
+  bg_color: "#572D89"
+  image: https://cdn.auth0.com/blog/reactive-programming/logo.png
+```
+
 ### Spring Boot
 
 ```
