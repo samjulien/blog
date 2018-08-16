@@ -4,6 +4,14 @@ As you will learn in this section, you can easily secure your React applications
 
 To follow along the instruction describe here, you will need an Auth0 account. If you don't have one yet, now is a good time to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account</a>.
 
+Also, if you want to follow this section in a clean environment, you can easily create a new React application with just one command:
+
+```bash
+npx create-react-app react-auth0
+```
+
+Then, you can move into your new React app (which was created inside a new directory called `react-auth0 ` by the `create-react-app` tool), and start working as explained in this section.
+
 ### Setting Up an Auth0 Application
 
 To represent your React application in your Auth0 account, you will need to create an [Auth0 Application](https://auth0.com/docs/applications). So, head to [the Applications section on your Auth0 dashboard](https://manage.auth0.com/#/applications) and proceed as follows:
