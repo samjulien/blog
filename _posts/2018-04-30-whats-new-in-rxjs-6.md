@@ -12,7 +12,7 @@ author:
   name: Dan Arias
   url: http://twitter.com/getDanArias
   mail: dan.arias@auth0.com
-  avatar: https://pbs.twimg.com/profile_images/918124318076256256/wMFapJ1C_400x400.jpg
+  avatar: https://pbs.twimg.com/profile_images/1002301567490449408/1-tPrAG__400x400.jpg
 tags:
   - reactive-programming
   - javascript
