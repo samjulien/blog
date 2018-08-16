@@ -54,6 +54,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/lumen.png
 ```
 
+### Nest.js
+
+```
+  bg_color: "#090909"
+  image: https://cdn.auth0.com/blog/nestjs/logo.png
+```
+
 ### Node.js
 
 ```
