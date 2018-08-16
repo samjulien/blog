@@ -27,7 +27,7 @@ To secure your React application with Auth0, there are only two dependencies tha
 npm install --save auth0-js history
 ```
 
-> **Note:** As you want the best security available, you are going to rely on the [Auth0 login page](https://auth0.com/docs/hosted-pages/login). This method consists of redirecting users to a login page hosted by Auth0 that is easily customizable right from the [Dashboard](https://manage.auth0.com/). If you want to learn why this is the best approach, check [the _Universal vs Embedded Login_ article](https://auth0.com/docs/guides/login/universal-vs-embedded).
+> **Note:** As you want the best security available, you are going to rely on the [Auth0 login page](https://auth0.com/docs/hosted-pages/login). This method consists of redirecting users to a login page hosted by Auth0 that is easily customizable right from the [Dashboard](https://manage.auth0.com/). If you want to learn why this is the best approach, check [the _Universal vs. Embedded Login_ article](https://auth0.com/docs/guides/login/universal-vs-embedded).
 
 After installing `auth0-js` and `history`, you can create an authentication service to handle the process. You can call this service `Auth` and create it in the `src/Auth/` directory with the following code:
 
@@ -104,7 +104,7 @@ The `Auth` service that you just created contains functions to deal with differe
 
 Besides these functions, the class contains a field called `auth0` that is initialized with values extracted from your Auth0 application. It is important to keep in mind that you **have to** replace the `<AUTH0_DOMAIN>` and `<AUTH0_CLIENT_ID>` placeholders that you are passing to the `auth0` field.
 
-Attentive readers will probably notice that the `Auth` service also imports a module called `history` that you defined yet. This module is actually pretty simple and you can define it in only two lines. You could also create it inside the `Auth` service, however, to provide reusability, you will create in a module of its own.
+Attentive readers will probably notice that the `Auth` service also imports a module called `history` that you defined yet. This module is actually pretty simple, and you can define it in only two lines. You could also create it inside the `Auth` service, however, to provide reusability, you will create in a module of its own.
 
 So, create a file called `./src/history.js` and add the following code to it:
 
