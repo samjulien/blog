@@ -11,6 +11,13 @@ If adding new logos, upload them to the `logos` directory on the CDN. This will 
   image: https://cdn.auth0.com/blog/logos/angular.png
 ```
 
+### Android
+
+```
+  bg_color: "#2C4721"
+  image: https://cdn.auth0.com/blog/android-libraries/logo.png
+```
+
 ### Aurelia
 
 ```
