@@ -2,17 +2,17 @@
 layout: post
 title: Use Auth0 Tools To Securely Manage Your User Database
 description: "Multifactor authentication and social login are just two of several tools that Auth0 offers on its platform to guard its customers against breaches."
-date: 2018-08-01 12:30
-category: Growth, Security
+date: 2018-08-17 08:30
+category: Business, Identity, User Database
 is_non-tech: true
 author:
-  name: Diego Poza
-  url: https://twitter.com/diegopoza
-  avatar: https://avatars3.githubusercontent.com/u/604869?v=3&s=200
-  mail: diego.poza@auth0.com
+  name: Martin Gontovnikas
+  url: http://twitter.com/mgonto
+  mail: gonto@auth0.com
+  avatar: https://www.gravatar.com/avatar/df6c864847fba9687d962cb80b482764??s=60
 design:
-  bg_color: "#1a587e"
-  image: https://cdn.auth0.com/blog/how-the-right-identity-and-access-management-tools-will-help-insurance-teams-make-the-shift-to-digital/iam-insurance-digital-transformation-logo.png
+  bg_color: "#53116A"
+  image: https://cdn.auth0.com/blog/auth0-tools/use-auth0-tools-to-securely-manage-your-user-database-logo.png
 tags:
   - iam
   - digital-transformation
@@ -23,6 +23,7 @@ tags:
   - identity-management
   - saas
   - social login
+  - database
 related:
   - 2018-03-27-strong-identity-management-system-eases-transition-to-hybrid-cloud
   - 2018-03-09-3-reasons-your-data-integration-plan-is-important
