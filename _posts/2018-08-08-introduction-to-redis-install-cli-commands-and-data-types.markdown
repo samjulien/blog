@@ -1063,6 +1063,8 @@ Roshan further explains that session stores rely on reading and writing data to 
 
 {% include tweet_quote.html quote_text="According to @RedisLabs, a session store requires high availability and durability to support transactional data and uninterrupted user engagement. You can achieve that easily using #Redis." %}
 
-In a future post, we are going to learn in depth how to use Redis to engineer a solid session store. Stay tuned!
+## Conclusion
+
+Redis is a powerful, nimble, and flexible datastore that can speed up your architecture. It has a lot to offer including caching, data replication, pub/sub messaging systems, session storage, and much more. Redis has a [multitude of clients](https://redis.io/clients) that cover all of the popular programming languages. I hope that you try it out whenever you have a use case that fits its value propositions.
 
 {% include asides/about-auth0.markdown %}
