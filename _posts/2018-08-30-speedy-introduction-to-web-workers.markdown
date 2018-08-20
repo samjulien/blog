@@ -110,12 +110,12 @@ Getting hands-on with web workers will help us understand them better! For the p
 <html>
 
 <head>
-	<title>Parcel Sandbox</title>
-	<meta charset="UTF-8" />
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
 </head>
 
 <body>
-	<div id="app"></div>
+    <div id="app"></div>
 
     <script src="src/main.js"></script>
 
@@ -128,4 +128,34 @@ Getting hands-on with web workers will help us understand them better! For the p
 
 We'll soon learn why we are creating these files. CodeSanbox uses [ParcelJS](https://parceljs.org/) to bundle the JavaScript application easily.
 
-> Feel free to use your own environment or local configuration! If you are using Webpack, there is [extra configuration using `worker-loader`](https://github.com/webpack-contrib/worker-loader) that needs to be done. We'll covered that in a future post.
+> Feel free to use your own environment or local configuration! If you are using Webpack, there is [extra configuration using `worker-loader`](https://github.com/webpack-contrib/worker-loader) that needs to be done. We'll cover that in a future post.
+
+## Creating Web Workers
+
+To create a web worker, we use the [`Worker()`](https://developer.mozilla.org/en-US/docs/Web/API/Worker/Worker) constructor from the [Web Workers API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API). The `Worker()` constructor has the following signature:
+
+```javascript
+Worker(aURL, options);
+```
+
+`aURL` is a string that represents the URL of the script that we want the worker to execute.
+
+`options` is an object to customize the `Worker` instance. The [allowed options](https://developer.mozilla.org/en-US/docs/Web/API/Worker/Worker#Parameters) are `type`, `credentials`, and `name`. We don't need to configure them for the scope of this post.
+
+In practice, we instantiate a web worker in the main thread. The main thread could be represented by a JavaScript file, for example, `main.js`, that is the entry point to the application. The web worker thread could be represented by another file, for example, `worker.js`. `main.js` then creates a new `Worker` using the `worker.js` file. Let's see this in action.
+
+Let's open `src/main.js` in our project and populate it with the following code:
+
+```javascript
+// src/main.js
+
+console.log("This is the Main Thread.");
+
+const worker = new Worker("../src/worker.js");
+```
+
+In the code above, `worker` becomes a `Worker` instance that will execute the script on `worker.js`.
+
+> When following along in CodeSandbox, we need to specify the full path to `worker.js` for it to work properly: `../src/worker.js`.
+
+That's it for the creation of a web worker! We effectively now have two threads available in our application: `main` and `worker`. Next, we'll learn how to communicate between threads.
