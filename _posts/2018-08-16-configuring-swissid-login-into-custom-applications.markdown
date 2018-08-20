@@ -6,7 +6,7 @@ date: 2018-08-16 08:30
 category: Technical Guide, Identity, SwissID
 author:
   name: Peter Fernandez
-  url: https://twitter.com/HandsumQbn
+  url: http://www.linkedin.com/in/pgfernandez
   mail: peter.fernandez@auth0.com
   avatar: https://cdn.auth0.com/blog/guest-authors/peter-fernandez.png
 design:
