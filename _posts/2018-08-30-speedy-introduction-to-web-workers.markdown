@@ -41,11 +41,13 @@ At any time during this process there's an extra step that Content Engineers may
 
 - Add assets to the content.
 
-If the assets already exist, this step is as easy as including the assets within the body of the blog post. However, if the assets need to be created they need to be requested from the design team. If the Content Engineers were to design the assets by themselves, they would be blocked from developing and writing. In turn, this detour from the workflow would increase the time it takes to publish a post.
+If the assets already exist, this step is as easy as including the assets within the body of the blog post. However, if the assets need to be created they need to be requested from the design team. If the Content Engineers were to design the assets by themselves, they would be blocked from developing and writing. This detour from the workflow would increase the time it takes to publish a post.
 
 Thankfully, we count with a talented design team at Auth0 to whom we can delegate the creating of assets. We can ping them to put a request for assets on Slack. While they are working on designing the assets, we continue working on development and writing. When the design team is done with the assets, they ping us with a link from where we can download them. We then integrate the assets with the blog post and continue our work.
 
-At no time, we get blocked from writing due to asset creation. The design team handles the task asynchronously on their own pipeline. The design team acts exactly how a web worker acts in JavaScript applications. Using web workers in Javascript allows us to create parallel programming to perform multiple operations simultaneously rather than interleaving them.
+At no time, we get blocked from writing due to asset creation. The design team handles the task asynchronously on their own pipeline. The design team acts exactly how a web worker acts in JavaScript applications. JavaScript is a single-threaded language. As such, running expensive logic in the main thread can block it and make our JavaScript application seem slow or unresponsive. Using web workers, we can create a separate thread to run any logic without interrupting the main thread.
+
+{% include tweet_quote.html quote_text="Web workers in Javascript allows us to create parallel programming to perform multiple operations simultaneously rather than interleaving them." %}
 
 > [Interleaving](https://www.dictionary.com/browse/interleaving) means "to arrange (an operation) so that two or more programs, sets of instructions, etc., are performed in an alternating fashion."
 
