@@ -52,3 +52,9 @@ At no time, we get blocked from writing due to asset creation. The design team h
 > [Interleaving](https://www.dictionary.com/browse/interleaving) means "to arrange (an operation) so that two or more programs, sets of instructions, etc., are performed in an alternating fashion."
 
 Let's explore what we need to know to make use of web workers in JavaScript and what benefits it brings to a web application.
+
+<br>
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">HEY<br><br>USE WEB WORKERS</p>&mdash; Jason Miller 🦊⚛ (@_developit) <a href="https://twitter.com/_developit/status/995162140016177152?ref_src=twsrc%5Etfw">May 12, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">To free up the already-congested main thread so it can spend all of it&#39;s time on layout and paint 😃</p>&mdash; Jason Miller 🦊⚛ (@_developit) <a href="https://twitter.com/_developit/status/995792286947643392?ref_src=twsrc%5Etfw">May 13, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
