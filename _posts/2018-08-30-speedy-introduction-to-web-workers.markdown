@@ -58,3 +58,14 @@ Let's explore what we need to know to make use of web workers in JavaScript and 
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">To free up the already-congested main thread so it can spend all of it&#39;s time on layout and paint 😃</p>&mdash; Jason Miller 🦊⚛ (@_developit) <a href="https://twitter.com/_developit/status/995792286947643392?ref_src=twsrc%5Etfw">May 13, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<br>
+
+## Why use JavaScript Web Workers?
+
+Let's expand a bit more on what [Jason Miller](https://twitter.com/_developit) explained in his tweets.
+
+In JavaScript, we can create parallel programming to perform multiple operations simultaneously using [web workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers). Web workers let us create background threads that are separate from the main execution thread, where we usually run our user interface logic. The core advantage of this workload separation is that we can run expensive operations within an isolated thread without interrupting or affecting the responsiveness and usability of the main thread. When the background thread completes its task it seamlessly notifies the main thread about the results through an event that is managed through regular [JavaScript event handling](https://eloquentjavascript.net/15_event.html).
+
+{% include tweet_quote.html quote_text="Web workers are JavaScript objects that can be treated just like any other object: you can pass them around as function arguments, assign them to class properties, and since they have a common interface, even extend them!" %}
+
+Web workers effectively enable a form of multi-threading in JavaScript with some restrictions such as not being able to access the DOM and not having access to the web worker's parent page (the page that created it). With that in mind, let's learn next how we can create web workers.
