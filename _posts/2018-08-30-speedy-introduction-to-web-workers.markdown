@@ -68,4 +68,64 @@ In JavaScript, we can create parallel programming to perform multiple operations
 
 {% include tweet_quote.html quote_text="Web workers are JavaScript objects that can be treated just like any other object: you can pass them around as function arguments, assign them to class properties, and since they have a common interface, even extend them!" %}
 
-Web workers effectively enable a form of multi-threading in JavaScript with some restrictions such as not being able to access the DOM and not having access to the web worker's parent page (the page that created it). With that in mind, let's learn next how we can create web workers.
+Web workers effectively enable a form of multi-threading in JavaScript with [some restrictions](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Functions_and_classes_available_to_workers#APIs_available_in_workers) such as not being able to access the DOM and not having access to the web worker's parent page (the page that created it). With that in mind, let's learn next how we can create web workers.
+
+## Setting Up a Development Environment
+
+Getting hands-on with web workers will help us understand them better! For the purpose of this blog post, we'll be running the sample code within a [CodeSandbox](https://codesandbox.io/) project. It's easy to bootstrap and run a vanilla JavaScript project there. If you want, feel free to visit the [CodeSanbox that is already set up](https://codesandbox.io/s/xp901z23o4) and fork it. Otherwise, please, follow these steps:
+
+- Visit [CodeSandbox](https://codesandbox.io/).
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-home-page.png" alt="CodeSanbox home page">
+</p>
+
+- On the main page, click on the **Box** icon that represents a Vanilla Javascript project.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-javascript-project-icon.png" alt="CodeSanbox JavaScript project icon">
+</p>
+
+- Scroll down and notice that the project preview is shown within the page.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-javascript-project-preview.png" alt="CodeSanbox JavaScript project preview">
+</p>
+
+- Click on the **Edit on CodeSandbox** link to open the project on its own browser tab.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-javascript-full-project.png" alt="Code Sanbox full JavaScript project">
+</p>
+
+- Delete `index.js` in the `src` folder.
+
+- Create `main.js` and `worker.js` under the `src` folder.
+
+- Open `index.html` and change the `src` attribute of `<script>` to `src/main.js`:
+
+{% highlight html %}
+{% raw %}
+
+<html>
+
+<head>
+	<title>Parcel Sandbox</title>
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+	<div id="app"></div>
+
+    <script src="src/main.js"></script>
+
+</body>
+
+</html>
+
+{% endraw %}
+{% endhighlight %}
+
+We'll soon learn why we are creating these files. CodeSanbox uses [ParcelJS](https://parceljs.org/) to bundle the JavaScript application easily.
+
+> Feel free to use your own environment or local configuration! If you are using Webpack, there is [extra configuration using `worker-loader`](https://github.com/webpack-contrib/worker-loader) that needs to be done. We'll covered that in a future post.
