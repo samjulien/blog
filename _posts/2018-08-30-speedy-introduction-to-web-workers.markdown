@@ -172,7 +172,7 @@ Let's use the classic [Marco Polo game](<https://en.wikipedia.org/wiki/Marco_Pol
 
 4.  **Step 2** and **Step 3** are repeated infinitely.
 
-### Step 1: Listening for Messages
+### Step 1: Listen for Messages
 
 The `Worker.onmessage` event handler let us listen for messages between the threads. The signature of this `Worker` event handler property is as follows:
 
