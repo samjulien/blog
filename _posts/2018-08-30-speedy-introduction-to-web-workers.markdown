@@ -293,3 +293,49 @@ Let's save our work and refresh the preview browser tab. In the console, we shou
 
 We have achieved bi-directional communication between threads, but the communication is short-lived. Let's make this multi-threaded Marco Polo game run infinitely.
 
+### Step 4: Send Messages Between Main and Worker Infinitely
+
+We are going to keep the communication between threads going endlessly. To better pace the back and forth, we are going to rely on [`setTimeout()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout) to delay messaging by 3 seconds.
+
+To start, when `main.js` gets a message from `worker.js`, it replies back after 3 seconds:
+
+```javascript
+// src/main.js
+
+const worker = new Worker("../src/worker.js");
+
+worker.onmessage = e => {
+  const message = e.data;
+  console.log(`[From Worker]: ${message}`);
+
+  const reply = setTimeout(() => worker.postMessage("Marco!"), 3000);
+};
+
+worker.postMessage("Marco!");
+```
+
+Next, when `worker.js` gets a message from `main.js` it also replies back after 3 seconds:
+
+```javascript
+// src/worker.js
+
+onmessage = e => {
+  const message = e.data;
+  console.log(`[From Main]: ${message}`);
+
+  const reply = setTimeout(() => postMessage("Polo!"), 3000);
+};
+```
+
+The 3 seconds delay creates an eye-friendly pause to be able to see the communication calmly in the developer console. What makes this work infinitely is that every handled message event executes a `postMessage()` response. Before, the `worker.onmessage` in `main.js` did not have a reply within its body.
+
+Let's save our work and head back to the browser preview. Let's refresh the page. After a few seconds, we should see the following output:
+
+```text
+[From Main]: Marco!
+[From Worker]: Polo!
+[From Main]: Marco!
+[From Worker]: Polo!
+```
+
+This will go on forever until we close the browser tab running the preview of our application. But, we could also terminate the web worker manually. Let's see how we can do that next.
