@@ -352,3 +352,35 @@ Let's save our work and head back to the browser preview. Let's refresh the page
 </video>
 
 This will go on forever until we close the browser tab running the preview of our application. But, we could also terminate the web worker manually. Let's see how we can do that next.
+
+## Terminating a Web Worker
+
+We can terminate web workers from the main thread immediately or from the worker thread.
+
+From the main thread, we can terminate a web worker by calling the [`terminate()`](https://developer.mozilla.org/en-US/docs/Web/API/Worker) method of the Web Workers API:
+
+```javascript
+worker.terminate();
+```
+
+After `terminate()` is issued, the web worker is destroyed immediately without any chance of completing any ongoing or pending operations. The web worker is also given no time to clean up. Thus, terminating a web worker abruptly may lead to memory leaks.
+
+We can also terminate a web worker from the worker thread using its own [`close`](https://developer.mozilla.org/en-US/docs/Web/API/DedicatedWorkerGlobalScope/close) method:
+
+```javascript
+close();
+```
+
+Upon calling `close()`, any queued tasks present in the event loop are discarded and the web worker scope is closed.
+
+Checking the documentation for `close()` may be confusing at first because there is a version of the [`close()` method that has been deprecated](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope). The deprecated version belongs to the `WorkerGlobalScope` interface. In reality, there are two types of web workers that we can create: dedicated and shared web workers. Each web worker type has its own interface, [`DedicatedWorkerGlobalScope`](https://developer.mozilla.org/en-US/docs/Web/API/DedicatedWorkerGlobalScope) and [`SharedWorkerGlobalScope`](https://developer.mozilla.org/en-US/docs/Web/API/SharedWorkerGlobalScope/close) respectively. For the scope of this introduction, we've used a dedicated web worker under the hood. The difference between these two types of web workers and how and where to use them will be addressed in a future post along with best practices on terminating workers!
+
+## Recap
+
+We've learned the basics of how to create a web worker. We learned how to effectively send messages between two threads and how to react to those messages. We briefly touched on the subject of terminating web workers. This last task is to be handled with care and deserves a more detailed explanation. Badly terminated web workers may lead to memory leaks in the application.
+
+What's left to learn? A lot! Web workers have been around for a long time and they are great at executing expensive logic. This logic will be much more complex than what we've done in this blog post. We'd need to learn topics like handling errors, spawning subworkers, using external libraries, and monitoring web workers using developer tools.
+
+Please let me know in the comments how you liked this introduction to web workers and what else you'd like to learn about this handy technology that lets us perform parallel programming in JavaScript.
+
+{% include asides/about-auth0.markdown %}
