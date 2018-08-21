@@ -230,3 +230,42 @@ Let's save our work for each file. On CodeSanbox, we can use `CMD + S` or `CTRL 
 
 We got our threads listening for messages between each other. Next, let's learn how to send messages.
 
+### Step 2: Send a Message from Main Thread to Worker Thread
+
+To send messages, we rely on the `Worker.postMessage()` method:
+
+```javascript
+worker.postMessage(message);
+```
+
+The `postMessage()` takes a single parameter representing the data that we want to send. This data may be any value or JavaScript object handled by the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Worker/postMessage). As noted by MDN, the structured clone algorithm is an algorithm defined by the HTML5 specification for [copying complex JavaScript objects](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm). Why do we need to rely on this algorithm? Data transferred through web workers is **passed as a copy, not as a reference**.
+
+With an understanding of how `postMessage()` work, let's use this method to send a message from the main thread to the worker thread:
+
+```javascript
+// src/main.js
+
+const worker = new Worker("../src/worker.js");
+
+worker.onmessage = e => {
+  const message = e.data;
+  console.log(`[From Worker]: ${message}`);
+};
+
+worker.postMessage("Marco!");
+```
+
+Let's save our work and open the application preview on its own tab. This can be done by clicking on the **Open In New Window** button present in the navigation bar of the embedded browser:
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesanbox-open-preview-in-new-window.png" alt="CodeSanbox button to open application preview in new tab.">
+</p>
+
+In the new preview browser tab, let's open the browser developer console and refresh the page. We should see the following output:
+
+```shell
+[From Main]: Marco!
+```
+
+This output in the console confirms that our web worker is listening and reacting to the `message` event sent from `main.js`. Now, we need to reverse the communication. We need to send a message reply from `worker.js` to `main.js`.
+
