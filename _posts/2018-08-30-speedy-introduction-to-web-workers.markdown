@@ -149,8 +149,6 @@ Let's open `src/main.js` in our project and populate it with the following code:
 ```javascript
 // src/main.js
 
-console.log("This is the Main Thread.");
-
 const worker = new Worker("../src/worker.js");
 ```
 
