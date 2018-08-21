@@ -338,4 +338,9 @@ Let's save our work and head back to the browser preview. Let's refresh the page
 [From Worker]: Polo!
 ```
 
+<video controls style="margin: 35px 0;">
+  <source src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/web-workers-playing-marco-polo.mp4" type="video/mp4">
+   Your browser doesn't support HTML5 video. Here is a <a href="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/web-workers-playing-marco-polo.mp4">link to Web Workers Marco Polo game video</a> instead.
+</video>
+
 This will go on forever until we close the browser tab running the preview of our application. But, we could also terminate the web worker manually. Let's see how we can do that next.
