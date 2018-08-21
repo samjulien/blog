@@ -18,10 +18,18 @@ amp-sidebar {
   .header{
     min-height: 10%;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: row;
     align-items: center;
     padding-right: 33px;
+    border-bottom: 1px solid rgb(151,151,151);
+    .call-to-action {
+      flex: 2 0 0;
+      justify-content: flex-start;
+      margin-left: 47px;
+      font-weight: bold;
+    }
     .amp-close-image{
+      justify-content: flex-end;
       width: 23px;
       height: 23px;
     }
@@ -34,12 +42,12 @@ amp-sidebar {
       font-weight: 500;
       color: #4A4A4A;
       border-bottom: 2px solid #4A4A4A;
-      width: autho;
+      width: auto;
       display: inline-block;
       font-size: 28.5px;
       letter-spacing: 1.2px;
       padding-bottom: 12px;
-      margin: 0px 10px 30px 47px;
+      margin: 30px 10px 30px 47px;
     }
     ul{
       list-style: none;
