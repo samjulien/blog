@@ -124,7 +124,7 @@ To do so, you will have to create a directory called `items` inside `src`. You w
 
 In Nest.js, like in many other frameworks out there, [controllers](https://docs.nestjs.com/controllers) are responsible for mapping endpoints to functionalities. To create a controller in Nest.js, you can use the `@Controller` decorator, as follows: `@Controller(${ENDPOINT})`. Then, to map different HTTP methods like GET and POST, you would use decorators like: `@Get`, `@Post`, `@Delete`, etc.
 
-So, as in your case you will need to create a controller that returns items available on a restaurant and that admins can use to manage these items, you can create a file called `items.controller.ts` and add the following code into it:
+So, as in your case you will need to create a controller that returns items available on a restaurant and that admins can use to manage these items, you can create a file called `items.controller.ts` inside the `items` directory and add the following code into it:
 
 ```typescript
 import {
@@ -412,7 +412,7 @@ export class ValidationPipe implements PipeTransform<any> {
 ``` 
 **Note**: You will have to install `class-validator` and `class-transformer` modules. To do so, just type `npm install class-validator class-transformer` on the terminal inside your project's directory and restart the server.
 
-Now, you will have to adapt the  `items.controller.ts` file to use this new pipe and the DTO. After doing that, this is how the code of the controller should like:
+Now, you will have to adapt the `items.controller.ts` file to use this new pipe and the DTO. After doing that, this is how the code of the controller should like:
 
 ```typescript
 import {
@@ -654,7 +654,7 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 @Injectable()
 export class AdminGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
-    const user = context.args[0].user['http://localhost:3000/roles'] || '';
+    const user = context.getArgs()[0].user['http://localhost:3000/roles'] || '';
     return user.indexOf('admin') > -1;
   }
 }
@@ -678,7 +678,6 @@ import {
   Controller,
   UsePipes,
   UseGuards,
-  ReflectMetadata,
 } from '@nestjs/common';
 import { CreateItemDto } from './create-item.dto';
 import { ItemsService } from './items.service';
