@@ -269,3 +269,27 @@ In the new preview browser tab, let's open the browser developer console and ref
 
 This output in the console confirms that our web worker is listening and reacting to the `message` event sent from `main.js`. Now, we need to reverse the communication. We need to send a message reply from `worker.js` to `main.js`.
 
+### Step 3: Send a Message from Worker Thread to Main Thread
+
+This will be quick. We need to use the `postMessage()` method in the `onmessage` event handler in `worker.js`:
+
+```javascript
+// src/worker.js
+
+onmessage = e => {
+  const message = e.data;
+  console.log(`[From Main]: ${message}`);
+
+  postMessage("Polo!");
+};
+```
+
+Let's save our work and refresh the preview browser tab. In the console, we should now see the following output:
+
+```shell
+[From Main]: Marco!
+[From Worker]: Polo!
+```
+
+We have achieved bi-directional communication between threads, but the communication is short-lived. Let's make this multi-threaded Marco Polo game run infinitely.
+
