@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Speedy Introduction to Web Workers"
-description: "Learn how to use web workers in Javascript to create parallel programming and perform multiple operations simultaneously rather than interleaving them."
+description: "Learn how to use web workers in JavaScript to create parallel programming and perform multiple operations simultaneously rather than interleaving them."
 date: 2018-08-30 8:30
 category: Technical Guide, Stack, Frontend
 design: 
@@ -51,7 +51,7 @@ At no time, we get blocked from writing due to asset creation. The design team h
   <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/Performing-Tasks-With-and-Without-Web-Worker.png" alt="Performing tasks with and without web workers.">
 </p>
 
-{% include tweet_quote.html quote_text="Web workers in Javascript allows us to create parallel programming to perform multiple operations simultaneously rather than interleaving them." %}
+{% include tweet_quote.html quote_text="Web workers in JavaScript allows us to create parallel programming to perform multiple operations simultaneously rather than interleaving them." %}
 
 > [Interleaving](https://www.dictionary.com/browse/interleaving) means "to arrange (an operation) so that two or more programs, sets of instructions, etc., are performed in an alternating fashion."
 
@@ -84,7 +84,7 @@ Getting hands-on with web workers will help us understand them better! For the p
   <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-home-page.png" alt="CodeSanbox home page">
 </p>
 
-- On the main page, click on the **Box** icon that represents a Vanilla Javascript project.
+- On the main page, click on the **Box** icon that represents a Vanilla JavaScript project.
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-javascript-project-icon.png" alt="CodeSanbox JavaScript project icon">
