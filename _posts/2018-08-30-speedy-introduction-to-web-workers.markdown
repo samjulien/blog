@@ -157,3 +157,18 @@ In the code above, `worker` becomes a `Worker` instance that will execute the sc
 > When following along in CodeSandbox, we need to specify the full path to `worker.js` for it to work properly: `../src/worker.js`.
 
 That's it for the creation of a web worker! We effectively now have two threads available in our application: `main` and `worker`. Next, we'll learn how to communicate between threads.
+
+## Sending Messages To and From a Web Worker
+
+In the introduction, we discussed how the internal collaboration between our Content and Design teams at Auth0 resemble the interaction between threads using web workers in JavaScript. In our case, a Content Engineer represents the `main` thread and the Designer represents the `worker` thread. How would the `main` thread ping the `worker` thread and vice versa? We do that through the [`postMessage()`](https://developer.mozilla.org/en-US/docs/Web/API/Worker/postMessage) method and the [`onmessage`](https://developer.mozilla.org/en-US/docs/Web/API/Worker/onmessage) event handler from the Web Workers API.
+
+Let's use the classic [Marco Polo game](<https://en.wikipedia.org/wiki/Marco_Polo_(game)>) to see this communication in action. In this game, one player shouts "Marco!" and the other player must reply "Polo!". Within our context we want to do the following:
+
+1.  `main.js` and `worker.js` are on standby listening for any message between each other.
+
+2.  `main.js` sends a message to `worker.js`: `"Marco!"`.
+
+3.  `worker.js` gets the message from `main.js` and replies: `"Polo!"`.
+
+4.  **Step 2** and **Step 3** are repeated infinitely.
+
