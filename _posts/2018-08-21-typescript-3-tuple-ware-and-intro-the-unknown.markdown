@@ -2,8 +2,8 @@
 layout: post
 title: "TypeScript 3: Tuple Ware and Into the Unknown"
 description: "Learn how TypeScript 3.0, a typed superset of JavaScript, improves tuples and introduces a new type!"
-date: 2018-08-08 8:30
-category: Technical Guide, TypeScript, JavaScript
+date: 2018-08-21 8:30
+category: Technical Guide, Whats New, TypeScript
 design: 
   bg_color: "#182D4A"
   image: https://cdn.auth0.com/blog/logos/Full_TypeScript_Logo.png
@@ -24,7 +24,9 @@ tags:
   - type-safe
   - angular
 related:
-  - 
+  - 2017-10-31-typescript-practical-introduction
+  - 2018-07-31-full-stack-typescript-apps-part-1-developing-backend-apis-with-nestjs
+  - 2018-08-07-how-to-create-angular-apps-with-auth0-and-stackblitz
 ---
 
 TypeScript 3.0 is out! It comes with enhancements for the type system, compiler, and language service. This release is shipping with the following:
