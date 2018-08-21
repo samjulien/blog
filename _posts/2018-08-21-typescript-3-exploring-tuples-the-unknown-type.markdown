@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "TypeScript 3: Tuple Ware and Into the Unknown"
-description: "Learn how TypeScript 3.0, a typed superset of JavaScript, improves tuples and introduces a new type!"
+title: "TypeScript 3.0: Exploring Tuples and the Unknown Type"
+description: "Learn how TypeScript 3.0, a typed superset of JavaScript, improves tuples type and introduces a new 'unknown' top type!"
 date: 2018-08-21 8:30
 category: Technical Guide, Whats New, TypeScript
 design: 
@@ -201,7 +201,7 @@ type Point3D = [number, number, number];
 Therefore, `Point3D[0]`, `Point3D[1]`, and `Point3D[2]` would be logically digestible and easier to map than other disjointed data.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/typescript3/3D_coordinate_system.png" alt="3D coordinate system">
+  <img src="https://cdn.auth0.com/blog/typescript3/3D_coordinate_system.png" alt="3D coordinate system example">
 </p>
 
 [Source](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/3D_coordinate_system.svg/2000px-3D_coordinate_system.svg.png)
@@ -355,7 +355,7 @@ error TS1257: A required element cannot follow an optional element.
 In `--strictNullChecks` mode, using the `?` modifier automatically includes `undefined` in the tuple element type. This behavior is similar to what TypeScript does with optional parameters.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/typescript-3/tupleware.png" alt="Tuples are like Tupperware containers.">
+  <img src="https://cdn.auth0.com/blog/typescript-3/tupleware.png" alt="TypeScript Tuples are like Tupperware containers">
 </p>
 
 [Source](http://www.tupperware.com/media/catalog/product/cache/1/image/600x/9df78eab33525d08d6e5fb8d27136e95/l/u/lunchits_2018_mid_july-1.jpg)
@@ -406,9 +406,9 @@ Output:
 [ 'David', [ 100, 98, 100 ] ]
 ```
 
-## TypeScript: Into the Unknown
+## TypeScript: New 'Unknown' Top Type
 
-TypeScript 3.0 introduces a new type called `unknown`. `unknown` acts like a type-safe version of `any` by requiring us to perform some type of checking before we can use the value of the `unknown` variable or any of its properties. Let's explore the rules around this wicked type!
+TypeScript 3.0 introduces a new top type called `unknown`. `unknown` acts like a type-safe version of `any` by requiring us to perform some type of checking before we can use the value of the `unknown` variable or any of its properties. Let's explore the rules around this wicked type!
 
 `any` is too flexible. As the name suggests, it can encompass the type of every possible value in TypeScript. What's not so ideal of this premise is that `any` doesn't require us to do any kind of checking before we make use of the properties of its value.
 
