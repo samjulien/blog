@@ -172,3 +172,61 @@ Let's use the classic [Marco Polo game](<https://en.wikipedia.org/wiki/Marco_Pol
 
 4.  **Step 2** and **Step 3** are repeated infinitely.
 
+### Step 1: Listening for Messages
+
+The `Worker.onmessage` event handler let us listen for messages between the threads. The signature of this `Worker` event handler property is as follows:
+
+```javascript
+myWorker.onmessage = e => {
+  // Event handler logic
+};
+```
+
+The function assigned to `onmessage` is called when a `message` event occurs.
+
+To set this up in `main.js`, we use the `Worker` instance we created:
+
+```javascript
+// src/main.js
+
+const worker = new Worker("../src/worker.js");
+
+worker.onmessage = e => {};
+```
+
+To set this up in the web worker thread represented by `worker.js`, we use the `onmessage` property directly:
+
+```javascript
+// src/worker.js
+
+onmessage = e => {};
+```
+
+How do we access the message data that is being sent? The message payload can be accessed from the message event's `data` property.
+
+Let's update our code as follows:
+
+```javascript
+// src/main.js
+
+const worker = new Worker("../src/worker.js");
+
+worker.onmessage = e => {
+  const message = e.data;
+  console.log(`[From Worker]: ${message}`);
+};
+```
+
+```javascript
+// src/worker.js
+
+onmessage = e => {
+  const message = e.data;
+  console.log(`[From Main]: ${message}`);
+};
+```
+
+Let's save our work for each file. On CodeSanbox, we can use `CMD + S` or `CTRL + S` to save each file.
+
+We got our threads listening for messages between each other. Next, let's learn how to send messages.
+
