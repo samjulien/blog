@@ -264,7 +264,7 @@ Let's save our work and open the application preview on its own tab. This can be
 In the new preview browser tab, let's open the browser developer console and refresh the page. We should see the following output:
 
 ```shell
-[From Main]: Marco!
+// [From Main]: Marco!
 ```
 
 This output in the console confirms that our web worker is listening and reacting to the `message` event sent from `main.js`. Now, we need to reverse the communication. We need to send a message reply from `worker.js` to `main.js`.
@@ -287,8 +287,8 @@ onmessage = e => {
 Let's save our work and refresh the preview browser tab. In the console, we should now see the following output:
 
 ```shell
-[From Main]: Marco!
-[From Worker]: Polo!
+// [From Main]: Marco!
+// [From Worker]: Polo!
 ```
 
 We have achieved bi-directional communication between threads, but the communication is short-lived. Let's make this multi-threaded Marco Polo game run infinitely.
@@ -331,11 +331,11 @@ The 3 seconds delay creates an eye-friendly pause to be able to see the communic
 
 Let's save our work and head back to the browser preview. Let's refresh the page. After a few seconds, we should see the following output:
 
-```text
-[From Main]: Marco!
-[From Worker]: Polo!
-[From Main]: Marco!
-[From Worker]: Polo!
+```shell
+// [From Main]: Marco!
+// [From Worker]: Polo!
+// [From Main]: Marco!
+// [From Worker]: Polo!
 ```
 
 <video controls style="margin: 35px 0;">
