@@ -4,6 +4,7 @@ title: "TypeScript 3.0: Exploring Tuples and the Unknown Type"
 description: "Learn how TypeScript 3.0, a typed superset of JavaScript, improves tuples type and introduces a new 'unknown' top type!"
 date: 2018-08-21 8:30
 category: Technical Guide, Whats New, TypeScript
+alias: /typescript-3-tuple-ware-and-intro-the-unknown/
 design: 
   bg_color: "#182D4A"
   image: https://cdn.auth0.com/blog/logos/Full_TypeScript_Logo.png
