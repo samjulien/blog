@@ -61,3 +61,25 @@ There was an exercise about drafting (not sending) a spear phishing email in 1 h
 **Takeaway #1:** Review your privacy settings and don’t post private information on social media.
 
 {% include tweet_quote.html quote_text="Review your privacy settings and don’t post private information on social media. Open-source Intelligence tools could be used to mine your data and create phishing opportunities." %}
+
+## WiFi Pineapple and Bash Bunny
+
+How do they come up with these names?
+
+As part of the training they gave us a [WiFi Pineapple](https://www.wifipineapple.com/), a [Bash Bunny](https://wiki.bashbunny.com/#!index.md) and a [Packet Squirrel](https://www.hak5.org/gear/packet-squirrel). They are tools meant to be used for penetration tests, and they have many pranks that can help with Security Awareness programs by showcasing their associated dangers in safe and controlled setups.
+
+### WiFi Pineapple
+
+The WiFi Pineapple is a [Wireless Auditing tool](https://www.tutorialspoint.com/wireless_security/wireless_security_tools.htm) that can work as a [Man-in-the-middle platform](https://en.wikipedia.org/wiki/Man-in-the-middle_attack). Among others, it allows the owner to intercept an open WiFi connection and inspect and modify HTTP traffic, redirect the user to a malicious site, or associate with past public WiFis and “pretend” to be those.
+
+For example, if you’re near a Pineapple while your phone has WiFi turned on and is actively looking for connections, all of the sudden you may connect to the Airport you went 6 months ago and a site may ask you to pay for the service. They mention it on the [Silicon Valley TV Show](https://www.youtube.com/watch?v=9FckHMPBs_Q).
+
+This is the picture of a WiFi Pineapple Tower because… Black Hat.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/achieving-security-awareness-through-social-engineering-attacks/wifi-pineapple-tower.jpg" alt="WiFi Pineapple Tower">
+</p>
+
+**Takeaway #2:** Avoid open or public networks as much as possible, especially in crowded spaces. If you’re not in a trusted space, turn on WiFi only when you really need it.
+
+{% include tweet_quote.html quote_text="Avoid open or public networks as much as possible, especially in crowded spaces. If you’re not in a trusted space, turn on WiFi only when you really need it." %}
