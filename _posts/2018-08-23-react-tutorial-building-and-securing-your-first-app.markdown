@@ -2,7 +2,7 @@
 layout: post
 title: "React Tutorial: Building and Securing Your First App"
 description: "Learn how React works and create and secure your first React app in no time."
-date: 2018-07-03 08:30
+date: 2018-08-23 08:30
 category: Technical Guide, First Application, React
 author:
   name: "Bruno Krebs"
@@ -213,7 +213,170 @@ In the end of this tutorial, you will have a React app supported by a Node.js ba
 
 ![React Tutorial: Building and Securing Your First App](https://cdn.auth0.com/blog/react-tutorial/q-and-a-app.png)
 
+## Developing a Backend API with Node.js and Express
+
+Before diving into React, you will quickly build a backend API to support your Q&A app. In this section, you will use Express alongside with Node.js to create this API. If you don't know what Express is or how it works, don't worry, you don't need to get into its details now. [Express](https://expressjs.com/), as stated by its official web page, is an unopinionated, minimalist web framework for Node.js. With this library, as you will see here, you can quickly build apps to run on servers (i.e. backend apps).
+
+So, to get things started, open a terminal in your operating system, move to a directory where you create your projects, and issue the following commands:
+
+```bash
+# create a directory for your Express API
+mkdir qa-api
+
+# move into it
+cd qa-api
+
+# use NPM to start the project
+npm init -y
+```
+
+The last command will create a file called `package.json` inside your `qa-api` directory. This file will hold the details (like the dependencies) of your backend API. Then, after these commands, run the following one:
+
+```bash
+npm i body-parser cors express helmet morgan
+```
+
+This command will install five dependencies in your project:
+
+- [`body-parser`](https://github.com/expressjs/body-parser): This is a library that you will use to convert the body of incoming requests into JSON objects.
+- [`cors`](https://github.com/expressjs/cors): This is a library that you will use to configure Express to add headers stating that your API accepts requests coming from other origins. This is also known as [Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
+- [`express`](https://github.com/expressjs/express): This is Express itself.
+- [`helmet`](https://github.com/helmetjs/helmet): This is a library that helps securing Express apps with various HTTP headers.
+- [`morgan`](https://github.com/expressjs/morgan): This is a library that adds some logging capabilities to your Express app.
+
+> **Note:** As the goal of this article is to help you develop your first React application, the list above contains a very brief explanation of what each library brings to the table. You can always refer to the official web pages of these libraries to learn more about their capabilities.
+
+After installing these libraries, you will be able to see that NPM changed your `package.json` file to include them in the `dependencies` property. Also, you will see a new file called `package-lock.json`. NPM uses this file to make sure that anyone else using your project (or even yourself in other environments) [will always get versions compatible with those that you are installing now](https://docs.npmjs.com/files/package-lock.json).
+
+Then, the last thing you will need to do is to develop the backend source code. So, create a directory called `src` inside your `qa-api` directory and create a file called `index.js` inside this new directory. In this file, you can add the following code:
+
+```js
+//import dependencies
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+
+// define the Express app
+const app = express();
+
+// the database
+const questions = [];
+
+// enhance your app security with Helmet
+app.use(helmet());
+
+// use bodyParser to parse application/json content-type
+app.use(bodyParser.json());
+
+// enable all CORS requests
+app.use(cors());
+
+// log HTTP requests
+app.use(morgan('combined'));
+
+// retrieve all questions
+app.get('/', (req, res) => {
+  const qs = questions.map(q => ({
+    id: q.id,
+    title: q.title,
+    description: q.description,
+    answers: q.answers.length,
+  }));
+  res.send(qs);
+});
+
+// get a specific question
+app.get('/:id', (req, res) => {
+  const question = questions.filter(q => (q.id === parseInt(req.params.id)));
+  if (question.length > 1) return res.status(500).send();
+  if (question.length === 0) return res.status(404).send();
+  res.send(question[0]);
+});
+
+// insert a new question
+app.post('/', (req, res) => {
+  const {title, description} = req.body;
+  const newQuestion = {
+    id: questions.length + 1,
+    title,
+    description,
+    answers: [],
+  };
+  questions.push(newQuestion);
+  res.status(200).send();
+});
+
+// insert a new answer to a question
+app.post('/answer/:id', (req, res) => {
+  const {answer} = req.body;
+
+  const question = questions.filter(q => (q.id === parseInt(req.params.id)));
+  if (question.length > 1) return res.status(500).send();
+  if (question.length === 0) return res.status(404).send();
+
+  console.log(question);
+  question[0].answers.push({
+    answer,
+  });
+
+  res.status(200).send();
+});
+
+// start the server
+app.listen(8081, () => {
+  console.log('listening on port 8081');
+});
+```
+
+To keep things short, the following list briefly explains how things work in this file (also, be sure to check the comments in the code above):
+
+- Everything starts with five `require` statements. These statements load all libraries you installed with NPM.
+
+- After that, you use Express to define a new app (`const app = express();`).
+
+- Then, you create an array that will act as your database (`const questions = [];`). In a real-world app, you would use a real database like Mongo, PostgreSQL, MySQL, etc.
+
+- Next, you call the `use` method of your Express app four times. Each one to configure the different libraries you installed alongside with Express.
+
+- Right after it, you define your first endpoint (`app.get('/', ...);`). This endpoint is responsible for sending the list of questions back to whoever request it. The only thing to notice here is that instead of sending the `answers` as well, this endpoint compiles them together to send just the number of answers that each question has. You will use this info in your React app.
+
+- After your first endpoint, you define another endpoint. In this case, this new endpoint is responsible for responding to requests with a single question (now, with all the answers).
+
+- After this endpoint, you define your third endpoint. This time you define an endpoint that will be activated whenever someone sends a POST HTTP request to your API. The goal here is to take the message sent in the `body` of the request to insert a `newQuestion` in your database.
+
+- Then, you have the last endpoint in your API. This endpoint is responsible for inserting answers into a specific question. In this case you use a [route parameter](https://expressjs.com/en/guide/routing.html) called `id` to identify in which question you must add the new answer.
+
+- Lastly, you call the `listen` function in your Express app to run your backend API.
+
+With this file in place, you are good to go. To run your app, just issue the following command:
+
+```bash
+# from the qa-app directory
+node src
+```
+
+Then, to test if everything is really working, open a new terminal and issue the following commands:
+
+```bash
+# issue an HTTP GET request
+curl localhost:8081
+
+# issue a POST request
+curl -X POST -H 'Content-Type: application/json' -d '{
+  "title": "How to make a sandwich?",
+  "description": "I am trying very hard but I do not know how to make a delicious sandwich. Can someone help me?"
+}' localhost:8081
+
+# re-issue the GET request
+curl localhost:8081
+```
+
+The first command will trigger a HTTP GET request that will result in an empty array being printed out (`[]`). Then, the second command will issue a POST request to insert a new question into your API, and the third command will issue another GET request to verify if the question was properly inserted.
+
 ## Conclusion
 
 Mention:
 - The Virtual DOM
+- Lifecycle
