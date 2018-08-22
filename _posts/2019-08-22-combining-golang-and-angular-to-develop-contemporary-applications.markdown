@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "Golang & Angular Series - Part 1: Developing and Securing Golang APIs"
+metatitle: ""
 description: "A series that will show you how to develop modern applications with Golang and Angular."
+metadescription: ""
 date: 2018-08-22 08:30
 category: Technical Guide, Frontend, Angular
 author:
