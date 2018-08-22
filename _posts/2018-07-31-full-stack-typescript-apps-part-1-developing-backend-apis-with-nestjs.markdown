@@ -10,8 +10,8 @@ author:
   mail: "aninhacostaribeiro@gmail.com"
   avatar: "https://cdn.auth0.com/blog/guest-authors/ana-ribeiro.jpg"
 design:
-  bg_color: "#003A60"
-  image: "https://cdn.auth0.com/blog/typescript-intro/typescript-logo.png"
+  bg_color: "#182D4A"
+  image: "https://cdn.auth0.com/blog/logos/Full_TypeScript_Logo.png"
 tags:
 - typescript
 - angular
@@ -124,7 +124,7 @@ To do so, you will have to create a directory called `items` inside `src`. You w
 
 In Nest.js, like in many other frameworks out there, [controllers](https://docs.nestjs.com/controllers) are responsible for mapping endpoints to functionalities. To create a controller in Nest.js, you can use the `@Controller` decorator, as follows: `@Controller(${ENDPOINT})`. Then, to map different HTTP methods like GET and POST, you would use decorators like: `@Get`, `@Post`, `@Delete`, etc.
 
-So, as in your case you will need to create a controller that returns items available on a restaurant and that admins can use to manage these items, you can create a file called `items.controller.ts` and add the following code into it:
+So, as in your case you will need to create a controller that returns items available on a restaurant and that admins can use to manage these items, you can create a file called `items.controller.ts` inside the `items` directory and add the following code into it:
 
 ```typescript
 import {
@@ -412,7 +412,7 @@ export class ValidationPipe implements PipeTransform<any> {
 ``` 
 **Note**: You will have to install `class-validator` and `class-transformer` modules. To do so, just type `npm install class-validator class-transformer` on the terminal inside your project's directory and restart the server.
 
-Now, you will have to adapt the  `items.controller.ts` file to use this new pipe and the DTO. After doing that, this is how the code of the controller should like:
+Now, you will have to adapt the `items.controller.ts` file to use this new pipe and the DTO. After doing that, this is how the code of the controller should like:
 
 ```typescript
 import {
@@ -472,9 +472,11 @@ After creating your account, log in to it, head to [the APIs section in your Aut
 
 ![Creating a new Auth0 API configuration.](https://cdn.auth0.com/blog/fullstack-typescript/create-auth0-api.png)
 
-Then you should visit the [_Applications_ section](https://manage.auth0.com/#/applications) of your Auth0 management dashboard, and click on the application with the same name as the API you just created. 
+Then you should visit the [_Applications_ section](https://manage.auth0.com/#/applications) of your Auth0 management dashboard to create an Auth0 Application to represent the front-end Angular app you will create in the next part of this series.
 
-In this page, go to the _Settings_ section. There, you can change the _Application Type_ to `Single Page Application`, add `http://localhost:4200/login` (you are going to use it in the next article) to the _Allowed Callback URLs_ field, and save the changes (you can also remove `(Test Application)` from the application name). Then, leave this page open as you will need to copy _Domain_, _Client ID_, and _Client Secret_ to configure your API.
+In this page, click on _Create Application_. Auth0 will show you a form where you will need to define a _Name_ to your application (e.g., _Menu Angular App_) and you will have to select _Single Page Web Application_ as its type. Then, after clicking on the _Create_ button to conclude the process, Auth0 will take you to the _Quick Start_ section of your new application.
+
+From there, go to the _Settings_ section of your Auth0 Application. In this section, you will have to add `http://localhost:4200/login` (you are going to use it in the next article) to the _Allowed Callback URLs_ field, and save the changes. Then, leave this page open as you will need to copy _Domain_, _Client ID_, and _Client Secret_ to configure your API.
 
 Now, you can generate an access token with Auth0 (you will use this token soon, after securing your API). To do this, head to the following address in your browser:
 
@@ -654,7 +656,7 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 @Injectable()
 export class AdminGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
-    const user = context.args[0].user['http://localhost:3000/roles'] || '';
+    const user = context.getArgs()[0].user['http://localhost:3000/roles'] || '';
     return user.indexOf('admin') > -1;
   }
 }
@@ -678,7 +680,6 @@ import {
   Controller,
   UsePipes,
   UseGuards,
-  ReflectMetadata,
 } from '@nestjs/common';
 import { CreateItemDto } from './create-item.dto';
 import { ItemsService } from './items.service';
