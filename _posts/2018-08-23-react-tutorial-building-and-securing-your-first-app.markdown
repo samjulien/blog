@@ -152,6 +152,59 @@ So, basically speaking, if you need a component to handle dynamic things that de
 
 ### Re-Rendering React Components
 
+Another very important concept that you have to understand is how and when React re-renders components. Luckily, this is an easy concept to learn. There are only two things that can trigger a re-render in a React component, a change to the `props` that the component receives or a change to its internal state.
+
+Although the previous section didn't get into the details about how to change the internal state of a component, it did show how to achieve this. Whenever you use a stateful component (i.e., a class component), you can trigger a re-render on it by changing its state through the `setState` method. What is important to keep in mind is that you cannot change the `state` field directly. You **have to** call the `setState` method with the new desired state:
+
+```js
+// this won't trigger a re-render:
+updateCheckbox(checked) {
+  this.state.acceptedTerms = checked;
+}
+
+// this will
+this.setState({
+  acceptedTerms: checked,
+});
+```
+
+In other words, you have to treat `this.state` as if it were immutable.
+
+> **Note:** To achieve a better performance, React does not guarantee that `setState()` will update `this.state` immediately. The library may wait for a better opportunity when there are more things to update. So, it is not reliable to read `this.state` right after calling `setState()`. For more information, [check the official documentation on `setState()`](https://reactjs.org/docs/react-component.html#setstate).
+
+Now, when it comes to a stateless component (i.e., a functional component), the only way to trigger a re-render is to change the `props` that are passed to it. In the last section, you didn't have the chance to see the whole context of how a functional component is used nor what `props` really are. Luckily again, this is another easy topic to grasp. In React, `props` are nothing more than the properties (thus its name) passed to a component.
+
+So, in the `UserProfile` component defined in the last section, there was only one property being passed/used: `userProfile`. In that section, however, there was a missing piece that was responsible for passing properties (`props`) to this component. In that case, the missing piece was where and how you use that component. To do so, you just have to use your component as if it were an HTML element (this is a nice feature of JSX) as shown here:
+
+```js
+import React from 'react';
+import UserProfile from './UserProfile';
+
+class App extends () {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {
+        name: 'Bruno Krebs',
+        picture: 'https://cdn.auth0.com/blog/profile-picture/bruno-krebs.png',
+      },
+    };
+  }
+
+  render() {
+    return (
+      <div>
+        <UserProfile userProfile={this.state.user} />
+      </div>
+    );
+  }
+}
+```
+
+That's it. This is how you define and pass `props` to a child component. Now, if you change the `user` in the parent component (`App`), this will trigger a re-render in the whole component and, subsequently, it will change the `props` being passed to `UserProfile` triggering a re-render on it as well.
+
+> **Note:** React will also re-render class components if their `props` are changed. This is not a particular behavior of functional components.
+
 ## Conclusion
 
 Mention:
