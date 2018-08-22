@@ -205,6 +205,14 @@ That's it. This is how you define and pass `props` to a child component. Now, if
 
 > **Note:** React will also re-render class components if their `props` are changed. This is not a particular behavior of functional components.
 
+## What You Will Build with React
+
+All right! With the concepts describe in the last section in mind, you are ready to start developing your first React application. In the following sections, you will build a simple Q&A (Question & Answer) app that will allow users to interact with each other asking and answering question. To make the whole process more realistic, you will use Node.js and Express to create a rough backend API. Don't worry if you don't feel confident about developing backend apps with Node.js. This is going to be a very straightforward process and you will be up and running in no time.
+
+In the end of this tutorial, you will have a React app supported by a Node.js backend that looks like this:
+
+![React Tutorial: Building and Securing Your First App](https://cdn.auth0.com/blog/react-tutorial/q-and-a-app.png)
+
 ## Conclusion
 
 Mention:
