@@ -31,8 +31,10 @@ related:
 
 I took the ["Achieving Security Awareness Through Social Engineering Attacks"](https://www.blackhat.com/us-18/training/achieving-security-awareness-through-social-engineering-attacks.html) course at [Black Hat this year](https://www.blackhat.com/us-18/)!
 
+<br />
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">“Achieving Security Awareness Through Social Engineering Attacks” <a href="https://twitter.com/hashtag/BHUSA?src=hash&amp;ref_src=twsrc%5Etfw">#BHUSA</a> Training taught by <a href="https://twitter.com/jaysonstreet?ref_src=twsrc%5Etfw">@jaysonstreet</a> &amp; <a href="https://twitter.com/aprilwright?ref_src=twsrc%5Etfw">@aprilwright</a> will use current Red Team strategies to develop a better understanding of how attackers use SE <a href="https://t.co/yuojeClInS">https://t.co/yuojeClInS</a></p>&mdash; Black Hat (@BlackHatEvents) <a href="https://twitter.com/BlackHatEvents/status/1002976909268045827?ref_src=twsrc%5Etfw">June 2, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<br />
 
 It was eye-opening, tremendously interesting, and fun! It was facilitated by [Jayson Street](https://twitter.com/jaysonstreet) and [April Wright](https://twitter.com/aprilwright). Jayson gets paid by companies to break into their own facilities through [Social Engineering](<https://en.wikipedia.org/wiki/Social_engineering_(security)>). He shared many crazy stories, like the time he [gained full access to a bank in Beirut in two and a half minutes](https://www.youtube.com/watch?v=UpX70KxGiVo&feature=youtu.be&t=434).
 
@@ -70,7 +72,7 @@ There was an exercise about drafting (not sending) a spear phishing email in 1 h
 
 How do they come up with these names?
 
-As part of the training they gave us a [WiFi Pineapple](https://www.wifipineapple.com/), a [Bash Bunny](https://wiki.bashbunny.com/#!index.md) and a [Packet Squirrel](https://www.hak5.org/gear/packet-squirrel). They are tools meant to be used for penetration tests, and they have many pranks that can help with Security Awareness programs by showcasing their associated dangers in safe and controlled setups.
+As part of the training, they gave us a [WiFi Pineapple](https://www.wifipineapple.com/), a [Bash Bunny](https://wiki.bashbunny.com/#!index.md) and a [Packet Squirrel](https://www.hak5.org/gear/packet-squirrel). They are tools meant to be used for penetration tests, and they have many pranks that can help with Security Awareness programs by showcasing their associated dangers in safe and controlled setups.
 
 ### WiFi Pineapple
 
