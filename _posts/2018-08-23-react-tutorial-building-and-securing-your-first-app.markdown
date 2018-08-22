@@ -411,6 +411,32 @@ This command will install two libraries to help you handle the navigation in you
 
 Then, after installing these libraries, you can open your React project in your preferred IDE so you can start the real work.
 
+### Cleaning Up your React App
+
+Well, actually, before start developing your app, you can remove a few files from it and clean up its code a little bit. For starter, you can remove the `./src/App.test.js` file because you won't create automated tests in this tutorial. Although this is an important topic, you will skip it for now so you can focus on learning React.
+
+> **Note:** After learning about React, you might get interested into learning about how to add automated tests to your app. A good resource to help you on that matter is [the _Testing React Applications with Jest_ blog post](https://auth0.com/blog/testing-react-applications-with-jest/).
+
+Besides that, you can also remove two other files as you won't use them: `./src/logo.svg` and `./src/App.css`. Then, after removing these files, open the `./src/App.js` file and replace its code with this:
+
+```js
+import React, { Component } from 'react';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <p>Work in progress.</p>
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+You will soon replace the contents of this file again. However, to avoid having code that won't compile, it is a good idea to refactor your `App` component.
+
 ## Conclusion
 
 Mention:
