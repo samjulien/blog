@@ -78,6 +78,8 @@ The [Microsoft Authenticator](https://docs.microsoft.com/en-us/azure/multi-facto
 
 The Microsoft Authenticator is one of many similar tools, including the Google Authenticator, Twilio Authenticator, and LastPass Authenticator. They all rely on a time-based one-time password (TOTP) algorithm to generate a short-lived (30 seconds or less) password. The user must [copy the password into the website](https://uk.godaddy.com/blog/how-to-avoid-web-design-mistakes-that-could-sabotage-your-business/)'s or app's required field for verification before it expires.
 
+{% include tweet_quote.html quote_text="SMS 2FA is vulnerable to swings in cell-phone connectivity and can be easily intercepted by third parties. A more secure version is employing software tokens." %}
+
 ### Other Forms of 2FA That Could Have Stopped the Reddit Data Breach
 
 Hardware tokens are another method that many enterprises use. They rely on a physical device, such as a key fob or USB dongle, that generates a token for the user.
@@ -125,6 +127,8 @@ Reddit quickly [published data breach mitigation steps on its site](https://www.
 </p>
 
 Offering immediate, actionable steps accompanied by links to more detailed pages of information is a great way to help your users without overwhelming them with technical information.
+
+{% include tweet_quote.html quote_text="The most important thing to do when you learn that your system has been compromised is to immediately communicate it and take action." %}
 
 Hopefully, you won't have to employ these final tactics; however, given today's challenging threat environment, particularly for teams with large user bases, it's critical to stay up to date on the latest solutions and security strategies to avoid a worst-case scenario.
 
