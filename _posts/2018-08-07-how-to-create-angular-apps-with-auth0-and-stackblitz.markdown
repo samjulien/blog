@@ -10,7 +10,7 @@ design:
 author:
   name: Dan Arias
   url: http://twitter.com/getDanArias
-  mail: dan.arias@auth.com
+  mail: dan.arias@auth0.com
   avatar: https://pbs.twimg.com/profile_images/1002301567490449408/1-tPrAG__400x400.jpg
 tags: 
   - stackblitz
