@@ -25,3 +25,5 @@ related:
 - 2017-11-28-redux-practical-tutorial
 - 2018-08-14-react-context-api-managing-state-with-ease
 ---
+
+**TL;DR:** In this article, you will learn the basic concepts of React. After that, you will have the chance to use React in action while creating a simple Q&A (Questions & Answers) app that relies on a backend API. If needed, you can check [this GitHub repository to check the code that supports this article](https://github.com/auth0-blog/react-tutorial). Have fun!
