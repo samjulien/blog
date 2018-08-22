@@ -375,6 +375,42 @@ curl localhost:8081
 
 The first command will trigger a HTTP GET request that will result in an empty array being printed out (`[]`). Then, the second command will issue a POST request to insert a new question into your API, and the third command will issue another GET request to verify if the question was properly inserted.
 
+## Developing Applications with React
+
+With your backend API up and running, you are finally ready to start developing your React application. Not that long ago, developers willing to create apps with React would have a hard time setting up all the tools needed (e.g., [webpack](https://webpack.js.org/)) to scaffold a React application. However (and luckily), the scenario has changed drastically after Facebook published a tool called [_Create React App_](https://github.com/facebook/create-react-app).
+
+With this tool, you can scaffold a new React application with just one command. As such, to create your React app, open a new terminal and go to the same directory you created the `qa-api` one. From there, issue the following command:
+
+```bash
+npx create-react-app qa-react
+```
+
+This will make NPM download and run `create-react-app` in a single command, passing to it `qa-react` as the desired directory for your new application. The process involved in scaffolding a new application, as you will see after running the command above, is not that simple. The tool even need a bunch of seconds (or a couple of minutes depending on your internet connection) to create the whole thing. However, when this tool finishes, you can issue the following commands to run your React app:
+
+```bash
+# move into the new directory
+cd qa-react
+
+# start your React app
+npm start
+```
+
+The last command issued above will start a development server that listens on port `3000` and will open the new app in your default web browser.
+
+![Welcome to React](https://cdn.auth0.com/blog/react-tutorial/welcome-to-react.png)
+
+After seeing your app, you can stop the server by hitting `Ctrl` + `c` (or `⌘` + `c` on MacOS X) so you can install a couple dependencies that you will need in your application. So, back in your terminal and after stopping the server, run the following command:
+
+```bash
+npm i react-router react-router-dom
+```
+
+This command will install two libraries to help you handle the navigation in your app. The first one, `react-router`, is the main library that enables seamless navigation. The second one, `react-router-dom`, is an extension to the web.
+
+> **Note:** If you were using [React Native](https://facebook.github.io/react-native/) to develop an app to mobile devices, you would install `react-router-native` instead.
+
+Then, after installing these libraries, you can open your React project in your preferred IDE so you can start the real work.
+
 ## Conclusion
 
 Mention:
