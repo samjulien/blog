@@ -30,6 +30,9 @@ related:
 
 I took the ["Achieving Security Awareness Through Social Engineering Attacks"](https://www.blackhat.com/us-18/training/achieving-security-awareness-through-social-engineering-attacks.html) course at [Black Hat this year](https://www.blackhat.com/us-18/)!
 
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">“Achieving Security Awareness Through Social Engineering Attacks” <a href="https://twitter.com/hashtag/BHUSA?src=hash&amp;ref_src=twsrc%5Etfw">#BHUSA</a> Training taught by <a href="https://twitter.com/jaysonstreet?ref_src=twsrc%5Etfw">@jaysonstreet</a> &amp; <a href="https://twitter.com/aprilwright?ref_src=twsrc%5Etfw">@aprilwright</a> will use current Red Team strategies to develop a better understanding of how attackers use SE <a href="https://t.co/yuojeClInS">https://t.co/yuojeClInS</a></p>&mdash; Black Hat (@BlackHatEvents) <a href="https://twitter.com/BlackHatEvents/status/1002976909268045827?ref_src=twsrc%5Etfw">June 2, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 It was eye-opening, tremendously interesting, and fun! It was facilitated by [Jayson Street](https://twitter.com/jaysonstreet) and [April Wright](https://twitter.com/aprilwright). Jayson gets paid by companies to break into their own facilities through [Social Engineering](<https://en.wikipedia.org/wiki/Social_engineering_(security)>). He shared many crazy stories, like the time he [gained full access to a bank in Beirut in two and a half minutes](https://www.youtube.com/watch?v=UpX70KxGiVo&feature=youtu.be&t=434).
 
 <p style="text-align: center;">
@@ -94,7 +97,7 @@ The Bash Bunny is a USB attack platform that can emulate trusted USB devices lik
 
 We did a couple of experiments in the class: First, we used a “prank” payload that [rickrolls](https://en.wikipedia.org/wiki/Rickrolling) the target at a specific date and time. It took less than 20 seconds to deliver this payload.
 
-Then we tested a “recon” payload and we could get the full terminal history, clipboard content, system users, `ifconfig`, WAN IP, and all installed applications. This took a little bit longer, but it was still fast and the computer was in sleep mode.
+Then we tested a “recon” payload and we could get the full terminal history, clipboard content, system users, [`ifconfig`](https://en.wikipedia.org/wiki/Ifconfig), WAN IP, and all installed applications. This took a little bit longer, but it was still fast and the computer was in sleep mode.
 
 **Takeaway #3:** Don’t plug in random USB drives and be cautious when working on public spaces.
 
