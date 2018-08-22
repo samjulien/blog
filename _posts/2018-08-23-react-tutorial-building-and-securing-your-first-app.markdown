@@ -46,6 +46,28 @@ For more information on each topic, you can always consult [the official React d
 
 ### React and the JSX Syntax
 
+First and foremost, you need to know that React uses a funny syntax called JSX. JSX, which stands for JavaScript XML, is a syntax extension to JavaScript that enables developers to use XML (and, as such, HTML) to define their applications. This section won't get into the details of how JSX really works. The idea here is to give you a heads up so you don't get surprised when you see this syntax in the next sections.
+
+So, when it comes to JSX, it is perfectly normal to see things like this:
+
+```js
+function showRecipe(recipe) {
+  if (!recipe) {
+    return <p>Recipe not found!</p>;
+  }
+  return (
+    <div>
+      <h1>{recipe.title}</h1>
+      <p>{recipe.description}</h1>
+    </div>
+  );
+}
+```
+
+In this case, the `showRecipe` function is using the JSX syntax to show the details of a `recipe` (i.e., if the recipe is available) or a message saying that the recipe was not found. If you are not familiar with this syntax, don't worry. You will get used to it quite soon. Then, if you are wondering why React uses JSX, you can read [their official explanation here](https://reactjs.org/docs/introducing-jsx.html).
+
+> "React embraces the fact that rendering logic is inherently coupled with other UI logic: how events are handled, how the state changes over time, and how the data is prepared for display." - [Introducing JSX](https://reactjs.org/docs/introducing-jsx.html)
+
 ### React Components
 
 Components in React are the most important pieces of code. Everything you can interact with in a React application is (or is part of) a component. For example, when you load a React application, the whole thing will be handled by a root component that is usually called `App`. Then, if this application contains a navigation bar, you can bet that this bar is defined inside a component called `NavBar` or similar. Also, if this bar contains a form where you can input a value to trigger a search, you are probably dealing with another component that handles this form.
