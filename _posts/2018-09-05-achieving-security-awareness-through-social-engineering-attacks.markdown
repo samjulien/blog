@@ -39,3 +39,25 @@ It was eye-opening, tremendously interesting, and fun! It was facilitated by [Ja
 [Source](https://imgflip.com/meme/38390688/corgi-hacker?sort=latest)
 
 Here’s a summary of what we discussed in the training, along with key takeaways:
+
+## OSINT and Social Media
+
+> “Information doesn’t have to be secret to the valuable” ~ CIA
+
+One of the key elements of Social Engineering is [Open-source Intelligence (OSINT)](https://en.wikipedia.org/wiki/Open-source_intelligence), which is insight produced from data collected from publicly available sources. **If you don’t have proper privacy settings in your social media accounts, the information you put there is public**.
+
+We discussed a case in class of a guy named Travis who put pictures of his badge, passport, plane tickets, job title, workplace and even emails on Instagram. Really.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/achieving-security-awareness-through-social-engineering-attacks/private-data-exposed-in-instragram.jpg" alt="Private data exposed on Instagram.">
+</p>
+
+April contacted him and he removed some of it, but you can still find the badge on Instagram.
+
+We analyzed how someone that overposts on social media could be targeted, and it’s not a surprise that it’s relatively simple. We also talked about tools and techniques to get and find relevant information.
+
+There was an exercise about drafting (not sending) a spear phishing email in 1 hour targeted at someone in our organization using OSINT. Nobody used their own workplace and nobody said where they worked, but we completed the task with good results.
+
+**Takeaway #1:** Review your privacy settings and don’t post private information on social media.
+
+{% include tweet_quote.html quote_text="Review your privacy settings and don’t post private information on social media. Open-source Intelligence tools could be used to mine your data and create phishing opportunities." %}
