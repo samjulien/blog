@@ -97,3 +97,5 @@ Reddit quickly [published this information on its site](https://www.reddit.com/r
 Offering immediate, actionable steps accompanied by links to more detailed pages of information is a great way to help your users without overwhelming them with technical information.
 
 Hopefully, you won't have to employ these final tactics; however, given today's challenging threat environment, particularly for teams with large user bases, it's critical to stay up to date on the latest solutions and security strategies to avoid a worst-case scenario.
+
+{% include asides/about-auth0.markdown %}
