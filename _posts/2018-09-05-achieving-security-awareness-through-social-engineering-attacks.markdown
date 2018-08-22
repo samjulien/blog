@@ -83,3 +83,19 @@ This is the picture of a WiFi Pineapple Tower because… Black Hat.
 **Takeaway #2:** Avoid open or public networks as much as possible, especially in crowded spaces. If you’re not in a trusted space, turn on WiFi only when you really need it.
 
 {% include tweet_quote.html quote_text="Avoid open or public networks as much as possible, especially in crowded spaces. If you’re not in a trusted space, turn on WiFi only when you really need it." %}
+
+### Bash Bunny
+
+The Bash Bunny is a USB attack platform that can emulate trusted USB devices like Gigabit Ethernet, serial, flash storage and keyboards.
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/achieving-security-awareness-through-social-engineering-attacks/bash-bunny.png" alt="Bash Bunny USB platform.">
+</p>
+
+We did a couple of experiments in the class: First, we used a “prank” payload that [rickrolls](https://en.wikipedia.org/wiki/Rickrolling) the target at a specific date and time. It took less than 20 seconds to deliver this payload.
+
+Then we tested a “recon” payload and we could get the full terminal history, clipboard content, system users, `ifconfig`, WAN IP, and all installed applications. This took a little bit longer, but it was still fast and the computer was in sleep mode.
+
+**Takeaway #3:** Don’t plug in random USB drives and be cautious when working on public spaces.
+
+{% include tweet_quote.html quote_text="Don’t plug in random USB drives and be cautious when working on public spaces." %}
