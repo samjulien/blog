@@ -472,9 +472,11 @@ After creating your account, log in to it, head to [the APIs section in your Aut
 
 ![Creating a new Auth0 API configuration.](https://cdn.auth0.com/blog/fullstack-typescript/create-auth0-api.png)
 
-Then you should visit the [_Applications_ section](https://manage.auth0.com/#/applications) of your Auth0 management dashboard, and click on the application with the same name as the API you just created. 
+Then you should visit the [_Applications_ section](https://manage.auth0.com/#/applications) of your Auth0 management dashboard to create an Auth0 Application to represent the front-end Angular app you will create in the next part of this series.
 
-In this page, go to the _Settings_ section. There, you can change the _Application Type_ to `Single Page Application`, add `http://localhost:4200/login` (you are going to use it in the next article) to the _Allowed Callback URLs_ field, and save the changes (you can also remove `(Test Application)` from the application name). Then, leave this page open as you will need to copy _Domain_, _Client ID_, and _Client Secret_ to configure your API.
+In this page, click on _Create Application_. Auth0 will show you a form where you will need to define a _Name_ to your application (e.g., _Menu Angular App_) and you will have to select _Single Page Web Application_ as its type. Then, after clicking on the _Create_ button to conclude the process, Auth0 will take you to the _Quick Start_ section of your new application.
+
+From there, go to the _Settings_ section of your Auth0 Application. In this section, you will have to add `http://localhost:4200/login` (you are going to use it in the next article) to the _Allowed Callback URLs_ field, and save the changes. Then, leave this page open as you will need to copy _Domain_, _Client ID_, and _Client Secret_ to configure your API.
 
 Now, you can generate an access token with Auth0 (you will use this token soon, after securing your API). To do this, head to the following address in your browser:
 
