@@ -8,6 +8,7 @@ date: 2018-mm-dd 8:30
 category: Technical guide, Thing, Thing2, PR, Press
 (!CanRemoveIfFalse)press_release: true
 (!CanRemoveIfFalse)is_non-tech: true
+(!If post has technical Auth0 Aside)auth0_aside: true
 banner:
   text: "Auth0 makes it easy to add authentication to your ___ application."
 author:
@@ -51,6 +52,12 @@ Center an image:
 ```
 [Link text](http://url.goes.here)
 ```
+
+> **Note:** Sometimes it's necessary to use HTML markup for links if the hyperlink contains a closing parentheses.
+
+```html
+<a href="http://url.goes.here">Link text</a>
+``` 
 
 ### Blockquote (Quote)
 
@@ -112,6 +119,15 @@ $ bash
 text
 ```
 
+### Diff
+
+```diff
+  line
+- removed
++ added
+```
+
+
 ## Warnings
 
 ```html
@@ -125,7 +141,8 @@ text
 
 ### Characters
 
-* Em dash: `—` (don't use hyphens for this) - Mac shortcut: `Shift`+`Alt`+`-`
+* Em dash: `—` (don't use hyphens for this) - Mac shortcut: `Shift`+`Option/Alt`+`-`
+* En dash: `–` (don't use hyphens for this) - Mac shortcut: `Option/Alt`+`-`
 * Lambda: `λ`
 
 ### Within-article Target Links
