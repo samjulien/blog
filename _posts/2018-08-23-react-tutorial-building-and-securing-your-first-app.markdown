@@ -44,11 +44,91 @@ In this section, you will learn about some basic concepts that are important to 
 
 For more information on each topic, you can always consult [the official React documentation](https://reactjs.org/).
 
+### React and the JSX Syntax
+
 ### React Components
 
 Components in React are the most important pieces of code. Everything you can interact with in a React application is (or is part of) a component. For example, when you load a React application, the whole thing will be handled by a root component that is usually called `App`. Then, if this application contains a navigation bar, you can bet that this bar is defined inside a component called `NavBar` or similar. Also, if this bar contains a form where you can input a value to trigger a search, you are probably dealing with another component that handles this form.
 
 The biggest advantage of using components to define your application is that this approach lets you encapsulate different parts of your user interface into independent, reusable pieces. Having each part on its own component facilitates reasoning about each piece in particular, testing each piece, and reusing them whenever applicable. When you start finding your bearings with this approach, you will see that having a tree of components (that's what you get when you divide everything into components) also facilitates state propagation.
+
+### Defining Components in React
+
+Now that you learned that React applications are nothing more than a tree of components, you have to learn how to create components in React. So, basically, there are two types of React components that you can create: [_Functional Components_ and _Class Components_](https://reactjs.org/docs/components-and-props.html#functional-and-class-components).
+
+The difference between these two types is that functional components are simply "dumb" components that do not hold any internal state, and class components are more complex components that can hold internal state. For example, if you are creating a component that will only show the profile of the user that is authenticated, you can create a functional component as follows:
+
+```js
+function UserProfile(props) {
+  return (
+    <div className="user-profile">
+      <img src={props.userProfile.picture} />
+      <p>{props.userProfile.name}</p>
+    </div>
+  );
+}
+```
+
+There is nothing particularly interesting about the component defined above as no internal state is handled. As you can see, this component simply uses a `userProfile` that was passed to it to define a `div` element that shows the user's picture (the `img` element) and their name (inside the `p` element).
+
+However, if you are going to create a component to handle things that need to hold some state and perform more complex tasks, like a subscription form, you will need a class component. To create a class component in React, you would proceed as follows:
+
+```js
+class SubscriptionForm extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      acceptedTerms: false,
+      email: '',
+    };
+  }
+
+  updateCheckbox(checked) {
+    this.setState({
+      acceptedTerms: checked,
+    });
+  }
+
+  updateEmail(value) {
+    this.setState({
+      email: value,
+    });
+  }
+
+  submit() {
+    // ... use email and acceptedTerms in an ajax request or similar ...
+  }
+
+  render() {
+    return (
+      <form>
+        <input
+          type="email"
+          onChange={(event) => {this.updateEmail(event.target.value)}}
+          value={this.state.email}
+        />
+        <input
+            type="checkbox"
+            checked={this.state.acceptedTerms}
+            onChange={(event) => {this.updateCheckbox(event.target.checked)}}
+          />
+        <button onClick={() => {this.submit()}}>Submit</button>
+      </form>
+    )
+  }
+}
+```
+
+As you can see, this new component is handling way more stuff than the other one. For starters, this component is defining three input elements (actually, two `input` tags and one `button`, but the button is also considered an input element). The first one enables users to input their email addresses. The second one is a checkbox where users can define if they agree or not to some arbitrary terms. The third one is a button that users will have to click to end the subscription process.
+
+Also, you will notice that this component is defining an internal state (`this.state`) with two fields: `acceptedTerms` and `email`. In this case, the form uses the `acceptedTerms` field to represent the choice of the users in relation to the fictitious terms and the `email` field to hold their email addresses. Then, when users click on the submit button, this form would use its internal state to issue an [AJAX request](https://www.w3schools.com/xml/ajax_xmlhttprequest_send.asp).
+
+So, basically speaking, if you need a component to handle dynamic things that depend on a internal state, like user input, you will need a class component. However, if you need a component that won't perform any logic internally that relies on a internal state, you can stick with a function component.
+
+> **Note:** This is just a brief explanation about the different components and how they behave. In fact, the last component created in this section, `SubscriptionForm`, could be easily transformed into a functional component too. In this case, you would have to move its internal state up in the component tree and pass to it these values and functions to trigger state change. To learn more about React components, please, [check this article](https://reactjs.org/docs/components-and-props.html#functional-and-class-components).
+
+### Re-Rendering React Components
 
 ## Conclusion
 
