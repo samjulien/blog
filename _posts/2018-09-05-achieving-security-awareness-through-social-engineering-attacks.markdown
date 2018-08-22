@@ -131,3 +131,5 @@ We talked about other topics such as policies, security awareness programs, meme
 </p>
 
 {% include tweet_quote.html quote_text="Security training and awareness campaigns make people the best line of cybersecurity defense" %}
+
+{% include asides/about-auth0.markdown %}
