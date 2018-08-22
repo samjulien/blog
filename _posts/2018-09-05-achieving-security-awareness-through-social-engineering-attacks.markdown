@@ -1,8 +1,9 @@
 ---
 layout: post
-title: "Blackhat Training: Achieving Security Awareness Through Social Engineering Attacks"
+title: "Black Hat Training: Achieving Security Awareness Through Social Engineering Attacks"
 metatitle: "Achieving Security Awareness Through Social Engineering Attacks"
-description: ""
+description: "Let’s cover the top 10 cybersecurity takeaways of my social engineering training at Black Hat."
+metadescription: "These are the top 10 takeaways of the social engineering course I took at Black Hat, which covered policies, security awareness programs, and much more!"
 date: 2018-09-05 10:00
 category: Identity, Auth0 Engineering
 author:
