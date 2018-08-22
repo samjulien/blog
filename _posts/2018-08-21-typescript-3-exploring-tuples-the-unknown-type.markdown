@@ -409,7 +409,7 @@ Output:
 
 ## TypeScript: New 'Unknown' Top Type
 
-TypeScript 3.0 introduces a new top type called `unknown`. `unknown` acts like a type-safe version of `any` by requiring us to perform some type of checking before we can use the value of the `unknown` variable or any of its properties. Let's explore the rules around this wicked type!
+TypeScript 3.0 introduces a new type called `unknown`. `unknown` acts like a type-safe version of `any` by requiring us to perform some type of checking before we can use the value of the `unknown` element or any of its properties. Let's explore the rules around this wicked type!
 
 `any` is too flexible. As the name suggests, it can encompass the type of every possible value in TypeScript. What's not so ideal of this premise is that `any` doesn't require us to do any kind of checking before we make use of the properties of its value.
 
