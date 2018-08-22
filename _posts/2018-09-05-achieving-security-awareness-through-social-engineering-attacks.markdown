@@ -99,3 +99,32 @@ Then we tested a “recon” payload and we could get the full terminal history,
 **Takeaway #3:** Don’t plug in random USB drives and be cautious when working on public spaces.
 
 {% include tweet_quote.html quote_text="Don’t plug in random USB drives and be cautious when working on public spaces." %}
+
+## Conclusion and Other Takeaways
+
+We talked about other topics such as policies, security awareness programs, memes and the importance of repetition during training. These are the top 10 Takeaways of the experience:
+
+1.  Review your privacy settings and don’t post private information on social media.
+
+2.  Avoid open or public networks as much as possible, especially in crowded spaces. If you’re not in a trusted space, turn on WiFi only when you really need it.
+
+3.  Don’t plug in random USB drives and be cautious when working on public spaces.
+
+4.  Clickbait is widely used in social engineering, don’t trust it.
+
+5.  **We need to run phishing campaigns quarterly for compliance reasons**, but we should have a signed policy in place and a formal training as well.
+6.  Although potentially controversial, hard to spot spear phishing emails create a more impactful “teachable moment” (as Jayson says).
+
+7.  Certain topics of Security Awareness training should be tailored by role. We should have a site that groups all this information and internal security-focused newsletters could be useful as well.
+
+8.  Controlled live demos with tools like the WiFi Pineapple and the Bash Bunny help raise security awareness.
+
+9.  Prizes and gamification support these efforts.
+
+10. It is important to always explain the purpose of the training, demo or campaign. We don’t ever want you to fail, we want to empower you and help make you one of our strongest lines of defense:
+
+<p style="text-align: center;">
+  <img src="https://cdn.auth0.com/blog/achieving-security-awareness-through-social-engineering-attacks/teammate-empowerment.jpg" alt="Security training and awareness campaigns make people the best line of cybersecurity defense">
+</p>
+
+{% include tweet_quote.html quote_text="Security training and awareness campaigns make people the best line of cybersecurity defense" %}
