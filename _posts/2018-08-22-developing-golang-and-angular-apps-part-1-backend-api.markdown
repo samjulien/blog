@@ -23,12 +23,12 @@ tags:
 - applications
 - node-js
 related:
-- 2016-09-29-angular-2-authentication.markdown
+- 2018-08-23-developing-golang-and-angular-apps-part-2-angular-front-end
 - 2016-04-13-authentication-in-golang
 - 2018-08-07-how-to-create-angular-apps-with-auth0-and-stackblitz
 ---
 
-**TL;DR:** In this series, you will learn how to build modern applications with Golang and Angular. In the first article, you will build a secure backend API with Golang that will support a to-do list application. Then, in the second part, you will use Angular to develop the frontend of the to-do list app. To facilitate the identity management, you will use Auth0 both in your backend API and in your Angular app to authenticate users. If needed, you can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/golang-angular).
+**TL;DR:** In this series, you will learn how to build modern applications with Golang and Angular. In the first article, you will build a secure backend API with Golang that will support a to-do list application. Then, in the second part, you will [use Angular to develop the frontend of the to-do list app](https://auth0.com/blog/developing-golang-and-angular-apps-part-2-angular-front-end). To facilitate the identity management, you will use Auth0 both in your backend API and in your Angular app to authenticate users. If needed, you can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/golang-angular).
 
 {% include tweet_quote.html quote_text="I'm developing a modern application with @angular and @golang." %}
 
@@ -584,6 +584,6 @@ Done! You just finished developing a secure backend API with Golang, Gin, and Au
 
 Adding features to your application now becomes a lot easier. Once you have established a strong fundament in security, you can add different to-do lists for different users. Using a third-party security solution like Auth0 is also a great advantage because you can rest assured that this solution will keep your users' personal data safe. With a few changes here and there (such as serving your API and static files over HTTPS), you can quite confidently deploy this code to production.
 
-I hope the first part of this series has been helpful and that it has given some insight on how easy it is to implement Auth0 as a third-party authentication service on Golang. In the second part of this series, you will learn how to implement the frontend client of your to-do list with Angular and how to integrate it with your Golang backend API.
+I hope the first part of this series has been helpful and that it has given some insight on how easy it is to implement Auth0 as a third-party authentication service on Golang. In the second part of this series, [The Front-end - Developing and Securing Angular Apps](https://auth0.com/blog/developing-golang-and-angular-apps-part-2-angular-front-end), you will learn how to implement the frontend client of your to-do list with Angular and how to integrate it with your Golang backend API.
 
 Stay tuned!
