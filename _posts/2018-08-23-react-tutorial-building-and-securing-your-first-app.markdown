@@ -628,6 +628,8 @@ Then, whenever Axios gets a response from the backend, you put the `data` return
 
 Now, regarding of how your questions are showed, you are using a bunch of `div` elements with CSS classes provided by Bootstrap to create a nice [_Card_ component](https://getbootstrap.com/docs/4.1/components/card/). If you want to tweak how this card is shown, make sure to check the docs.
 
+Besides that, note that you are using a component called `Link` (from `react-router-dom`) to make this redirect users to the following path when clicked: `/question/${question.id}`. In the next section, you will create a component to the answers to a question chosen by the user.
+
 So, as you already understand how your component behaves, the next thing you will need to do is to update the code of your `App` component to use your new component:
 
 ```js
@@ -652,6 +654,104 @@ export default App;
 Then, if you run your app again (`npm start`), you will see this nice page:
 
 ![React app using Axios to fetch data from a backend API.](https://cdn.auth0.com/blog/react-tutorial/react-app-showing-questions.png)
+
+### Routing Users with React Router
+
+With all these features in place, one important step that you have to learn about is how to handle routing in your React app. In this section, you will learn about this topic while creating a component that shows the details of the questions available in your backend.
+
+For starters, you can create a new directory called `Question` (singular now) and a file called `Question.js` (also singular) inside it. Then, you can insert the following code into this file:
+
+```js
+import React, {Component} from 'react';
+import axios from 'axios';
+
+class Question extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      question: null,
+    };
+  }
+
+  async componentDidMount() {
+    const { match: { params } } = this.props;
+    const question = (await axios.get(`http://localhost:8081/${params.questionId}`)).data;
+    this.setState({
+      question,
+    });
+  }
+
+  render() {
+    const {question} = this.state;
+    if (question === null) return <p>Loading ...</p>;
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="jumbotron col-12">
+            <h1 className="display-3">{question.title}</h1>
+            <p className="lead">{question.description}</p>
+            <hr className="my-4" />
+            <p>Answers:</p>
+            <p className="lead">
+              {
+                question.answers.map((answer, idx) => (
+                  <p key={idx}>{answer.answer}</p>
+                ))
+              }
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default Question;
+```
+
+The way this new component works is actually very similar to the way the `Questions` component works. This is a stateful component that uses Axios to issue a GET request to the endpoint that retrieves the whole details of a question, and that updates the page whenever it gets a response back.
+
+Nothing really new here. What is going to be new is the way this component gets rendered.
+
+So, open the `App.js` file, and replace its contents with this:
+
+```js
+import React, { Component } from 'react';
+import {Route} from 'react-router-dom';
+import NavBar from './NavBar/NavBar';
+import Question from './Question/Question';
+import Questions from './Questions/Questions';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <NavBar/>
+        <Route exact path='/' component={Questions}/>
+        <Route exact path='/question/:questionId' component={Question}/>
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+In the new version of your `App` component, you are using two `Route` elements (provide by `react-router-dom`) to tell React when you want the `Questions` component rendered and when you want the `Question` component rendered. More specifically, you are telling React that if your users navigate to `/` (`exact path='/'`) you want them to see `Questions` and, if they navigate to `/question/:questionId`, you want them to see the details of a specific question.
+
+Note that the last route defines a parameter called `questionId`. When you created the `Questions` (plural) component, you added a link that uses the `id` of the question. React Router uses this `id` to form the link and then gives it to your `Question` component (`params.questionId`). With this `id`, your component uses Axios to tell the backend what question exactly is being requested.
+
+If you check your application now, you will be able to see all your questions in the home page and you will be able to navigate to a specific question. However, you probably won't see any answer in your new component because your never added one. For now, to add answers to your questions, you can issue requests similar to the following one:
+
+```bash
+curl -X POST -H 'Content-Type: application/json' -d '{
+  "answer": "Just spread butter on the bread and that is it."
+}' localhost:8081/answer/1
+```
+
+After that, if you reload your app and go to [`http://localhost:3000/question/1`](http://localhost:3000/question/1), you will see a page similar to this:
+
+![React app configured with React Router](https://cdn.auth0.com/blog/react-tutorial/react-app-with-react-router.png)
 
 ## Conclusion
 
