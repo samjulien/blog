@@ -708,7 +708,7 @@ export class AppComponent {
 
 Next, you need to edit the `app.component.html` file and set it with the following code:
 
-```html
+{% highlight html %}
 <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -744,7 +744,7 @@ Next, you need to edit the `app.component.html` file and set it with the followi
     </div>
   </div>
 </div>
-```
+{% endhighlight %}
 
 Here, you are creating a new navigation bar including functions from `AuthService` to allow users to log in and log out. Underneath this navigation bar, you are including the `router-outlet` component inside a `div.container-fluid` element (this is part of Bootstrap). The outlet element is what tells Angular to ask to the routing module which page it should load.
 
