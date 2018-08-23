@@ -7,8 +7,8 @@ metadescription: "These are the top 10 takeaways of the social engineering cours
 date: 2018-09-05 10:00
 category: Identity, Auth0 Engineering
 author:
-  name: "Anny Villarroel"
-  url: ""
+  name: "Annybell Villarroel"
+  url: "https://www.linkedin.com/in/annybell-villarroel-60281189/"
   mail: "annybell.villarroel@auth0.com"
   avatar: ""
 design:
@@ -52,7 +52,7 @@ Here’s a summary of what we discussed in the training, along with key takeaway
 
 One of the key elements of Social Engineering is [Open-source Intelligence (OSINT)](https://en.wikipedia.org/wiki/Open-source_intelligence), which is insight produced from data collected from publicly available sources. **If you don’t have proper privacy settings in your social media accounts, the information you put there is public**.
 
-We discussed a case in class of a guy named Travis who put pictures of his badge, passport, plane tickets, job title, workplace and even emails on Instagram. Really.
+In class, we discussed the case of a guy named Travis who put pictures of his badge, passport, plane tickets, job title, workplace and even emails on Instagram. Really.
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/achieving-security-awareness-through-social-engineering-attacks/private-data-exposed-in-instragram.jpg" alt="Private data exposed on Instagram.">
@@ -70,15 +70,15 @@ There was an exercise about drafting (not sending) a spear phishing email in 1 h
 
 ## WiFi Pineapple and Bash Bunny
 
-How do they come up with these names?
+As part of the training, they gave us [some interesting gadgets from Hak5](https://www.hak5.org/) including a [WiFi Pineapple](https://www.wifipineapple.com/) and a [Bash Bunny](https://wiki.bashbunny.com/#!index.md). They are tools meant to be used for penetration tests, and they have many pranks that can help with Security Awareness programs by showcasing their associated dangers in safe and controlled setups.
 
-As part of the training, they gave us a [WiFi Pineapple](https://www.wifipineapple.com/), a [Bash Bunny](https://wiki.bashbunny.com/#!index.md) and a [Packet Squirrel](https://www.hak5.org/gear/packet-squirrel). They are tools meant to be used for penetration tests, and they have many pranks that can help with Security Awareness programs by showcasing their associated dangers in safe and controlled setups.
+> We also got a [Packet Squirrel](https://www.hak5.org/gear/packet-squirrel) as an extra gift!
 
 ### WiFi Pineapple
 
-The WiFi Pineapple is a [Wireless Auditing tool](https://www.tutorialspoint.com/wireless_security/wireless_security_tools.htm) that can work as a [Man-in-the-middle platform](https://en.wikipedia.org/wiki/Man-in-the-middle_attack). Among others, it allows the owner to intercept an open WiFi connection and inspect and modify HTTP traffic, redirect the user to a malicious site, or associate with past public WiFis and “pretend” to be those.
+The WiFi Pineapple is a [Wireless Auditing tool](https://www.tutorialspoint.com/wireless_security/wireless_security_tools.htm) that can work as a [Man-in-the-middle platform](https://en.wikipedia.org/wiki/Man-in-the-middle_attack). Among others, it allows the owner to intercept an open WiFi connection and inspect and modify HTTP traffic, redirect the user to a malicious site, or associate with past public WiFi connections and “pretend” to be one of them.
 
-For example, if you’re near a Pineapple while your phone has WiFi turned on and is actively looking for connections, all of the sudden you may connect to the Airport you went 6 months ago and a site may ask you to pay for the service. They mention it on the [Silicon Valley TV Show](https://www.youtube.com/watch?v=9FckHMPBs_Q).
+For example, if you’re near a Pineapple while your phone has WiFi turned on and is actively looking for connections, all of the sudden you may connect to the airport network you used 6 months ago and a site may ask you to pay for the service. They mention it on the [Silicon Valley TV Show](https://www.youtube.com/watch?v=9FckHMPBs_Q).
 
 This is the picture of a WiFi Pineapple Tower because… Black Hat.
 
@@ -118,10 +118,11 @@ We talked about other topics such as policies, security awareness programs, meme
 
 4.  Clickbait is widely used in social engineering, don’t trust it.
 
-5.  **We need to run phishing campaigns quarterly for compliance reasons**, but we should have a signed policy in place and a formal training as well.
+5.  Before running phishing campaigns, there should be policies and formal training in place.
+
 6.  Although potentially controversial, hard to spot spear phishing emails create a more impactful “teachable moment” (as Jayson says).
 
-7.  Certain topics of Security Awareness training should be tailored by role. We should have a site that groups all this information and internal security-focused newsletters could be useful as well.
+7.  Certain topics of Security Awareness training should be tailored by role. An organization should have a site that groups all this information and internal security-focused newsletters could be useful as well.
 
 8.  Controlled live demos with tools like the WiFi Pineapple and the Bash Bunny help raise security awareness.
 
