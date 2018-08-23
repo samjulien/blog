@@ -6,21 +6,21 @@ date: 2018-08-22 07:00
 category: Culture
 is_non-tech: true
 author:
-  name: "Jenny O'Brien"
-  url: "https://www.linkedin.com/in/jenny-o-brien-storyteller/"
-  mail: "jennifer.obrien@auth0.com"
-  avatar: "https://cdn.auth0.com/blog/avatars/jenny-obrien.png"
+  name: "Eugenio Pace"
+  url: "https://twitter.com/eugenio_pace"
+  mail: "eugeniop@auth0.com"
+  avatar: "https://cdn.auth0.com/blog/avatars/eugenio-pace-new-avatar.png"
 design:
   bg_color: "#222228"
-  image: 
+  image: https://cdn.auth0.com/blog/culture/Logo.png
 tags:
 - culture
 - auth0
-- read
-- beach
+- company-culture
+- scaling
 related:
 - 2017-08-14-our-culture-and-values-at-auth0
-- 2018-07-13-beach-reads-recommended-by-auziros
+- 22018-06-19-Eugenio-pace-auth0-CEO-wins-ey-entrepreneur-award
 - 2017-11-08-auth0-ranked-in-top10-employer-brands
 
 ---
@@ -96,11 +96,43 @@ Last summer, we’d grown too big to share our values only through direct action
 
 7. *Passion*
 
+VALUES LOGOS PICTURE HERE
+
 [Learn more about our core values.](https://auth0.com/careers/culture)
 
-Some of these are self-explanatory. Other deserve a little bit more attention. Let’s start with: “No BAP”. No-BAP stands for “No Bullshit, Assholes, Politics.”
+Some of these are self-explanatory. Other deserve a little bit more attention. Let’s start with: “No BAP”. No BAP stands for _“No Bullshit, Assholes, Politics.”_
 
 *No Bullshit* means literally that: we are not fond of nonsense. If we hear a nonsense excuse for something, we just call it out! 
 
 *No Assholes*: We want people that can trust each other, that respect each other, that care. That can be vulnerable with each other. Those who can see beyond the surface of a misplaced word on Slack, or unintended action that hurt someone, and those who give others the benefit of the doubt. Insulting, offensive, discriminatory behavior has no place at Auth0. I don’t care how smart, brilliant, gifted you are. People who deliver excellent results, without caring how those results are delivered, have no place in Auth0.
 
+*No (Internal) Politics*: This one refers strictly to “office intrigue.” “No Politics” in BAP means that we don’t tolerate those who would advance their own careers at the expense of damaging the company as a whole, or some team, or some other individual. It means no people that would _“throw others under the bus.”_ Nor those who often would say _“the end justifies the means.”_ 
+
+*Number 5: Experiment, Learn* and *Innovate* has some interesting side effects. One of them is that mistakes are encouraged at Auth0. Mistakes are signals. Input to improve. If you are not making mistakes, you are likely not trying hard enough. Or not challenging yourself enough. Innovation stems often from exposing yourself to serendipity and risk. Take them. At Auth0 we highly regard _“skin in the game”._
+
+Following Marcus Aurelius’s example: "The impediment to action advances action. What stands in the way becomes the way.” Failures, problems, challenges, obstacles we face every day are “gifts in disguise.” A negative tweet becomes an opportunity to engage with a customer and find a missing feature or a bug. A support ticket from an angry customer can become improved docs and a new troubleshooting tool. 
+
+
+Success is often a lousier teacher than failure. 
+
+*Finally, a word on transparency*. People often mistake this as a requirement for sharing _everything_ with _everyone_. What’s missed with this is what I call the _“burden of filter.”_ We live surrounded by a ton of information. When you share indiscriminately, it’s on the recipients of that information to figure out if it is relevant, important or not to them. 
+
+To us, transparency mostly means that no one will purposefully withhold information that they know would be important to someone else. And that if you ask, you will get a response. Pretty much on anything.
+
+## Values are useless unless you act on them
+
+Many companies _talk_ about their values. Or print them on nice frames that are scattered around their buildings. Or send emails to everyone as reminders. But, as we all know, talk (as ideas) is cheap. Words cost very little. 
+
+Values only have any meaning when you put them in action. Because in action lies _skin in the game_. As social creatures, we follow examples. Especially from our peers and leaders.
+
+Any CEO will tell you that their words will be _heard_. But what they do, speaks much louder than their words. Especially when they do something that puts themselves at any level of risk (_skin in the game_). It shows that they actually mean what they say.
+
+Culture is one of the accountabilities I have as CEO of Auth0. It’s in my _Objectives and Key Results_ (OKRs), in my annual goals, and my bonus depends on it. But as CEO, my role also focuses on meeting customers and building our products — managing rapid growth while keeping our soul intact.
+
+A board member asked me with some skepticism once: “_Your values are nice...I especially like no-BAP. Have you fired anyone yet because of that?_” The answer is yes. I have fired people for no-BAP violation (very, very few though). 
+
+Much more often, our values acted like a shield that prevents someone who might not be a good fit from joining us.  And even more often yet, in every opportunity I have, I find our values meant that I can provide (and receive) feedback to (and from) everyone in the company.
+
+To help us scale, we’ve hired people whose whole job is looking after our culture. Director of Culture [Clayton Moulynox](https://twitter.com/claytonhm/) is helping us grow and scale a greater team by focusing on the large and small details of what makes us Auth0.
+
+Tending to your culture is like gardening. Left on its own, your garden will grow into a shape you might not even recognize as your original intent. You have to constantly nurture it, remove weeds, add new species, replace soil, fix damages, water it to achieve the culture you desire and a company everyone would love to work for. Clayton is our gardener, but everybody contributes through their actions every day.
