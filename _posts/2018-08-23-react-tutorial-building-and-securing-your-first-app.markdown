@@ -316,7 +316,6 @@ app.post('/answer/:id', (req, res) => {
   if (question.length > 1) return res.status(500).send();
   if (question.length === 0) return res.status(404).send();
 
-  console.log(question);
   question[0].answers.push({
     answer,
   });
@@ -406,7 +405,7 @@ The last command issued above will start a development server that listens on po
 
 ![Welcome to React](https://cdn.auth0.com/blog/react-tutorial/welcome-to-react.png)
 
-After seeing your app, you can stop the server by hitting `Ctrl` + `c` (or `⌘` + `c` on MacOS X) so you can install a couple dependencies that you will need in your application. So, back in your terminal and after stopping the server, run the following command:
+After seeing your app, you can stop the server by hitting `Ctrl` + `c` so you can install a couple dependencies that you will need in your application. So, back in your terminal and after stopping the server, run the following command:
 
 ```bash
 npm i react-router react-router-dom
@@ -591,7 +590,6 @@ class Questions extends Component {
   }
 
   render() {
-    console.log(this.state.questions);
     return (
       <div className="container">
         <div className="row">
@@ -755,7 +753,7 @@ After that, if you reload your app and go to [`http://localhost:3000/question/1`
 
 ## Securing your React App
 
-Your application has reached a state where it has almost everything it needs for prime time. There are just a few features missing. For example, right now, your users have no means of answering questions through your app. Another example is that there is no way to log in into your application. Besides that, the questions and answers do not provide information about their authors.
+Your application has reached a state where it has almost everything it needs for prime time. There are just a few features missing. For example, right now, your users have no means of creating questions nor answering them through your app. Another example is that there is no way to log in into your application. Besides that, the questions and answers do not provide information about their authors.
 
 In this section, you will learn how to implement all these features with ease. You will start by subscribing to [Auth0](https://auth0.com) to help you with the authentication feature, then you will secure your backend and, to wrap things up, you will secure your React app and refactor the `Question` component so that authenticated users can answer questions.
 
@@ -780,6 +778,98 @@ So, after heading to the _Settings_ tab, search for the _Allowed Callback URLs_ 
 You are probably wondering what this URL means and why you need it. The reason why you need this URL is because, while authenticating through Auth0, your users will be redirected to its Universal Login Page and, after the authentication process (successful or not), they will be redirected back to your application. For security reasons, Auth0 will redirect your users only to URLs registered on this field.
 
 With this value in place, you can click on the _Save_ button and leave this page open.
+
+### Securing your Backend API with Auth0
+
+To secure your Node.js API with Auth0, you will have to install and configure only two libraries:
+
+- [`express-jwt`](https://github.com/auth0/express-jwt): A middleware that validates a Json Web Token (JWT) and set the `req.user` with its attributes.
+- [`jwks-rsa`](https://github.com/auth0/node-jwks-rsa): A library to retrieve RSA public keys from a JWKS (JSON Web Key Set) endpoint.
+
+To install these libraries, stop your backend API by hitting `Ctrl` + `c` and issue the following command:
+
+```bash
+# from the backend directory
+npm i express-jwt jwks-rsa
+```
+
+After that, open its `./src/index.js` file and import these libraries as follows:
+
+```js
+// ... other require statements ...
+const jwt = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
+```
+
+Then, still on this file, create the following constant right before the first POST endpoint (`app.post`):
+
+```js
+// ... require statements ...
+
+// ... app definitions ...
+
+// ... app.get endpoints ...
+
+const checkJwt = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://<YOUR_AUTH0_DOMAIN>/.well-known/jwks.json`
+  }),
+
+  // Validate the audience and the issuer.
+  audience: '<YOUR_AUTH0_CLIENT_ID>',
+  issuer: `https://<YOUR_AUTH0_DOMAIN>/`,
+  algorithms: ['RS256']
+});
+
+// ... app.post endpoints ...
+
+// ... app.listen ...
+```
+
+This constant is actually a Express middleware that will validate [ID tokens](https://auth0.com/docs/tokens/id-token). Note that, to make it work, you will have to replace the `<YOUR_AUTH0_CLIENT_ID>` placeholder with the value presented in the _Client ID_ field of your Auth0 Application. Also, you will have to replace `<YOUR_AUTH0_DOMAIN>` with the value presented in the _Domain_ field (e.g. `bk-tmp.auth0.com`).
+
+Then, you will have to make your two POST endpoints use the `checkJwt` middleware. To do this, replace these endpoints with this:
+
+```js
+// insert a new question
+app.post('/', checkJwt, (req, res) => {
+  const {title, description} = req.body;
+  const newQuestion = {
+    id: questions.length + 1,
+    title,
+    description,
+    answers: [],
+    author: req.user.name,
+  };
+  questions.push(newQuestion);
+  res.status(200).send();
+});
+
+// insert a new answer to a question
+app.post('/answer/:id', checkJwt, (req, res) => {
+  const {answer} = req.body;
+
+  const question = questions.filter(q => (q.id === parseInt(req.params.id)));
+  if (question.length > 1) return res.status(500).send();
+  if (question.length === 0) return res.status(404).send();
+
+  question[0].answers.push({
+    answer,
+    author: req.user.name,
+  });
+
+  res.status(200).send();
+});
+```
+
+Both endpoints introduce only two changes. First, both of them declare that they want to use `checkJwt`, which make them unavailable to unauthenticated users. Second, both add a new property called `author` on questions and answers. These new properties receive the name (`req.user.name`) of the users issuing requests.
+
+With these changes in place, you can start your backend API again (`node src`) and start refactoring your React application.
+
+> **Note:** You are not adding the `checkJwt` middleware to your GET endpoints because you want them to be publicly accessible. That is, you want unauthenticated users to be able to see questions and answers, but you don't want them to create new questions nor to answer existing ones.
 
 ## Conclusion
 
