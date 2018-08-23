@@ -32,7 +32,7 @@ related:
 
 {% include tweet_quote.html quote_text="I'm developing a modern application with @angular and @golang." %}
 
-## Why Choosing Golang and Angular
+## Why Choose Golang and Angular
 
 As mentioned, the technologies of choice for this series is [Golang](https://golang.org/) for the backend and [Angular](https://angular.io/) for the frontend. In this section, you will learn more about both platforms and why they are great options to develop applications nowadays.
 
@@ -311,7 +311,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/Pungyeon/golang-auth0-example/todo"
+	"github.com/<YOUR_GITHUB_USER>/golang-auth0-example/todo"
 	"github.com/gin-gonic/gin"
 )
 
@@ -372,6 +372,8 @@ func convertJSONBodyToTodo(jsonBody []byte) (todo.Todo, int, error) {
 	return todoItem, http.StatusOK, nil
 }
 ```
+
+> **Note:** You will have to replace `<YOUR_GITHUB_USER>` in the code above with your own GitHub username.
 
 As mentioned earlier, all of your handler functions take a pointer to `gin.Context` as a parameter. This parameter essentially contains the `http.Request` reader and an `http.ResponseWriter` writer. Besides these functionalities that allow you to read from the request and to write a response, this pointer contains a lot of metadata about the request.
 
@@ -438,7 +440,7 @@ import (
 	"github.com/gin-gonic/gin"
 	jose "gopkg.in/square/go-jose.v2"
 
-	"github.com/Pungyeon/golang-auth0-example/handlers"
+	"github.com/<YOUR_GITHUB_USER>/golang-auth0-example/handlers"
 )
 
 var (
@@ -505,6 +507,8 @@ func terminateWithError(statusCode int, message string, c *gin.Context) {
 	c.Abort()
 }
 ```
+
+> **Note:** You will have to replace `<YOUR_GITHUB_USER>` in the code above with your own GitHub username.
 
 If you analyze the new version of this code carefully, you will notice that you added a routing group (called `authorized`) to secure all endpoints in your backend. That is, by calling `authorized.Use(authRequired())` and putting all endpoint definitions inside the `authorized` routing group, you are telling Gin that all requests made to these endpoints must be evaluated by the `authRequired` function first.
 
