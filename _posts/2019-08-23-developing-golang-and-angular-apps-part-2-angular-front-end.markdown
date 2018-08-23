@@ -45,9 +45,9 @@ npm install -g @angular/cli
 
 > **Note:** By adding `-g` in the command above, you make NPM install the Angular CLI tool globally. That is, after issuing this command, you will have the `ng` command in all new sessions of your terminal.
 
-## Part 1: Recap
+## Part 1: The Golang Backend Recap
 
-In the first part of this series, you have developed a secure backend API with Golang and Gin. If you have followed the previous article, you can jump to the next section. Otherwise, you can still follow this article along. However, you will have to fork and clone [this GitHub repository](https://github.com/auth0-blog/golang-angular) and, after that, you will have to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account here</a> so you can properly configure and run your backend API.
+In the first part of this series - [Part 1 - The Backend - Developing and Securing Golang APIs](https://auth0.com/blog/developing-golang-and-angular-apps-part-1-backend-api/) - you have developed a secure backend API with Golang and Gin. If you have followed the previous article, you can jump to the next section. Otherwise, you can still follow this article along. However, you will have to fork and clone [this GitHub repository](https://github.com/auth0-blog/golang-angular) and, after that, you will have to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account here</a> so you can properly configure and run your backend API.
 
 After signing up for Auth0, you will have to go to your [Auth0 dashboard](https://manage.auth0.com/) and proceed as follows:
 
