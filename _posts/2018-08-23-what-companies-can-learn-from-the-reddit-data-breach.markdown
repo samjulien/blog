@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "What Companies Can Learn From The Reddit Data Breach"
-metatitle: "What Companies Can Learn From The Reddit Data Breach"
+metatitle: "2018 Reddit Data Breach - Two-Factor Auth and Cyber Security"
 description: "Learn how advanced forms of two-factor authentication and identity management can prevent data breaches."
-metadescription: "In July 2018, a copy of Reddit's user data was stolen. Learn how advanced forms of two-factor authentication and identity management can prevent data breaches."
+metadescription: "A deeper look into Reddit's 2018 user data breach. Learn how advanced forms of two-factor authentication 2FA, alongside features like anomaly-detection can prevent data breaches."
 date: 2018-08-23 12:30
 category: Security, Breaches
 author:
@@ -35,7 +35,7 @@ related:
 On June 19, [Reddit learned that an attacker had breached several employee accounts](https://www.reddit.com/r/announcements/comments/93qnm5/we_had_a_security_incident_heres_what_you_need_to/?st=jkk18vb3&sh=ad92bacb) via the company's cloud and source-code hosting providers:
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/what-companies-can-learn-from-the-reddit-data-breach/reddit-data-breach-release-note.png" alt="Reddit data breach release note.">
+  <img src="https://cdn.auth0.com/blog/what-companies-can-learn-from-the-reddit-data-breach/reddit-data-breach-release-note.png" alt="Reddit 2018 data breach public release note">
 </p>
 
 [[Source](https://www.reddit.com/r/announcements/comments/93qnm5/we_had_a_security_incident_heres_what_you_need_to/?st=jkk18vb3&sh=ad92bacb)]
@@ -45,7 +45,7 @@ No Reddit information was altered, and the company quickly moved forward to lock
 This is one of hundreds of breaches this year. According to Statista, [the U.S. has seen 668 data breaches](https://www.statista.com/statistics/273550/data-breaches-recorded-in-the-united-states-by-number-of-breaches-and-records-exposed/) that have exposed more than 22 million personal records.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/what-companies-can-learn-from-the-reddit-data-breach/2018-us-data-breaches-by-the-numbers" alt="2018 US data breaches by the numbers.">
+  <img src="https://cdn.auth0.com/blog/what-companies-can-learn-from-the-reddit-data-breach/2018-us-data-breaches-by-the-numbers" alt="2018 US data breaches statistic numbers">
 </p>
 
 The pace of break-ins has been steadily rising for over a decade.
@@ -59,7 +59,7 @@ Although Reddit employed a [two-factor authentication](https://auth0.com/learn/t
 All forms of 2FA require a user to provide a second form of identification — over and above a simple password — to gain access to a system. The most common 2FA method sends the user a unique token via SMS/text message.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/what-companies-can-learn-from-the-reddit-data-breach/text-message-two-factor-authentication-code.jpg" alt="Text messaging showing two-factor authentication code.">
+  <img src="https://cdn.auth0.com/blog/what-companies-can-learn-from-the-reddit-data-breach/text-message-two-factor-authentication-code.jpg" alt="Text messaging SMS showing two-factor authentication 2FA code">
 </p>
 
 [[Source](https://spriv.com/automated-two-factor-authentication/)]
@@ -73,7 +73,7 @@ A more secure version is employing software tokens. Software tokens in 2FA have 
 The [Microsoft Authenticator](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/end-user/microsoft-authenticator-app-how-to) is an example of a popular software token-based solution, which could have provided Reddit a tighter wall against hackers.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/what-companies-can-learn-from-the-reddit-data-breach/microsoft-authenticator.png" alt="Microsoft Authenticator app in action.">
+  <img src="https://cdn.auth0.com/blog/what-companies-can-learn-from-the-reddit-data-breach/microsoft-authenticator.png" alt="Microsoft Authenticator app in action">
 </p>
 
 The Microsoft Authenticator is one of many similar tools, including the Google Authenticator, Twilio Authenticator, and LastPass Authenticator. They all rely on a time-based one-time password (TOTP) algorithm to generate a short-lived (30 seconds or less) password. The user must [copy the password into the website](https://uk.godaddy.com/blog/how-to-avoid-web-design-mistakes-that-could-sabotage-your-business/)'s or app's required field for verification before it expires.
@@ -123,7 +123,7 @@ The most important thing to do when you learn that your system has been compromi
 Reddit quickly [published data breach mitigation steps on its site](https://www.reddit.com/r/announcements/comments/93qnm5/we_had_a_security_incident_heres_what_you_need_to/?st=jkk18vb3&sh=ad92bacb):
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/what-companies-can-learn-from-the-reddit-data-breach/reddit-data-breach-mitigation-steps-notice.png" alt="Reddit data breach mitigation steps notice.">
+  <img src="https://cdn.auth0.com/blog/what-companies-can-learn-from-the-reddit-data-breach/reddit-data-breach-mitigation-steps-notice.png" alt="Reddit data breach mitigation steps notice">
 </p>
 
 Offering immediate, actionable steps accompanied by links to more detailed pages of information is a great way to help your users without overwhelming them with technical information.
