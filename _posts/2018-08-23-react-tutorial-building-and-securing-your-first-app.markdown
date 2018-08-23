@@ -753,6 +753,34 @@ After that, if you reload your app and go to [`http://localhost:3000/question/1`
 
 ![React app configured with React Router](https://cdn.auth0.com/blog/react-tutorial/react-app-with-react-router.png)
 
+## Securing your React App
+
+Your application has reached a state where it has almost everything it needs for prime time. There are just a few features missing. For example, right now, your users have no means of answering questions through your app. Another example is that there is no way to log in into your application. Besides that, the questions and answers do not provide information about their authors.
+
+In this section, you will learn how to implement all these features with ease. You will start by subscribing to [Auth0](https://auth0.com) to help you with the authentication feature, then you will secure your backend and, to wrap things up, you will secure your React app and refactor the `Question` component so that authenticated users can answer questions.
+
+### Configuring an Auth0 Account
+
+For starters, you will need to sign up to Auth0 so you can integrate it in your application. If you already have an existing account, you can use it without a problem. If you do not have one, now is a good time to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account</a>. With your free account, you will have access to the following features:
+
+- [Passwordless authentication](https://auth0.com/passwordless)
+- [Lock for Web, iOS & Android](https://auth0.com/docs/libraries/lock/v11)
+- [Up to 2 social identity providers (like Twitter and Facebook)](https://auth0.com/learn/social-login/)
+- [Unlimited Serverless Rules](https://auth0.com/docs/rules/current)
+- [Community Support](http://community.auth0.com/)
+
+After signing up, you will have to create an [Auth0 Application](https://auth0.com/docs/applications) to represent your app. So, in your dashboard, click on [the Applications section](https://manage.auth0.com/#/applications) on the vertical menu and then click on _Create Application_.
+
+On the dialog shown, you will have to insert a name for your application (for example, "Q&App") and then you will have to choose _Single Page Application_ as its type. Then, when you click on the _Create_ button, Auth0 will create your Application and redirect you to its _Quick Start_ section. From there, you will have to click on the _Settings_ tab to change a configuration on your Auth0 Application and to copy some values from it.
+
+![Creating a React application on Auth0.](https://cdn.auth0.com/blog/react-tutorial/creating-a-react-application-at-auth0.png)
+
+So, after heading to the _Settings_ tab, search for the _Allowed Callback URLs_ field and insert `http://localhost:3000/callback` on it.
+
+You are probably wondering what this URL means and why you need it. The reason why you need this URL is because, while authenticating through Auth0, your users will be redirected to its Universal Login Page and, after the authentication process (successful or not), they will be redirected back to your application. For security reasons, Auth0 will redirect your users only to URLs registered on this field.
+
+With this value in place, you can click on the _Save_ button and leave this page open.
+
 ## Conclusion
 
 Mention:
