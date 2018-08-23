@@ -437,6 +437,35 @@ export default App;
 
 You won't really use the new version of your `App` component as you will soon replace the contents of this file again. However, to avoid having code that won't compile, it is a good idea to refactor your `App` component.
 
+### Configuring the React Router in Your App
+
+After cleaning things up, you will need to configure React Router in your app. This will be a pretty simple step, as you will see. However, keep in mind that to master React Router you would need to read _at least_ one other article that specifically introduces the subject and all its features.
+
+The thing is, React Router is a very complete solution and, in your first React app, you will touch only the tip of the iceberg. If you do want [to learn more about React Router, please, head to the official documentation](https://reacttraining.com/react-router/).
+
+Having that in mind, open the `./src/index.js` file and replace its contents with this:
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+
+ReactDOM.render(
+  <BrowserRouter>
+    <App/>
+  </BrowserRouter>,
+  document.getElementById('root')
+);
+registerServiceWorker();
+```
+
+In the new version of this file, you are just importing `BrowserRouter` from the `react-router-dom` library, and encapsulating your `App` component inside this router. That's all you need to start using React Router.
+
+> **Note:** If you haven't seen this file before, this is the piece of logic that makes your React app to be rendered. More specifically, the `document.getElementById('root')` defines on what HTML element React must render your app. You can find this `root` element inside the `./public/index.html` file.
+
 ### Configuring Bootstrap in Your React App
 
 To make your React app more appealing from the User Interface (UI) point of view, you are going configure [Bootstrap](https://getbootstrap.com/) on it. If you don't know Bootstrap, this is a extremely popular library that helps developers create good-looking, responsive web apps with ease.
@@ -458,6 +487,69 @@ There are multiple ways to integrate React and Bootstrap together. However, as t
 {% endhighlight %}
 
 In this case you are actually doing two things: you are changing the `title` of your React app to _Q&App_; and you are making your app load a variation of Bootstrap called `flatly`. If you are interested, you can use any variation available at [_Bootswatch_](https://bootswatch.com), or you can also use the default flavor of Bootstrap. However, you will probably find the variations over _Bootswatch_ more appealing.
+
+### Creating a Navigation Bar in Your React App
+
+Now that you have configured your app to use Bootstrap, you are ready to create your first React component. In this section, you will create a component called `NavBar` (which stands for Navigation Bar) and you will add it to your React app.
+
+To do so, create a new directory called `NavBar` inside the `src` directory of your application and insert a new file called `NavBar.js` inside it. In this file, input the following code:
+
+```js
+import React from 'react';
+import {Link} from 'react-router-dom';
+
+function NavBar() {
+  return (
+    <nav className="navbar navbar-dark bg-primary fixed-top">
+      <Link to="/">
+        <a className="navbar-brand" href="/">Q&App</a>
+      </Link>
+    </nav>
+  );
+}
+
+export default NavBar;
+```
+
+As you can see, the navigation bar component that you are creating is a functional component. You can create it like a stateless (i.e., functional) component because you don't really need to hold any internal state.
+
+Now, to use your new component, you can open your `./src/App.js` file and update it as follows:
+
+```js
+import React, { Component } from 'react';
+import NavBar from './NavBar/NavBar';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <NavBar/>
+        <p>Work in progress.</p>
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+Then, if you run your app by issuing `npm start` from a terminal, you will see the navigation bar at the top of it. However, what you won't see is the "work in progress" message that your `App` component contains. The problem here is that the navigation bar that you created is using a CSS class (`fixed-top`) provided by Bootstrap that makes it fixed to the top. This means that this component is not taking the default vertical space as it would if it were a normal `div` element.
+
+To fix this situation, open the `./src/index.css` file and add a `margin-top` rule, as shown here:
+
+```css
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  margin-top: 100px;
+}
+```
+
+Now, if you check your app again, you will see your navigation bar and the "work in progress" message.
+
+![React application with a navigation bar created with the help of Bootstrap.](https://cdn.auth0.com/blog/react-tutorial/react-app-with-navbar.png)
+
 
 ## Conclusion
 
