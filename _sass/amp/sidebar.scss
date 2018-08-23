@@ -18,21 +18,54 @@ amp-sidebar {
   .header{
     min-height: 10%;
     display: flex;
-    flex-direction: row;
+    justify-content: flex-end;
     align-items: center;
     padding-right: 33px;
     border-bottom: 1px solid rgb(151,151,151);
-    .call-to-action {
-      flex: 2 0 0;
-      justify-content: flex-start;
-      margin-left: 47px;
-      font-weight: bold;
-    }
     .amp-close-image{
-      justify-content: flex-end;
       width: 23px;
       height: 23px;
     }
+  }
+  
+  @media (max-width: 710px) {
+    .call-to-action {
+      font-weight: bold;
+      background: #eb5424;
+      padding: 16px 30px;
+      border-radius: 3px;
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      margin: 10px;
+      max-width: 85%;
+      }
+    .display-mobile {
+      display: block;
+      }
+    .display-desktop {
+      display: none;
+      }
+  }
+  
+  @media (min-width: 711px) {
+    .call-to-action {
+      font-weight: bold;
+      background: #eb5424;
+      padding: 16px 30px;
+      border-radius: 3px;
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      margin: 10px 0px 0px 47px;
+      width: 15%;
+      }
+    .display-desktop {
+      display: block;
+      }
+    .display-mobile {
+      display: none;
+      }
   }
 
   .sidebar-list{
@@ -47,7 +80,7 @@ amp-sidebar {
       font-size: 28.5px;
       letter-spacing: 1.2px;
       padding-bottom: 12px;
-      margin: 30px 10px 30px 47px;
+      margin: 20px 10px 30px 47px;
     }
     ul{
       list-style: none;
