@@ -435,7 +435,7 @@ class App extends Component {
 export default App;
 ```
 
-You will soon replace the contents of this file again. However, to avoid having code that won't compile, it is a good idea to refactor your `App` component.
+You won't really use the new version of your `App` component as you will soon replace the contents of this file again. However, to avoid having code that won't compile, it is a good idea to refactor your `App` component.
 
 ## Conclusion
 
