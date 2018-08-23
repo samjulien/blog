@@ -11,6 +11,17 @@
     padding: 23.5px 28px 12.5px 0;
     width: 30px;
   }
+  .call-to-action {
+    font-weight: bold;
+    background: #eb5424;
+    padding: 16px 30px;
+    border-radius: 3px;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    margin: 10px;
+    max-width: 85%;
+  }
 }
 amp-sidebar {
   width: 100%;
@@ -39,13 +50,13 @@ amp-sidebar {
       text-align: center;
       margin: 10px;
       max-width: 85%;
-      }
+    }
     .display-mobile {
       display: block;
-      }
+    }
     .display-desktop {
       display: none;
-      }
+    }
   }
   
   @media (min-width: 711px) {
@@ -59,13 +70,13 @@ amp-sidebar {
       text-align: center;
       margin: 10px 0px 0px 47px;
       width: 15%;
-      }
+    }
     .display-desktop {
       display: block;
-      }
+    }
     .display-mobile {
       display: none;
-      }
+    }
   }
 
   .sidebar-list{
