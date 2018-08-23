@@ -2,27 +2,32 @@
   .navbar-logo{
     display: inline-block;
     width: 100px;
-    padding: 23.5px 0 12.5px 31.5px;
+    padding: 16px 0 12.5px 31.5px;
   }
 
   .ampstart-navbar-trigger{
     display: inline-block;
     float: right;
-    padding: 23.5px 28px 12.5px 0;
+    padding: 23.5px 23px 12.5px 2px;
     width: 30px;
   }
   .call-to-action {
     display: inline-block;
     float: right;
+    padding: 16px 10px 9.5px 0px;
     a{
+      font-size: 12px;
+      display: inline-block;
       background: #eb5424;
-      padding: 16px 30px;
+      padding: 10px 20px;
       border-radius: 3px;
       color: #fff;
       text-decoration: none;
       text-align: center;
-      margin: 10px;
     }
+  }
+  .call-to-action:before, .call-to-action:after {
+      clear: both
   }
 }
 amp-sidebar {
