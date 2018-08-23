@@ -32,8 +32,10 @@ related:
 I took the ["Achieving Security Awareness Through Social Engineering Attacks"](https://www.blackhat.com/us-18/training/achieving-security-awareness-through-social-engineering-attacks.html) course at [Black Hat this year](https://www.blackhat.com/us-18/)!
 
 <br />
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">“Achieving Security Awareness Through Social Engineering Attacks” <a href="https://twitter.com/hashtag/BHUSA?src=hash&amp;ref_src=twsrc%5Etfw">#BHUSA</a> Training taught by <a href="https://twitter.com/jaysonstreet?ref_src=twsrc%5Etfw">@jaysonstreet</a> &amp; <a href="https://twitter.com/aprilwright?ref_src=twsrc%5Etfw">@aprilwright</a> will use current Red Team strategies to develop a better understanding of how attackers use SE <a href="https://t.co/yuojeClInS">https://t.co/yuojeClInS</a></p>&mdash; Black Hat (@BlackHatEvents) <a href="https://twitter.com/BlackHatEvents/status/1002976909268045827?ref_src=twsrc%5Etfw">June 2, 2018</a></blockquote>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<div style="display: flex; justify-content: center;">
+  <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">“Achieving Security Awareness Through Social Engineering Attacks” <a href="https://twitter.com/hashtag/BHUSA?src=hash&amp;ref_src=twsrc%5Etfw">#BHUSA</a> Training taught by <a href="https://twitter.com/jaysonstreet?ref_src=twsrc%5Etfw">@jaysonstreet</a> &amp; <a href="https://twitter.com/aprilwright?ref_src=twsrc%5Etfw">@aprilwright</a> will use current Red Team strategies to develop a better understanding of how attackers use SE <a href="https://t.co/yuojeClInS">https://t.co/yuojeClInS</a></p>&mdash; Black Hat (@BlackHatEvents) <a href="https://twitter.com/BlackHatEvents/status/1002976909268045827?ref_src=twsrc%5Etfw">June 2, 2018</a></blockquote>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
 <br />
 
 It was eye-opening, tremendously interesting, and fun! It was facilitated by [Jayson Street](https://twitter.com/jaysonstreet) and [April Wright](https://twitter.com/aprilwright). Jayson gets paid by companies to break into their own facilities through [Social Engineering](<https://en.wikipedia.org/wiki/Social_engineering_(security)>). He shared many crazy stories, like the time he [gained full access to a bank in Beirut in two and a half minutes](https://www.youtube.com/watch?v=UpX70KxGiVo&feature=youtu.be&t=434).
@@ -52,13 +54,7 @@ Here’s a summary of what we discussed in the training, along with key takeaway
 
 One of the key elements of Social Engineering is [Open-source Intelligence (OSINT)](https://en.wikipedia.org/wiki/Open-source_intelligence), which is insight produced from data collected from publicly available sources. **If you don’t have proper privacy settings in your social media accounts, the information you put there is public**.
 
-In class, we discussed the case of a guy named Travis who put pictures of his badge, passport, plane tickets, job title, workplace and even emails on Instagram. Really.
-
-<p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/achieving-security-awareness-through-social-engineering-attacks/private-data-exposed-in-instragram.jpg" alt="Private data exposed on Instagram.">
-</p>
-
-April contacted him and he removed some of it, but you can still find the badge on Instagram.
+In class, we discussed the case of a guy named Travis who put pictures of his badge, passport, plane tickets, job title, workplace and even emails on Instagram.
 
 We analyzed how someone that overposts on social media could be targeted, and it’s not a surprise that it’s relatively simple. We also talked about tools and techniques to get and find relevant information.
 
@@ -135,5 +131,7 @@ We talked about other topics such as policies, security awareness programs, meme
 </p>
 
 {% include tweet_quote.html quote_text="Security training and awareness campaigns make people the best line of cybersecurity defense" %}
+
+{% include profile_card.html picture="https://cdn.auth0.com/blog/auziros/Annybell-Villarroel.png" name="Annybell Villarroel" title="Security Operations Manager" team="Security Team" location="Madrid, Spain" body="What I like the most about Security Awareness and Social Engineering training is that it allows us to grow a security mindset and culture. This is relevant to everyone in an organization and should be a top priority. Whether our role is technical or not, we can all be part of that effort." %}
 
 {% include asides/about-auth0.markdown %}
