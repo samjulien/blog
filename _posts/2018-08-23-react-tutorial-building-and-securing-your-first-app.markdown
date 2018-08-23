@@ -437,6 +437,28 @@ export default App;
 
 You won't really use the new version of your `App` component as you will soon replace the contents of this file again. However, to avoid having code that won't compile, it is a good idea to refactor your `App` component.
 
+### Configuring Bootstrap in Your React App
+
+To make your React app more appealing from the User Interface (UI) point of view, you are going configure [Bootstrap](https://getbootstrap.com/) on it. If you don't know Bootstrap, this is a extremely popular library that helps developers create good-looking, responsive web apps with ease.
+
+There are multiple ways to integrate React and Bootstrap together. However, as the requirements for your first application will be quite simple and as you won't need any of [its interactive components](https://getbootstrap.com/docs/4.1/components) (i.e., you are just interested into the basic styles that this library provides), you are going to follow the easiest strategy available. That is, you are simply going to open your `./public/index.html` file and update it as follows:
+
+{% highlight html %}
+{% raw %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- ... tags above the title stay untouched ... -->
+    <title>Q&App</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css">
+  </head>
+  <!-- ... body definition stays untouched ... -->
+</html>
+{% endraw %}
+{% endhighlight %}
+
+In this case you are actually doing two things: you are changing the `title` of your React app to _Q&App_; and you are making your app load a variation of Bootstrap called `flatly`. If you are interested, you can use any variation available at [_Bootswatch_](https://bootswatch.com), or you can also use the default flavor of Bootstrap. However, you will probably find the variations over _Bootswatch_ more appealing.
+
 ## Conclusion
 
 Mention:
