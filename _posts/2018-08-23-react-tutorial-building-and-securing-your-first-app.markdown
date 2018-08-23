@@ -365,15 +365,22 @@ curl localhost:8081
 
 # issue a POST request
 curl -X POST -H 'Content-Type: application/json' -d '{
-  "title": "How to make a sandwich?",
+  "title": "How do I make a sandwich?",
   "description": "I am trying very hard but I do not know how to make a delicious sandwich. Can someone help me?"
+}' localhost:8081
+
+curl -X POST -H 'Content-Type: application/json' -d '{
+  "title": "What is React?",
+  "description": "I have been hearing a lot about React. What is it?"
 }' localhost:8081
 
 # re-issue the GET request
 curl localhost:8081
 ```
 
-The first command will trigger a HTTP GET request that will result in an empty array being printed out (`[]`). Then, the second command will issue a POST request to insert a new question into your API, and the third command will issue another GET request to verify if the question was properly inserted.
+The first command will trigger a HTTP GET request that will result in an empty array being printed out (`[]`). Then, the second and the third commands will issue POST requests to insert two questions into your API, and the fourth command will issue another GET request to verify if these questions were properly inserted.
+
+If you manage to get the expected results, leave your server running and move on to the next section.
 
 ## Developing Applications with React
 
@@ -501,8 +508,8 @@ import {Link} from 'react-router-dom';
 function NavBar() {
   return (
     <nav className="navbar navbar-dark bg-primary fixed-top">
-      <Link to="/">
-        <a className="navbar-brand" href="/">Q&App</a>
+      <Link className="navbar-brand" to="/">
+        Q&App
       </Link>
     </nav>
   );
@@ -550,6 +557,101 @@ Now, if you check your app again, you will see your navigation bar and the "work
 
 ![React application with a navigation bar created with the help of Bootstrap.](https://cdn.auth0.com/blog/react-tutorial/react-app-with-navbar.png)
 
+### Creating a Class Component with React
+
+After creating the navigation bar, what you can do next is to create a stateful component (a class component) to fetch questions from your backend and to show it to your users. To fetch these questions, you will need the help of another library, [Axios](https://github.com/axios/axios). In a few words, Axios is a promise based HTTP client for the browser and for Node.js. In this tutorial, you will only use it in the browser (i.e., in your React app).
+
+To install Axios, stop the React development server and issue the following command:
+
+```bash
+npm i axios
+```
+
+Then, create a new directory called `Questions` inside `src` and a new file called `Questions.js` inside it. In this file, you can insert the following code:
+
+```js
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import axios from 'axios';
+
+class Questions extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      questions: null,
+    };
+  }
+
+  async componentDidMount() {
+    const questions = (await axios.get('http://localhost:8081/')).data;
+    this.setState({
+      questions,
+    });
+  }
+
+  render() {
+    console.log(this.state.questions);
+    return (
+      <div className="container">
+        <div className="row">
+          {this.state.questions === null && <p>Loading questions...</p>}
+          {
+            this.state.questions && this.state.questions.map(question => (
+              <div key={question.id} className="col-sm-12 col-md-4 col-lg-3">
+                <Link to={`/question/${question.id}`}>
+                  <div className="card text-white bg-success mb-3">
+                    <div className="card-header">Answers: {question.answers}</div>
+                    <div className="card-body">
+                      <h4 className="card-title">{question.title}</h4>
+                      <p className="card-text">{question.description}</p>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    )
+  }
+}
+
+export default Questions;
+```
+
+There are a few important things going on in this file. First, as mentioned before, you are creating a stateful component that will hold the questions available in your backend API. So, to do it properly, you are starting your component with the `questions` property set to `null` and, when React finishes mounting your component (which triggers the `componentDidMount` method), you are issuing a GET request (through the `axios.get` call) to your backend. In the meanwhile between your request and the answer from the backend, React renders your component with a message saying "loading questions..." (it does so because you instructed it to behave like that by adding `this.state.questions === null &&` before the message).
+
+> **Note:** This component is touching a topic that was not addressed in this article, [the Lifecycle of React Components](https://reactjs.org/docs/react-component.html#the-component-lifecycle). In this case, you are just using one of the extension points provided by React, the `componentDidMount` method. You don't really need to understand how this works to follow this tutorial but, after finishing it, make sure you learn about this topic.
+
+Then, whenever Axios gets a response from the backend, you put the `data` returned inside a constant called `questions` and you update the state of the component (`this.setState`) with it. This update, as you already learned, triggers a re-render and makes React show all the questions retrieved.
+
+Now, regarding of how your questions are showed, you are using a bunch of `div` elements with CSS classes provided by Bootstrap to create a nice [_Card_ component](https://getbootstrap.com/docs/4.1/components/card/). If you want to tweak how this card is shown, make sure to check the docs.
+
+So, as you already understand how your component behaves, the next thing you will need to do is to update the code of your `App` component to use your new component:
+
+```js
+import React, { Component } from 'react';
+import NavBar from './NavBar/NavBar';
+import Questions from './Questions/Questions';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <NavBar/>
+        <Questions/>
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+Then, if you run your app again (`npm start`), you will see this nice page:
+
+![React app using Axios to fetch data from a backend API.](https://cdn.auth0.com/blog/react-tutorial/react-app-showing-questions.png)
 
 ## Conclusion
 
