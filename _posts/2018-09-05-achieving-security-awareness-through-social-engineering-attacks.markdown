@@ -10,7 +10,7 @@ author:
   name: "Annybell Villarroel"
   url: "https://www.linkedin.com/in/annybell-villarroel-60281189/"
   mail: "annybell.villarroel@auth0.com"
-  avatar: ""
+  avatar: "https://cdn.auth0.com/blog/auziros/Annybell-Villarroel.png"
 design:
   bg_color: "#000000"
   image: https://cdn.auth0.com/blog/logos/black-hat-logo.png
