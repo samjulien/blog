@@ -4,16 +4,16 @@ title: "Golang & Angular Series - Part 2: Developing and Securing Angular Apps"
 metatitle: "Develop To-Do App with Golang and Angular - Part 2 Angular App"
 description: "A series that will show you how to develop modern applications with Golang and Angular."
 metadescription: "Part 2 - Angular front-end. In this series, develop a to-do list application with Golang and Angular using the Gin framework and securing authentication with Auth0."
-date: 2018-08-22 08:30
-category: Technical Guide, Frontend, Angular
+date: 2018-08-23 08:30
+category: Technical Guide, Stack, Golang
 author:
   name: "Lasse Martin Jakobsen"
-  url: "ifndef_lmj"
+  url: "https://twitter.com/ifndef_lmj"
   mail: "lja@pungy.dk"
   avatar: "https://cdn.auth0.com/blog/guest-author/lasse-marting.png"
 design:
-  bg_color: "#333333"
-  image: https://cdn.auth0.com/blog/logos/node.png
+  bg_color: "#222328"
+  image: https://cdn.auth0.com/blog/logos/golang-angular-logo.png 
 tags:
 - angular
 - golang
@@ -25,6 +25,7 @@ tags:
 related:
 - 2018-08-22-developing-golang-and-angular-apps-part-1-backend-api
 - 2016-04-13-authentication-in-golang
+- 2018-08-07-how-to-create-angular-apps-with-auth0-and-stackblitz
 ---
 
 **TL;DR:** In this series, you will learn how to build modern applications with Golang and Angular. [In Part 1 - The Backend - Developing and Securing Golang APIs](https://auth0.com/blog/developing-golang-and-angular-apps-part-1-backend-api/), you learned how to build a secure backend API with Golang to support a to-do list application. Now, in the second part, you will use Angular to develop the front-end of the to-do list app. To facilitate the identity management, you will use Auth0 both in your backend API and in your Angular app to authenticate users. If needed, you can find the final code developed throughout this article in [this GitHub repository](https://github.com/auth0-blog/golang-angular-2).
