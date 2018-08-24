@@ -4,8 +4,8 @@ title: "What Companies Can Learn From The Reddit Data Breach"
 metatitle: "2018 Reddit Data Breach - Two-Factor Auth and Cyber Security"
 description: "Learn how advanced forms of two-factor authentication and identity management can prevent data breaches."
 metadescription: "A deeper look into Reddit's 2018 user data breach. Learn how advanced forms of two-factor authentication 2FA, alongside features like anomaly-detection can prevent data breaches."
-date: 2018-08-23 12:30
-category: Security, Breaches
+date: 2018-08-24 12:30
+category: Hot Topics, Security, Breaches
 author:
   name: Martin Gontovnikas
   url: http://twitter.com/mgonto
