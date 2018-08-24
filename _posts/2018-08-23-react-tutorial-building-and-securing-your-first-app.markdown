@@ -1055,6 +1055,332 @@ Now, if you run your React app again (`npm start`), you will be able to authenti
 
 ![Securing React apps with Auth0.](https://cdn.auth0.com/blog/react-tutorial/securing-react-apps-with-auth0.png)
 
+### Adding Features to Authenticated Users
+
+Now that you have finished integrating Auth0 into your React application, you can start adding features that only authenticated users will have access to. To conclude this tutorial, you will implement two features. First, you will enable authenticated users to create new questions. Then, you will refactor the `Question` (singular) component to show a form so authenticated users can answer these questions.
+
+For the first feature, you will create a new route in your application, `/new-question`. This route will be guarded by a component that will check if there is a user authenticated or not. If the user is not authenticated yet, this component will redirect them to Auth0 so they can do so. If the user is already authenticated, the component will let React render the form where new questions will be created.
+
+So, for starters, you will create a new directory called `SecuredRoute` and create a file called `SecuredRoute.js` inside it. Then, in this file, you will insert the following code:
+
+```js
+import React from 'react';
+import {Route} from 'react-router-dom';
+import auth0Client from '../Auth';
+
+function SecuredRoute(props) {
+  const {component: Component, path} = props;
+  return (
+    <Route path={path} render={() => {
+        if (!auth0Client.isAuthenticated()) return auth0Client.signIn();
+        return <Component />
+    }} />
+  );
+}
+
+export default SecuredRoute;
+```
+
+The goal of this component is to restrict access to whatever route you configure on it. The implementation for this is quite simple. In this case, you are creating a functional component that takes two properties: another `Component`, so it can render it in case the user is authenticated; and a `path`, so it can configure the default `Route` component provided by React Router. However, before rendering anything, this component checks if the user `isAuthenticated`. If they are not, this component triggers the `signIn` method to redirect users to the login page.
+
+Then, after creating the `SecuredRoute` component, you can create the component that will render the form where users will create questions. For that, create a new directory called `NewQuestion` and a file called `NewQuestion.js` inside it. Then, insert this code in the file:
+
+```js
+import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
+import auth0Client from '../Auth';
+import axios from 'axios';
+
+class NewQuestion extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      disabled: false,
+      title: '',
+      description: '',
+    };
+  }
+
+  updateDescription(value) {
+    this.setState({
+      description: value,
+    });
+  }
+
+  updateTitle(value) {
+    this.setState({
+      title: value,
+    });
+  }
+
+  async submit() {
+    this.setState({
+      disabled: true,
+    });
+
+    await axios.post('http://localhost:8081', {
+      title: this.state.title,
+      description: this.state.description,
+    }, {
+      headers: { 'Authorization': `Bearer ${auth0Client.getIdToken()}` }
+    });
+
+    this.props.history.push('/');
+  }
+
+  render() {
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <div className="card border-primary">
+              <div className="card-header">New Question</div>
+              <div className="card-body text-left">
+                <div className="form-group">
+                  <label htmlFor="exampleInputEmail1">Title:</label>
+                  <input
+                    disabled={this.state.disabled}
+                    type="text"
+                    onBlur={(e) => {this.updateTitle(e.target.value)}}
+                    className="form-control"
+                    placeholder="Give your question a title."
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="exampleInputEmail1">Description:</label>
+                  <input
+                    disabled={this.state.disabled}
+                    type="text"
+                    onBlur={(e) => {this.updateDescription(e.target.value)}}
+                    className="form-control"
+                    placeholder="Give more context to your question."
+                  />
+                </div>
+                <button
+                  disabled={this.state.disabled}
+                  className="btn btn-primary"
+                  onClick={() => {this.submit()}}>
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default withRouter(NewQuestion);
+```
+
+Although long, the code for this component is not complex. As you can see, in this case, you needed to create a class component so it can hold the following state:
+
+- `disabled`: You are using this to disable the input elements after the user hits the _Submit_ button.
+- `title`: You are using this to let users define the title of the question being asked.
+- `description`: You are using this to let users define the description of the question.
+
+Also, you can see that you needed three methods besides `constructor` and `render`:
+
+- `updateDescription`: This method is responsible for updating the `description` on the component's state.
+- `updateTitle`:  This method is responsible for updating the `description` on the component's state.
+- `submit`: This method is responsible for issuing the new question to the backend and to block the input fields while the request is being made.
+
+Note that, in the `submit` method, you are using `auth0Client` to get the ID Token of the current user to add it in the request. Without this token, the backend API would deny the request.
+
+From the UI perspective, this component is using a bunch of Bootstrap classes to produce a nice form. Be sure to [check this resource after finishing the tutorial if you need to learn about forms on Bootstrap](https://getbootstrap.com/docs/4.1/components/forms/).
+
+Now, to see this working, you will have to update two files. First, you will have to register the new route in your `App.js` file:
+
+```js
+// ... other import statements ...
+import NewQuestion from './NewQuestion/NewQuestion';
+import SecuredRoute from './SecuredRoute/SecuredRoute';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <!-- ... navbar and other routes ... -->
+        <SecuredRoute path='/new-question' component={NewQuestion} />
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+Then, you will have to add a link in the `Questions.js` file to this new route. To do so, open this file and update it as follows:
+
+```js
+// ... import statements ...
+
+class Questions extends Component {
+  // ... constructor and componentDidMount ...
+
+  render() {
+    return (
+      <div className="container">
+        <div className="row">
+          <Link to="/new-question">
+            <div className="card text-white bg-secondary mb-3">
+              <div className="card-header">Need help? Ask here!</div>
+              <div className="card-body">
+                <h4 className="card-title">+ New Question</h4>
+                <p className="card-text">Don't worry. Help is on the way!</p>
+              </div>
+            </div>
+          </Link>
+          <!-- ... loading questions message ... -->
+          <!-- ... questions' cards ... -->
+        </div>
+      </div>
+    )
+  }
+}
+
+export default Questions;
+```
+
+With these changes in place, you will be able to create new questions after authenticating.
+
+![React application with a form secured by Auth0](https://cdn.auth0.com/blog/react-tutorial/form-in-a-react-app.png)
+
+Then, to wrap this tutorial, you can refactor the `Question` component to include a form where users will be able to answer questions. To define this form, create a new file called `SubmitAnswer.js` inside the `Question` directory with the following code:
+
+```js
+import React, {Component, Fragment} from 'react';
+import {withRouter} from 'react-router-dom';
+import auth0Client from '../Auth';
+
+class SubmitAnswer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      answer: '',
+    };
+  }
+
+  updateAnswer(value) {
+    this.setState({
+      answer: value,
+    });
+  }
+
+  submit() {
+    this.props.submitAnswer(this.state.answer);
+
+    this.setState({
+      answer: '',
+    });
+  }
+
+  render() {
+    if (!auth0Client.isAuthenticated()) return null;
+    return (
+      <Fragment>
+        <div className="form-group text-center">
+          <label htmlFor="exampleInputEmail1">Answer:</label>
+          <input
+            type="text"
+            onChange={(e) => {this.updateAnswer(e.target.value)}}
+            className="form-control"
+            placeholder="Share your answer."
+            value={this.state.answer}
+          />
+        </div>
+        <button
+          className="btn btn-primary"
+          onClick={() => {this.submit()}}>
+          Submit
+        </button>
+        <hr className="my-4" />
+      </Fragment>
+    )
+  }
+}
+
+export default withRouter(SubmitAnswer);
+```
+
+This component works in a similar fashion as the `NewQuestion` component. The difference here is that instead of handling the POST request by itself, it delegates to someone else. Also, if the user is not authenticated, this component renders nothing.
+
+To use this component, open the `Question.js` file and replace its contents with this:
+
+```js
+import React, {Component} from 'react';
+import axios from 'axios';
+import SubmitAnswer from './SubmitAnswer';
+import auth0Client from '../Auth';
+
+class Question extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      question: null,
+    };
+
+    this.submitAnswer = this.submitAnswer.bind(this);
+  }
+
+  async componentDidMount() {
+    await this.refreshQuestion();
+  }
+
+  async refreshQuestion() {
+    const { match: { params } } = this.props;
+    const question = (await axios.get(`http://localhost:8081/${params.questionId}`)).data;
+    this.setState({
+      question,
+    });
+  }
+
+  async submitAnswer(answer) {
+    await axios.post(`http://localhost:8081/answer/${this.state.question.id}`, {
+      answer,
+    }, {
+      headers: { 'Authorization': `Bearer ${auth0Client.getIdToken()}` }
+    });
+    await this.refreshQuestion();
+  }
+
+  render() {
+    const {question} = this.state;
+    if (question === null) return <p>Loading ...</p>;
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="jumbotron col-12">
+            <h1 className="display-3">{question.title}</h1>
+            <p className="lead">{question.description}</p>
+            <hr className="my-4" />
+            <SubmitAnswer questionId={question.id} submitAnswer={this.submitAnswer} />
+            <p>Answers:</p>
+            <p className="lead">
+              {
+                question.answers.map((answer, idx) => (
+                  <p key={idx}>{answer.answer}</p>
+                ))
+              }
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default Question;
+```
+
+Here, you can see that you are defining the `submitAnswer` method that will issue the requests to the backend API (with the user's ID Token), and that you are defining a method called `refreshQuestion`. This method will refresh the contents of the question in two situations, on the first time React is rendering this component (`componentDidMount`) and right after the backend API respond to the POST request of the `submitAnswer` method.
+
+That's it! You just finished developing your first React application. Now, you can go to [`http://localhost:3000/`](http://localhost:3000/) and start testing your full React app. After signing in, you will be able to ask questions and you will be able to answer them as well. How cool is that?
+
+![Creating and securing your first React application](https://cdn.auth0.com/blog/react-tutorial/creating-your-first-react-app.png)
+
 ## Conclusion
 
 Mention:
