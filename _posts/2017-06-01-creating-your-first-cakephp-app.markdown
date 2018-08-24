@@ -137,10 +137,11 @@ Open up `src/controller/ListController.php` and configure it like so:
 
 ```php
 <?php
+namespace App\Controller;
 
-namespace App\Http\Controllers;
+use App\Controller\AppController;
 
-class ListController extends Controller
+class ListController extends AppController
 {
     public function index()
     {
@@ -699,26 +700,30 @@ Replace the placeholder values with the credentials on your dashboard. I recomme
 
 ### Step 3: Configure Auth0's Centralized Login Page
 
+Open up `src/controller/ListController.php` and add the following on `index` method:
+
+```php
+
+public function index()
+{
+    ...
+    ...
+    $this->initialize();
+    $domain = $this->Auth->getAuthenticate('Auth0.Auth0')->getDomain();
+    $clientId = $this->Auth->getAuthenticate('Auth0.Auth0')->getClientId();
+    $redirectUrl = $this->Auth->getAuthenticate('Auth0.Auth0')->getRedirectUri();
+    $loginUrl = sprintf('https://%s/authorize?client_id=%s&response_type=code&redirect_uri=%s', $domain, $clientId, $redirectUrl);
+    $this->set(compact('loginUrl'));
+}
+```
+
+This code will call the `initialize` method from the `AppController` to load the Auth component, then get the Auth0 credentials to build the [authorization URL](https://auth0.com/docs/application-auth/current/server-side-web#call-the-authorization-url) and assign it to the view.
+
 Open up `List/index.ctp` and add the following:
 
 {% highlight html %}
 {% raw %}
-<script src="https://cdn.auth0.com/js/auth0/9.0.0/auth0.min.js"></script>
-<script>
-  var webAuth = new auth0.WebAuth({
-    domain: 'YOUR_AUTH0_DOMAIN',
-    clientID: 'YOUR_AUTH0_CLIENT_ID'
-  });
-
-  function signin() {
-    webAuth.authorize({
-      responseType: 'code',
-      redirectUri: 'YOUR_AUTH0_CALLBACK_URL'
-    });
-  }
-</script>
-
-<button onclick="window.signin();">Login</button>
+<h5> You need to log in to have access to this list <?= $this->Html->link('Log In', $loginUrl, ['class' => 'btn btn-info']); ?></h5>
 ...
 ...
 {% endraw %}
@@ -748,7 +753,7 @@ public function login()
 
 Now, once a user registers, it stores the user information in your Auth0 user database. The CakePHP plugin retrieves the user info and sets it so that it is accessible in `$this->Auth0->user()`.
 
-### Step 4: Configure Logout
+### Step 5: Configure Logout
 
 Modify the `logout` function in `UsersController` to this code below:
 
