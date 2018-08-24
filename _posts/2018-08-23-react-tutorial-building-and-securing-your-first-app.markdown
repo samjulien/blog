@@ -30,7 +30,7 @@ related:
 
 ## Prerequisites
 
-Although not mandatory, you should know a few things about JavaScript, HTML, and CSS before diving in in this tutorial. If you do not have previous experience with these technologies, you might not have an easy time following the instructions in this article and it might be a good idea to step back and learn about them first. If you do have previous experience with web development, then stick around and enjoy the article.
+Although not mandatory, you should know a few things about JavaScript, HTML, and CSS before diving in in this tutorial. If you do not have previous experience with these technologies, you might not have an easy time following the instructions in this article, and it might be a good idea to step back and learn about them first. If you do have previous experience with web development, then stick around and enjoy the article.
 
 Also, you will need to have Node.js and NPM installed in your development machine. If you don't have these tools yet, please, [read and follow the instructions on the official documentation to install Node.js](https://nodejs.org/en/download/). NPM, which stands for Node Package Manager, comes bundled into the default Node.js installation.
 
@@ -46,7 +46,7 @@ For more information on each topic, you can always consult [the official React d
 
 ### React and the JSX Syntax
 
-First and foremost, you need to know that React uses a funny syntax called JSX. JSX, which stands for JavaScript XML, is a syntax extension to JavaScript that enables developers to use XML (and, as such, HTML) to define their applications. This section won't get into the details of how JSX really works. The idea here is to give you a heads up so you don't get surprised when you see this syntax in the next sections.
+First and foremost, you need to know that React uses a funny syntax called JSX. JSX, which stands for JavaScript XML, is a syntax extension to JavaScript that enables developers to use XML (and, as such, HTML) to define their applications. This section won't get into the details of how JSX really works. The idea here is to give you a heads up, so you don't get surprised when you see this syntax in the next sections.
 
 So, when it comes to JSX, it is perfectly normal to see things like this:
 
@@ -207,7 +207,7 @@ That's it. This is how you define and pass `props` to a child component. Now, if
 
 ## What You Will Build with React
 
-All right! With the concepts describe in the last section in mind, you are ready to start developing your first React application. In the following sections, you will build a simple Q&A (Question & Answer) app that will allow users to interact with each other asking and answering questions. To make the whole process more realistic, you will use Node.js and Express to create a rough backend API. Don't worry if you don't feel confident about developing backend apps with Node.js. This is going to be a very straightforward process and you will be up and running in no time.
+All right! With the concepts describe in the last section in mind, you are ready to start developing your first React application. In the following sections, you will build a simple Q&A (Question & Answer) app that will allow users to interact with each other asking and answering questions. To make the whole process more realistic, you will use Node.js and Express to create a rough backend API. Don't worry if you don't feel confident about developing backend apps with Node.js. This is going to be a very straightforward process, and you will be up and running in no time.
 
 At the end of this tutorial, you will have a React app supported by a Node.js backend that looks like this:
 
@@ -215,7 +215,7 @@ At the end of this tutorial, you will have a React app supported by a Node.js ba
 
 ## Developing a Backend API with Node.js and Express
 
-Before diving into React, you will quickly build a backend API to support your Q&A app. In this section, you will use Express alongside with Node.js to create this API. If you don't know what Express is or how it works, don't worry, you don't need to get into its details now. [Express](https://expressjs.com/), as stated by its official web page, is an unopinionated, minimalist web framework for Node.js. With this library, as you will see here, you can quickly build apps to run on servers (i.e. backend apps).
+Before diving into React, you will quickly build a backend API to support your Q&A app. In this section, you will use Express alongside with Node.js to create this API. If you don't know what Express is or how it works, don't worry, you don't need to get into its details now. [Express](https://expressjs.com/), as stated by its official web page, is an unopinionated, minimalist web framework for Node.js. With this library, as you will see here, you can quickly build apps to run on servers (i.e., backend apps).
 
 So, to get things started, open a terminal in your operating system, move to a directory where you create your projects, and issue the following commands:
 
@@ -345,7 +345,7 @@ To keep things short, the following list briefly explains how things work in thi
 
 - After this endpoint, you define your third endpoint. This time you define an endpoint that will be activated whenever someone sends a POST HTTP request to your API. The goal here is to take the message sent in the `body` of the request to insert a `newQuestion` in your database.
 
-- Then, you have the last endpoint in your API. This endpoint is responsible for inserting answers into a specific question. In this case you use a [route parameter](https://expressjs.com/en/guide/routing.html) called `id` to identify in which question you must add the new answer.
+- Then, you have the last endpoint in your API. This endpoint is responsible for inserting answers into a specific question. In this case, you use a [route parameter](https://expressjs.com/en/guide/routing.html) called `id` to identify in which question you must add the new answer.
 
 - Lastly, you call the `listen` function in your Express app to run your backend API.
 
@@ -365,7 +365,7 @@ curl localhost:8081
 # issue a POST request
 curl -X POST -H 'Content-Type: application/json' -d '{
   "title": "How do I make a sandwich?",
-  "description": "I am trying very hard but I do not know how to make a delicious sandwich. Can someone help me?"
+  "description": "I am trying very hard, but I do not know how to make a delicious sandwich. Can someone help me?"
 }' localhost:8081
 
 curl -X POST -H 'Content-Type: application/json' -d '{
@@ -492,11 +492,11 @@ There are multiple ways to integrate React and Bootstrap together. However, as t
 {% endraw %}
 {% endhighlight %}
 
-In this case you are actually doing two things: you are changing the `title` of your React app to _Q&App_; and you are making your app load a variation of Bootstrap called `flatly`. If you are interested, you can use any variation available at [_Bootswatch_](https://bootswatch.com), or you can also use the default flavor of Bootstrap. However, you will probably find the variations over _Bootswatch_ more appealing.
+In this case, you are actually doing two things: you are changing the `title` of your React app to _Q&App_, and you are making your app load a variation of Bootstrap called `flatly`. If you are interested, you can use any variation available at [_Bootswatch_](https://bootswatch.com), or you can also use the default flavor of Bootstrap. However, you will probably find the variations over _Bootswatch_ more appealing.
 
 ### Creating a Navigation Bar in Your React App
 
-Now that you have configured your app to use Bootstrap, you are ready to create your first React component. In this section, you will create a component called `NavBar` (which stands for Navigation Bar) and you will add it to your React app.
+Now that you have configured your app to use Bootstrap, you are ready to create your first React component. In this section, you will create a component called `NavBar` (which stands for Navigation Bar), and you will add it to your React app.
 
 To do so, create a new directory called `NavBar` inside the `src` directory of your application and insert a new file called `NavBar.js` inside it. In this file, input the following code:
 
@@ -622,7 +622,7 @@ There are a few important things going on in this file. First, as mentioned befo
 
 > **Note:** This component is touching a topic that was not addressed in this article, [the Lifecycle of React Components](https://reactjs.org/docs/react-component.html#the-component-lifecycle). In this case, you are just using one of the extension points provided by React, the `componentDidMount` method. You don't really need to understand how this works to follow this tutorial but, after finishing it, make sure you learn about this topic.
 
-Then, whenever Axios gets a response from the backend, you put the `data` returned inside a constant called `questions` and you update the state of the component (`this.setState`) with it. This update, as you already learned, triggers a re-render and makes React show all the questions retrieved.
+Then, whenever Axios gets a response from the backend, you put the `data` returned inside a constant called `questions`, and you update the state of the component (`this.setState`) with it. This update, as you already learned, triggers a re-render and makes React show all the questions retrieved.
 
 Now, regarding of how your questions are shown, you are using a bunch of `div` elements with CSS classes provided by Bootstrap to create a nice [_Card_ component](https://getbootstrap.com/docs/4.1/components/card/). If you want to tweak how this card is shown, make sure to check the docs.
 
@@ -739,11 +739,11 @@ In the new version of your `App` component, you are using two `Route` elements (
 
 Note that the last route defines a parameter called `questionId`. When you created the `Questions` (plural) component, you added a link that uses the `id` of the question. React Router uses this `id` to form the link and then gives it to your `Question` component (`params.questionId`). With this `id`, your component uses Axios to tell the backend what question exactly is being requested.
 
-If you check your application now, you will be able to see all your questions in the home page and you will be able to navigate to a specific question. However, you probably won't see any answer in your new component because you never added one. For now, to add answers to your questions, you can issue requests similar to the following one:
+If you check your application now, you will be able to see all your questions in the home page, and you will be able to navigate to a specific question. However, you probably won't see any answer in your new component because you never added one. For now, to add answers to your questions, you can issue requests similar to the following one:
 
 ```bash
 curl -X POST -H 'Content-Type: application/json' -d '{
-  "answer": "Just spread butter on the bread and that is it."
+  "answer": "Just spread butter on the bread, and that is it."
 }' localhost:8081/answer/1
 ```
 
@@ -1377,7 +1377,7 @@ export default Question;
 
 Here, you can see that you are defining the `submitAnswer` method that will issue the requests to the backend API (with the user's ID Token), and that you are defining a method called `refreshQuestion`. This method will refresh the contents of the question in two situations, on the first time React is rendering this component (`componentDidMount`) and right after the backend API respond to the POST request of the `submitAnswer` method.
 
-That's it! You just finished developing your first React application. Now, you can go to [`http://localhost:3000/`](http://localhost:3000/) and start testing your full React app. After signing in, you will be able to ask questions and you will be able to answer them as well. How cool is that?
+That's it! You just finished developing your first React application. Now, you can go to [`http://localhost:3000/`](http://localhost:3000/) and start testing your full React app. After signing in, you will be able to ask questions, and you will be able to answer them as well. How cool is that?
 
 ![Creating and securing your first React application](https://cdn.auth0.com/blog/react-tutorial/creating-your-first-react-app.png)
 
