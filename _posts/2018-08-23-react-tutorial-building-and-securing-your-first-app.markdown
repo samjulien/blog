@@ -36,6 +36,8 @@ Also, you will need to have Node.js and NPM installed in your development machin
 
 Lastly, you will have to have access to a terminal in your operating system. If you are using MacOS X or Linux, you are good to go. If you are on Windows, you will probably be able to use [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/getting-started/getting-started-with-windows-powershell?view=powershell-6) without problems.
 
+{% include tweet_quote.html quote_text="Learn how to create your first React application with ease." %}
+
 ## React Introduction
 
 [React](https://reactjs.org/) is a JavaScript library that Facebook created to facilitate the development of [Single-Page Applications (a.k.a. SPAs)](https://en.wikipedia.org/wiki/Single-page_application). Since Facebook open-sourced and announced React, this library became extremely popular all around the world and gained mass adoption by the developer community. Nowadays, although still mainly maintained by Facebook, other big companies (like [Airbnb](https://www.airbnb.com/), [Auth0](https://auth0.com/), and [Netflix](http://netflix.com/)) embraced this library and are using it to build their products. If you check [this page, you will find a list with more than a hundred companies that use React](https://github.com/facebook/react/wiki/Sites-Using-React).
@@ -73,6 +75,8 @@ In this case, the `showRecipe` function is using the JSX syntax to show the deta
 Components in React are the most important pieces of code. Everything you can interact with in a React application is (or is part of) a component. For example, when you load a React application, the whole thing will be handled by a root component that is usually called `App`. Then, if this application contains a navigation bar, you can bet that this bar is defined inside a component called `NavBar` or similar. Also, if this bar contains a form where you can input a value to trigger a search, you are probably dealing with another component that handles this form.
 
 The biggest advantage of using components to define your application is that this approach lets you encapsulate different parts of your user interface into independent, reusable pieces. Having each part on its own component facilitates reasoning about each piece in particular, testing each piece, and reusing them whenever applicable. When you start finding your bearings with this approach, you will see that having a tree of components (that's what you get when you divide everything into components) also facilitates state propagation.
+
+{% include tweet_quote.html quote_text="The biggest advantage of using components to define your application is that this approach lets you encapsulate different parts of your user interface into independent, reusable pieces." %}
 
 ### Defining Components in React
 
@@ -448,6 +452,8 @@ You won't really use the new version of your `App` component as you will soon re
 After cleaning things up, you will need to configure React Router in your app. This will be a pretty simple step, as you will see. However, keep in mind that to master React Router you would need to read _at least_ one other article that specifically introduces the subject and all its features.
 
 The thing is, React Router is a very complete solution and, in your first React app, you will touch only the tip of the iceberg. If you do want [to learn more about React Router, please, head to the official documentation](https://reacttraining.com/react-router/).
+
+{% include tweet_quote.html quote_text="React Router is a powerful solution that can help you build amazing applications." %}
 
 Having that in mind, open the `./src/index.js` file and replace its contents with this:
 
@@ -1380,6 +1386,8 @@ Here, you can see that you are defining the `submitAnswer` method that will issu
 That's it! You just finished developing your first React application. Now, you can go to [`http://localhost:3000/`](http://localhost:3000/) and start testing your full React app. After signing in, you will be able to ask questions, and you will be able to answer them as well. How cool is that?
 
 ![Creating and securing your first React application](https://cdn.auth0.com/blog/react-tutorial/creating-your-first-react-app.png)
+
+{% include tweet_quote.html quote_text="I just built my first React application." %}
 
 ## Conclusion
 
