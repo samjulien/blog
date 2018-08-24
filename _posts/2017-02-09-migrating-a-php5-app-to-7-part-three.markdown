@@ -120,7 +120,7 @@ _composer.json_
 
 All we need is the `phpdotenv` package for reading environment variables and the `auth0-php` package that makes it easy to use the Auth0 service.
 
-Create a `public` folder inside the directory and add two files, `app.css` and `app.js` in it.
+Create a `public` folder inside the directory add the file `app.css` in it.
 
 ```css
 
@@ -224,27 +224,6 @@ label {
 
 _app.css_
 
-```js
-
-$(document).ready(function() {
-    var webAuth = new auth0.WebAuth({
-        domain: AUTH0_DOMAIN,
-        clientID: AUTH0_CLIENT_ID
-    });
-
-    $('.btn-login').click(function(e) {
-        e.preventDefault();
-        webAuth.authorize({
-            responseType: 'code',
-            redirectUri: AUTH0_CALLBACK_URL
-        });
-    });
-});
-
-```
-
-_app.js_
-
 Go ahead and create a `.htaccess` file inside the directory like so:
 
 ```bash
@@ -275,10 +254,6 @@ Add the value of `callback_url` to the **Allowed Callback URLs** in your *Settin
 _Auth0 dashboard: Allowed Callback Urls_
 
 Also, do not forget to add the same value to the **Allowed Origins(CORS)** in your *Settings* on the dashboard.
-
-![Auth0 Dashboard showcasing Allowed Origin Cors](https://cdn.auth0.com/blog/app/cors.png)
-_Auth0 dashboard: Allowed Origin CORS_
-
 
 We need a file to invoke the `dotenv` library and load the values that we have deposited in the `.env` file. Create a new file, *dotenv-loader.php* like so:
 
@@ -323,6 +298,12 @@ $auth0Oauth = $auth0->get_oauth_client($client_secret, $redirect_uri, [
   'persist_refresh_token' => true,
 ]);
 
+$authorizationURL = sprintf(
+    "https://%s/authorize?client_id=%s&response_type=code&redirect_uri=%s",
+    $domain,
+    $client_id,
+    $redirect_uri);
+
 $starWarsNames = ['Darth Vader', 'Ahsoka Tano', 'Kylo Ren', 'Obi-Wan Kenobi', 'R2-D2', 'Snoke'];
 
 $userInfo = $auth0Oauth->getUser();
@@ -337,7 +318,6 @@ if (isset($_REQUEST['logout'])) {
 <html>
     <head>
         <script src="http://code.jquery.com/jquery-3.0.0.min.js" type="text/javascript"></script>
-        <script src="https://cdn.auth0.com/js/auth0/9.0.0/auth0.min.js"></script>
 
         <script type="text/javascript" src="//use.typekit.net/iws6ohy.js"></script>
         <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -350,14 +330,6 @@ if (isset($_REQUEST['logout'])) {
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 
-        <script>
-          var AUTH0_CLIENT_ID = '<?php echo getenv("AUTH0_CLIENT_ID") ?>';
-          var AUTH0_DOMAIN = '<?php echo getenv("AUTH0_DOMAIN") ?>';
-          var AUTH0_CALLBACK_URL = '<?php echo getenv("AUTH0_CALLBACK_URL") ?>';
-        </script>
-
-
-        <script src="public/app.js"> </script>
         <link href="public/app.css" rel="stylesheet">
 
 
@@ -370,7 +342,7 @@ if (isset($_REQUEST['logout'])) {
               <div class="login-box auth0-box before">
                 <img src="https://cdn.auth0.com/blog/app/star_warsapp.png" />
                 <p>Heard you don't want to migrate to PHP 7? Dare us!</p>
-                <a class="btn btn-primary btn-login">SignIn</a>
+                <a href="<?php echo $authorizationURL ?>" class="btn btn-primary btn-login">SignIn</a>
               </div>
               <?php else: ?>
               <div class="logged-in-box auth0-box logged-in">
@@ -417,6 +389,12 @@ $auth0Oauth = $auth0->get_oauth_client($client_secret, $redirect_uri, [
   'persist_refresh_token' => true,
 ]);
 
+$authorizationURL = sprintf(
+    "https://%s/authorize?client_id=%s&response_type=code&redirect_uri=%s",
+    $domain,
+    $client_id,
+    $redirect_uri);
+
 $starWarsNames = ['Darth Vader', 'Ahsoka Tano', 'Kylo Ren', 'Obi-Wan Kenobi', 'R2-D2', 'Snoke'];
 
 $userInfo = $auth0Oauth->getUser();
@@ -428,6 +406,8 @@ $userInfo = $auth0Oauth->getUser();
 Then, we moved on to instantiating the `Authentication` class.
 
 The `$auth0->get_oauth_client()` method by default stores user information in the PHP session, and we also instructed it to save the `refresh_token` and `id_token`.
+
+`$authorizationURL` is the [authorization URL](https://auth0.com/docs/application-auth/current/server-side-web#call-the-authorization-url).
 
 `$starWarsNames` array contains some characters from Star Wars. Later in the code, a user will be assigned a random code name from this array.
 
@@ -447,7 +427,6 @@ This checks if the user submitted a request to log out, clears the session and r
 
 {% highlight html %}
 <script src="http://code.jquery.com/jquery-3.0.0.min.js" type="text/javascript"></script>
-<script src="https://cdn.auth0.com/js/auth0/9.0.0/auth0.min.js"></script>
 {% endhighlight %}
 
 We are making use of [Auth0's Centralized Login Page](https://auth0.com/docs/hosted-pages/login), and we also using jQuery to call the methods and handle button click event.
@@ -464,23 +443,13 @@ We are making use of [Auth0's Centralized Login Page](https://auth0.com/docs/hos
 Pulled in bootstrap and font-awesome for beautification.
 
 {% highlight html %}
-<script>
-  var AUTH0_CLIENT_ID = '<?php echo getenv("AUTH0_CLIENT_ID") ?>';
-  var AUTH0_DOMAIN = '<?php echo getenv("AUTH0_DOMAIN") ?>';
-  var AUTH0_CALLBACK_URL = '<?php echo getenv("AUTH0_CALLBACK_URL") ?>';
-</script>
-{% endhighlight %}
-
-Here, we are feeding the Auth0 credentials to JavaScript variables.
-
-{% highlight html %}
 <div class="container">
     <div class="login-page clearfix">
       <?php if(!$userInfo): ?>
       <div class="login-box auth0-box before">
         <img src="https://cdn.auth0.com/blog/app/star_warsapp.png" />
         <p>Heard you don't want to migrate to PHP 7? Dare us!</p>
-        <a class="btn btn-primary btn-login">SignIn</a>
+        <a href="<?php echo $authorizationURL ?>" class="btn btn-primary btn-login">SignIn</a>
       </div>
       <?php else: ?>
       <div class="logged-in-box auth0-box logged-in">
