@@ -902,7 +902,6 @@ class Auth {
     this.isAuthenticated = this.isAuthenticated.bind(this);
     this.signIn = this.signIn.bind(this);
     this.signOut = this.signOut.bind(this);
-    this.setSession = this.setSession.bind(this);
   }
 
   getProfile() {
@@ -963,6 +962,98 @@ As you can see, in this file, you are creating a module that defines the `Auth` 
 - `signOut`: This method signs a user out by removing variables like `profile`, `id_token`, and `expiresAt`.
 
 Lastly, this module creates an instance of the `Auth` class and exposes it to the world. That is, in your app, you won't have more than one instance of the `Auth` class.
+
+After defining this helper class, you can refactor your `NavBar` component to allow users to authenticate. So, open the `NavBar.js` file and replace its code with the following one:
+
+```js
+import React from 'react';
+import {Link, withRouter} from 'react-router-dom';
+import auth0Client from '../Auth';
+
+function NavBar(props) {
+  const signOut = () => {
+    auth0Client.signOut();
+    props.history.replace('/');
+  };
+
+  return (
+    <nav className="navbar navbar-dark bg-primary fixed-top">
+      <Link className="navbar-brand" to="/">
+        Q&App
+      </Link>
+      {
+        !auth0Client.isAuthenticated() &&
+        <button className="btn btn-dark" onClick={auth0Client.signIn}>Sign In</button>
+      }
+      {
+        auth0Client.isAuthenticated() &&
+        <div>
+          <label className="mr-2 text-white">{auth0Client.getProfile().name}</label>
+          <button className="btn btn-dark" onClick={() => {signOut()}}>Sign Out</button>
+        </div>
+      }
+    </nav>
+  );
+}
+
+export default withRouter(NavBar);
+```
+
+The new version of your navigation bar component imports two new elements:
+
+- `withRouter`: This a component provided by React Router to enhance your component [with navigation capabilities](https://reacttraining.com/react-router/web/api/withRouter) (e.g., access to the `history` object).
+- `auth0Client`: This is the singleton instance of the `Auth` class you just defined.
+
+With the `auth0Client` instance, the `NavBar` decides if it must render a _Sign In_ button (which it does for unauthenticated users) or a _Sign Out_ button (for authenticated users). If the user is properly authenticated, this component also shows its name. And, if an authenticated user hits the _Sign Out_ button, your component calls the `signOut` method of `auth0Client` and redirects the user to the home page.
+
+After refactoring the `NavBar` component, you will have to create a component to handle the callback route (`http://localhost:3000/callback`). To define this component, create a new file called `Callback.js` inside the `src` directory and insert the following code into it:
+
+```js
+import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
+import auth0Client from './Auth';
+
+class Callback extends Component {
+  async componentDidMount() {
+    await auth0Client.handleAuthentication();
+    this.props.history.replace('/');
+  }
+
+  render() {
+    return (
+      <p>Loading profile...</p>
+    );
+  }
+}
+
+export default withRouter(Callback);
+```
+
+The component you just defined is responsible for two things. First, it calls the `handleAuthentication` method to fetch the user information sent by Auth0. Second, it redirects your users to the home page (`history.replace('/')`) after it finishes the `handleAuthentication` process. In the meanwhile, this component shows the following message: "Loading profile".
+
+Then, to wrap the integration with Auth0, you will have to open the `App.js` file and update it as follows:
+
+```js
+// ... other import statements ...
+import Callback from './Callback';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <!-- ... NavBar and the other two Routes ... -->
+        <Route exat path='/callback' component={Callback}/>
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+Now, if you run your React app again (`npm start`), you will be able to authenticate yourself through Auth0. After the authentication process, you will be able to see your name on the navigation bar. Just make sure you use Google to sign in. Using username and password won't show your name because Auth0 does not have this information.
+
+![Securing React apps with Auth0.](https://cdn.auth0.com/blog/react-tutorial/securing-react-apps-with-auth0.png)
 
 ## Conclusion
 
