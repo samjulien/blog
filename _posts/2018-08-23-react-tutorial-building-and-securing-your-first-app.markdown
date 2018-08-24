@@ -1383,6 +1383,10 @@ That's it! You just finished developing your first React application. Now, you c
 
 ## Conclusion
 
-Mention:
-- The Virtual DOM
-- Lifecycle
+In this article, you had the chance to play with a lot of cool technologies and concepts. First, you learned about some important concepts that React introduces (like the _component architecture_ and the JSX syntax). Then, you briefly learned how to create a backend API with Node.js and Express. After that, you learned how to create a nice React application and how to secure the whole thing with Auth0.
+
+As the article introduced a lot of different topics, you didn't really had the chance to fully grasp all of them. For example, you barely touched the tip of the iceberg on some important concepts like the _Component Lifecycle_. You also didn't have the chance to learn what gives React a solid foundation when it comes to manipulating HTML elements. Unfortunately, diving deep into these topics is not possible as it would make the article massive (more than it is already).
+
+So, now that you finished developing your first React application, be sure to check the links and references left throughout the tutorial and, to learn more about how React works, be sure to check [the _Virtual DOM and Internals_ article](https://reactjs.org/docs/faq-internals.html).
+
+Also, if you need help, do hesitate leaving a message on the comments section down below. Cheers!
