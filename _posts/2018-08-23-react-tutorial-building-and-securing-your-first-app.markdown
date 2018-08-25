@@ -26,15 +26,15 @@ related:
 - 2018-08-14-react-context-api-managing-state-with-ease
 ---
 
-**TL;DR:** In this article, you will learn the basic concepts of React. After that, you will have the chance to use React in action while creating a simple Q&A (Questions & Answers) app that relies on a backend API. If needed, you can check [this GitHub repository to check the code that supports this article](https://github.com/auth0-blog/react-tutorial). Have fun!
+**TL;DR:** In this article, you will learn the basic concepts of React. After that, you will have the chance to see React in action while creating a simple Q&A (Questions & Answers) app that relies on a backend API. If needed, you can check [this GitHub repository to check the code that supports this article](https://github.com/auth0-blog/react-tutorial). Have fun!
 
 ## Prerequisites
 
-Although not mandatory, you should know a few things about JavaScript, HTML, and CSS before diving in in this tutorial. If you do not have previous experience with these technologies, you might not have an easy time following the instructions in this article, and it might be a good idea to step back and learn about them first. If you do have previous experience with web development, then stick around and enjoy the article.
+Although not mandatory, you should know a few things about JavaScript, HTML, and CSS before diving in this tutorial. If you do not have previous experience with these technologies, you might not have an easy time following the instructions in this article, and it might be a good idea to step back and learn about them first. If you do have previous experience with web development, then stick around and enjoy the article.
 
 Also, you will need to have Node.js and NPM installed in your development machine. If you don't have these tools yet, please, [read and follow the instructions on the official documentation to install Node.js](https://nodejs.org/en/download/). NPM, which stands for Node Package Manager, comes bundled into the default Node.js installation.
 
-Lastly, you will have to have access to a terminal in your operating system. If you are using MacOS X or Linux, you are good to go. If you are on Windows, you will probably be able to use [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/getting-started/getting-started-with-windows-powershell?view=powershell-6) without problems.
+Lastly, you will need access to a terminal in your operating system. If you are using MacOS or Linux, you are good to go. If you are on Windows, you will probably be able to use [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/getting-started/getting-started-with-windows-powershell?view=powershell-6) without problems.
 
 {% include tweet_quote.html quote_text="Learn how to create your first React application with ease." %}
 
@@ -48,7 +48,7 @@ For more information on each topic, you can always consult [the official React d
 
 ### React and the JSX Syntax
 
-First and foremost, you need to know that React uses a funny syntax called JSX. JSX, which stands for JavaScript XML, is a syntax extension to JavaScript that enables developers to use XML (and, as such, HTML) to define their applications. This section won't get into the details of how JSX really works. The idea here is to give you a heads up, so you don't get surprised when you see this syntax in the next sections.
+First and foremost, you need to know that React uses a funny syntax called JSX. JSX, which stands for JavaScript XML, is a syntax extension to JavaScript that enables developers to use XML (and, as such, HTML) to describe the structure of the user interface. This section won't get into the details of how JSX really works. The idea here is to give you a heads up, so you don't get surprised when you see this syntax in the next sections.
 
 So, when it comes to JSX, it is perfectly normal to see things like this:
 
@@ -74,7 +74,7 @@ In this case, the `showRecipe` function is using the JSX syntax to show the deta
 
 Components in React are the most important pieces of code. Everything you can interact with in a React application is (or is part of) a component. For example, when you load a React application, the whole thing will be handled by a root component that is usually called `App`. Then, if this application contains a navigation bar, you can bet that this bar is defined inside a component called `NavBar` or similar. Also, if this bar contains a form where you can input a value to trigger a search, you are probably dealing with another component that handles this form.
 
-The biggest advantage of using components to define your application is that this approach lets you encapsulate different parts of your user interface into independent, reusable pieces. Having each part on its own component facilitates reasoning about each piece in particular, testing each piece, and reusing them whenever applicable. When you start finding your bearings with this approach, you will see that having a tree of components (that's what you get when you divide everything into components) also facilitates state propagation.
+The biggest advantage of using components to define your application is that this approach lets you encapsulate different parts of your user interface into independent, reusable pieces. Having each part on its own component facilitates reasoning, testing, and reusing each piece easily. When you start finding your bearings with this approach, you will see that having a tree of components (that's what you get when you divide everything into components) also facilitates state propagation.
 
 {% include tweet_quote.html quote_text="The biggest advantage of using components to define your application is that this approach lets you encapsulate different parts of your user interface into independent, reusable pieces." %}
 
@@ -82,7 +82,7 @@ The biggest advantage of using components to define your application is that thi
 
 Now that you learned that React applications are nothing more than a tree of components, you have to learn how to create components in React. So, basically, there are two types of React components that you can create: [_Functional Components_ and _Class Components_](https://reactjs.org/docs/components-and-props.html#functional-and-class-components).
 
-The difference between these two types is that functional components are simply "dumb" components that do not hold any internal state, and class components are more complex components that can hold internal state. For example, if you are creating a component that will only show the profile of the user that is authenticated, you can create a functional component as follows:
+The difference between these two types is that functional components are simply "dumb" components that do not hold any internal state (making them great to handle presentation), and class components are more complex components that can hold internal state. For example, if you are creating a component that will only show the profile of the user that is authenticated, you can create a functional component as follows:
 
 ```js
 function UserProfile(props) {
@@ -156,9 +156,9 @@ So, basically speaking, if you need a component to handle dynamic things that de
 
 ### Re-Rendering React Components
 
-Another very important concept that you have to understand is how and when React re-renders components. Luckily, this is an easy concept to learn. There are only two things that can trigger a re-render in a React component, a change to the `props` that the component receives or a change to its internal state.
+Another very important concept that you have to understand is how and when React re-renders components. Luckily, this is an easy concept to learn. There are only two things that can trigger a re-render in a React component: a change to the `props` that the component receives or a change to its internal state.
 
-Although the previous section didn't get into the details about how to change the internal state of a component, it did show how to achieve this. Whenever you use a stateful component (i.e., a class component), you can trigger a re-render on it by changing its state through the `setState` method. What is important to keep in mind is that you cannot change the `state` field directly. You **have to** call the `setState` method with the new desired state:
+Although the previous section didn't get into the details about how to change the internal state of a component, it did show how to achieve this. Whenever you use a stateful component (i.e., a class component), you can trigger a re-render on it by changing its state through the `setState` method. What is important to keep in mind is that you **should not** change the `state` field directly. You **have to** call the `setState` method with the new desired state:
 
 ```js
 // this won't trigger a re-render:
@@ -211,7 +211,7 @@ That's it. This is how you define and pass `props` to a child component. Now, if
 
 ## What You Will Build with React
 
-All right! With the concepts describe in the last section in mind, you are ready to start developing your first React application. In the following sections, you will build a simple Q&A (Question & Answer) app that will allow users to interact with each other asking and answering questions. To make the whole process more realistic, you will use Node.js and Express to create a rough backend API. Don't worry if you don't feel confident about developing backend apps with Node.js. This is going to be a very straightforward process, and you will be up and running in no time.
+All right! With the concepts describe in the last section in mind, you are ready to start developing your first React application. In the following sections, you will build a simple Q&A (Question & Answer) app that will allow users to interact with each other asking and answering questions. To make the whole process more realistic, you will use Node.js and Express to create a rough backend API. Don't worry if you are not familiar with developing backend apps with Node.js. This is going to be a very straightforward process, and you will be up and running in no time.
 
 At the end of this tutorial, you will have a React app supported by a Node.js backend that looks like this:
 
@@ -219,7 +219,7 @@ At the end of this tutorial, you will have a React app supported by a Node.js ba
 
 ## Developing a Backend API with Node.js and Express
 
-Before diving into React, you will quickly build a backend API to support your Q&A app. In this section, you will use Express alongside with Node.js to create this API. If you don't know what Express is or how it works, don't worry, you don't need to get into its details now. [Express](https://expressjs.com/), as stated by its official web page, is an unopinionated, minimalist web framework for Node.js. With this library, as you will see here, you can quickly build apps to run on servers (i.e., backend apps).
+Before diving into React, you will quickly build a backend API to support your Q&A app. In this section, you will use Express alongside with Node.js to create this API. If you don't know what Express is or how it works, don't worry, you don't need to get into its details now. [Express](https://expressjs.com/), as stated by its official documentation, is an unopinionated, minimalist web framework for Node.js. With this library, as you will see here, you can quickly build apps to run on servers (i.e., backend apps).
 
 So, to get things started, open a terminal in your operating system, move to a directory where you create your projects, and issue the following commands:
 
@@ -381,6 +381,8 @@ curl -X POST -H 'Content-Type: application/json' -d '{
 curl localhost:8081
 ```
 
+> If you don't know, [`curl` is a command-line interface that lets you issue HTTP requests with ease](https://curl.haxx.se/docs/httpscripting.html). In the code snippet above, you can see that, with just a few key strikes, you can issue different types of HTTP requests, define what headers (`-H`) they need, and pass data (`-d`) to backends.
+
 The first command will trigger an HTTP GET request that will result in an empty array being printed out (`[]`). Then, the second and the third commands will issue POST requests to insert two questions into your API, and the fourth command will issue another GET request to verify if these questions were properly inserted.
 
 If you manage to get the expected results, leave your server running and move on to the next section.
@@ -389,9 +391,10 @@ If you manage to get the expected results, leave your server running and move on
 
 With your backend API up and running, you are finally ready to start developing your React application. Not that long ago, developers willing to create apps with React would have a hard time setting up all the tools needed (e.g., [webpack](https://webpack.js.org/)) to scaffold a React application. However (and luckily), the scenario has changed after Facebook published a tool called [_Create React App_](https://github.com/facebook/create-react-app).
 
-With this tool, you can scaffold a new React application with just one command. As such, to create your React app, open a new terminal and go to the same directory you created the `qa-api` one. From there, issue the following command:
+With this tool, you can scaffold a new React application with just one command. As such, to create your React app, open a new terminal and go to the same directory where you created the `qa-api` Node.js app. From there, issue the following command:
 
 ```bash
+# this command was introduced on npm@5.2.0
 npx create-react-app qa-react
 ```
 
@@ -415,9 +418,9 @@ After seeing your app, you can stop the server by hitting `Ctrl` + `c` so you ca
 npm i react-router react-router-dom
 ```
 
-This command will install two libraries to help you handle the navigation in your app. The first one, `react-router`, is the main library that enables seamless navigation. The second one, `react-router-dom`, is an extension to the web.
+This command will install two libraries to help you handle the navigation in your app. The first one, `react-router`, is the main library that enables seamless navigation. The second one, `react-router-dom`, provides DOM bindings for React Router.
 
-> **Note:** If you were using [React Native](https://facebook.github.io/react-native/) to develop an app to mobile devices, you would install `react-router-native` instead.
+> **Note:** If you were using [React Native](https://facebook.github.io/react-native/) to develop an app for mobile devices, you would install `react-router-native` instead.
 
 Then, after installing these libraries, you can open your React project in your preferred IDE so you can start the real work.
 
@@ -480,7 +483,7 @@ In the new version of this file, you are just importing `BrowserRouter` from the
 
 ### Configuring Bootstrap in Your React App
 
-To make your React app more appealing from the User Interface (UI) point of view, you are going configure [Bootstrap](https://getbootstrap.com/) on it. If you don't know Bootstrap, this is an extremely popular library that helps developers create good-looking, responsive web apps with ease.
+To make your React app more appealing from the User Interface (UI) point of view, you are going to configure [Bootstrap](https://getbootstrap.com/) on it. If you don't know Bootstrap, this is an extremely popular library that helps developers create good-looking, responsive web apps with ease.
 
 There are multiple ways to integrate React and Bootstrap together. However, as the requirements for your first application will be quite simple and as you won't need any of [its interactive components](https://getbootstrap.com/docs/4.1/components) (i.e., you are just interested into the basic styles that this library provides), you are going to follow the easiest strategy available. That is, you are simply going to open your `./public/index.html` file and update it as follows:
 
@@ -498,7 +501,7 @@ There are multiple ways to integrate React and Bootstrap together. However, as t
 {% endraw %}
 {% endhighlight %}
 
-In this case, you are actually doing two things: you are changing the `title` of your React app to _Q&App_, and you are making your app load a variation of Bootstrap called `flatly`. If you are interested, you can use any variation available at [_Bootswatch_](https://bootswatch.com), or you can also use the default flavor of Bootstrap. However, you will probably find the variations over _Bootswatch_ more appealing.
+In this case, you are actually doing two things: you are changing the `title` of your React app to _Q&App_, and you are making your app load a variation of Bootstrap called `flatly`. If you are interested, you can use any variation available at [_Bootswatch_](https://bootswatch.com), or you can also use the default flavor of Bootstrap. However, you will probably find the variations available on _Bootswatch_ more appealing.
 
 ### Creating a Navigation Bar in Your React App
 
@@ -564,7 +567,7 @@ Now, if you check your app again, you will see your navigation bar and the "work
 
 ### Creating a Class Component with React
 
-After creating the navigation bar, what you can do next is to create a stateful component (a class component) to fetch questions from your backend and to show it to your users. To fetch these questions, you will need the help of another library, [Axios](https://github.com/axios/axios). In a few words, Axios is a promise based HTTP client for the browser and for Node.js. In this tutorial, you will only use it in the browser (i.e., in your React app).
+After creating the navigation bar, what you can do next is to create a stateful component (a class component) to fetch questions from your backend and to show it to your users. To fetch these questions, you will need the help of another library, [Axios](https://github.com/axios/axios). In a few words, Axios is a promise-based HTTP client for the browser and for Node.js. In this tutorial, you will only use it in the browser (i.e., in your React app).
 
 To install Axios, stop the React development server and issue the following command:
 
@@ -624,15 +627,15 @@ class Questions extends Component {
 export default Questions;
 ```
 
-There are a few important things going on in this file. First, as mentioned before, you are creating a stateful component that will hold the questions available in your backend API. So, to do it properly, you are starting your component with the `questions` property set to `null` and, when React finishes mounting your component (which triggers the `componentDidMount` method), you are issuing a GET request (through the `axios.get` call) to your backend. In the meanwhile between your request and the answer from the backend, React renders your component with a message saying "loading questions..." (it does so because you instructed it to behave like that by adding `this.state.questions === null &&` before the message).
+There are a few important things going on in this file. First, as mentioned before, you are creating a stateful component that will hold the questions available in your backend API. So, to do it properly, you are starting your component with the `questions` property set to `null` and, when React finishes mounting your component (which triggers the `componentDidMount` method), you are issuing a GET request (through the `axios.get` call) to your backend. In the meantime between your request and the response from the backend, React renders your component with a message saying "loading questions..." (it does so because you instructed it to behave like that by adding `this.state.questions === null &&` before the message).
 
 > **Note:** This component is touching a topic that was not addressed in this article, [the Lifecycle of React Components](https://reactjs.org/docs/react-component.html#the-component-lifecycle). In this case, you are just using one of the extension points provided by React, the `componentDidMount` method. You don't really need to understand how this works to follow this tutorial but, after finishing it, make sure you learn about this topic.
 
 Then, whenever Axios gets a response from the backend, you put the `data` returned inside a constant called `questions`, and you update the state of the component (`this.setState`) with it. This update, as you already learned, triggers a re-render and makes React show all the questions retrieved.
 
-Now, regarding of how your questions are shown, you are using a bunch of `div` elements with CSS classes provided by Bootstrap to create a nice [_Card_ component](https://getbootstrap.com/docs/4.1/components/card/). If you want to tweak how this card is shown, make sure to check the docs.
+Now, in relation to how your questions are shown, you are using a bunch of `div` elements with CSS classes provided by Bootstrap to create a nice [_Card_ component](https://getbootstrap.com/docs/4.1/components/card/). If you want to tweak how this card is shown, make sure to check the docs.
 
-Besides that, note that you are using a component called `Link` (from `react-router-dom`) to make this redirect users to the following path when clicked: `/question/${question.id}`. In the next section, you will create a component to the answers to a question chosen by the user.
+Besides that, note that you are using a component called `Link` (from `react-router-dom`) to make this redirect users to the following path when clicked: `/question/${question.id}`. In the next section, you will create a component to show the answers to a question chosen by the user.
 
 So, as you already understand how your component behaves, the next thing you will need to do is to update the code of your `App` component to use your new component:
 
@@ -759,7 +762,7 @@ After that, if you reload your app and go to [`http://localhost:3000/question/1`
 
 ## Securing your React App
 
-Your application has reached a state where it has almost everything it needs for prime time. There are just a few features missing. For example, right now, your users have no means of creating questions nor answering them through your app. Another example is that there is no way to log in into your application. Besides that, the questions and answers do not provide information about their authors.
+Your application has reached a state where it has almost everything it needs for prime time. There are just a few features missing. For example, right now, your users have no means of creating questions nor answering them through your app. Another example is that there is no way to log into your application. Besides that, the questions and answers do not provide information about their authors.
 
 In this section, you will learn how to implement all these features with ease. You will start by subscribing to [Auth0](https://auth0.com) to help you with the authentication feature, then you will secure your backend and, to wrap things up, you will secure your React app and refactor the `Question` component so that authenticated users can answer questions.
 
@@ -775,7 +778,7 @@ For starters, you will need to sign up to Auth0 so you can integrate it in your 
 
 After signing up, you will have to create an [Auth0 Application](https://auth0.com/docs/applications) to represent your app. So, in your dashboard, click on [the Applications section](https://manage.auth0.com/#/applications) on the vertical menu and then click on _Create Application_.
 
-On the dialog shown, you will have to insert a name for your application (for example, "Q&App") and then you will have to choose _Single Page Application_ as its type. Then, when you click on the _Create_ button, Auth0 will create your Application and redirect you to its _Quick Start_ section. From there, you will have to click on the _Settings_ tab to change a configuration on your Auth0 Application and to copy some values from it.
+On the dialog shown, you will have to insert a name for your application (for example, "Q&App") and then you will have to choose _Single Page Application_ as its type. Then, when you click on the _Create_ button, Auth0 will create your Application and redirect you to its _Quick Start_ section. From there, you will have to click on the _Settings_ tab to change the configuration of your Auth0 Application and to copy some values from it.
 
 ![Creating a React application on Auth0.](https://cdn.auth0.com/blog/react-tutorial/creating-a-react-application-at-auth0.png)
 
@@ -783,7 +786,7 @@ So, after heading to the _Settings_ tab, search for the _Allowed Callback URLs_ 
 
 You are probably wondering what this URL means and why you need it. The reason why you need this URL is that, while authenticating through Auth0, your users will be redirected to its Universal Login Page and, after the authentication process (successful or not), they will be redirected back to your application. For security reasons, Auth0 will redirect your users only to URLs registered on this field.
 
-With this value in place, you can click on the _Save_ button and leave this page open.
+With this value in place, you can click on the _Save Changes_ button and leave this page open.
 
 ### Securing your Backend API with Auth0
 
@@ -871,11 +874,13 @@ app.post('/answer/:id', checkJwt, (req, res) => {
 });
 ```
 
-Both endpoints introduce only two changes. First, both of them declare that they want to use `checkJwt`, which make them unavailable to unauthenticated users. Second, both add a new property called `author` on questions and answers. These new properties receive the name (`req.user.name`) of the users issuing requests.
+Both endpoints introduce only two changes. First, both of them declare that they want to use `checkJwt`, which makes them unavailable to unauthenticated users. Second, both add a new property called `author` on questions and answers. These new properties receive the name (`req.user.name`) of the users issuing requests.
 
 With these changes in place, you can start your backend API again (`node src`) and start refactoring your React application.
 
 > **Note:** You are not adding the `checkJwt` middleware to your GET endpoints because you want them to be publicly accessible. That is, you want unauthenticated users to be able to see questions and answers, but you don't want them to create new questions nor to answer existing ones.
+
+> **Second Note:** As your backend API is just holding data in memory, restarting it makes you lose all the questions and answers you inserted previously. To add new questions through `curl`, you would have to fetch an ID Token from Auth0. However, you can wait until you finish the whole app to add questions and answers through your app's interface.
 
 ### Securing your React App with Auth0
 
@@ -963,9 +968,9 @@ As you can see, in this file, you are creating a module that defines the `Auth` 
 - `getProfile`: This method returns the profile of the authenticated user, if any.
 - `getIdToken`: This method returns the `idToken` generated by Auth0 for the current user. This is what you will use while issuing requests to your POST endpoints.
 - `handleAuthentication`: This is the method that your app will call right after the user is redirected from Auth0. This method simply reads the hash segment of the URL to fetch the user details and the id token.
-- `isAuthenticated`: This method returns if there is a user authenticated or not.
+- `isAuthenticated`: This method returns whether there is an authenticated user or not.
 - `signIn`: This method initializes the authentication process. In other words, this method sends your users to the Auth0 login page.
-- `signOut`: This method signs a user out by removing variables like `profile`, `id_token`, and `expiresAt`.
+- `signOut`: This method signs a user out by setting the `profile`, `id_token`, and `expiresAt` to `null`.
 
 Lastly, this module creates an instance of the `Auth` class and exposes it to the world. That is, in your app, you won't have more than one instance of the `Auth` class.
 
@@ -1008,7 +1013,7 @@ export default withRouter(NavBar);
 The new version of your navigation bar component imports two new elements:
 
 - `withRouter`: This a component provided by React Router to enhance your component [with navigation capabilities](https://reacttraining.com/react-router/web/api/withRouter) (e.g., access to the `history` object).
-- `auth0Client`: This is the singleton instance of the `Auth` class you just defined.
+- `auth0Client`: This is the [singleton instance](https://en.wikipedia.org/wiki/Singleton_pattern) of the `Auth` class you just defined.
 
 With the `auth0Client` instance, the `NavBar` decides if it must render a _Sign In_ button (which it does for unauthenticated users) or a _Sign Out_ button (for authenticated users). If the user is properly authenticated, this component also shows its name. And, if an authenticated user hits the _Sign Out_ button, your component calls the `signOut` method of `auth0Client` and redirects the user to the home page.
 
@@ -1035,7 +1040,7 @@ class Callback extends Component {
 export default withRouter(Callback);
 ```
 
-The component you just defined is responsible for two things. First, it calls the `handleAuthentication` method to fetch the user information sent by Auth0. Second, it redirects your users to the home page (`history.replace('/')`) after it finishes the `handleAuthentication` process. In the meanwhile, this component shows the following message: "Loading profile".
+The component you just defined is responsible for two things. First, it calls the `handleAuthentication` method to fetch the user information sent by Auth0. Second, it redirects your users to the home page (`history.replace('/')`) after it finishes the `handleAuthentication` process. In the meantime, this component shows the following message: "Loading profile".
 
 Then, to wrap the integration with Auth0, you will have to open the `App.js` file and update it as follows:
 
@@ -1057,7 +1062,7 @@ class App extends Component {
 export default App;
 ```
 
-Now, if you run your React app again (`npm start`), you will be able to authenticate yourself through Auth0. After the authentication process, you will be able to see your name on the navigation bar. Just make sure you use Google to sign in. Using username and password won't show your name because Auth0 does not have this information.
+Now, if you run your React app again (`npm start`), you will be able to authenticate yourself through Auth0. After the authentication process, you will be able to see your name on the navigation bar.
 
 ![Securing React apps with Auth0.](https://cdn.auth0.com/blog/react-tutorial/securing-react-apps-with-auth0.png)
 
@@ -1065,7 +1070,7 @@ Now, if you run your React app again (`npm start`), you will be able to authenti
 
 Now that you have finished integrating Auth0 into your React application, you can start adding features that only authenticated users will have access to. To conclude this tutorial, you will implement two features. First, you will enable authenticated users to create new questions. Then, you will refactor the `Question` (singular) component to show a form so authenticated users can answer these questions.
 
-For the first feature, you will create a new route in your application, `/new-question`. This route will be guarded by a component that will check if there is a user authenticated or not. If the user is not authenticated yet, this component will redirect them to Auth0 so they can do so. If the user is already authenticated, the component will let React render the form where new questions will be created.
+For the first feature, you will create a new route in your application, `/new-question`. This route will be guarded by a component that will check if the user is authenticated or not. If the user is not authenticated yet, this component will redirect them to Auth0 so they can do so. If the user is already authenticated, the component will let React render the form where new questions will be created.
 
 So, for starters, you will create a new directory called `SecuredRoute` and create a file called `SecuredRoute.js` inside it. Then, in this file, you will insert the following code:
 
@@ -1311,7 +1316,7 @@ class SubmitAnswer extends Component {
 export default withRouter(SubmitAnswer);
 ```
 
-This component works in a similar fashion to the `NewQuestion` component. The difference here is that instead of handling the POST request by itself, it delegates to someone else. Also, if the user is not authenticated, this component renders nothing.
+This component works in a similar fashion to the `NewQuestion` component. The difference here is that instead of handling the POST request by itself, the component delegates it to someone else. Also, if the user is not authenticated, this component renders nothing.
 
 To use this component, open the `Question.js` file and replace its contents with this:
 
