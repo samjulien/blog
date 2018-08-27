@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "Black Hat Training: Achieving Security Awareness Through Social Engineering Attacks"
-metatitle: "Achieving Security Awareness Through Social Engineering Attacks"
+metatitle: "Top 10 Takeaways - Black Hat - Security Awareness Through Social Engineering"
 description: "Let’s cover the top 10 cybersecurity takeaways of my social engineering training at Black Hat."
-metadescription: "These are the top 10 takeaways of the social engineering course I took at Black Hat, which covered policies, security awareness programs, and much more!"
-date: 2018-09-05 10:00
+metadescription: "The Top 10 Takeaways of a social engineering course from Black Hat, a course which covered policies, security awareness programs, and much more!"
+date: 2018-08-27 10:00
 category: Identity, Auth0 Engineering
 author:
   name: "Annybell Villarroel"
@@ -41,7 +41,7 @@ I took the ["Achieving Security Awareness Through Social Engineering Attacks"](h
 It was eye-opening, tremendously interesting, and fun! It was facilitated by [Jayson Street](https://twitter.com/jaysonstreet) and [April Wright](https://twitter.com/aprilwright). Jayson gets paid by companies to break into their own facilities through [Social Engineering](<https://en.wikipedia.org/wiki/Social_engineering_(security)>). He shared many crazy stories, like the time he [gained full access to a bank in Beirut in two and a half minutes](https://www.youtube.com/watch?v=UpX70KxGiVo&feature=youtu.be&t=434).
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/achieving-security-awareness-through-social-engineering-attacks/corgi-social-engineering-meme.jpg" alt="Hacking 101: Social Engineering. A corgi dog passes as a human.">
+  <img src="https://cdn.auth0.com/blog/achieving-security-awareness-through-social-engineering-attacks/corgi-social-engineering-meme.jpg" alt="Corgi dog meme, coding on computer">
 </p>
 
 [Source](https://imgflip.com/meme/38390688/corgi-hacker?sort=latest)
@@ -79,7 +79,7 @@ For example, if you’re near a Pineapple while your phone has WiFi turned on an
 This is the picture of a WiFi Pineapple Tower because… Black Hat.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/achieving-security-awareness-through-social-engineering-attacks/wifi-pineapple-tower.jpg" alt="WiFi Pineapple Tower">
+  <img src="https://cdn.auth0.com/blog/achieving-security-awareness-through-social-engineering-attacks/wifi-pineapple-tower.jpg" alt="WiFi Pineapple Tower at Black Hat Conference">
 </p>
 
 **Takeaway #2:** Avoid open or public networks as much as possible, especially in crowded spaces. If you’re not in a trusted space, turn on WiFi only when you really need it.
@@ -127,7 +127,7 @@ We talked about other topics such as policies, security awareness programs, meme
 10. It is important to always explain the purpose of the training, demo or campaign. We don’t ever want you to fail, we want to empower you and help make you one of our strongest lines of defense:
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/achieving-security-awareness-through-social-engineering-attacks/teammate-empowerment.jpg" alt="Security training and awareness campaigns make people the best line of cybersecurity defense">
+  <img src="https://cdn.auth0.com/blog/achieving-security-awareness-through-social-engineering-attacks/teammate-empowerment.jpg" alt="Security training at Black Hat Conference">
 </p>
 
 {% include tweet_quote.html quote_text="Security training and awareness campaigns make people the best line of cybersecurity defense" %}
