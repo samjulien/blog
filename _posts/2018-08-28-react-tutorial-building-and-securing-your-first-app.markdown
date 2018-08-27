@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "React Tutorial: Building and Securing Your First App"
-metatitle: "Introduction to React and React Tutorial - Building Your First App"
+metatitle: "Introduction to React + Tutorial How To Build Your First App"
 description: "Learn how React works and create and secure your first React app in no time."
 metadescription: "Introduction to React and its components and routers. Tutorial of how to build a simple Q&A React app - secure backend API with Node.js and Express."
 date: 2018-08-28 08:30
