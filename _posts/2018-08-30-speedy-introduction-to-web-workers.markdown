@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "Speedy Introduction to Web Workers"
-metatitle: ""
+metatitle: "Introduction to Web Workers in JavaScript - Listen and Send Messages"
 description: "Learn how to use web workers in JavaScript to create parallel programming and perform multiple operations simultaneously rather than interleaving them."
-metadescription: ""
+metadescription: "Learn how to use web workers in JavaScript to optimize development and perform synchronous operations. Follow along, using CodeSandbox to manage web worker messages."
 date: 2018-08-30 8:30
 category: Technical Guide, Stack, Frontend
 design: 
