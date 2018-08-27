@@ -29,7 +29,7 @@
   {% endif %}
 
   <div class="post-info">
-    <div class="author">
+    <div class="author" itemscope itemtype="http://schema.org/Person">
       <a href="{{current.author.url}}"><span class="name" itemprop="author">{{current.author.name | truncatewords: 2, ''}}</span></a>
     </div>
     <div class="share-container">
