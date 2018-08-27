@@ -18,19 +18,19 @@
   {% include amp/entry_image.html %}
   <h1 class="post-title" itemprop="headline">{{current.title}}</h1>
   {% if current.description %}
-  <div class="entry-content">
+  <div class="entry-content" itemprop="description">
     {{ current.description | markdownify }}
   </div>
 
   {% elsif current.metadescription %}
-  <div class="entry-content" itemprop="description">
+  <div class="entry-content">
     {{ current.metadescription | markdownify }}
   </div>
   {% endif %}
 
   <div class="post-info">
-    <div class="author">
-      <a href="{{current.author.url}}"><span class="name" itemprop="author">{{current.author.name | truncatewords: 2, ''}}</span></a>
+    <div class="author" itemscope itemtype="http://schema.org/Person" itemprop="author">
+      <a href="{{current.author.url}}"><span class="name" itemprop="name">{{current.author.name | truncatewords: 2, ''}}</span></a>
     </div>
     <div class="share-container">
       <div>
