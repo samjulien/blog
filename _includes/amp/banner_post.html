@@ -18,12 +18,12 @@
   {% include amp/entry_image.html %}
   <h1 class="post-title" itemprop="headline">{{current.title}}</h1>
   {% if current.description %}
-  <div class="entry-content">
+  <div class="entry-content" itemprop="description">
     {{ current.description | markdownify }}
   </div>
 
   {% elsif current.metadescription %}
-  <div class="entry-content" itemprop="description">
+  <div class="entry-content">
     {{ current.metadescription | markdownify }}
   </div>
   {% endif %}
