@@ -32,7 +32,7 @@ related:
 
 ## Prerequisites
 
-Although not mandatory, you should know a few things about JavaScript, HTML, and CSS before diving in this tutorial. If you do not have previous experience with these technologies, you might not have an easy time following the instructions in this article, and it might be a good idea to step back and learn about them first. If you do have previous experience with web development, then stick around and enjoy the article.
+Although not mandatory, you should know a few things about JavaScript, HTML, and CSS before diving into this React app tutorial. If you do not have previous experience with these technologies, you might not have an easy time following the instructions in this article, and it might be a good idea to step back and learn about them first. If you do have previous experience with web development, then stick around and enjoy the article.
 
 Also, you will need to have Node.js and NPM installed in your development machine. If you don't have these tools yet, please, [read and follow the instructions on the official documentation to install Node.js](https://nodejs.org/en/download/). NPM, which stands for Node Package Manager, comes bundled into the default Node.js installation.
 
@@ -217,7 +217,7 @@ All right! With the concepts describe in the last section in mind, you are ready
 
 At the end of this tutorial, you will have a React app supported by a Node.js backend that looks like this:
 
-![React Tutorial: Building and Securing Your First App](https://cdn.auth0.com/blog/react-tutorial/q-and-a-app.png)
+![React Tutorial: Example of final Q&A App](https://cdn.auth0.com/blog/react-tutorial/q-and-a-app.png)
 
 ## Developing a Backend API with Node.js and Express
 
@@ -412,7 +412,7 @@ npm start
 
 The last command issued above will start a development server that listens on port `3000` and will open the new app in your default web browser.
 
-![Welcome to React](https://cdn.auth0.com/blog/react-tutorial/welcome-to-react.png)
+![Welcome to React local starting page](https://cdn.auth0.com/blog/react-tutorial/welcome-to-react.png)
 
 After seeing your app, you can stop the server by hitting `Ctrl` + `c` so you can install a couple dependencies that you will need in your application. So, back in your terminal and after stopping the server, run the following command:
 
@@ -565,7 +565,7 @@ body {
 
 Now, if you check your app again, you will see your navigation bar and the "work in progress" message.
 
-![React application with a navigation bar created with the help of Bootstrap.](https://cdn.auth0.com/blog/react-tutorial/react-app-with-navbar.png)
+![React application with Bootstrap navigation bar](https://cdn.auth0.com/blog/react-tutorial/react-app-with-navbar.png)
 
 ### Creating a Class Component with React
 
@@ -758,7 +758,7 @@ curl -X POST -H 'Content-Type: application/json' -d '{
 
 After that, if you reload your app and go to [`http://localhost:3000/question/1`](http://localhost:3000/question/1), you will see a page similar to this:
 
-![React app configured with React Router](https://cdn.auth0.com/blog/react-tutorial/react-app-with-react-router.png)
+![React Q&A app Question page configured with React Router](https://cdn.auth0.com/blog/react-tutorial/react-app-with-react-router.png)
 
 ## Securing your React App
 
@@ -1064,7 +1064,7 @@ export default App;
 
 Now, if you run your React app again (`npm start`), you will be able to authenticate yourself through Auth0. After the authentication process, you will be able to see your name on the navigation bar.
 
-![Securing React apps with Auth0.](https://cdn.auth0.com/blog/react-tutorial/securing-react-apps-with-auth0.png)
+![React Q&A app user authentication with Auth0](https://cdn.auth0.com/blog/react-tutorial/securing-react-apps-with-auth0.png)
 
 ### Adding Features to Authenticated Users
 
@@ -1257,9 +1257,9 @@ export default Questions;
 
 With these changes in place, you will be able to create new questions after authenticating.
 
-![React application with a form secured by Auth0](https://cdn.auth0.com/blog/react-tutorial/form-in-a-react-app.png)
+![React Q&A app submit content via form secured by Auth0](https://cdn.auth0.com/blog/react-tutorial/form-in-a-react-app.png)
 
-Then, to wrap this tutorial, you can refactor the `Question` component to include a form where users will be able to answer questions. To define this form, create a new file called `SubmitAnswer.js` inside the `Question` directory with the following code:
+Then, to wrap up this React tutorial, you can refactor the `Question` component to include a form where users will be able to answer questions. To define this form, create a new file called `SubmitAnswer.js` inside the `Question` directory with the following code:
 
 ```js
 import React, {Component, Fragment} from 'react';
@@ -1388,7 +1388,7 @@ Here, you can see that you are defining the `submitAnswer` method that will issu
 
 That's it! You just finished developing your first React application. Now, you can go to [`http://localhost:3000/`](http://localhost:3000/) and start testing your full React app. After signing in, you will be able to ask questions, and you will be able to answer them as well. How cool is that?
 
-![Creating and securing your first React application](https://cdn.auth0.com/blog/react-tutorial/creating-your-first-react-app.png)
+![Full React Q&A app tutorial demo](https://cdn.auth0.com/blog/react-tutorial/creating-your-first-react-app.png)
 
 {% include tweet_quote.html quote_text="I just built my first React application." %}
 
