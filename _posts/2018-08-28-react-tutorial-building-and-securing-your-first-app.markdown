@@ -4,7 +4,7 @@ title: "React Tutorial: Building and Securing Your First App"
 metatitle: "React Tutorial: Building and Securing Your First App"
 description: "Learn how React works and create and secure your first React app in no time."
 metadescription: "Learn how React works and create and secure your first React app in no time."
-date: 2018-08-23 08:30
+date: 2018-08-28 08:30
 category: Technical Guide, First Application, React
 author:
   name: "Bruno Krebs"
