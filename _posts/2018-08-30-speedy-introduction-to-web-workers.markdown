@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "Speedy Introduction to Web Workers"
+metatitle: ""
 description: "Learn how to use web workers in JavaScript to create parallel programming and perform multiple operations simultaneously rather than interleaving them."
+metadescription: ""
 date: 2018-08-30 8:30
 category: Technical Guide, Stack, Frontend
 design: 
