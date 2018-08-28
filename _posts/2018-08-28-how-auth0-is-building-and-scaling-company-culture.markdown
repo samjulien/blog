@@ -4,7 +4,7 @@ title: How Auth0 is Building and Scaling Company Culture
 metatitle: ""
 description: How Auth0 is Striving to Keep Its Soul While Hiring for Dramatic Growth
 metadescription: ""
-date: 2018-08-22 07:00
+date: 2018-08-28 07:00
 category: Culture
 is_non-tech: true
 author:
