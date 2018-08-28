@@ -78,24 +78,24 @@ Web workers effectively enable a form of multi-threading in JavaScript with [som
 
 ## Setting Up a Development Environment
 
-Getting hands-on with web workers will help us understand them better! For the purpose of this blog post, we'll be running the sample code within a [CodeSandbox](https://codesandbox.io/) project. It's easy to bootstrap and run a vanilla JavaScript project there. If you want, feel free to visit the [CodeSanbox that is already set up](https://codesandbox.io/s/xp901z23o4) and fork it. Otherwise, please, follow these steps:
+Getting hands-on with web workers will help us understand them better! For the purpose of this blog post, we'll be running the sample code within a [CodeSandbox](https://codesandbox.io/) project. It's easy to bootstrap and run a vanilla JavaScript project there. If you want, feel free to visit the [CodeSandbox that is already set up](https://codesandbox.io/s/xp901z23o4) and fork it. Otherwise, please, follow these steps:
 
 - Visit [CodeSandbox](https://codesandbox.io/).
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-home-page.png" alt="CodeSanbox home page">
+  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-home-page.png" alt="CodeSandbox home page">
 </p>
 
 - On the main page, click on the **Box** icon that represents a Vanilla JavaScript project.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-javascript-project-icon.png" alt="CodeSanbox JavaScript project icon">
+  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-javascript-project-icon.png" alt="CodeSandbox JavaScript project icon">
 </p>
 
 - Scroll down and notice that the project preview is shown within the page.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-javascript-project-preview.png" alt="CodeSanbox JavaScript project preview">
+  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-javascript-project-preview.png" alt="CodeSandbox JavaScript project preview">
 </p>
 
 - Click on the **Edit on CodeSandbox** link to open the project on its own browser tab.
@@ -132,7 +132,7 @@ Getting hands-on with web workers will help us understand them better! For the p
 {% endraw %}
 {% endhighlight %}
 
-We'll soon learn why we are creating these files. CodeSanbox uses [ParcelJS](https://parceljs.org/) to bundle the JavaScript application easily.
+We'll soon learn why we are creating these files. CodeSandbox uses [ParcelJS](https://parceljs.org/) to bundle the JavaScript application easily.
 
 > Feel free to use your own environment or local configuration! If you are using Webpack, there is [extra configuration using `worker-loader`](https://github.com/webpack-contrib/worker-loader) that needs to be done. We'll cover that in a future post.
 
@@ -236,7 +236,7 @@ onmessage = e => {
 };
 ```
 
-Let's save our work for each file. On CodeSanbox, we can use `CMD + S` or `CTRL + S` to save each file.
+Let's save our work for each file. On CodeSandbox, we can use `CMD + S` or `CTRL + S` to save each file.
 
 We got our threads listening for messages between each other. Next, let's learn how to send messages.
 
@@ -268,7 +268,7 @@ worker.postMessage("Marco!");
 Let's save our work and open the application preview on its own tab. This can be done by clicking on the **Open In New Window** button present in the navigation bar of the embedded browser:
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesanbox-open-preview-in-new-window.png" alt="CodeSanbox button to open application preview in new tab.">
+  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/CodeSandbox-open-preview-in-new-window.png" alt="CodeSandbox button to open application preview in new tab.">
 </p>
 
 In the new preview browser tab, let's open the browser developer console and refresh the page. We should see the following output:
