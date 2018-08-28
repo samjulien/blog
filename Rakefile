@@ -51,6 +51,7 @@ description: <Shorter shown underneath the title on the post itself and on blog 
 metadescription: <Richer, longer description that shows in search engines - must be less than 160 characters>
 date: #{Time.now.strftime('%Y-%m-%d %H:%M')}
 category: <FROM HERE: https://auth0team.atlassian.net/wiki/spaces/CON/pages/137692473/Blog+Post+Categories>
+post_length: <1-5 (Run postlength.sh to generate score when article is ready)>
 auth0_aside: <true|false (FOR FALSE YOU COULD ALSO REMOVE THIS LINE)>
 press_release: <true|false (FOR FALSE YOU COULD ALSO REMOVE THIS LINE)>
 is_non-tech: <true|false (FOR FALSE YOU COULD ALSO REMOVE THIS LINE)>
