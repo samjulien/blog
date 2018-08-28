@@ -101,7 +101,7 @@ Getting hands-on with web workers will help us understand them better! For the p
 - Click on the **Edit on CodeSandbox** link to open the project on its own browser tab.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-javascript-full-project.png" alt="Code Sanbox full JavaScript project">
+  <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/codesandbox-javascript-full-project.png" alt="CodeSandbox full JavaScript project">
 </p>
 
 - Delete `index.js` in the `src` folder.
