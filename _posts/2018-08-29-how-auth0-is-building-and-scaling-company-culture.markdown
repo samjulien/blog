@@ -2,7 +2,7 @@
 layout: post
 title: "Building Company Culture for Scale"
 metatitle: "How Auth0 is Building and Scaling Company Culture"
-description: "How Auth0 is Striving to Keep Its Soul While Hiring for Dramatic Growth"
+description: "How Auth0 is striving to keep its soul while hiring for dramatic growth"
 metadescription: "CEO Eugenio Pace shares how we're growing Auth0’s culture. Scaling interactions, factoring our company’s soul, and optimizing communication for our remote culture."
 date: 2018-08-29 07:00
 category: Culture
