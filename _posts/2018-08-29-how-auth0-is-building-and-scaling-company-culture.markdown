@@ -4,7 +4,7 @@ title: "Building Company Culture for Scale"
 metatitle: "How Auth0 is Building and Scaling Company Culture"
 description: "How Auth0 is Striving to Keep Its Soul While Hiring for Dramatic Growth"
 metadescription: "CEO Eugenio Pace shares how we're growing Auth0’s culture. Scaling interactions, factoring our company’s soul, and optimizing communication for our remote culture."
-date: 2018-08-28 07:00
+date: 2018-08-29 07:00
 category: Culture
 is_non-tech: true
 author:
@@ -27,7 +27,7 @@ related:
 
 ---
 
-[SLIDESHOW HERE]
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSy8MiuXpBY7x20lWpOKoxocg6fX1UFHH9Se0CgcdRzdaBze4i0k55KZ820zP0ERHwZYsGHQEZgyGJg/embed?start=false&loop=true&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 “Let’s build a company we’d love to work for.”
 
@@ -98,7 +98,8 @@ Last summer, we’d grown too big to share our values only through direct action
 
 7. *Passion*
 
-VALUES LOGOS PICTURE HERE
+![Auth0 Core Values](https://cdn.auth0.com/blog/building-company-culture-for-scale/auth0-core-values-logo.png)
+
 
 [Learn more about our core values.](https://auth0.com/careers/culture)
 
