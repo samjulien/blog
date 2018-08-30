@@ -28,11 +28,11 @@ related:
   - 2018-03-07-3-iam-examples-to-support-digital-transformation
 ---
 
-Utilities are in a unique position because of the sheer amount of data they collect and the number of users they manage. This affords them opportunities to generate value in ways that other companies can't.
+Utility companies are in a unique position because of the sheer amount of data they collect and the number of users they manage. This affords them opportunities to generate value in ways that other companies can't.
 
 But this wealth of information comes with several challenges. Users have [high expectations that many utility companies have yet to meet](https://www.powerengineeringint.com/articles/print/volume-26/issue-1/features/three-challenges-for-utilities-in-2018.html), and the [prevalence of inefficient customer management systems](https://www.appcues.com/blog/3-customer-engagement-strategies-that-make-users-feel-like-one-in-a-million) leaves many teams vulnerable to service outages and even cyberattacks.
 
-Using customer identity and access management (CIAM) technology can help utilities avoid three of the industry’s most common issues:
+Using customer identity and access management (CIAM) technology can help utility companies avoid three of the industry’s most common issues:
 
 1.  Inefficient trouble-shooting
 2.  A lack of personalized service
@@ -49,7 +49,7 @@ This can also make it difficult to help users in real time both with larger issu
 For companies looking to avoid these issues, a central dashboard can help [consolidate previously disparate streams of information](https://auth0.com/user-management) within an organization. In addition, if it's high quality, this product can, at any given moment, show which customers are logged in and provide their locations and current behavior.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/how-utilities-can-use-ciam-to-avoid-3-common-problems/central-dashboard-consolidates-information-streams.png" alt="Central dashboard consolidates information streams">
+  <img src="https://cdn.auth0.com/blog/how-utilities-can-use-ciam-to-avoid-3-common-problems/central-dashboard-consolidates-information-streams.png" alt="Central utility customer dashboard consolidates information streams">
 </p>
 
 A robust dashboard will offer several ways to visualize the information, such as with a heat map of logins, along with pictures and users' personal details to help verify and learn more about them.
@@ -75,7 +75,7 @@ Many believe that [utilities are falling short in meeting customer needs](https:
 Being able to understand and meet the expectations of your customers is critical to [customer retention](https://www.appcues.com/blog/proven-customer-retention-strategies). CIAM technology will help you paint a fuller picture of each customer. In addition to incorporating data on their logins, devices, and utility usage, you can you can use [progressive profiling](https://auth0.com/blog/progressive-profiling/) to pull details like their location and their email addresses and even the interests they indicated at the login stage.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/how-utilities-can-use-ciam-to-avoid-3-common-problems/progressive-profiling-flow.png" alt="Progressive profiling flow">
+  <img src="https://cdn.auth0.com/blog/how-utilities-can-use-ciam-to-avoid-3-common-problems/progressive-profiling-flow.png" alt="Utility customer progressive profiling flow">
 </p>
 
 With a more comprehensive collection of data, teams can proactively match the right users to the right promotions. It can help organizations develop new services, boost engagement, and avoid being branded as a company that sends irrelevant spam messages and push notifications.
@@ -92,6 +92,6 @@ Not knowing who is in your system or what information they are accessing can cau
 
 ## Consolidating customer data will shape the future of utilities
 
-Utilities are set to experience major shifts in the coming years thanks to new technologies and energy sources. As competition increases, companies that embrace strong access and identity technology will emerge as leaders that avoid costly mistakes and create deeper connections with their customers.
+The utilities industry is set to experience major shifts in the coming years thanks to new technologies and energy sources. As competition increases, companies that embrace strong access and identity technology will emerge as leaders that avoid costly mistakes and create deeper connections with their customers.
 
 {% include asides/about-auth0.markdown %}
