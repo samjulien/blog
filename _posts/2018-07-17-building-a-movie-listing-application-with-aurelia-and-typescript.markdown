@@ -1251,20 +1251,30 @@ export class Movie {
   constructor(private watchlist: WatchlistManager, private auth: AuthService) {
     this.isAuthenticated = auth.isAuthenticated();
 
-    auth.authNotifier.addListener('authChange', state => {
-      this.isAuthenticated = state.authenticated;
-    });
+    auth.authNotifier.addListener('authChange', this.authChangeHandler);
   }
+  
   //...
+
+  private authChangeHandler(state) {
+    this.isAuthenticated = state.authenticated;
+  }
+
 ```
 
-Finally, we need to somehow initialize `isInWatchlist` when the component is loaded, so let's handle the `bind` lifecycle event and set it there:
+Finally, we need to somehow initialize `isInWatchlist` when the component is loaded, as well as doing some tidying up when the component system is finished with this component. We can achieve both of those things by adding the `bind` and `detached` methods inside the `Movie` class:
 
 ```js
-bind() {    
-  this.isInWatchlist = this.watchlist.isAdded(this.model);    
+bind() {
+  this.isInWatchlist = this.watchlist.isAdded(this.model);
+}
+
+detached() {
+  this.auth.authNotifier.removeListener('authChange', this.authChangeHandler);
 }
 ```
+
+The reason we would like to remove our change handler function from the event listener is that it could otherwise introduce a memory leak. To prevent this, we can remove our change listener function from the auth notifier whenever the component is detached from the system.
 
 With this code in place, you should now be able to sign in to your application using the Auth0 login page, add and remove movies to and from the watch list, and be able to browse to the watch list page and see the list of movies that you've added. Furthermore, you should be able to do this from either the popular movies page or the search results page!
 
