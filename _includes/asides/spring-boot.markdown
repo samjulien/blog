@@ -1,9 +1,8 @@
 ## Aside: Securing Spring APIs with Auth0
 
-Securing applications with Auth0 is very easy and brings a lot of great features to the table. With Auth0, we only have to write a few lines of code to get solid [identity management solution](https://auth0.com/user-management),
-[single sign-on](https://auth0.com/docs/sso/single-sign-on), support for [social identity providers (like Facebook, GitHub, Twitter, etc.)](https://auth0.com/docs/identityproviders), and support for [enterprise identity providers (Active Directory, LDAP, SAML, custom, etc.)](https://auth0.com/enterprise).
+Securing Spring Boot APIs with Auth0 is easy and brings a lot of great features to the table. With [Auth0](https://auth0.com/), we only have to write a few lines of code to get solid [identity management solution](https://auth0.com/user-management), [single sign-on](https://auth0.com/docs/sso/single-sign-on), support for [social identity providers (like Facebook, GitHub, Twitter, etc.)](https://auth0.com/docs/identityproviders), and support for [enterprise identity providers (like Active Directory, LDAP, SAML, custom, etc.)](https://auth0.com/enterprise).
 
-In the following sections, we are going to learn how to use Auth0 to secure Spring APIs. As we will see, the process is simple and fast.
+In the following sections, we are going to learn how to use Auth0 to secure APIs written with [Spring Boot](https://spring.io/projects/spring-boot).
 
 ### Creating the API
 
