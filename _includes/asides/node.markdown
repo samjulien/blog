@@ -6,7 +6,7 @@ In the following sections, we are going to learn how to use Auth0 to secure Node
 
 ### Creating the Express API
 
-Let's start by defining our Node.js API. With Express and Node.js we can do this in two simple steps. The first one is to use [NPM](https://www.npmjs.com/) to install three dependencies: `npm i express body-parser cors`. The second one is to create a Node.js script with the following code:
+Let's start by defining our Node.js API. With Express and Node.js, we can do this in two simple steps. The first one is to use [NPM](https://www.npmjs.com/) to install three dependencies: `npm i express body-parser cors`. The second one is to create a Node.js script with the following code:
 
 ```javascript
 // importing dependencies
@@ -40,9 +40,9 @@ We can run and test our application by issuing `node index` in the project root 
 
 ### Registering the API at Auth0
 
-After creating our application, we can focus on securing it. Let's start by registering an API on Auth0 to represent our app. To do this, let's head to [the API section of our management dashboard](https://manage.auth0.com/#/apis) (we can create a [free account](https://auth0.com/signup)) if needed) and click on "Create API". On the dialog that appears, we can name our API as "Contacts API" (the name isn't really important) and identify it as `https://contacts.mycompany.com/` (we will use this value later).
+After creating our application, we can focus on securing it. Let's start by registering an API on Auth0 to represent our app. To do this, let's head to [the API section of our management dashboard](https://manage.auth0.com/#/apis) (we can create a <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">free account</a>) if needed) and click on "Create API". On the dialog that appears, we can name our API as "Contacts API" (the name isn't really important) and identify it as `https://contacts.mycompany.com/` (we will use this value later).
 
-After creating it, we have to go to the "Scopes" tab of the API and define the desired scopes. For this sample, we will define two scopes: `read:contacts` and `add:contacts`. They will represent two different operations (read and add) over the same entity (contacts).
+After creating the API, we can go to the _Scopes_ section of the API and define the desired scopes. For this sample, we will define two scopes: `read:contacts` and `add:contacts`. They will represent two different operations (read and add) over the same entity (contacts).
 
 ![Defining OAuth scopes in the new Auth0 API](https://cdn.auth0.com/blog/spring-boot-aside/defining-oauth-scopes.png)
 
@@ -104,31 +104,28 @@ In this case, we have replaced the previous definition of our endpoints to use t
 
 Running the application now is slightly different, as we need to set the environment variables:
 
-```
+```bash
 export AUTH0_DOMAIN=bk-samples.auth0.com
 export AUTH0_AUDIENCE="https://contacts.mycompany.com/"
 node index
 ```
 
-Let's keep this API running before moving on.
+After running the API, we will have to obtain an access token from Auth0. There are multiple ways to do this and the strategy that we will use will depend on what context we are in. For example, if we are on a Single Page Application (SPA), we will use what is called the [_Implicit Grant_](https://auth0.com/docs/api-auth/tutorials/implicit-grant). If we are on a native, mobile application, we will use the [_Authorization Code Grant Flow with PKCE_](https://auth0.com/docs/api-auth/tutorials/authorization-code-grant-pkce). However, for a simple test like this one, we can use our Auth0 dashboard to get one.
 
-### Creating an Auth0 Application
+Therefore, we can head back to [the _APIs_ section in our Auth0 dashboard](https://manage.auth0.com/#/apis), click on the API we created before, and then click on the _Test_ section of this API. There, we will find a button called _Copy Token_. Let's click on this button to copy an access token to our clipboard.
 
-As the focus of this section is to secure Node.js applications with Auth0, [we are going to use a live Angular app that has a configurable Auth0 application](http://auth0.digituz.com.br/?clientID=ssII6Fu1qfFI4emuNeXeadMv8iTQn1hJ&domain=bk-samples.auth0.com&audience=https:%2F%2Fcontacts.mycompany.com%2F&scope=read:contacts). Before using this app, we need to create an Auth0 application that represents it. Let's head to the ["Applications" section of the management dashboard](https://manage.auth0.com/#/applications) and click on the "Create Application" button.
+![Copying a test token from the Auth0 dashboard.](https://cdn.auth0.com/blog/nodejs-hapijs-redis/getting-a-test-token-from-auth0-dashboard.png)
 
-On the popup shown, let's set the name of this new application as "Contacts Application" and choose "Single Page Web App" as the application type. After hitting the "Create" button, we have to go to the "Settings" tab and set `http://auth0.digituz.com.br/callback` in the "Allowed Callback URLs" field.
+After copying this token, we can open a terminal an issue the following commands:
 
-Now we can save the application and head to [the sample Angular app secured with Auth0](http://auth0.digituz.com.br/?clientID=ssII6Fu1qfFI4emuNeXeadMv8iTQn1hJ&domain=bk-samples.auth0.com&audience=https:%2F%2Fcontacts.mycompany.com%2F&scope=read:contacts). To use this app, we need to set the correct values for four properties:
+```bash
+# create a variable with our token
+$ACCESS_TOKEN=<OUR_ACCESS_TOKEN>
 
-- `clientID`: We have to copy this value from the "Client ID" field of the "Settings" tab of "Contacts Application".
-- `domain`: We can also copy this value from the "Settings" tab of "Contacts Application".
-- `audience`: We have to set this property to meet the identifier of the "Contacts API" that we created earlier.
-- `scope`: This property will define the `authority` that the `access_token` will get access to in the backend API. For example: `read:contacts` or both `read:contacts add:contacts`.
+# use this variable to fetch contacts
+curl -H 'Authorization: Bearer '$ACCESS_TOKEN http://localhost:3000/contacts/
+```
 
-Then we can hit the "Sign In with Auth0" button.
+> **Note:** We will have to replace `<OUR_ACCESS_TOKEN>` with the token we copied from our dashboard.
 
-![Using the Angular app with the configurable Auth0 application](https://cdn.auth0.com/blog/angular-generic-client/signing-in.png)
-
-After signing in, we can use the application to submit requests to our secured Node.js API. For example, if we issue a GET request to `http://localhost:3000/contacts/`, the Angular app will include the `access_token` in the `Authorization` header and our API will respond with a list of contacts.
-
-![Getting a response from a secure Node.js API](https://cdn.auth0.com/blog/node-aside/client-app-issuing-request.png)
+That's how we secure our Node.js backend API. Easy, right?
