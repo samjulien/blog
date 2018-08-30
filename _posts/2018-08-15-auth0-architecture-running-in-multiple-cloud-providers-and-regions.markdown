@@ -72,7 +72,7 @@ In 2014 we used a multi-cloud architecture (using Azure and AWS, with some extra
 
 At first, we switched our primary region in our environment to be in AWS, keeping Azure as failover. As we began using more AWS resources like Kinesis and SQS, we started having trouble keeping the same feature set in both providers. As our need to move (and scale) faster grew, we opted to keep supporting Azure with a limited feature parity: if everything went down on AWS, we could still support core authentication features using the Azure clusters, but not much of the new stuff we had been developing.
 
-After some [bad outages in 2016](https://auth0.statuspage.io/incidents/vbfz8x03tf04), we decided to finally converge on AWS. We stopped all efforts related to keeping the services and automation platform-independent and instead focused on:
+After some bad outages in 2016, we decided to finally converge on AWS. We stopped all efforts related to keeping the services and automation platform-independent and instead focused on:
 
 - Providing a better failover story inside AWS, using multiple regions and at least 3 Availability Zones per region.
 

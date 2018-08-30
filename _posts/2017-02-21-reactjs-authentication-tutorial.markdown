@@ -1,5 +1,9 @@
 ---
-layout: post
+redirect_to: "/blog/react-tutorial-building-and-securing-your-first-app/"
+meta-robots: "noindex, nofollow"
+sitemap:
+  exclude: 'yes'
+layout: redirect
 title: "ReactJS Authentication Tutorial"
 description: Learn how to quickly build apps with ReactJS and add authentication the right way.
 date: 2017-02-21 8:30

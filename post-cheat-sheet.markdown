@@ -6,6 +6,7 @@ description: "Shorter shown underneath the title on the post itself and on blog 
 metadescription: "Richer, longer description that shows in search engines - must be less than 160 characters."
 date: 2018-mm-dd 8:30
 category: Technical guide, Thing, Thing2, PR, Press
+post_length: 1-5 (Run postlength.sh to generate score when article is ready)
 (!CanRemoveIfFalse)press_release: true
 (!CanRemoveIfFalse)is_non-tech: true
 (!If post has technical Auth0 Aside)auth0_aside: true
@@ -21,7 +22,7 @@ design:
   bg_color: "#"
 tags:
 - hyphenated-tags
-- 
+-
 related:
 - date-postname
 - date-postname
@@ -57,7 +58,7 @@ Center an image:
 
 ```html
 <a href="http://url.goes.here">Link text</a>
-``` 
+```
 
 ### Blockquote (Quote)
 
@@ -173,8 +174,8 @@ You'll need an [Auth0](https://auth0.com) account to manage authentication. You 
 
 ### Set Up an Application
 
-1. Go to your [**Auth0 Dashboard**](https://manage.auth0.com/#/) and click the "[create a new application](https://manage.auth0.com/#/applications/create)" button. 
-2. Name your new app, select "Single Page Web Applications," and click the "Create" button. 
+1. Go to your [**Auth0 Dashboard**](https://manage.auth0.com/#/) and click the "[create a new application](https://manage.auth0.com/#/applications/create)" button.
+2. Name your new app, select "Single Page Web Applications," and click the "Create" button.
 3. In the **Settings** for your new Auth0 app, add `http://localhost:[PORT]/callback` to the **Allowed Callback URLs**.
 4. Add `http://localhost:[PORT]` to the **Allowed Logout URLs**.
 5. Click the "Save Changes" button.

@@ -3,6 +3,7 @@ layout: post
 title: "Developing Well-Organized APIs with Node.js, Joi, and Mongo"
 description: "In this article, you will learn how to create well-organized APIs with Node.js, Restify, Joi, and MongoDB."
 date: 2018-06-07 08:30
+updated: 2018-08-29 20:30
 category: Technical Guide, Backend, NodeJS
 author:
   name: "Biodun Chris"
@@ -1114,7 +1115,7 @@ node server.js
 
 After running your application, you can issue the following create a `User`:
 
-```sh
+```bash
 curl -H "Content-Type: application/json" -X POST -d '{
   "username": "biodunch",
   "birthdate": "12/2/2000"
@@ -1123,7 +1124,7 @@ curl -H "Content-Type: application/json" -X POST -d '{
 
 Then, you can register a birthdate of a friend of this user with this command:
 
-```sh
+```bash
 curl -H "Content-Type: application/json" -X POST -d '{
   "fullname": "Falomo Olumide",
   "birthdate":"10/3/2000"
@@ -1132,7 +1133,7 @@ curl -H "Content-Type: application/json" -X POST -d '{
 
 Then, to fetch the birthdates saved by `biodunch`, you can issue this command:
 
-```sh
+```bash
 curl localhost:5000/v1/birthdates/biodunch
 ```
 
@@ -1151,7 +1152,313 @@ This will get you a response similar to:
 }
 ```
 
-{% include asides/node.markdown %}
+## Securing your Node.js API with Auth0
+
+Now that you have learned how to create a well-organized Node.js API, it's time to learn how to secure it properly. For that, you will use [Auth0](https://auth0.com), a global leader in the Identity-as-a-Service (IDaaS) market that provides thousands of enterprise customers with modern identity solutions. With [Auth0](https://auth0.com), you only have to write a few lines of code to get a [solid identity management solution](https://auth0.com/user-management), support [single sign-on](https://auth0.com/docs/sso/current), [support for social identity providers (like Facebook, GitHub, Twitter, etc.)](https://auth0.com/docs/identityproviders), and [support for enterprise identity providers (like Active Directory, LDAP, SAML, custom, etc.)](https://auth0.com/enterprise).
+
+To follow along the instruction describe here, you will need an Auth0 account. If you don't have one yet, now is a good time to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free account</a>.
+
+### Registering the API at Auth0
+
+With your Auth0 account created, you will have to register your API on it to represent your backend. To do this, head to the [API section of your management dashboard](https://manage.auth0.com/#/apis) and click on _Create API_. On the dialog that appears, you can name your API as "Birthdates API" (the name isn't really important) and give it the following _Identifier_: `https://birthdates-api.herokuapp.com/` (you will use this value later).
+
+### Integrating Restify with Auth0
+
+Now that you have registered the API in your Auth0 account, you will move back to your code to secure the Restify API with Auth0. There, the first thing you will have to do is to install a few dependencies:
+
+```bash
+# from the birthdates-api directory
+npm i express-unless jsonwebtoken jwks-rsa
+```
+
+Next, inside the `app/lib` directory, you will have to create a middleware to validate the access tokens issued by Auth0 and to set `req.user` with users' data. To do this, create a new file called `restify-jwt.js` in this directory and add the following code in it:
+
+```js
+const jwt = require("jsonwebtoken");
+const unless = require("express-unless");
+const restify = require("restify");
+const async = require("async");
+
+const InvalidCredentialsError = require("restify-errors").InvalidCredentialsError;
+const UnauthorizedError = require("restify-errors").UnauthorizedError;
+
+const DEFAULT_REVOKED_FUNCTION = function (_, __, cb) {
+  return cb(null, false);
+};
+
+const getClass = {}.toString;
+
+function isFunction(object) {
+  return object && getClass.call(object) === "[object Function]";
+}
+
+function wrapStaticSecretInCallback(secret) {
+  return function (_, __, cb) {
+    return cb(null, secret);
+  };
+}
+
+module.exports = function (options) {
+  if (!options || !options.secret) throw new Error("secret should be set");
+
+  let secretCallback = options.secret;
+
+  if (!isFunction(secretCallback)) {
+    secretCallback = wrapStaticSecretInCallback(secretCallback);
+  }
+
+  const isRevokedCallback = options.isRevoked || DEFAULT_REVOKED_FUNCTION;
+
+  const _requestProperty =
+    options.userProperty || options.requestProperty || "user";
+  const credentialsRequired =
+    typeof options.credentialsRequired === "undefined"
+      ? true
+      : options.credentialsRequired;
+
+  const middleware = function (req, res, next) {
+    let token;
+
+    if (
+      req.method === "OPTIONS" &&
+      req.headers.hasOwnProperty("access-control-request-headers")
+    ) {
+      const hasAuthInAccessControl = !!~req.headers[
+        "access-control-request-headers"
+        ]
+        .split(",")
+        .map(function (header) {
+          return header.trim();
+        })
+        .indexOf("authorization");
+
+      if (hasAuthInAccessControl) {
+        return next();
+      }
+    }
+
+    if (options.getToken && typeof options.getToken === "function") {
+      try {
+        token = options.getToken(req);
+      } catch (e) {
+        return next(e);
+      }
+    } else if (req.headers && req.headers.authorization) {
+      const parts = req.headers.authorization.split(" ");
+      if (parts.length === 2) {
+        const scheme = parts[0];
+        const credentials = parts[1];
+
+        if (/^Bearer$/i.test(scheme)) {
+          token = credentials;
+        } else {
+          return res.send(
+            new InvalidCredentialsError(
+              "Format is Authorization: Bearer [token]"
+            )
+          );
+        }
+      } else {
+        return res.send(
+          new InvalidCredentialsError(
+            "Format is Authorization: Bearer [token]"
+          )
+        );
+      }
+    }
+
+    if (!token) {
+      if (credentialsRequired) {
+        return res.send(
+          new InvalidCredentialsError(
+            "No authorization token was found"
+          )
+        );
+      } else {
+        return next();
+      }
+    }
+
+    const idToken = jwt.decode(token, {complete: true});
+    if (idToken === null)
+      return res.send(
+        new InvalidCredentialsError("Invalid token provided")
+      );
+
+    async.parallel(
+      [
+        function (callback) {
+          const arity = secretCallback.length;
+          if (arity === 4) {
+            secretCallback(
+              req,
+              idToken.header,
+              idToken.payload,
+              callback
+            );
+          } else {
+            // arity == 3
+            secretCallback(req, idToken.payload, callback);
+          }
+        },
+        function (callback) {
+          isRevokedCallback(req, idToken.payload, callback);
+        }
+      ],
+      function (err, results) {
+        if (err) {
+          return res.send(err);
+        }
+        const revoked = results[1];
+        if (revoked) {
+          return res.send(
+            new UnauthorizedError("The token has been revoked.")
+          );
+        }
+
+        const secret = results[0];
+
+        jwt.verify(token, secret, options, function (err, decoded) {
+          if (err && credentialsRequired)
+            return res.send(
+              new InvalidCredentialsError(err.message)
+            );
+
+          req[_requestProperty] = decoded;
+          next();
+        });
+      }
+    );
+  };
+
+  middleware.unless = unless;
+
+  return middleware;
+};
+```
+
+> **Note:** The code in this file is quite long and complex, and you don't really need to how the whole thing works. It suffices to say that this is the Restify version of the [`express-jwt`](https://github.com/auth0/express-jwt`) library provided by Auth0.
+
+After that, still inside the `app/lib`, create a file called `auth0.js` with the following code:
+
+```js
+const jwt = require('../lib/restify-jwt');
+const jwksRsa = require('jwks-rsa');
+
+const tokenGuard = jwt({
+  // Fetch the signing key based on the KID in the header and
+  // the singing keys provided by the JWKS endpoint.
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
+  }),
+
+  // Validate the audience and the issuer.
+  audience: process.env.AUTH0_AUDIENCE,
+  issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+  algorithms: ['RS256']
+});
+
+module.exports = function () {
+  return function mid(req, res, next) {
+    tokenGuard(req, res, (err) => {
+      err ? res.status(500).send(err) : next();
+    });
+  }
+};
+```
+
+The goal of this script is to export a Restify middleware that guarantees that requests have an access token issued by a trust-worthy party (in this case Auth0). Note that this script expects to find two environment variables:
+
+* `AUTH0_AUDIENCE`: The identifier of our API (`https://birthdates-api.herokuapp.com`).
+* `AUTH0_DOMAIN`: Your domain at Auth0 (e.g., `biodunch.auth0.com`).
+
+You will set these variables soon, but it is important to understand that the domain variable defines how the middleware finds the signing keys.
+
+After creating this middleware, you will have to open the `app/routes/routes.js` file and update it as follows:
+
+```js
+'use strict';
+const auth0 = require('../middlewares/auth0');
+
+module.exports.register = (server, serviceLocator) => {
+
+  // ... /users endpoint definition ...
+
+  // ... /users/:username endpoint defition ...
+
+  server.get(
+    {
+      path: '/birthdates/:username',
+      name: 'Get Birthdates',
+      version: '1.0.0',
+      validation: {
+        params: require('../validations/get_birthdates-user.js')
+      }
+    },
+    auth0(),
+    (req, res, next) =>
+      serviceLocator.get('birthdateController').listAll(req, res, next)
+  );
+
+  server.post(
+    {
+      path: '/birthdates/:username',
+      name: 'Create Birthdate',
+      version: '1.0.0',
+      validation: {
+        body: require('../validations/create_birthdates')
+      }
+    },
+    auth0(),
+    (req, res, next) =>
+      serviceLocator.get('birthdateController').create(req, res, next)
+  );
+};
+```
+
+In this case, you have replaced the previous definition of the last two endpoints to use the new middleware.
+
+Running the application now is slightly different, as you need to set the environment variables:
+
+```bash
+export AUTH0_DOMAIN=<YOUR_AUTHO_DOMAIN>
+export AUTH0_AUDIENCE="https://birthdates-api.herokuapp.com/"
+node server.js
+```
+
+> **Note:** You will have to replace `<YOUR_AUTHO_DOMAIN>` in the code snippet above with your own Auth0 domain (e.g., `biodunch.auth0.com`). You will also have to replace the value of the `AUTH0_AUDIENCE` environment variable if you set your Auth0 API with a different value other than `https://birthdates-api.herokuapp.com/`.
+
+Keep this API running before moving on.
+
+### Testing the Integration
+
+After creating your Auth0 API and refactoring your application to integrate it with Auth0, it is time to test if everything is working properly. For that, go to [the _APIs_ section of your Auth0 dashboard](https://manage.auth0.com/#/applications) and choose the API you created a few moments ago. Then, move to the _Test_ section of this API.
+
+In this section, you will find instructions on how to fetch _test_ tokens. You don't really need to follow the instructions there right now. For the moment, you can just click on the _Copy Token_ button to put it in your _clipboard_.
+
+![Copying test token from your Auth0 API](https://cdn.auth0.com/blog/restify-nodejs/copy-test-token-from-auth0.png)
+
+Then, you can open a terminal and issue the following commands:
+
+```bash
+# create a variable with the token
+$ACCESS_TOKEN=<PASTE_THE_TOKEN_COPIED>
+
+# use the token on a POST request
+curl -H "Content-Type: application/json" -H 'Authorization: Bearer '$ACCESS_TOKEN -X POST -d '{
+  "fullname": "Bruno Krebs",
+  "birthdate":"10/20/1984"
+}' localhost:5000/v1/users
+
+# confirm that the POST request worked
+curl localhost:5000/v1/birthdates/biodunch
+```
+
+> **Note:** You will have to replace `<PASTE_THE_TOKEN_COPIED>` with the token you copied from your Auth0 API.
+
+If everything works, the last command (which does not require an access token) will show all birthdays created in the other sections, plus the one you created with the `ACCESS_TOKEN` copied from the Auth0 dashboard.
 
 ## Conclusion
 

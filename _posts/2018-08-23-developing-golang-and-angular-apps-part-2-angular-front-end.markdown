@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "Golang & Angular Series - Part 2: Developing and Securing Angular Apps"
-metatitle: "Develop To-Do App with Golang and Angular - Part 2 Angular App"
+metatitle: "Learn How To Develop To-Do App - Golang and Angular - Pt. 2 Angular App"
 description: "A series that will show you how to develop modern applications with Golang and Angular."
-metadescription: "Part 2 - Angular front-end. In this series, develop a to-do list application with Golang and Angular using the Gin framework and securing authentication with Auth0."
+metadescription: "Part 2 - Angular front-end. In this series, learn how to develop a to-do list application with Golang and Angular using the Gin framework and securing authentication with Auth0."
 date: 2018-08-23 08:30
 category: Technical Guide, Stack, Golang
 author:
