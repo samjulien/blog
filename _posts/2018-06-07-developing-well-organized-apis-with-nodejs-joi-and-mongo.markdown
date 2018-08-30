@@ -1114,7 +1114,7 @@ node server.js
 
 After running your application, you can issue the following create a `User`:
 
-```sh
+```bash
 curl -H "Content-Type: application/json" -X POST -d '{
   "username": "biodunch",
   "birthdate": "12/2/2000"
@@ -1123,7 +1123,7 @@ curl -H "Content-Type: application/json" -X POST -d '{
 
 Then, you can register a birthdate of a friend of this user with this command:
 
-```sh
+```bash
 curl -H "Content-Type: application/json" -X POST -d '{
   "fullname": "Falomo Olumide",
   "birthdate":"10/3/2000"
@@ -1132,7 +1132,7 @@ curl -H "Content-Type: application/json" -X POST -d '{
 
 Then, to fetch the birthdates saved by `biodunch`, you can issue this command:
 
-```sh
+```bash
 curl localhost:5000/v1/birthdates/biodunch
 ```
 
@@ -1153,15 +1153,13 @@ This will get you a response similar to:
 
 ## Securing your Node.js API with Auth0
 
-Now you have learned how to create a well-organized Node.js API, it's time to learn how to properly secure it. For that, you will use Auth0, a global leader in the Identity-as-a-Service (IDaaS) market that provides thousands of enterprise customers with modern identity solutions. With [Auth0](https://auth0.com), you only have to write a few lines of code to get a [solid identity management solution](https://auth0.com/user-management), support [single sign-on](https://auth0.com/docs/sso/current), [support for social identity providers (like Facebook, GitHub, Twitter, etc.)](https://auth0.com/docs/identityproviders), and to [support for enterprise identity providers (like Active Directory, LDAP, SAML, custom, etc.)](https://auth0.com/enterprise).
+Now that you have learned how to create a well-organized Node.js API, it's time to learn how to properly secure it. For that, you will use [Auth0](https://auth0.com), a global leader in the Identity-as-a-Service (IDaaS) market that provides thousands of enterprise customers with modern identity solutions. With [Auth0](https://auth0.com), you only have to write a few lines of code to get a [solid identity management solution](https://auth0.com/user-management), support [single sign-on](https://auth0.com/docs/sso/current), [support for social identity providers (like Facebook, GitHub, Twitter, etc.)](https://auth0.com/docs/identityproviders), and [support for enterprise identity providers (like Active Directory, LDAP, SAML, custom, etc.)](https://auth0.com/enterprise).
 
-To follow along the instruction describe here, you will need an Auth0 account. If you don't have one yet, now is a good time to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account</a>.
+To follow along the instruction describe here, you will need an Auth0 account. If you don't have one yet, now is a good time to <a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free account</a>.
 
 ### Registering the API at Auth0
 
 With your Auth0 account created, you will have to register your API on it to represent your backend. To do this, head to the [API section of your management dashboard](https://manage.auth0.com/#/apis) and click on _Create API_. On the dialog that appears, you can name your API as "Birthdates API" (the name isn't really important) and give it the following _Identifier_: `https://birthdates-api.herokuapp.com/` (you will use this value later).
-
-After creating it, you will have to go to the _Scopes_ tab of the API to define some scopes. For this sample, you will define two scopes: `read:birthdates` and `add:birthdates`. They will represent two different operations (read and add) over the same entity (birthdates).
 
 ### Integrating Restify with Auth0
 
@@ -1169,10 +1167,10 @@ Now that you have registered the API in your Auth0 account, you will move back t
 
 ```bash
 # from the birthdates-api directory
-npm i express-unless jsonwebtoken jwks-rsa express-jwt-authz
+npm i express-unless jsonwebtoken jwks-rsa
 ```
 
-Next, inside the `app/lib` directory, you will have to create a middleware to validate access tokens issued by Auth0 and to set `req.user` with users' data. To do this, create a new file called `restify-jwt.js` in this directory and add the following code in it:
+Next, inside the `app/lib` directory, you will have to create a middleware to validate the access tokens issued by Auth0 and to set `req.user` with users' data. To do this, create a new file called `restify-jwt.js` in this directory and add the following code in it:
 
 ```js
 const jwt = require("jsonwebtoken");
@@ -1338,12 +1336,13 @@ module.exports = function (options) {
 };
 ```
 
+> **Note:** The code in this file is quite long and complex, and you don't really need to how the whole thing works. It suffices to say that this is the Restify version of the [`express-jwt`](https://github.com/auth0/express-jwt`) library provided by Auth0.
+
 After that, still inside the `app/lib`, create a file called `auth0.js` with the following code:
 
 ```js
 const jwt = require('../lib/restify-jwt');
 const jwksRsa = require('jwks-rsa');
-const jwtAuthz = require('express-jwt-authz');
 
 const tokenGuard = jwt({
   // Fetch the signing key based on the KID in the header and
@@ -1360,22 +1359,21 @@ const tokenGuard = jwt({
   algorithms: ['RS256']
 });
 
-module.exports = function (scopes) {
-  const scopesGuard = jwtAuthz(scopes || []);
+module.exports = function () {
   return function mid(req, res, next) {
     tokenGuard(req, res, (err) => {
-      err ? res.status(500).send(err) : scopesGuard(req, res, next);
+      err ? res.status(500).send(err) : next();
     });
   }
 };
 ```
 
-The goal of this script is to export a Restify middleware that guarantees that requests have an access token issued by a trust-worthy party (in this case Auth0). The middleware also accepts an array of scope to, while filtering requests, check that these scopes exist in the access token. Note that this script expects to find two environment variables:
+The goal of this script is to export a Restify middleware that guarantees that requests have an access token issued by a trust-worthy party (in this case Auth0). Note that this script expects to find two environment variables:
 
 * `AUTH0_AUDIENCE`: The identifier of our API (`https://birthdates-api.herokuapp.com`).
 * `AUTH0_DOMAIN`: Your domain at Auth0 (e.g., `biodunch.auth0.com`).
 
-You will set these variable soon, but it is important to understand that the domain variable defines how the middleware finds the signing keys.
+You will set these variables soon, but it is important to understand that the domain variable defines how the middleware finds the signing keys.
 
 After creating this middleware, you will have to open the `app/routes/routes.js` file and update it as follows:
 
@@ -1398,7 +1396,7 @@ module.exports.register = (server, serviceLocator) => {
         params: require('../validations/get_birthdates-user.js')
       }
     },
-    auth0(['read:birthdates']),
+    auth0(),
     (req, res, next) =>
       serviceLocator.get('birthdateController').listAll(req, res, next)
   );
@@ -1412,14 +1410,14 @@ module.exports.register = (server, serviceLocator) => {
         body: require('../validations/create_birthdates')
       }
     },
-    auth0(['add:birthdates']),
+    auth0(),
     (req, res, next) =>
       serviceLocator.get('birthdateController').create(req, res, next)
   );
 };
 ```
 
-In this case, you have replaced the previous definition of the last two endpoints to use the new middleware. You also restricted their access to users that contain the right combination of scopes. That is, to get birthdates, users must have the `read:birthdates` scope and to create new records they must have the `add:birthdates` scope.
+In this case, you have replaced the previous definition of the last two endpoints to use the new middleware.
 
 Running the application now is slightly different, as you need to set the environment variables:
 
@@ -1429,46 +1427,37 @@ export AUTH0_AUDIENCE="https://birthdates-api.herokuapp.com/"
 node server.js
 ```
 
-> **Note:** You will have to replace `<YOUR_AUTHO_DOMAIN>` in the code snippet above with your own Auth0 domain (e.g., `biodunch.auth0.com`)
+> **Note:** You will have to replace `<YOUR_AUTHO_DOMAIN>` in the code snippet above with your own Auth0 domain (e.g., `biodunch.auth0.com`). You will also have to replace the value of the `AUTH0_AUDIENCE` environment variable if you set your Auth0 API with a different value other than `https://birthdates-api.herokuapp.com/`.
 
 Keep this API running before moving on.
 
-### Creating an Auth0 Application
+### Testing the Integration
 
-As the focus of this section is to secure your Node.js application with Auth0, [you are going to use a OpenID Connect playground](https://openidconnect.net/) to get access tokens from Auth0. Before using this playground, you will need to create an Auth0 Application that represents it. To do so, head to the [_Applications_ section of your management dashboard](https://manage.auth0.com/#/applications) and click on the _Create Application_ button.
+After creating your Auth0 API and refactoring your application to integrate it with Auth0, it is time to test if everything is working properly. For that, go to [the _APIs_ section of your Auth0 dashboard](https://manage.auth0.com/#/applications) and choose the API you created a few moments ago. Then, move to the _Test_ section of this API.
 
-On the popup that Auth0 shows, set the name of this new application as "Birthdates Application" and choose _Single Page Web App_ as the application type. After hitting the _Create_ button, you will have to go to the _Settings_ tab and set `https://openidconnect.net/callback` in the _Allowed Callback URLs_ field.
+In this section, you will find instructions on how to fetch _test_ tokens. You don't really need to follow the instructions there right now. For the moment, you can just click on the _Copy Token_ button to put it in your _clipboard_.
 
-Now you can save the changes to the application and head to [the OpenID Connect playground](https://openidconnect.net/). To use this app, click on the _Configuration_ button:
+![Copying test token from your Auth0 API](https://cdn.auth0.com/blog/restify-nodejs/copy-test-token-from-auth0.png)
 
-![Configuring the OpenID Connect Playground.](https://cdn.auth0.com/blog/restify-nodejs/openid-connect-playground.png)
+Then, you can open a terminal and issue the following commands:
 
-So you can configure the playground as follows:
+```bash
+# create a variable with the token
+$ACCESS_TOKEN=<PASTE_THE_TOKEN_COPIED>
 
-- _Server Template_: Auth0
-- _Auth0 domain_: `<YOUR_AUTHO_DOMAIN>`
+# use the token on a POST request
+curl -H "Content-Type: application/json" -H 'Authorization: Bearer '$ACCESS_TOKEN -X POST -d '{
+  "fullname": "Bruno Krebs",
+  "birthdate":"10/20/1984"
+}' localhost:5000/v1/users
 
-> **Note:** You will have to replace `<YOUR_AUTHO_DOMAIN>` in the code snippet above with your own Auth0 domain (e.g., `biodunch.auth0.com`)
+# confirm that the POST request worked
+curl localhost:5000/v1/birthdates/biodunch
+```
 
-After that, click on the _Use Auth0 Discovery Document_ button so the app loads the correct endpoints for you.
+> **Note:** You will have to replace `<PASTE_THE_TOKEN_COPIED>` with the token you copied from your Auth0 API.
 
-After hitting this button, you will have to replace three fields on the configuration dialog:
-
-1. _OIDC Client ID_: For this field, you can use the _Client ID_ value of your Auth0 Application.
-2. _OIDC Client Secret_: For this field, you can use the _OIDC Client Secret_ value of the same application.
-3. _Scope_: For this field, you will use the scopes you defined in your Auth0 API: `read:birthdates add:birthdates`
-
-![OpenID Connect Playground configured with your Auth0 properties.](https://cdn.auth0.com/blog/restify-nodejs/openid-connect-app-configured.png)
-
-Then, you can click on _Save_ so you can use the new configurations.
-
-Now, away from the configuration dialog, focus on the first step of the playground: _Redirect to OpenID Connect Server_. There, you will see the URL that will enable you to sign in with Auth0. To sign in, click on the _Start_ button. This will make the playground redirect you to the Auth0 login page. From there, you can sign up with new user credentials, or you can use the _Log in with Google_ option. The latter is easier as it just takes a hit of a button.
-
-After signing in with one of the two methods, you will get redirected to the second step of the playground: _Exchange Code from Token_. From there, you can hit the _Exchange_ button 
-
-Then you can hit the "Sign In with Auth0" button.
-
-After signing in, you can use the application to submit requests to your secured Node.js API. For example, if you issue a GET request to `http://localhost:5000/v1/birthdates/biodunch`, the Angular app will include the `access_token` in the `Authorization` header and your API will respond with a list of birthdates.
+If everything works, the last command (which does not require an access token) will show all birthdays created in the other sections, plus the one you created with the `ACCESS_TOKEN` copied from the Auth0 dashboard.
 
 ## Conclusion
 
