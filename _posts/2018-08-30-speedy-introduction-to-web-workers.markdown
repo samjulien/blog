@@ -8,7 +8,7 @@ date: 2018-08-30 8:30
 category: Technical Guide, Stack, Frontend
 auth0_aside: true
 design: 
-  bg_color: "#222228"
+  bg_color: "#29335c"
   image: https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/web-workers.png
 author:
   name: Dan Arias
