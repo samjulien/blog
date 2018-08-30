@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "How Utilities Can Use CIAM to Avoid 3 Common Problems"
-metatitle: ""
+metatitle: "Utility Companies Apply Customer Identity and Access Management"
 description: "Customer identity and management technology helps utilities reshape how they interact with users, improve their services, and tighten security."
-metadescription: ""
+metadescription: "Customer identity and management (CIAM) tech can help a utility company increase security, optimize customer interactions, and improve their services. Learn more."
 date: 2018-08-14 8:30
 category: Growth, Identity, CIAM, Identity
 design: 
