@@ -6,6 +6,7 @@ description: "Learn how to use web workers in JavaScript to create parallel prog
 metadescription: "Learn how to use web workers in JavaScript to optimize development and perform synchronous operations. Follow along, using CodeSandbox to manage web worker messages."
 date: 2018-08-30 8:30
 category: Technical Guide, Stack, Frontend
+auth0_aside: true
 design: 
   bg_color: "#222228"
   image: https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/web-workers.png
@@ -45,7 +46,7 @@ At any time during this process there's an extra step that Content Engineers may
 
 If the assets already exist, this step is as easy as including the assets within the body of the blog post. However, if the assets need to be created they need to be requested from the design team. If the Content Engineers were to design the assets by themselves, they would be blocked from developing and writing. This detour from the workflow would increase the time it takes to publish a post.
 
-Thankfully, we count with a talented design team at Auth0 to whom we can delegate the creating of assets. We can ping them to put a request for assets on Slack. While they are working on designing the assets, we continue working on development and writing. When the design team is done with the assets, they ping us with a link from where we can download them. We then integrate the assets with the blog post and continue our work.
+Thankfully, we count with a talented design team at Auth0 to whom we can delegate the creation of assets. We can ping them to put a request for assets on Slack. While they are working on designing the assets, we continue working on development and writing. When the design team is done with the assets, they ping us with a link from where we can download them. We then integrate the assets with the blog post and continue our work.
 
 At no time, we get blocked from writing due to asset creation. The design team handles the task asynchronously on their own pipeline. The design team acts exactly how a web worker acts in JavaScript applications. JavaScript is a single-threaded language. As such, running expensive logic in the main thread can block it and make our JavaScript application seem slow or unresponsive. Using web workers, we can create a separate thread to run any logic without interrupting the main thread.
 
@@ -78,7 +79,7 @@ Web workers effectively enable a form of multi-threading in JavaScript with [som
 
 ## Setting Up a Development Environment
 
-Getting hands-on with web workers will help us understand them better! For the purpose of this blog post, we'll be running the sample code within a [CodeSandbox](https://codesandbox.io/) project. It's easy to bootstrap and run a vanilla JavaScript project there. If you want, feel free to visit the [CodeSandbox that is already set up](https://codesandbox.io/s/xp901z23o4) and fork it. Otherwise, please, follow these steps:
+Getting hands-on with web workers will help us understand them better! For the purpose of this blog post, we'll be running the sample code within a [CodeSandbox](https://codesandbox.io/) project. It's easy to bootstrap and run a vanilla JavaScript project there. Please, follow these steps:
 
 - Visit [CodeSandbox](https://codesandbox.io/).
 
@@ -380,6 +381,8 @@ Checking the documentation for `close()` may be confusing at first because there
 ## Recap
 
 We've learned the basics of how to create a web worker. We learned how to effectively send messages between two threads and how to react to those messages. We briefly touched on the subject of terminating web workers. This last task is to be handled with care and deserves a more detailed explanation. Badly terminated web workers may lead to memory leaks in the application.
+
+> The complete code sample used in this blog post is present in [this JavaScript CodeSandbox](https://codesandbox.io/s/xp901z23o4). Feel free to fork it.
 
 What's left to learn? A lot! Web workers have been around for a long time and they are great at executing expensive logic. This logic will be much more complex than what we've done in this blog post. We'd need to learn topics like handling errors, spawning subworkers, using external libraries, and monitoring web workers using developer tools.
 
