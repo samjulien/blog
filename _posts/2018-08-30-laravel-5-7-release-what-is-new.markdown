@@ -107,6 +107,9 @@ public function test_console_command()
 }
 ```
 
+
+{% include tweet_quote.html quote_text = "Laravel 5.7 provides a better approach for testing artisan commands." %}
+
 ### 4. Multi-Lingual Support for Notifications
 
 In Laravel 5.7, you can now send notifications in other locales, apart from the current language.
@@ -207,6 +210,8 @@ Taylor already announced that he was working on a project several months ago. Th
 ![Laravel Nova](https://nova.laravel.com/img/screenshot.png)
 _Laravel Nova_
 
+
+{% include tweet_quote.html quote_text = "Nova is a beautifully designed administration panel for Laravel." %}
 
 ## Deprecations and Other Updates
 
