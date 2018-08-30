@@ -29,7 +29,7 @@ related:
 
 ---
 
-**TL;DR:** **Laravel 5.7** is a major release to the most popular PHP framework on GitHub as of this writing. Furthermore, [Laravel Nova](https://nova.laravel.com) was also released alongside **Laravel 5.7**. In this article, I'll cover the new features in Laravel 5.7 and several other changes and deprecations.
+**TL;DR:** **Laravel 5.7** is a major release to the most popular PHP framework on GitHub as of this writing. Furthermore, [Laravel Nova](https://nova.laravel.com) was also released. In this article, I'll cover the new features in Laravel 5.7 and several other changes and deprecations.
 
 ---
 
@@ -45,10 +45,10 @@ Laravel 5.7 now officially ships with the _laravel_dump-server_ package and make
 php artisan dump-server
 ```
 
-Al `dump` calls will be displayed in the console window once the server has started.
+All `dump` calls will be displayed in the console window once the server has started.
 
-![Symfony Dump Server Integration]()
-_Symfony Dump Server Integration_
+![Symfony Dump Server Integration](https://cdn.auth0.com/blog/laravel/laravel-dump-server.gif)
+_Source: murze.be_
 
 ### 2. Better Support For Filesystem
 
@@ -123,11 +123,16 @@ The `Illuminate\Notifications\Notification` class offers a `locale` method that 
 
 ### 5. Paginator
 
-Before now, Laravel provides three links on each side of the primary paginator links. In Laravel 5.7, there's a new option, `onEachSide`, to enable customization of the number of links displayed on both sides.
+By default, Laravel provides three links on each side of the primary paginator links.
 
-```php
+In Laravel 5.7, there's a new option, `onEachSide`, to enable customization of the number of links displayed on both sides.
+
+
+{% highlight html %}
+{% raw %}
  {{ $paginator->onEachSide(7)->links() }}
-```
+{% endraw %}
+{% endhighlight %}
 
 ### 6. More Options for Guest Policies
 
@@ -197,7 +202,7 @@ $url = action([FoodController::class, 'view'], ['id' => 1]);
 
 ### 10. Laravel Nova
 
-Taylor already announced that he was working on a project several months ago. The long awaited project called **[Laravel Nova](https://nova.laravel.com)** has been released. Nova is a beautifully designed administration panel for Laravel.
+Taylor already announced that he was working on a project several months ago. The long awaited project called **[Laravel Nova](https://nova.laravel.com)** has been released. Nova is a beautifully designed administration panel for Laravel. It offers support for filters, lenses, actions, queued actions, metrics, authorization, custom tools, custom cards, custom fields, etc.
 
 ![Laravel Nova](https://nova.laravel.com/img/screenshot.png)
 _Laravel Nova_
@@ -205,15 +210,7 @@ _Laravel Nova_
 
 ## Deprecations and Other Updates
 
-* Generating an API resource controller can now be done by using the `--api` switch when executing the `make:controller` command.
-* Laravel 5.6 introduced helper methods, `Arr::wrap()`, `classes_uses_recursive()`, `Str::uuid()`, and `Str::orderedUuid()`, the latter generating a timestamp first UUID that's more easily and efficiently indexed by databases like MySQL.
-* PHPUnit, upgraded to v7.
-* Laravel Mix, upgraded to v2.
-* The deprecated Artisan `optimize` command has been removed.
-* Added support for customizing the mail message building in `ResetPassword::toMail()`.
-* Add `policies()` method to `AuthServiceProvider` to retrieve all the policies defined by the provider.
-* Two new blade directives have been added to the framework, `@csrf` and `@method`.
-* Support for PostgreSQL comments was added. Furthermore, Laravel 5.6 now has better support for enumeration columns.
+* The _resources/assets_ directory has been flattened into _resources_.
 
 Check out other [Laravel 5.7 updates here](https://github.com/laravel/framework/releases/tag/v5.7.0).
 
