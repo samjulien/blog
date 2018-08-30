@@ -42,7 +42,7 @@ app.listen(3000, () => console.log('Example app listening on port 3000!'));
 
 The code above creates the Express application and adds two middleware to it: `body-parser` to parse JSON requests, and `cors` to signal that the app accepts requests from any origin. The app also registers two endpoints on Express to deal with POST and GET requests. Both endpoints use the `contacts` array as some sort of in-memory database.
 
-We can run and test our application by issuing `node index` in the project root and then by submitting requests to it. For example, with [cURL](https://curl.haxx.se/), we can send a GET request by issuing `curl localhost:3000/contacts`. This command will output the items in the `contacts` array.
+Now, we can run and test our application by issuing `node index` in the project root and then by submitting requests to it. For example, with [cURL](https://curl.haxx.se/), we can send a GET request by issuing `curl localhost:3000/contacts`. This command will output the items in the `contacts` array.
 
 ### Registering the API at Auth0
 
@@ -115,7 +115,7 @@ curl localhost:3000/contacts
 
 If we set up everything together, we will get a response from the server saying that "no authorization token was found".
 
-Now, to be able to interact again with our endpoints, we will have to obtain an access token from Auth0. There are multiple ways to do this and [the strategy that we will use depends on the type of client application we are developing](https://auth0.com/docs/api-auth/which-oauth-flow-to-use). For example, if we are developing a Single Page Application (SPA), we will use what is called the [_Implicit Grant_](https://auth0.com/docs/api-auth/tutorials/implicit-grant). If we are developing mobile application, we will use the [_Authorization Code Grant Flow with PKCE_](https://auth0.com/docs/api-auth/tutorials/authorization-code-grant-pkce). There are other flows available at Auth0. However, for a simple test like this one, we can use our Auth0 dashboard to get one.
+Now, to be able to interact with our endpoints again, we will have to obtain an access token from Auth0. There are multiple ways to do this and [the strategy that we will use depends on the type of the client application we are developing](https://auth0.com/docs/api-auth/which-oauth-flow-to-use). For example, if we are developing a Single Page Application (SPA), we will use what is called the [_Implicit Grant_](https://auth0.com/docs/api-auth/tutorials/implicit-grant). If we are developing mobile application, we will use the [_Authorization Code Grant Flow with PKCE_](https://auth0.com/docs/api-auth/tutorials/authorization-code-grant-pkce). There are other flows available at Auth0. However, for a simple test like this one, we can use our Auth0 dashboard to get one.
 
 Therefore, we can head back to [the _APIs_ section in our Auth0 dashboard](https://manage.auth0.com/#/apis), click on the API we created before, and then click on the _Test_ section of this API. There, we will find a button called _Copy Token_. Let's click on this button to copy an access token to our clipboard.
 
