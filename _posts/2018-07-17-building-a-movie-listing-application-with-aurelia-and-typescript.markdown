@@ -37,7 +37,7 @@ If, like me, you're always picking up on new movies that you need to watch, but 
 * We'll use the [Aurelia JavaScript framework](https://aurelia.io/) and its [CLI](https://aurelia.io/docs/build-systems/aurelia-cli/) to generate a new Aurelia application that uses [TypeScript](https://www.typescriptlang.org/) and [Webpack](https://webpack.js.org/)
 * Our app will have three screens — the list of movies we've added (our "watch list"), a list of currently trending movies, and a search results page
 * We'll connect to the [The Movie DB](https://www.themoviedb.org/) to get our movie information
-* We'll protect the feature to add a movie to your watch list behind an Auth0 login, and also add the ability to log in and out of your application
+* We'll place the feature to add a movie to your watch list behind an Auth0 login, and also add the ability to log in and out of your application
 
 To illustrate, here's what this will look like once it's done:
 
@@ -346,7 +346,7 @@ let config: Configuration;
 client.configuration().then(c => (config = c));
 ```
 
-Now we can create our API class. The two operations we're going to make use of in our application are the ability to search for a movie by title and to retrieve the current popular movies:
+Now we can create our API class. The two operations we're going to make use of in our application are the abilities to search for a movie by title and to retrieve the current popular movies:
 
 ```js
 export class MovieApi {
