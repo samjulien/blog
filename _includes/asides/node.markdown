@@ -77,7 +77,7 @@ The goal of this script is to export an [Express middleware](http://expressjs.co
 - `AUTH0_AUDIENCE`: the identifier of our API (`https://contacts.mycompany.com/`)
 - `AUTH0_DOMAIN`: our domain at Auth0 (in my case `bk-samples.auth0.com`)
 
-We will set these variable soon, but it is important to understand that the domain variable defines how the middleware finds the signing keys.
+We will set these variable soons, but it is important to understand that the domain variable defines how the middleware finds the signing keys.
 
 After creating this middleware, we can update our `index.js` file to import and use it:
 
@@ -115,13 +115,13 @@ curl localhost:3000/contacts
 
 If we set up everything together, we will get a response from the server saying that "no authorization token was found".
 
-Now, to be able to interact with our endpoints again, we will have to obtain an access token from Auth0. There are multiple ways to do this and [the strategy that we will use depends on the type of the client application we are developing](https://auth0.com/docs/api-auth/which-oauth-flow-to-use). For example, if we are developing a Single Page Application (SPA), we will use what is called the [_Implicit Grant_](https://auth0.com/docs/api-auth/tutorials/implicit-grant). If we are developing mobile application, we will use the [_Authorization Code Grant Flow with PKCE_](https://auth0.com/docs/api-auth/tutorials/authorization-code-grant-pkce). There are other flows available at Auth0. However, for a simple test like this one, we can use our Auth0 dashboard to get one.
+Now, to be able to interact with our endpoints again, we will have to obtain an access token from Auth0. There are multiple ways to do this and [the strategy that we will use depends on the type of the client application we are developing](https://auth0.com/docs/api-auth/which-oauth-flow-to-use). For example, if we are developing a Single Page Application (SPA), we will use what is called the [_Implicit Grant_](https://auth0.com/docs/api-auth/tutorials/implicit-grant). If we are developing a mobile application, we will use the [_Authorization Code Grant Flow with PKCE_](https://auth0.com/docs/api-auth/tutorials/authorization-code-grant-pkce). There are other flows available at Auth0. However, for a simple test like this one, we can use our Auth0 dashboard to get one.
 
 Therefore, we can head back to [the _APIs_ section in our Auth0 dashboard](https://manage.auth0.com/#/apis), click on the API we created before, and then click on the _Test_ section of this API. There, we will find a button called _Copy Token_. Let's click on this button to copy an access token to our clipboard.
 
 ![Copying a test token from the Auth0 dashboard.](https://cdn.auth0.com/blog/nodejs-hapijs-redis/getting-a-test-token-from-auth0-dashboard.png)
 
-After copying this token, we can open a terminal an issue the following commands:
+After copying this token, we can open a terminal and issue the following commands:
 
 ```bash
 # create a variable with our token
