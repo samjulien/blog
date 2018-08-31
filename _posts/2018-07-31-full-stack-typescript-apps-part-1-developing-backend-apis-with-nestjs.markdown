@@ -68,10 +68,10 @@ Then, you can create a new project by running a single command. This command wil
 nest new nest-restaurant-api # nest-restaurant-api
 ```
 
-If everything went well, you will get by the end of this process a directory called `nest-api` with the following structure:
+If everything went well, you will get by the end of this process a directory called `nest-restaurant-api` with the following structure:
 
 ```bash
-nest-api
+nest-restaurant-api
 ├── README.md
 ├── nodemon.json
 ├── package-lock.json
