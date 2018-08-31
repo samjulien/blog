@@ -46,7 +46,7 @@ Even mega-giants like [Amadeus](https://amadeus.com/en), [Sabre](https://www.sab
 
 {% include tweet_quote.html quote_text="In the fiercely contested travel industry, digital transformation is key to staying agile. Auth0 streamlines API development." %}
 
-## Digital Transformation in Travel Started in the 1950s
+## Digital Transformation in the Travel Industry Started in the 1950s
 
 With the boom of general aviation in the 1950s, the travel industry was forced to scale quickly. Digital tools were developed to automate how airlines track and sell their inventory. This was the first digital transformation in travel, even before the beginning of the internet. From there, Sabre — or Semi Automated Business Research Environment — was born. The first global distribution system (GDS), Sabre was started in the 1960s with a collaborative effort by American Airlines and IBM. Travelport was developed by United Airlines in the 1970s and Amadeus soon followed, developed by a group of European airlines in the 1980s.
 
