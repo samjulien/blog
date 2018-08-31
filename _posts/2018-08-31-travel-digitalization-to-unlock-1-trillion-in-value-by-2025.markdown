@@ -100,4 +100,4 @@ Think of the tens, hundreds, or even thousands of API calls that could be trigge
 
 Add Auth0 to this API-centric shift in digital culture and benefit from faster development and more security than if you were to build it yourself. Auth0 provides a polished and reliable service, with tools that are easy to use and implement. In fact, enabling powerful features can be as easy as flipping a switch and hundreds of valuable development hours can go back to writing business logic. [Security is strengthened](https://auth0.com/security), with Auth0 shouldering the responsibility of adhering to security compliance policies and certifications. This means that lots of time dedicated to testing and security can be returned to core app work. Use Auth0 to secure your APIs to maintain your upward trajectory in the digitalization of the travel industry.
 
-{% include asides/about-auth0.html %}
+{% include asides/about-auth0.markdown %}
