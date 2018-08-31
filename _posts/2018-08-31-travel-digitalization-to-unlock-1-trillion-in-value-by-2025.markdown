@@ -52,7 +52,7 @@ With the boom of general aviation in the 1950s, the travel industry was forced t
 
 These [three major players still make up more than 90% of the global market](http://www.businesstravel-iq.com/article/2018/08/08/gds-market-share-second-quarter-2018) in airline bookings — and their dominance is down to digital transformation. This gave them the ability to streamline business processes and reach into more areas of the travel industry with relatively little friction.
 
-![Digital tools were developed to automate how airlines track and sell their inventory](https://cdn.auth0.com/blog/streamline-travel-api-authorization-with-auth0/connected.png)
+![Graphic showing travel industry tech, applications, and advances](https://cdn.auth0.com/blog/streamline-travel-api-authorization-with-auth0/connected.png)
 
 ## The Plumbing of the B2B Travel Industry
 
@@ -72,7 +72,7 @@ Metasearch engines like [Skyscanner](https://www.skyscanner.com/) and [Trivago](
 
 Metasearch engines ultimately aggregate prices and show the best options. Potentially, a simple search for flights could run through hundreds of sources of data all linked in a web of APIs, pulling data from different sources.
 
-![Metasearch engines connect to everything](https://cdn.auth0.com/blog/streamline-travel-api-authorization-with-auth0/meta-search-connects-to-everything.png)
+![Metasearch engine graphic showing flow of information to APIs connecting everything](https://cdn.auth0.com/blog/streamline-travel-api-authorization-with-auth0/meta-search-connects-to-everything.png)
 
 ## TripAdvisor Encourages Partners to Develop APIs
 
@@ -84,7 +84,7 @@ TripAdvisor's service, the TripAdvisor Self Implemented Partner program, is read
 
 TripAdvisor and suppliers get the benefit of valuable live pricing by allowing TripAdvisor to pull prices on demand. This takes place in lieu of having to rely on daily uploads of inventory. With traditional inventory uploads, there is a risk that rooms can become unavailable between the upload and the customer trying to make a booking. In this new API-driven model, consumers gain access to great rates that don't disappear once they try to book them.
 
-![Accelerate API Development with Auth0](https://cdn.auth0.com/blog/streamline-travel-api-authorization-with-auth0/supercharge-api-development-with-auth0.png)
+![Plane taking off - travel industry digital transformation](https://cdn.auth0.com/blog/streamline-travel-api-authorization-with-auth0/supercharge-api-development-with-auth0.png)
 
 {% include tweet_quote.html quote_text="New APIs have the inevitable overhead of developing security, and dedicating resources to it has a cost. Secure your API with Auth0." %}
 
