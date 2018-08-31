@@ -45,7 +45,9 @@ Auth0 supports [bulk user import](https://auth0.com/docs/tutorials/bulk-importin
 
 {% include tweet_quote.html quote_text="Auth0 provides several easy-to-use features for migrating users into and out of the platform." %}
 
-Let's explore how these features work.
+Let's explore how these features work. 
+
+> **Note:** Auth0 also provides a [Gigya migration tutorial in the Docs here](https://auth0.com/docs/users/migrations/gigya).
 
 ## Set Up an Auth0 Application
 
