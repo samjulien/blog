@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "Travel Digitalization to Unlock $1 Trillion in Value by 2025"
-metatitle: "Travel Digitalization to Unlock $1 Trillion in Value by 2025"
+metatitle: "Travel Industry APIs - Learn About This Industry's Digital Transformation"
 description: "Streamline Travel API Authorization with Auth0"
-metadescription: "Travel is one of the world's fastest-growing sectors and demand for the travel sector has reached an all-time high. Accelerate and streamline API development with Auth0."
+metadescription: "The Travel Industry is one of the world's fastest-growing sectors. Learn about the digital transformation taking place and how to accelerate and streamline API development with Auth0."
 date: 2018-08-31 08:30
 category: Business, Industry, Travel
 post_length: 2
