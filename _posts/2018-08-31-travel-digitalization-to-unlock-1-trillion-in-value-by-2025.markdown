@@ -60,7 +60,7 @@ Suppliers like hotel companies and airlines need to connect with distributors su
 
 However, if a supplier has an API, it is easier for them to connect supply and demand directly, meaning less cost is passed on to the consumer. By building their own APIs, suppliers like the fictional "airline.com" are almost becoming direct-to-consumer distributors of their own products, offering their own sites or apps to book on, and possibly marketing through a metasearch engine.
 
-Additionally, with APIs, airline.com can also sell ancillaries such as rental cars or even hotel rooms through the APIs offered by those ancillary services.
+Additionally, with APIs, "airline.com" can also sell ancillaries such as rental cars or even hotel rooms through the APIs offered by those ancillary services.
 
 This means that suppliers have built APIs that help them sell more directly, market through metasearch, and integrate with a rental car or a hotel room providers' APIs as well to bolster their package or complementary travel offering.
 
