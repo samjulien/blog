@@ -30,29 +30,19 @@ related:
   - 2016-12-19-introduction-to-progressive-apps-part-one
 ---
 
-Creating blog posts at Auth0 is a process that involves multiple steps. In a nutshell, the following is an overview of our content development process:
+Web workers enable developers to benefit from parallel programming in JavaScript. Parallel programming lets us run different computations at the same time. Let's see how we benefit from doing tasks in parallel as humans to help us understand the value of web workers.
 
-- Create an outline.
-- Review outline.
-- Write the demo app.
-- Write a blog post draft.
-- Proof-read post.
-- Review the final draft.
-- Publish post.
+Let's imagine that each one of us runs a tech blog. We work by ourselves and are responsible for coding a demo app, writing about the app development process, and creating assets for the post (like diagrams, images, or logos). That's a heavy task pipeline to handle by ourselves. Coding the app and writing the content are interconnected since the experience of writing the code motivates writing the content. However, creating assets is something that we could delegate to someone else.
 
-At any time during this process there's an extra step that Content Engineers may have to take:
+Let's say that we have a group of friends that are talented designers. They agree to create the assets for us. All that they ask is for us to message them a description or sketch of the asset and they will reply back with a cool professional version of it when they are done. Now, we only need to focus on coding, writing, and integrating the assets of the designers once they message us.
 
-- Add assets to the content.
-
-If the assets already exist, this step is as easy as including the assets within the body of the blog post. However, if the assets need to be created they need to be requested from the design team. If the Content Engineers were to design the assets by themselves, they would be blocked from developing and writing. This detour from the workflow would increase the time it takes to publish a post.
-
-Thankfully, we work with a talented design team at Auth0 to whom we can delegate the creation of assets. We can ping them to put a request for assets on Slack. While they are working on designing the assets, we continue working on development and writing. When the design team is done with the assets, they ping us with a link from where we can download them. We then integrate the assets with the blog post and continue our work.
-
-At no time, we get blocked from writing due to asset creation. The design team handles the task asynchronously on their own pipeline. The design team acts exactly how a web worker acts in JavaScript applications. JavaScript is a single-threaded language. As such, running expensive logic in the main thread can block it and make our JavaScript application seem slow or unresponsive. Using web workers, we can create a separate thread to run any logic without interrupting the main thread.
+This will give us a huge productivity boost. Initially, we were being blocked from coding and writing whenever we had to design assets. The completion of a blog post would have taken much longer if we were to work alone than if we were to delegate one task to a designer friend.
 
 <p style="text-align: center;">
   <img src="https://cdn.auth0.com/blog/speedy-introduction-to-web-workers/Performing-Tasks-With-and-Without-Web-Worker.png" alt="Performing tasks with and without web workers.">
 </p>
+
+The design team handles the task asynchronously on their own pipeline. The design team acts exactly how a web worker acts in JavaScript applications. JavaScript is a single-threaded language. As such, running expensive logic in the main thread can block it and make our JavaScript application seem slow or unresponsive. Using web workers, we can create a separate thread to run any logic without interrupting the main thread.
 
 {% include tweet_quote.html quote_text="Web workers in JavaScript allows us to create parallel programming to perform multiple operations simultaneously rather than interleaving them." %}
 
