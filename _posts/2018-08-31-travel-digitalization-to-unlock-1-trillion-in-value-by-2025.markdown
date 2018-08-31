@@ -14,8 +14,8 @@ author:
   avatar: https://avatars1.githubusercontent.com/u/956290?s=200
   mail: luke.oliff@auth0.com
 design:
-  bg_color: "#3f3442"
-  image: https://cdn.auth0.com/blog/the-best-and-worst-travel-sites-at-keeping-your-info-safe/logo.png
+  bg_color: "#1a587e"
+  image: https://cdn.auth0.com/blog/streamline-travel-api-authorization-with-auth0/travel-api-authorization-auth0-logo.png
 tags: 
   - identity
   - travel
