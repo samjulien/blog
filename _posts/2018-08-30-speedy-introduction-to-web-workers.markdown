@@ -30,9 +30,9 @@ related:
   - 2016-12-19-introduction-to-progressive-apps-part-one
 ---
 
-Web workers enable developers to benefit from parallel programming in JavaScript. Parallel programming let us run different computations at the same time. Let's see how we benefit from doing tasks in parallel as humans to help us understand the value of web workers.
+Web workers enable developers to benefit from parallel programming in JavaScript. Parallel programming lets us run different computations at the same time. Let's see how we benefit from doing tasks in parallel as humans to help us understand the value of web workers.
 
-Let's imagine that each one of us runs a tech blog. We work by ourselves and are responsible for coding a demo app, writing about the app development process, and creating assets for the post. That's a heavy task pipeline to handle by ourselves. Coding the app and writing the content are interconnected since the experience of writing the code motivates writing the content. However, creating assets is something that we could delegate to someone else.
+Let's imagine that each one of us runs a tech blog. We work by ourselves and are responsible for coding a demo app, writing about the app development process, and creating assets for the post (like diagrams, images, or logos). That's a heavy task pipeline to handle by ourselves. Coding the app and writing the content are interconnected since the experience of writing the code motivates writing the content. However, creating assets is something that we could delegate to someone else.
 
 Let's say that we have a group of friends that are talented designers. They agree to create the assets for us. All that they ask is for us to message them a description or sketch of the asset and they will reply back with a cool professional version of it when they are done. Now, we only need to focus on coding, writing, and integrating the assets of the designers once they message us.
 
