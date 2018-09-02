@@ -545,6 +545,8 @@ curl -H "Content-Type: application/json" \
 curl -H "Authorization: Bearer xxx.yyy.zzz" http://localhost:8080/tasks
 ```
 
+> **Note:** You might be wondering what class is dealing with the requests issue to the `/login` endpoint. This answer to this question is simple, the `JWTAuthenticationFilter` class that you created previously extends `UsernamePasswordAuthenticationFilter`. This filter, which is [provided by Spring Security](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/UsernamePasswordAuthenticationFilter.html), registers itself as the responsible for this endpoint. As such, whenever your backend API gets a request to this URL, your specialization of this filter (i.e., `JWTAuthenticationFilter`) goes into action and handles the authentication attempt (through the `attemptAuthentication` method).
+
 {% include asides/spring-boot.markdown %}
 
 ## Conclusion
