@@ -1083,7 +1083,10 @@ function SecuredRoute(props) {
   const {component: Component, path} = props;
   return (
     <Route path={path} render={() => {
-        if (!auth0Client.isAuthenticated()) return auth0Client.signIn();
+        if (!auth0Client.isAuthenticated()) {
+          auth0Client.signIn();
+          return <div></div>;
+        }
         return <Component />
     }} />
   );
@@ -1491,7 +1494,7 @@ class App extends Component {
   // ... render ...
 }
 
-// ... export ...
+export default withRouter(App);
 ```
 
 As you can see, the new version of this file is defining what it wants to do when your app loads (`componentDidMount`):
