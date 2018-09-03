@@ -1083,7 +1083,10 @@ function SecuredRoute(props) {
   const {component: Component, path} = props;
   return (
     <Route path={path} render={() => {
-        if (!auth0Client.isAuthenticated()) return auth0Client.signIn();
+        if (!auth0Client.isAuthenticated()) {
+          auth0Client.signIn();
+          return <div></div>;
+        }
         return <Component />
     }} />
   );
@@ -1491,7 +1494,7 @@ class App extends Component {
   // ... render ...
 }
 
-// ... export ...
+export default withRouter(App);
 ```
 
 As you can see, the new version of this file is defining what it wants to do when your app loads (`componentDidMount`):
@@ -1500,6 +1503,8 @@ As you can see, the new version of this file is defining what it wants to do whe
 2. If the requested route is anything else, the app wants to try a `silentAuth`. Then, if no error occurs, the app calls `forceUpdate` so the user can see its name and that they are signed in.
 3. If there is an error on the `silentAuth`, the app checks if the error is `login_required`. If this is the case, the app does nothing because it means the user is not signed in (or that you are using development keys, which you shouldn't).
 4. If there is an error that is not `login_required`, the error is simply logged to the console. Actually, in this case, it would be better to notify someone about the error so they could check what is happening.
+
+> By the way, you are enclosing your `App` class inside the `withRouter` function so you can check what route is being called (`this.props.location.pathname`). Without `withRouter`, you wouldn't have access to the `location` object.
 
 That's it! After these changes, you finally finished developing your React application. Now, if you sign in and refresh your browser, you will see that you won't lose your session and that you won't have to sign in again. Hurray!
 
