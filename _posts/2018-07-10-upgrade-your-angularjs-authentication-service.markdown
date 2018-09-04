@@ -22,6 +22,7 @@ related:
 - 2018-04-24-new-features-for-developing-angularjs-applications-part-1
 - 2017-06-28-real-world-angular-series-part-1
 - 2018-03-13-using-python-flask-and-angular-to-build-modern-apps-part-1
+alternate_locale_ja: jp-upgrade-your-angularjs-authentication-service
 ---
 
 **TL;DR:** In this article, we’re going to talk about two notoriously difficult subjects very near and dear to my heart: ngUpgrade and authentication. First, we’ll cover the foundations of upgrading a real application from AngularJS to Angular. Then, we’ll look at a practical example of upgrading AngularJS authentication strategies to Angular. We’ll look at a sample app that uses [machine to machine (M2M) authentication with Auth0](https://auth0.com/machine-to-machine).
@@ -34,7 +35,7 @@ related:
 
 Back in late 2016, I was going through some very painful issues trying to upgrade my company’s apps from AngularJS to Angular. I was completely overwhelmed and totally lost. Rather than rage-flip my desk and go live in a cave, I decided to channel my frustrations into learning everything I could about the upgrade process and documenting it along the way for the community. That’s where my video course [Upgrading AngularJS](https://www.upgradingangularjs.com/?ref=auth0) came from my own blood, sweat, and tears of figuring this process out. I’m hoping to save other people the hundreds of hours that I put into it.
 
-That’s also why I’m writing articles like this one — to help you save time. 
+That’s also why I’m writing articles like this one — to help you save time.
 
 ### ngUpgrade Background
 
@@ -48,7 +49,7 @@ Another question I get asked a lot is, “Should I just rewrite everything to Re
 
 ## The ngUpgrade Process
 
-Let’s get a high-level look at what the upgrade process looks like. There are two distinct phases. 
+Let’s get a high-level look at what the upgrade process looks like. There are two distinct phases.
 
 ### Phase 1: Preparation
 
@@ -59,17 +60,17 @@ That flexibility had a downside, though. For a long time, there wasn’t a colle
 The preparation phase consists of four **building blocks** to the ngUpgrade process:
 
 - Your **file structure**. There are two critical things here to get in line with the style guide. First, organize your files by feature, not by type. Second, have only one item per file.
-- Your **dependencies**. We at one point were a divided community on how best to manage dependencies. Now, we’ve settled on npm (or yarn) as the best way to manage our packages and dependencies (no more Bower!). We also need to be using one of the latest versions of AngularJS (at least 1.5, but preferably the most recent). 
+- Your **dependencies**. We at one point were a divided community on how best to manage dependencies. Now, we’ve settled on npm (or yarn) as the best way to manage our packages and dependencies (no more Bower!). We also need to be using one of the latest versions of AngularJS (at least 1.5, but preferably the most recent).
 - Your **architecture**. AngularJS 1.5 introduced the component API, which enabled component architecture. Moving your application to component architecture is part of the preparation phase. AngularJS 1.5 also introduced things like life-cycle hooks and one-way data binding. As you upgrade, you’ll need to replace controllers with components and get rid of all of those instances of `$scope`. You don’t necessarily need to get everything in tip-top shape before you even start using ngUpgrade, but your end result will be component architecture, whether in AngularJS or Angular. The closer you are to components, the easier your upgrade will be.
 - Your **build process**. The build process is the tooling that we want to do to get all of our application compiling and ready for the ngUpgrade library. Practically speaking, this means using Webpack for module bundling and Typescript for your code. This means replacing script tags or task runners like Gulp and Grunt with ES6 modules. Our goal is to make our tooling exactly in line with the Angular tooling so that at some point we can move to the Angular CLI.
 
-Speaking of the CLI — if you can use it right away in your legacy application, by all means, do so. In certain situations, though, you can’t really get the CLI into an upgrade project right off the bat. You might have your code structure all over the place or a very customized build process. In these cases, you‘ll need to wait until you’ve at least cleaned up your code and architecture so that your application fits better with the CLI. The CLI is highly opinionated in how it wants to organize your code, and it wants to own your build process. This is fantastic in the long run — it solves the exact problem of the early days of AngularJS — but in the short term it can be frustrating if you’re working with a big application that uses old patterns. 
+Speaking of the CLI — if you can use it right away in your legacy application, by all means, do so. In certain situations, though, you can’t really get the CLI into an upgrade project right off the bat. You might have your code structure all over the place or a very customized build process. In these cases, you‘ll need to wait until you’ve at least cleaned up your code and architecture so that your application fits better with the CLI. The CLI is highly opinionated in how it wants to organize your code, and it wants to own your build process. This is fantastic in the long run — it solves the exact problem of the early days of AngularJS — but in the short term it can be frustrating if you’re working with a big application that uses old patterns.
 
 One last note on working through these four building blocks. It’s not necessarily a linear process. Not all of this needs to be completely perfect before you start moving on to ngUpgrade. Particularly, the architecture part can really be done slowly or at the same time as the upgrade process. It really depends on how big your application is and how much capacity you have for working through this technical debt while you’re also doing feature development and bug fixes. The only one that is really critical outside of being up to date with your dependencies is the _build process_ because we really do need a module bundler and TypeScript in order to use ngUpgrade and start moving our application over.
 
 ### Phase 2: Upgrading
 
-Now let’s talk about the upgrading phase, which has three different parts. 
+Now let’s talk about the upgrading phase, which has three different parts.
 
 The first one is the **install and setup**, where you’ll install all of the packages for Angular and ngUpgrade and then bootstrap both frameworks to run side by side together. (We won’t cover that in detail here, but I wrote a thorough post over on Scotch.io to help you with that.)
 
@@ -81,7 +82,7 @@ Finally, leave your routing to the very end, since the routing is the brain of t
 
 Somewhere in here, you’re going to have to deploy this code to production if you want to keep bringing home a paycheck. You’re going to have to **set up your code for production**. This means that you need to take advantage of Angular’s static compilation process, called Ahead of Time compiling. Angular has two modes that it can run in. It can run in a Just in Time (JIT) compilation mode or it can run in Ahead of Time (AOT) compilation mode.
 
-The compiler takes up a big chunk of the Angular library. When you’re in development and using JIT compilation, that compiler is being wrapped up in your bundle and going with you to the browser. 
+The compiler takes up a big chunk of the Angular library. When you’re in development and using JIT compilation, that compiler is being wrapped up in your bundle and going with you to the browser.
 
 ![The compiler takes up a big chunk of Angular.](https://cdn.auth0.com/blog/ngupgrade/compiler-chunk.png)
 
@@ -104,7 +105,7 @@ This basic order system application starts off as a hybrid application with Angu
 
 ### Current Authentication Setup
 
-The Express server is set up with Auth0 with a machine to machine API and client relationship. I used machine to machine because a user login system is an extra layer of complexity that, for this purpose, doesn’t actually matter that much. All we really care about is the ability to go get a token and add it to our outgoing requests to be able to get our data. Whether that’s specific to a user or to an application doesn’t matter. (I should also say that, while I’m using Auth0, the approach we take in this article applies to any sort of token system.) 
+The Express server is set up with Auth0 with a machine to machine API and client relationship. I used machine to machine because a user login system is an extra layer of complexity that, for this purpose, doesn’t actually matter that much. All we really care about is the ability to go get a token and add it to our outgoing requests to be able to get our data. Whether that’s specific to a user or to an application doesn’t matter. (I should also say that, while I’m using Auth0, the approach we take in this article applies to any sort of token system.)
 
 I’ve also got two routes using authentication: the customers' route and the products route. This is because the customers' route is using an Angular component and service, but the products route is still using AngularJS pieces. That’ll let us see both approaches and how to upgrade.
 
@@ -145,7 +146,7 @@ On the client side (the `public` folder), inside of our `src` folder, we have a 
 
 ```typescript
 runAuth.$inject = ['authService'];
-export function runAuth(authService) {  
+export function runAuth(authService) {
   if (!authService.isAuthenticated()) authService.getToken();
 }
 ```
@@ -154,7 +155,7 @@ This function gets added to our AngularJS module using `angular.module().run()` 
 
 To add our token to outgoing requests, we have an HTTP interceptor for the AngularJS `$http` provider (`auth.interceptor.ajs.ts`). It goes and gets the token from local storage and then it adds the authorization header with the bearer token before the request goes out.
 
-The authentication service (`./shared/authService.ts`), which is also still in AngularJS, goes and gets the token from Auth0 (via the server) and then sets that token in local storage. 
+The authentication service (`./shared/authService.ts`), which is also still in AngularJS, goes and gets the token from Auth0 (via the server) and then sets that token in local storage.
 
 To see that this is working, open a terminal and run `npm start` inside of the `server` folder. Then, open another terminal and run `npm run dev` inside of the `public` folder. Navigate to [`localhost:9000`](localhost:9000), open up Chrome developer tools, and click on the Customers tab. You can see that the token has been added as a header on the outgoing request:
 
@@ -166,19 +167,19 @@ Of course, this is a very simple way of doing token authentication. We could mak
 
 ### Adding an Angular Interceptor
 
-There’s one problem in this setup. The `getCustomers` call of the CustomerService (in `./customers/customer.service.ts`) is actually cheating: 
+There’s one problem in this setup. The `getCustomers` call of the CustomerService (in `./customers/customer.service.ts`) is actually cheating:
 
 ```typescript
-getCustomers(): Observable<Customer[]> {    
-  return this.http.get<Customer[]>('/api/customers', {      
-    headers: { Authorization: `Bearer ${localStorage.access_token}` }    
-  });  
+getCustomers(): Observable<Customer[]> {
+  return this.http.get<Customer[]>('/api/customers', {
+    headers: { Authorization: `Bearer ${localStorage.access_token}` }
+  });
 }
 ```
 
 I’m just manually adding the header here, not using the interceptor. If we were to comment this out and let Webpack re-bundle, we’d no longer be able to get our customers data, because the token would no longer be attached to the request.
 
-Why is this? AngularJS’s `$http` and Angular’s `HttpClient` don’t talk to each other. We have to bridge this gap somehow. To do this, we’ll write an interceptor for the HttpClient in Angular. 
+Why is this? AngularJS’s `$http` and Angular’s `HttpClient` don’t talk to each other. We have to bridge this gap somehow. To do this, we’ll write an interceptor for the HttpClient in Angular.
 
 To add an interceptor, let’s create a new file at the root of our source folder called `auth.interceptor.ts`. In that file, we’ll add this new class:
 
@@ -230,7 +231,7 @@ Now you can just remove that config object from the `getCustomers` call, save ev
 
 You can see [the finished code for this section here](https://github.com/upgradingangularjs/ordersystem-evergreen/commit/77283ef3d8e9ebe4b5ac883430313f3268543d03/).
 
-One quick point of clarification: don’t get rid of the AngularJS interceptor until you’re done converting all of your services over to Angular. You’re not going to be able to use Angular’s HttpClient interceptor with your AngularJS services. 
+One quick point of clarification: don’t get rid of the AngularJS interceptor until you’re done converting all of your services over to Angular. You’re not going to be able to use Angular’s HttpClient interceptor with your AngularJS services.
 
 ### Taking Advantage of Angular’s APP_INITIALIZER
 
@@ -269,7 +270,7 @@ Next, we’ll rename all of the references to `$http` with `http` (just do a fin
 constructor(private http: HttpClient) { }
 ```
 
-You should now see that TypeScript is griping about all of the instances of `.then`. That’s because HttpClient returns observables instead of promises. One strategy that I’ve found very helpful in ngUpgrade is not trying to tackle observables right off the bat. I love observables, but when you’re in a real-world production application, it doesn’t always work to go immediately to observables. Thinking reactively is a brand new pattern for most folks, and sometimes you need to ease your way there. You can do this by converting observables to promises, making sure everything is working, and then refactoring the promises back to observables down the road. That’s what we’re going to do here, just for the sake of a practical example. 
+You should now see that TypeScript is griping about all of the instances of `.then`. That’s because HttpClient returns observables instead of promises. One strategy that I’ve found very helpful in ngUpgrade is not trying to tackle observables right off the bat. I love observables, but when you’re in a real-world production application, it doesn’t always work to go immediately to observables. Thinking reactively is a brand new pattern for most folks, and sometimes you need to ease your way there. You can do this by converting observables to promises, making sure everything is working, and then refactoring the promises back to observables down the road. That’s what we’re going to do here, just for the sake of a practical example.
 
 Add these imports to the top of the file:
 
@@ -285,7 +286,7 @@ Now, you can just add `.toPromise()` to all of the calls prior to the `.then` an
 You should have this:
 
 ```typescript
-mport { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
@@ -314,7 +315,7 @@ export class AuthService {
         });
     }
   }
-  
+
   // unchanged
   isAuthenticated() { ... }
 
@@ -348,7 +349,7 @@ providers: [
   ]
 ```
 
-But how do we make sure our AngularJS code can still access that service? That’s where ngUpgrade comes into play. We’re going to use ngUpgrade’s `downgradeInjectable` function in our AngularJS module to make this Angular service available to our legacy code. 
+But how do we make sure our AngularJS code can still access that service? That’s where ngUpgrade comes into play. We’re going to use ngUpgrade’s `downgradeInjectable` function in our AngularJS module to make this Angular service available to our legacy code.
 
 Open up `app.module.ajs.ts`. First, fix the import up at the top since we renamed our file. Then, where we’re registering the service, we’re going to change it to a factory and use that downgrade function just like with the OrderService and CustomerService:
 

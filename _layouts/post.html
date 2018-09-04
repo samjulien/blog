@@ -27,7 +27,7 @@ is_post: true
   <img height="1" width="1" style="display:none;" alt="" src="//t.co/i/adsct?txn_id=l4rua&p_id=Twitter" />
 </noscript>
 
-<article itemprop="mainEntity" itemscope itemtype="http://schema.org/BlogPosting">
+<article itemscope itemtype="http://schema.org/BlogPosting" itemprop="mainEntity">
   <link itemprop="mainEntityOfPage" href="https://auth0.com{{ site.baseurl }}{{page.url | replace:'index.html',''}}" />
   {% if page.updated %}
     <meta itemprop="dateModified" content="{{ page.updated }}">
@@ -57,17 +57,17 @@ is_post: true
         </div>
         <div id="disqus_thread"></div>
       </section>
-      <aside class="col-md-4 sidebar-column" data-sticky-padding="90" itemscope="" itemtype="http://schema.org/WPSideBar">
+      <aside class="col-md-4 sidebar-column" data-sticky-padding="90" itemscope itemtype="http://schema.org/WPSideBar">
         {% include newsletter.html %}
         {% include popular_posts.html%}
         {% include widget_guest_author.html %}
       </aside>
     </div>
-    <div itemprop='publisher' itemscope='itemscope' itemtype='https://schema.org/Organization'>
-      <div itemprop='logo' itemscope='itemscope' itemtype='https://schema.org/ImageObject'>
-        <meta itemprop='url' content='https://i.cloudup.com/BngR4GufYd-3000x3000.png'/>
-        <meta itemprop='width' content='100'/>
-        <meta itemprop='height' content='37'/>
+    <div itemscope itemtype="https://schema.org/Organization" itemprop="publisher">
+      <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+        <meta itemprop="url" content="https://i.cloudup.com/BngR4GufYd-3000x3000.png"/>
+        <meta itemprop="width" content="100"/>
+        <meta itemprop="height" content="37"/>
       </div>
       <meta itemprop="name" content="Auth0">
     </div>

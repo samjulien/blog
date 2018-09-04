@@ -37,7 +37,7 @@ If, like me, you're always picking up on new movies that you need to watch, but 
 * We'll use the [Aurelia JavaScript framework](https://aurelia.io/) and its [CLI](https://aurelia.io/docs/build-systems/aurelia-cli/) to generate a new Aurelia application that uses [TypeScript](https://www.typescriptlang.org/) and [Webpack](https://webpack.js.org/)
 * Our app will have three screens — the list of movies we've added (our "watch list"), a list of currently trending movies, and a search results page
 * We'll connect to the [The Movie DB](https://www.themoviedb.org/) to get our movie information
-* We'll protect the feature to add a movie to your watch list behind an Auth0 login, and also add the ability to log in and out of your application
+* We'll place the feature to add a movie to your watch list behind an Auth0 login, and also add the ability to log in and out of your application
 
 To illustrate, here's what this will look like once it's done:
 
@@ -47,7 +47,7 @@ To illustrate, here's what this will look like once it's done:
 
 ## A brief intro to Aurelia
 
-Aurelia is a modular JavaScript framework designed to remove the pain of building and configuring your application, allowing you to focus on your important application features and business logic. It includes everything you need out—of—the—box to build modern JavaScript applications in the browser, on the desktop or mobile, with support for many popular JavaScript variants including ES5, ES2016 and TypeScript.
+Aurelia is a modular JavaScript framework designed to remove the pain of building and configuring your application, allowing you to focus on your important application features and business logic. It includes everything you need out—of—the—box to build modern JavaScript applications in the browser, on the desktop or mobile, with support for many popular JavaScript variants including ES5, ES2016, and TypeScript.
 
 ## Prerequisites
 
@@ -73,7 +73,7 @@ The CLI tool will then guide you through the creation of your application. The f
 
 The next question, however, asks you for a choice of default setup — choose '2. Default TypeScript' here, as that's what we'll be using in this article. This will provide you with a sensible configuration for a TypeScript application that is built using Webpack.
 
-Next you'll just be asked to confirm your choices, so go ahead and choose "1. Yes" to create the project.
+Next, you'll just be asked to confirm your choices, so go ahead and choose "1. Yes" to create the project.
 
 For brevity, the project configuration that has been generated for me looks like this:
 
@@ -105,13 +105,13 @@ Hopefully, you will see the words 'Hello world!' printed out in a heading tag. I
 
 At this point, you can open the project in your favorite editor. I'm using [Visual Studio Code](https://code.visualstudio.com/); while it's generally pretty awesome as an editor, it's particularly great at working with TypeScript and is a perfect fit for this project.
 
-Looking at the file system, we're mainly going to be concerned with the `src` folder, as it's where all of our components, service classes and templates are going to live and will contain the bulk of our code. We are going to dip our toes into a a couple of other places along the way though, primarily:
+Looking at the file system, we're mainly going to be concerned with the `src` folder, as it's where all of our components, service classes, and templates are going to live and will contain the bulk of our code. We will, however, dip our toes into a couple of other places along the way, primarily:
 
 * We're going to add a custom TypeScript definition file for [The Movie DB library](https://npmjs.org/package/moviedb-promise) we'll be using, which will help us out a lot with using certain types. These live in the `custom_typings` folder
 * We're going to add a [Bootstrap 4 skin](https://bootswatch.com/darkly/) into the `index.ejs` file, which is essentially the wrapping HTML for our entire application
 * We'll be adding some environment variables into the files in the `aurelia_project/environments` directory, allowing us to customize values for the different environments you might want to deploy to
 
-At it's core though, it has all the files you'd expect for a Node/Webpack project; there is a `package.json` file to manage dependencies, and a `webpack.config.js` file to configure your build. The build configuration is one of the more advanced ones you'll come across — we only need to make a very minor change to it as part of this tutorial — but it can be changed if you so wish.
+At its core though, it has all the files you'd expect for a Node/Webpack project; there is a `package.json` file to manage dependencies, and a `webpack.config.js` file to configure your build. The build configuration is one of the more advanced ones you'll come across — we only need to make a very minor change to it as part of this tutorial — but it can be changed if you so wish.
 
 One thing I would like you to do is remove the `test` folder. While I'm an avid fan of unit testing, it's not something we'll cover as part of this tutorial. Therefore, if you don't remove this folder, you'll find that as you progress through the article, you will hit more and more issues with your unit tests failing as they run automatically whenever Webpack is invoked.
 
@@ -129,7 +129,7 @@ We won't quite need it yet, but keep a mental note of where to get this key from
 
 Let's get writing our app. The first thing we're going to do is configure the main application window with some default styles and get the header into place.
 
-From this point, make sure you've got the project running using `au run --watch` and that you are able to view the application in the brower at [http://localhost:8080](http://localhost:8080).
+From this point, make sure you've got the project running using `au run --watch` and that you are able to view the application in the browser at [http://localhost:8080](http://localhost:8080).
 
 Looking in the `src` folder, you'll see the `app.ts` and `app.html` files. This is essentially the entry point to our application and is where the rest of our application will grow from. To start with, let's create our first component — the header.
 
@@ -143,10 +143,12 @@ You will be asked which subfolder you want the component to be created in. You c
 
 Now if you look inside the `src/components` folder, you'll find `header.html` and `header.ts`. These are the files that make up our header component. Every component is created with some default 'Hello world' content, but we're going to strip that out and replace it with our own markup.
 
-In this case we're going to replace it with some basic navigation markup and come back to it later as we implement all the other features. Replace the contents of `header.html` with the following to create a basic Bootstrap navigation bar:
+In this case, we're going to replace it with some basic navigation markup and come back to it later as we implement all the other features. Replace the contents of `header.html` with the following to create a basic Bootstrap navigation bar:
 
 {% highlight html %}
 {% raw %}
+<!-- src/components/header.html -->
+
 <template>
 
   <nav class="navbar navbar-expand navbar-dark bg-primary justify-content-between">
@@ -167,6 +169,8 @@ In this case we're going to replace it with some basic navigation markup and com
 So far, this is mostly just Bootstrap's standard markup for a responsive navigation bar. Notice the `${appTitle}` directive in there? We're going to bind that from the 'controller' of this template, which can be found in the `header.ts` file. Replace its contents with the following:
 
 ```js
+// src/components/header.ts
+
 export class Header {    
   appTitle = "Movielist";
   
@@ -175,12 +179,14 @@ export class Header {
 }
 ```
 
-You can see from this example how easy the binding can be between variables that exist on the component class, and displaying them on a template. Not only that, but _changes_ to that variable will also be picked up and surfaced to the template in real time.
+You can see from this example how easy the binding can be between variables that exist on the component class and the template. Not only that, but _changes_ to that variable will also be picked up and surfaced to the template in real time.
 
 Continuing on, open `app.html` in the root of the `src` folder and replace its contents with the following, which will display the Header component on the page:
 
 {% highlight html %}
 {% raw %}
+<!-- src/app.html -->
+
 <template>
   <require from="./app.css"></require>
   <require from="./components/header"></require>
@@ -193,6 +199,8 @@ Continuing on, open `app.html` in the root of the `src` folder and replace its c
 Notice that it brings in `app.css`, which just has some minor styling in it to put some distance in between the header and the content. Create the file `app.css` in the same directory as your app template and give it the following content:
 
 ```css
+/* src/app.css */
+
 .container {
   margin-top: 2rem;
 }
@@ -202,6 +210,8 @@ Next, let's bring in those Bootswatch styles we were talking about. Open `index.
 
 {% highlight html %}
 {% raw %}
+<!-- index.ejs -->
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -232,13 +242,15 @@ Next, let's bring in those Bootswatch styles we were talking about. Open `index.
 {% endraw %}
 {% endhighlight %}
 
-Notice that we've also included script tags for Bootstrap and jQuery, so that the responsive navigation bar works correctly across smaller devices.
+Notice that we've also included script tags for Bootstrap and jQuery so that the responsive navigation bar works correctly across smaller devices.
 
-By the way, for my application I've chosen to use the [Darkly theme](https://bootswatch.com/darkly/), but you can use any of the themes that you like, as all of the markup should be compatible.
+By the way, for my application, I've chosen to use the [Darkly theme](https://bootswatch.com/darkly/), but you can use any of the themes that you like, as all of the markup should be compatible.
 
-At this point, you should be able to see your application with a very basic header showing the application title and some basic coloring coming from your chosen Bootswatch styles. Notice, however, that the HTML title of your application is not quite right — by default it's set to 'Aurelia Navigation Skeleton'. We can change that to something a little more appropriate by opening `webpack.config.js` and altering line 16 to whatever title we like. I've simply called mine 'Movielist':
+At this point, you should be able to see your application with a very basic header showing the application title and some basic coloring coming from your chosen Bootswatch styles. Notice, however, that the HTML title of your application is not quite right — by default, it's set to 'Aurelia Navigation Skeleton'. We can change that to something a little more appropriate by opening `webpack.config.js` and altering line 16 to whatever title we like. I've simply called mine 'Movielist':
 
 {% highlight js %}
+// webpack.config.js
+
 //...
 const when = (condition, config, negativeConfig) =>
   condition ? ensureArray(config) : ensureArray(negativeConfig);
@@ -259,13 +271,15 @@ One of the first things we can do is show some of the current movies that are tr
 * Creating a component to show a single movie
 * Creating a component to show a list of our movie components
 
-Let's begin with the API class. This will simply be a class that will allow us easy access to The Movie DB API, and will wrap a node library called `moviedb-promise`. Create a new folder called `api` inside the `src` folder, and create a new file in there called `index.ts`.
+Let's begin with the API class. This will simply be a class that will allow us easy access to The Movie DB API and will wrap a node library called `moviedb-promise`. Create a new folder called `api` inside the `src` folder, and create a new file in there called `index.ts`.
 
 We also need a couple of supporting elements before we go ahead and create the API class itself.
 
 First up, we need to modify the environment configuration with our MovieDB API key that we created earlier. Open `aurelia_project/environments/dev.ts` and add in your API key, like so:
 
 ```js
+// aurelia_project/environments/dev.ts
+
 export default {
   debug: true,
   testing: true,
@@ -281,11 +295,13 @@ We also need to install the `moviedb-promise` package. You can do this using `np
 npm install moviedb-promise
 ```
 
-Next, we need to add some TypeScript typings for the `moviedb-promise` libary that we're about to interact with. We don't _have_ to do this, but it will make working with the library much nicer, seeing as we're using TypeScript anyway.
+Next, we need to add some TypeScript typings for the `moviedb-promise` library that we're about to interact with. We don't _have_ to do this, but it will make working with the library much nicer, seeing as we're using TypeScript anyway.
 
 Create a new file called `moviedb-promise.d.ts` inside the `custom_typings` folder and populate it with the following:
 
 ```js
+// custom_typings/moviedb-promise.d.ts
+
 declare module 'moviedb-promise' {
   type SearchOptions = {
     query: string;
@@ -332,6 +348,8 @@ This isn't an exhaustive set of operations that the library supports, but it doe
 Turning our attention back to the API class we're creating, open `src/api/index.ts` and start by importing the types that we'll need.
 
 ```js
+// src/api/index.ts
+
 import MovieDB, { Configuration, Movie } from "moviedb-promise";
 import env from "../environment";
 ```
@@ -339,6 +357,8 @@ import env from "../environment";
 Next, we can create the MovieDB client and load its configuration. The configuration is another API call to the MovieDB API that returns some useful settings to us, the main one being the secure (HTTPS) base URL to movie poster images!
 
 ```js
+// src/api/index.ts
+
 const client = new MovieDB(env.apiKey);
 
 let config: Configuration;
@@ -346,9 +366,11 @@ let config: Configuration;
 client.configuration().then(c => (config = c));
 ```
 
-Now we can create our API class. The two operations we're going to make use of in our application are the ability to search for a movie by title and to retrieve the current popular movies:
+Now we can create our API class. The two operations we're going to make use of in our application are the abilities to search for a movie by title and to retrieve the current popular movies:
 
 ```js
+// src/api/index.ts
+
 export class MovieApi {
   search(query: string) {
     return client
@@ -369,6 +391,8 @@ export class MovieApi {
 The last thing we need to do is provide the implementation of the `fixProfilePaths` function. The movie data that we get from the API normally only includes a short path to the image (e.g. `/8763abc43c1/image.png`) — what we'd like to do is prepend the base path to that so that it becomes a fully qualified URL. `fixProfilePaths` will take a list of movies, and modify them to include the full image URL instead of just the path:
 
 ```js
+// src/api/index.ts
+
 const fixProfilePaths = (movies: Movie[]) => {
   return movies.filter(movie => movie.poster_path).map(movie => {
     return Object.assign(movie, {
@@ -399,6 +423,8 @@ au generate component Movie
 Again, you'll notice that two more files have appeared inside `src/components`: `movie.html` and `movie.ts`. Open `movie.ts` and replace its contents with the following:
 
 ```js
+// src/components/movie.ts
+
 import { bindable } from 'aurelia-framework';
 import { Movie as MovieModel } from 'moviedb-promise';
 
@@ -424,6 +450,8 @@ Turning our attention to the view for this component, let's add the markup we ne
 
 {% highlight html %}
 {% raw %}
+<!-- src/components/movie.html -->
+
 <template>
   <require from="./movie.css"></require>
 
@@ -449,9 +477,11 @@ This is pretty standard markup for [Bootstrap's Card component](https://getboots
 
  Notice the events which handle the `mouseover` and `mouseout` are used here to set an `active` class on the element that contains the movie poster and overview text. The idea is that, as you mouse over the poster, the overview text will come into view.
 
-Also notice the reference to `movie.css`. Create that file now alongside the HTML file, and populate it with the following:
+Also, notice the reference to `movie.css`. Create that file now alongside the HTML file, and populate it with the following:
 
 ```css
+/* src/components/movie.css */
+
 .movie-card {
   position: relative;
 }
@@ -483,6 +513,8 @@ au generate component MovieList
 Open `movielist.ts` and replace the default content with the following:
 
 ```js
+// src/component/movielist.ts
+
 import { Movie } from "moviedb-promise";
 import { bindable } from "aurelia-framework";
 
@@ -492,12 +524,14 @@ export class MovieList {
 }
 ```
 
-At this stage it's a pretty simple component that provides bindings for some movies (the ones we want to show in the list) as well as a title. We're providing the `movies` binding because we're going to be using this component to display a list of movies from a bunch of different sources — the search result, the popular movies and the watch list. All of these things are essentially just different lists of the same `Movie` type, so it makes sense to re—use this component as much as possible.
+At this stage, it's a pretty simple component that provides bindings for some movies (the ones we want to show in the list) as well as a title. We're providing the `movies` binding because we're going to be using this component to display a list of movies from a bunch of different sources — the search result, the popular movies and the watch list. All of these things are essentially just different lists of the same `Movie` type, so it makes sense to reuse this component as much as possible.
 
 Open `movielist.html` and replace the default markup with this:
 
 {% highlight html %}
 {% raw %}
+<!-- src/components/movielist.html -->
+
 <template>
   <require from="./movie"></require>
   <require from="./movielist.css"></require>
@@ -519,6 +553,8 @@ Thanks to the `repeat.for` directive, this template will loop through the list o
 We also bring in `movielist.css` for the list of movies, which has some minor styling to pad out each movie component a little bit:
 
 ```css
+/* src/components/movielist.css */
+
 .movie {
   padding-bottom: 1rem;
 }
@@ -537,6 +573,8 @@ au generate component PopularMovies
 Next, open `popularmovies.ts` and add in the code to load the movies from the API: 
 
 ```js
+// src/pages/popularmovies.ts
+
 import { Movie } from "moviedb-promise";
 import { MovieApi } from '../api/index';
 import { autoinject } from "aurelia-framework";
@@ -556,11 +594,13 @@ export class PopularMovies {
 
 There are a few things to note here. First of all, we're bringing in the `MovieApi` type that we created a while back, and it's being injected into the component by [Aurelia's dependency injection framework](https://aurelia.io/docs/fundamentals/dependency-injection/). The `@autoinject` decorator allows Aurelia to automatically resolve the type and give us the right thing when the component is created.
 
-Next, we're handling the `attached` method, which is part of Aurelia's component life—cycle. `attached` is called once the component has been attached to the DOM. At this point we call into the API to retrieve the popular movies. `this.api.popularMovies()` is a promise—based asynchronous method, which means we can take advantage of the [async/await](https://javascript.info/async-await) pattern and improve the readability of the code.
+Next, we're handling the `attached` method, which is part of Aurelia's component life—cycle. `attached` is called once the component has been attached to the DOM. At this point, we call into the API to retrieve the popular movies. `this.api.popularMovies()` is a promise—based asynchronous method, which means we can take advantage of the [async/await](https://javascript.info/async-await) pattern and improve the readability of the code.
 
 Now we can open `popularmovies.html` and create the template for this component:
 
 {% highlight html %}
+<!-- src/pages/popularmovies.html -->
+
 <template>
   <require from="../components/movielist"></require>
   <movie-list movies.bind="movies" title="Popular movies"></movie-list>
@@ -569,9 +609,11 @@ Now we can open `popularmovies.html` and create the template for this component:
 
 This is a simple template that delegates most of its work to the `MovieList` component. Notice though that Aurelia has determined that the tag name for the component is `movie-list` — it has split the name based on the camel—case convention, making it a bit easier to read in the HTML.
 
-Finally, to get this all working and showing some movies on the screen, head to `app.html` and modify the template so that it include the `PopularMovies` component and displays it under the header:
+Finally, to get this all working and showing some movies on the screen, head to `app.html` and modify the template so that it includes the `PopularMovies` component and displays it under the header:
 
 {% highlight html %}
+<!-- src/app.html -->
+
 <template>
   <require from="./components/header"></require>
   <require from="./pages/popularmovies"></require>
@@ -594,6 +636,8 @@ In the next section we're going to be creating the user interface to allow the u
 Open `app.ts`. The first thing we need to do is import some types that'll need for the routing to work:
 
 ```js
+// src/app.ts
+
 import { PLATFORM } from 'aurelia-pal';
 import { RouterConfiguration, Router } from "aurelia-router";
 ```
@@ -601,6 +645,8 @@ import { RouterConfiguration, Router } from "aurelia-router";
 Next, add the `configureRouter` method inside the `App` class that will be invoked by Aurelia when it is time to configure the router for the application:
 
 ```js
+// src/app.ts
+
 configureRouter(config: RouterConfiguration, router: Router) {
   config.options.pushState = true;
 
@@ -610,13 +656,15 @@ configureRouter(config: RouterConfiguration, router: Router) {
 }
 ```
 
-The first thing we do here is configure the router to enable `pushState`, which allows us to use proper URLs like `/search` instead of the usual `/#/search` type, which will be required later once we start receiving callbacks from Auth0.
+The first task is to configure the router to enable `pushState`, which allows us to use proper URLs like `/search` instead of the usual `/#/search` type, which will be required later once we start receiving callbacks from Auth0.
 
 The other thing this function does is to set up a single route that points to our Popular Movies page by default. We'll come back and modify this later once we start adding the rest of the pages in.
 
 The final thing we need to do is adjust the view so that the router can display its content on the page. Open `app.html` and remove the `<popular-movies>` element as well as the `require` element for it. Then, add in a `router-view` element to act as the viewport for the router content. You should end up with this:
 
 {% highlight html %}
+<!-- src/app.html -->
+
 <template>
   <require from="./app.css"></require>
   <require from="./components/header"></require>
@@ -645,6 +693,8 @@ au generate component SearchResults
 Next, open `searchresults.html` and populate it with the following markup:
 
 {% highlight html %}
+<!-- src/pages/searchresults.html -->
+
 <template>
   <require from="../components/spinner.html"></require>
   <require from="../components/movielist"></require>
@@ -667,6 +717,7 @@ au generate component Spinner
 Then, open `spinner.html` and replace its contents with the following:
 
 {% highlight html %}
+<!-- src/components/spinner.html -->
 
 <template>
   <require from="./spinner.css"></require>
@@ -680,6 +731,8 @@ Then, open `spinner.html` and replace its contents with the following:
 There's a couple of other files we need to create in this folder. First, `spinner.css`:
 
 ```css
+/* src/components/spinner.css */
+
 .spinner {
   margin-bottom: 1rem;
   text-align: center;
@@ -691,6 +744,8 @@ And `spinner.svg`. This SVG file came from [Sam Herbert's excellent collection o
 To finish off the search component, open `searchresults.ts` and start by importing some types:
 
 ```js
+// src/components/searchresults.ts
+
 import { autoinject } from "aurelia-dependency-injection";
 import { MovieApi } from "../api/index";
 import { Movie, SearchResults as Results } from "moviedb-promise";
@@ -699,6 +754,8 @@ import { Movie, SearchResults as Results } from "moviedb-promise";
 Then, update the `SearchResults` class so that it looks like the following:
 
 ```js
+// src/components/searchresults.ts
+
 @autoinject
 export class Search {
   searchTerm: string;
@@ -726,13 +783,15 @@ export class Search {
 
 Again we're using the `autoinject` decorator which allows the `MovieApi` type to be automatically injected into the constructor when this component is created. Then, we implement one method `activate` which is called by the Aurelia router when this component has been activated through a route. This function is given the search term as an argument, meaning that we can use that to query the API.
 
-Notice that this function uses the async/await pattern as well, meaning that we can write the call to the API in a way that appears to be syncronous, but actually it's using a Promise in the background.
+Notice that this function uses the async/await pattern as well, meaning that we can write the call to the API in a way that appears to be synchronous, but actually it's using a Promise in the background.
 
-Finally, the content for the header is devised based on the amount of search results that have been returned. If we get some results, the header tells us how many results there are for the given term, otherwise we simply display a message telling the user that there were no results.
+Finally, the content for the header is devised based on the number of search results that have been returned. If we get some results, the header tells us how many results there are for the given term. Otherwise, we simply display a message telling the user that there were no results.
 
-The next part we need to tackle is updating the router so that the search page can be accessed by the browser. Re—open `app.ts` and update the router config to include this new search route:
+The next part we need to tackle is updating the router so that the search page can be accessed by the browser. Reopen `app.ts` and update the router config to include this new search route:
 
 ```js
+// src/app.ts
+
 config.map([
   { route: ['', 'popular'], name: 'popular', title: 'Popular movies', moduleId: PLATFORM.moduleName('pages/popularmovies'), nav: true },
   { route: 'search/:term', name: 'search', moduleId: PLATFORM.moduleName('pages/searchresults')}
@@ -750,6 +809,8 @@ au generate component SearchBox
 Populate the `searchbox.html` file with the markup to display a form with a textbox:
 
 {% highlight html %}
+<!-- src/components/searchbox.html -->
+
 <template>
 
   <form class="form-inline my-2 my-lg-0" submit.trigger="doSearch()">
@@ -765,11 +826,13 @@ Populate the `searchbox.html` file with the markup to display a form with a text
 </template>
 {% endhighlight %}
 
-Notice that the form has `submit.trigger="doSearch()"` applied to it, which means that when the form is submitted (either the user hits the enter key after entering a search term, or presses the 'search' button) then it will execute the `doSearch()` function inside the component. Another thing of importance is that the textbox's value is bound to the `searchTerm` property, so that we can retrieve the value that the user typed in when the form has been submitted. We'll see how this is created in the next piece of code.
+Notice that the form has `submit.trigger="doSearch()"` applied to it, which means that when the form is submitted (either the user hits the enter key after entering a search term, or presses the 'search' button) then it will execute the `doSearch()` function inside the component. Another thing of importance is that the textbox's value is bound to the `searchTerm` property so that we can retrieve the value that the user typed in when the form has been submitted. We'll see how this is created in the next piece of code.
 
 Inside `searchbox.ts`, the component code should look like the following. Again the `autoinject` decorator is used to bring in the `Router` type through the constructor:
 
 ```js
+// src/components/searchbox.ts
+
 import { autoinject, bindable } from "aurelia-framework";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { Router } from "aurelia-router";
@@ -798,15 +861,16 @@ export class SearchBox {
 There are a few pieces to this code, but let's go through the main areas:
 
 * We have the bindable `searchTerm` property, which is bound to the search box's `value` property in the template
-* In the constructor, we're bringing in the router and also the `EventAggregator`, and we subscribe to the `router:navigate:success` event. We do this so that, if the user is performing a search and browses to `/search/arthur` then we retrieve the search term from the router data and pre—fill the search term with it
+* In the constructor, we're bringing in the router and also the `EventAggregator`, and we subscribe to the `router:navigate:success` event. We do this so that, if the user is performing a search and browses to `/search/arthur` then we retrieve the search term from the router data and pre-fill the search term with it
 * Finally, the `doSearch()` function is defined, and it basically takes the search term (if the user typed one in) and uses the router to navigate to the search results page
 
-The last thing to do is place this new search control into the header, so that the user can interact with it. Re—open `header.html` and modify the template so that it includes the search control:
+The last thing to do is place this new search control into the header so that the user can interact with it. Reopen `header.html` and modify the template so that it includes the search control:
 
 {% highlight html %}
 {% raw %}
-<template>
+<!-- src/components/header.html -->
 
+<template>
   <require from="./searchbox"></require>
 
   <nav class="navbar navbar-expand navbar-dark bg-primary justify-content-between">
@@ -823,16 +887,17 @@ The last thing to do is place this new search control into the header, so that t
       <!-- /new -->
     </div>
   </nav>
-
 </template>
 {% endraw %}
 {% endhighlight %}
 
 Now the search box should appear inside the navigation panel, and the user should be able to type in a search term and have the results displayed on the page. Neat!
 
-One other thing we can do while we're inside the navigation container is display the available routes from the Router. If you look back at the router configuration we're building up inside `app.ts`, you'll notice that some of the routes have a `nav: true` property. This facilitates the ability to enumerate over the available routes and generate a set of navigation links. While we've got `header.html` open, let's do that now. Put this just inside the `div` with the 'collapse' class on it, to write out the available links:
+While we're inside the header template, let's modify the navigation container to include the available routes from the Router. If you look back at the router configuration we're building up inside `app.ts`, you'll notice that some of the routes have a `nav: true` property. This facilitates the ability to enumerate over the available routes and generate a set of navigation links. While we've got `header.html` open, let's do that now. Put this just inside the `div` with the 'collapse' class on it, to write out the available links:
 
 {% highlight html %}
+<!-- src/components/header.html -->
+
 <ul class="navbar-nav mr-auto">
   <li class="nav-item ${item.isActive ? 'active' : ''}"
       repeat.for="item of router.navigation">
@@ -844,6 +909,8 @@ One other thing we can do while we're inside the navigation container is display
 Now open `header.ts` and bring in the router using dependency injection:
 
 ```js
+// src/components/header.ts
+
 import { autoinject } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
 
@@ -859,7 +926,7 @@ This will give the template access to the router and the available navigation el
 
 ## Adding Auth0 support
 
-In the next section, we're going to be adding the facility to add movies to the watch list and displaying all of the movies in the watch list on the screen. However, we're going to make it so that the user has to be signed in for the 'add' button to become available. So, we're going to manage user authentication by using the Auth0 login page.
+In the next section, we're going to be adding the facility to add movies to the watch list and displaying all of the movies on the watch list on the screen. However, we're going to make it so that the user has to be signed in for the 'add' button to become available. So, we're going to manage user authentication by using the Auth0 login page.
 
 To do this, you first need to [sign up for a free Auth0 account](https://auth0.com/signup) if you don't already have one. Once you have created your account, you will have access to your [account management page](https://manage.auth0.com) where you can [add an application](https://manage.auth0.com/#/applications).
 
@@ -886,6 +953,8 @@ Finally, click the 'Save changes' button at the bottom of the page to commit you
 From your Auth0 Application Settings page, copy the value for Client ID. Next, open `aurelia_project/environments/dev.ts` and modify the configuration object to include the Client ID value that's in your clipboard. You will also need to head back to the settings page and retrieve the 'domain' value:
 
 ```js
+// aurelia_project/environments/dev.ts
+
 export default {
   debug: true,
   testing: true,
@@ -906,6 +975,8 @@ npm install --save-dev auth0-js @types/auth0-js
 Next, we're going to create a class that handles our authentication strategy for us. Create a new file `src/auth-service.ts`, and create the class `AuthService` inside it, bringing in some imports that we're going to be using:
 
 ```js
+// src/auth-service.ts
+
 import { WebAuth, Auth0DecodedHash } from "auth0-js";
 import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
@@ -935,24 +1006,28 @@ export class AuthService {
 
 Here we've set up quite a few things that we'll make use of in the next few code snippets, but the main thing about this code is the Auth0 WebAuth configuration. These values are mostly pulled from the configuration that we defined in the previous section, but make sure that the value for `redirectUri` matches the value that was given in the settings for your Auth0 application. The value for `audience` is calculated based on the domain.
 
-Notice that we've also pulled in `Router`, so that we can send the user to the right place once they've logged in.
+Notice that we've also pulled in `Router` so that we can send the user to the right place once they've logged in.
 
 ### Fleshing out the authentication service class
 
 Let's put some methods into this class to perform authentication, and handling of the callback from Auth0 once the user has logged in. First up, `login()`:
 
 ```js
+// src/auth-service.ts
+
 login(): void {
   localStorage.setItem('location', JSON.stringify({ url: this.router.currentInstruction.fragment }));
   this.auth0.authorize();
 }
 ```
 
-Here we delegate most of the work to the `auth0.authorize()` call, which will redirect the user away to the Auth0 login page. However, we also store the current route that the user is on so that once the user has logged in, we can redirect them back to the page that they were on when they hit the login button. Although we only have a couple of pages, remember that the user can search for movies, so this will allow them to continue where they left off with their search.
+Here we delegate most of the work to the `auth0.authorize()` call, which will redirect the user to the Auth0 login page. However, we also store the current route that the user is on so that once the user has logged in, we can redirect them back to the page that they were on when they hit the login button. Although we only have a couple of pages, remember that the user can search for movies so this will allow them to continue where they left off with their search.
 
 Next, the `handleAuthentication()` method. This will handle the callback once Auth0 has returned control to our application:
 
 ```js
+// src/auth-service.ts
+
 handleAuthentication(): void {
   this.auth0.parseHash((err, authResult) => {
     if (authResult && authResult.accessToken && authResult.idToken) {
@@ -971,11 +1046,13 @@ handleAuthentication(): void {
 }
 ```
 
-The call to `auth0.parseHash()` will allow the `auth0-js` library to process the token information sent to use from Auth0 in the return URL. We then take that information and create out auth session by storing those values in memory (the `setSession()` method is defined next). The rest of the code here deals with the loading of the previously saved URL, and returning the user to where they left off. We also emit an event to any listeners to let them know that the authentication state has changed.
+The call to `auth0.parseHash()` will allow the `auth0-js` library to process the token information sent to use from Auth0 in the return URL. We then take that information and create out auth session by storing those values in memory (the `setSession()` method is defined next). The rest of the code here deals with the loading of the previously saved URL and returning the user to where they left off. We also emit an event to any listeners to let them know that the authentication state has changed.
 
 Next, `setSession()`:
 
 ```js
+// src/auth-service.ts
+
 setSession(authResult: Auth0DecodedHash): void {
   const expiresAt = JSON.stringify(
     authResult.expiresIn * 1000 + new Date().getTime()
@@ -992,6 +1069,8 @@ After working out the expiry time, we simply store the token values for later us
 The next thing we need is the ability to determine whether or not the user is currently logged in, and we can do that with an `isAuthenticated()` method:
 
 ```js
+// src/auth-service.ts
+
 isAuthenticated(): boolean {
   if (!this.accessToken)
     return false;
@@ -1006,6 +1085,8 @@ To do this, we just check if `this.accessToken` has been defined. If it has, we 
 Finally, we need a way to log out of the application:
 
 ```js
+// src/auth-service.ts
+
 logout(): void {
   delete this.accessToken;
   delete this.id_token;
@@ -1021,12 +1102,14 @@ Now that the `AuthService` class has been defined, we can start to use it in the
 
 In order for the callback from Auth0 to work correctly, we'll need to create some routing for it. To achieve this, we need to:
 
-* Create a new compnonent to invoke the `handleAuthentication()` method in the authentication service
+* Create a new component to invoke the `handleAuthentication()` method in the authentication service
 * Configure the Aurelia router to accept the `/callback` URL and pass it on to this new callback component.
 
 Let's update the router configuration first. Open `app.ts` and modify the router configuration to route `/callback` to a new component that will handle the route:
 
 ```js
+// src/app.ts
+
 config.map([
   { route: ['', 'watchlist'], name: 'watchlist', title: 'Watchlist', moduleId: PLATFORM.moduleName('pages/watchlist'), nav: true },
   { route: 'popular', name: 'popular', title: 'Popular movies', moduleId: PLATFORM.moduleName('pages/popularmovies'), nav: true },
@@ -1038,6 +1121,8 @@ config.map([
 Next, create a new file in the `src` directory called `callback.ts`, and insert a new `Callback` class:
 
 ```js
+// src/callback.ts
+
 import { autoinject } from 'aurelia-framework';
 import { AuthService } from 'auth-service';
 
@@ -1060,9 +1145,11 @@ Now we can get to the meat of the application: adding movies to a 'watch list'. 
 * the facility to add and remove a movie to/from an array in local storage
 * a new view to display the movies from the watch list using the `MovieList` component we created earlier
 
-The interaction with [local storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) is going to be marshalled through a new class called `WatchlistManager`. Create a new file inside the `src` folder called `watchlist-manager.ts`, and start by importing some types that we'll need:
+The interaction with [local storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) is going to be marshaled through a new class called `WatchlistManager`. Create a new file inside the `src` folder called `watchlist-manager.ts`, and start by importing some types that we'll need:
 
 ```js
+// src/watchlist-manager.ts
+
 import { EventEmitter } from 'events';
 import { Movie } from "moviedb-promise";
 
@@ -1075,6 +1162,8 @@ export class WatchlistManager {
 Let's add an array to store the movies once they've been read from local storage, and an `EventEmitter` so that other types can subscribe to events that we generate:
 
 ```js
+// src/watchlist-manager.ts
+
 private items: Movie[];
 notifier = new EventEmitter();
 
@@ -1086,6 +1175,8 @@ constructor() {
 Next, we need methods to load and save the data from/to local storage:
 
 ```js
+// src/watchlist-manager.ts
+
 private load(): Movie[] {
   return localStorage.getItem(storageKey)
   ? JSON.parse(localStorage.getItem(storageKey))
@@ -1100,6 +1191,8 @@ private save(): void {
 We also need methods to add and remove movies to/from the watch list. Notice that we're emitting some events to others to let them know that we've added or removed a movie, and what movie it was. This will come in handy later when we configure the UI to show whether something has just been added to the watch list or not:
 
 ```js
+// src/watchlist-manager.ts
+
 add(movie: Movie) {
   if (!this.isAdded(movie)) {
     this.items.push(movie);
@@ -1121,6 +1214,8 @@ remove(movie: Movie) {
 Finally, we can implement a couple utility methods to retrieve the items, and to determine whether or not a movie is in the watchlist:
 
 ```js
+// src/watchlist-manager.ts
+
 get() {
   return this.items;
 }
@@ -1132,7 +1227,7 @@ isAdded(movie: Movie): boolean {
 
 This gives us everything we need to load, store, add and remove movies.
 
-The next thing we can do is create a new page which displays movies that are currently in the watch list. This will be very similar to the 'popular movies' and 'search results' pages; we're just changing where the movies come from.
+The next thing we can do is create a new page which displays movies that are currently on the watch list. This will be very similar to the 'popular movies' and 'search results' pages; we're just changing where the movies come from.
 
 Create a new component inside the `pages` folder:
 
@@ -1143,6 +1238,8 @@ au generate component Watchlist
 Open `watchlist.html` and populate it with the following template:
 
 {% highlight html %}
+<!-- src/pages/watchlist.html -->
+
 <template>
   <require from="../components/movielist"></require>
 
@@ -1161,6 +1258,8 @@ The main difference here compared to the other pages that we've done, is that th
 Now open `watchlist.ts` and configure it like so:
 
 ```js
+// src/pages/watchlist.ts
+
 import { Router } from 'aurelia-router';
 import { autoinject } from "aurelia-framework";
 import { WatchlistManager } from '../watchlist-manager';
@@ -1179,11 +1278,13 @@ export class Watchlist {
 }
 ```
 
-Here we bring in the `WatchlistManager` we created earlier using dependency injection, as well as the router. We set `hasMovies` to a value depending on whether or not there are any movies in the watch list (thus showing the "There's nothing here!" panel) and we also listen out for the `movie:removed` event from the watch list manager. This enables us to re—surface the panel if the user were to remove the last movie in the watch list.
+Here we bring in the `WatchlistManager` we created earlier using dependency injection, as well as the router. We set `hasMovies` to a value depending on whether or not there are any movies in the watch list (thus showing the "There's nothing here!" panel) and we also listen out for the `movie:removed` event from the watch list manager. This enables us to resurface the panel if the user were to remove the last movie on the watch list.
 
-Finally, let's reconfigure the router so that the watch list is shown by default when the home page is loaded. We will also have a third route which will still enable us to reach the list of popular movies. Open up `app.ts` again and reconfigure the router to add in the watch list page:
+Finally, let's reconfigure the router so that the watch list is shown by default when the home page is loaded. We will also have a third route which will still enable us to reach the list of popular movies. Open up `app.ts` again and reconfigure the router to include the watch list page:
 
 ```js
+// src/app.ts
+
 config.map([
   { route: ['', 'watchlist'], name: 'watchlist', title: 'Watchlist', moduleId: PLATFORM.moduleName('pages/watchlist'), nav: true },
   { route: 'popular', name: 'popular', title: 'Popular movies', moduleId: PLATFORM.moduleName('pages/popularmovies'), nav: true },
@@ -1200,6 +1301,8 @@ Open `movie.html` and add three buttons into the `card-body` element:
 
 {% highlight html %}
 {% raw %}
+<!-- src/components/movie.html -->
+
 <template>
   <!-- require movie.css -->
   <div class="card">
@@ -1221,6 +1324,8 @@ The 'add' button will invoke the `addMovie()` function, while the 'remove' butto
 Let's add the methods for adding and removing movie into the class defined in `movie.ts`:
 
 ```js
+// src/components/movie.ts
+
 addMovie(movie: MovieModel) {
   this.watchlist.add(movie);
   this.isInWatchlist = true;
@@ -1235,6 +1340,8 @@ removeMovie(movie: MovieModel) {
 We'll also need to bring in the `WatchlistManager` and `AuthService` types into the constructor, as well as a new property to record whether the movie is in the watch list or not:
 
 ```js
+// src/components/movie.ts
+
 import { autoinject, bindable } from 'aurelia-framework'; // this has been modified to include 'autoinject'
 import { WatchlistManager } from '../watchlist-manager';
 import { AuthService } from '../auth-service';
@@ -1251,26 +1358,40 @@ export class Movie {
   constructor(private watchlist: WatchlistManager, private auth: AuthService) {
     this.isAuthenticated = auth.isAuthenticated();
 
-    auth.authNotifier.addListener('authChange', state => {
-      this.isAuthenticated = state.authenticated;
-    });
+    auth.authNotifier.addListener('authChange', this.authChangeHandler);
   }
+  
   //...
+
+  private authChangeHandler(state) {
+    this.isAuthenticated = state.authenticated;
+  }
+
 ```
 
-Finally, we need to somehow initialize `isInWatchlist` when the component is loaded, so let's handle the `bind` lifecycle event and set it there:
+Finally, we need to somehow initialize `isInWatchlist` when the component is loaded, as well as doing some tidying up when the component system is finished with this component. We can achieve both of those things by adding the `bind` and `detached` methods inside the `Movie` class:
 
 ```js
-bind() {    
-  this.isInWatchlist = this.watchlist.isAdded(this.model);    
+// src/components/movie.ts
+
+bind() {
+  this.isInWatchlist = this.watchlist.isAdded(this.model);
+}
+
+detached() {
+  this.auth.authNotifier.removeListener('authChange', this.authChangeHandler);
 }
 ```
 
-With this code in place, you should now be able to sign in to your application using the Auth0 login page, add and remove movies to and from the watch list, and be able to browse to the watch list page and see the list of movies that you've added. Furthermore, you should be able to do this from either the popular movies page, or the search results page!
+The reason we would like to remove our change handler function from the event listener is that it could otherwise introduce a memory leak. To prevent this, we can remove our change listener function from the auth notifier whenever the component is detached from the system.
+
+With this code in place, you should now be able to sign in to your application using the Auth0 login page, add and remove movies to and from the watch list, and be able to browse to the watch list page and see the list of movies that you've added. Furthermore, you should be able to do this from either the popular movies page or the search results page!
 
 The last thing to achieve is logging out of the application. We're going to do this by placing a link inside the navigation bar which allows the user to log out (we can add it after `<search-box></search-box>`), which will also update any links on the page allowing the user to sign in again. Open `header.html` and adjust the markup to include this new link after the search box:
 
 {% highlight html %}
+<!-- src/components/header.html -->
+
 <!-- ... -->
 <ul class="navbar-nav">
   <li class="nav-item" if.bind="isAuthenticated"><a href="#" click.trigger="auth.logout()" class="nav-link">Log out</a></li>
@@ -1281,6 +1402,8 @@ The last thing to achieve is logging out of the application. We're going to do t
 Next, we need to modify the component code for the header to bring in the authentication service, and to handle things when the auth state changes. Update `header.ts` to look like the following:
 
 ```js
+// src/components/header.ts
+
 import { autoinject } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
 import { AuthService } from 'auth-service';
@@ -1306,8 +1429,8 @@ With this in place, you will be able to log out of the application and all of th
 
 ## Summary and next steps
 
-In this article you saw how to create an Aurelia TypeScript application that allowed you to browse for popular movies or search for your own favourites. We saw how to create components using the CLI tool, how to bind variables between the component and the template, and how to use dependency injection and the `autoinject` decorator to bring in other types and create a loosely—coupled framework of code.
+In this article, you saw how to create an Aurelia TypeScript application that allowed you to browse for popular movies or search for your own favorites. We saw how to create components using the CLI tool, how to bind variables between the component and the template, and how to use dependency injection and the `autoinject` decorator to bring in other types and create a loosely—coupled framework of code.
 
 We created an Auth0 application and use the Auth0 JavaScript library to enable the user to log in using the Auth0 login page. Once the user is authenticated, they can begin to add and remove movies to and from a watch list that they can refer to later. Once they're done adding movies, they're able to log out of the application again.
 
-The application could be further extended to support TV shows, or could use the information retrieved from Auth0 to get profile—based information such as the user's email address or avatar for display somewhere, creating a profile of sorts. Instead of watch lists being stored in local storage, they could be stored inside a database enabling a user to 'share' a watch list with another user. All these are useful features that are left as an exercise for you, the reader, to have fun with.
+The application could be further extended to support TV shows or could use the information retrieved from Auth0 to get profile-based information such as the user's email address or avatar for display somewhere, creating a profile of sorts. Instead of watch lists being stored in local storage, they could be stored inside a database enabling a user to 'share' a watch list with another user. All these are useful features that are left as an exercise for you, the reader, to have fun with.
