@@ -20,6 +20,7 @@ tags:
 related:
 - 2017-01-18-how-to-create-a-kotlin-app-and-secure-it-using-jwt
 - 2016-09-20-securing-spring-boot-with-jwts
+alternate_locale_en: jp-developing-restful-apis-with-kotlin
 ---
 
  **TL;DR:** In today's post, we are going to learn how to develop RESTful APIs with Kotlin, the thriving programming language that is eating Java's world. We will start by creating a small Spring Boot RESTful API that handles CRUD operations. After that we are going to [secure this API with Auth0](https://auth0.com/user-management), which brings to the table many security features such as [Multifactor Authentication](https://auth0.com/multifactor-authentication), integration with Social Providers, and so on. In the end, we will also see how to manage the JWTs by ourselves, replacing Auth0 with an in-house solution where we issue our own tokens.
@@ -207,7 +208,7 @@ We also need to enable the `Password` grant type [on the client](https://manage.
 Under `./src/main/resources`, there is a file called `application.properties`. This file needs to be populated with data from our Auth0 account. By default, when creating a new account we get a "Default App", which could be used for this. These are the important parts of that config, so remember to replace the values with the values of your application:
 
 ```bash
-#  is the identifier of the API that we just created
+# this is the identifier of the API that we just created
 auth0.audience=kotlin-jwts
 # replace YOUR-DOMAIN to get something like https://bkrebs.auth0.com/
 auth0.issuer=https://YOUR-DOMAIN.auth0.com/
