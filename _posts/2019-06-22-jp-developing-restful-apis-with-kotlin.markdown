@@ -185,21 +185,21 @@ curl -X DELETE http://localhost:8080/customers/1
 
 ご覧のように、API を Auth0 でセキュアにすることは非常に簡単で、たくさんの機能を提供します。Auth0 では、[シングルサインオン](https://auth0.com/docs/sso/single-sign-on)、[ユーザー管理](https://auth0.com/docs/user-profile)、[ソーシャル ID プロバイダー（Facebook、GitHub、Twitterなど）](https://auth0.com/docs/identityproviders)のサポート、[エンタープライズ（Active Directory、LDAP、SAMLなど）](https://auth0.com/enterprise)、[独自のユーザーデータベース](https://auth0.com/docs/connections/database/mysql) を含む、確かな [アイデンティティ管理ソリューション](https://auth0.com/docs/identityproviders) を取得するコード行を数行書かなければなりません。
 
-まだこのようなことをしたことがない初心者には、[無料 Auth0 アカウント](https://auth0.com/signup) の登録をお勧めします。Auth0 アカウントをお持ちの方は、まず [ダッシュボードに API を作成](https://manage.auth0.com/#/apis) してください。API は外部リソースを表すエンティティで、クライアントが要求する保護されているリソースの受理と応答を可能にします。この API は、構築したばかりの Kotlin アプリの正確な機能です。
+まだこのようなことをしたことがない初心者には、<a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">無料 Auth0 アカウント</a> の登録をお勧めします。Auth0 アカウントをお持ちの方は、まず [ダッシュボードに API を作成](https://manage.auth0.com/#/apis) してください。API は外部リソースを表すエンティティで、クライアントが要求する保護されているリソースの受理と応答を可能にします。この API は、構築したばかりの Kotlin アプリの正確な機能です。
 
-先進認証を始めるために [Auth0 は寛大な無料レベルを提供しています](https://auth0.com/pricing)。
+> 先進認証を始めるために [Auth0 は寛大な無料レベルを提供しています](https://auth0.com/pricing)。
 
-==================== IMAGE
+![Creating an API on Auth0's dashboard](https://cdn.auth0.com/blog/kotlin-jwts/create-auth0-api.png)
 
-API を作成するとき、新しいAPI のフレンドリ名の Name、access\_token を要求するときに使用する String の Identifier、この API が access\_token を登録するために [対称 または 非対称アルゴリズム](https://auth0.com/blog/json-web-token-signing-algorithms-overview/) を使用する場合に定義する Signing Algorithm の 3 つの分野を定義しなければなりません。この場合、これらの分野をそれぞれKotlin RESTful API、kotlin-jwts、RS256（非対称アルゴリズムを使用します）にします。
+API を作成するとき、新しいAPI のフレンドリ名の `Name`、`access_token` を要求するときに使用する `String` の `Identifier`、この API が `access_token` を登録するために [対称 または 非対称アルゴリズム](https://auth0.com/blog/json-web-token-signing-algorithms-overview/) を使用する場合に定義する `Signing Algorithm` の 3 つの分野を定義しなければなりません。この場合、これらの分野をそれぞれ `Kotlin RESTful API`、`kotlin-jwts`、`RS256`（非対称アルゴリズムを使用します）にします。
 
 Auth0 は異なる [OAuth 2.0 はアクセストークンを要求するためにフローします](https://auth0.com/docs/api-auth) をサポートします。この場合、例をシンプルにするために、 [API &amp; 信頼するクライアントのフロー](https://auth0.com/docs/api-auth/grant/password) を使用します。このフローは実装が最もシンプルですが、クライアントアプリケーションが **絶対的に信頼される** 場合 **だけ** 使用すべきであることに留意してください。ほとんどの場合別のフローが必要で、Auth0 の [「どの OAuth 2.0 フローを使用すべきか？」](https://auth0.com/docs/api-auth/which-oauth-flow-to-use) の記事はニーズに合った適切なアプローチを選ぶときに役立ちます。
 
-_API &amp; 信頼されるクライアント_ フローを使用するには、まず Auth0 アカウントで Default Directory プロパティを構成しなければなりません。そのためには、[アカウント設定](https://manage.auth0.com/#/account) ページに移動し、 Default Directory プロパティの値として Username-Password-Authentication を追加します。この値は Auth0 アカウントで既定で表示される [データベース接続](https://manage.auth0.com/#/connections/database) の名前です。
+_API &amp; 信頼されるクライアント_ フローを使用するには、まず Auth0 アカウントで `Default Directory` プロパティを構成しなければなりません。そのためには、[アカウント設定](https://manage.auth0.com/#/account) ページに移動し、 `Default Directory` プロパティの値として `Username-Password-Authentication` を追加します。この値は Auth0 アカウントで既定で表示される [データベース接続](https://manage.auth0.com/#/connections/database) の名前です。
 
-また、[クライアント](https://manage.auth0.com/#/clients) で Password 付与タイプを有効にする必要もあります。上記で説明したように API を作成したら、Auth0 は Kotlin RESTful API (Test Client) というクライアントを自動的に作成します。その設定にアクセスして Show Advanced Settings オプションをクリックし、Grant Types タブの Password をチェックし、その変更を保存します。
+また、[クライアント](https://manage.auth0.com/#/clients) で `Password` 付与タイプを有効にする必要もあります。上記で説明したように API を作成したら、Auth0 は `Kotlin RESTful API (Test Client)` というクライアントを自動的に作成します。その設定にアクセスして `Show Advanced Settings` オプションをクリックし、`Grant Types` タブの `Password` をチェックし、その変更を保存します。
 
-==================== IMAGE
+![Enabling password grant on an Auth0 Client](https://cdn.auth0.com/blog/kotlin-jwts/password-grant.png)
 
 ### コードを変更する
 
