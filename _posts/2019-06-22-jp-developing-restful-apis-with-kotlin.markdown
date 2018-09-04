@@ -58,7 +58,7 @@ Kotlin についてある程度経験がある方、あるいはシンプルな 
 
 ====================== CODE BLOCK
 
-このスタートアップ プロジェクトにはすでに [Spring Data JPA](http://projects.spring.io/spring-data-jpa/) と [HSQLDB](http://hsqldb.org/) が搭載されています。これら機能は、API がユーザーによる管理を可能にする 1 セットの顧客を保留します。私たちの仕事は顧客を表す Customer Entity Model、永続レイヤーを処理する CustomerRepository インターフェイス、 RESTful エンドポイントを定義する CustomerController クラスを作成することです。
+このスタートアップ プロジェクトにはすでに [Spring Data JPA](http://projects.spring.io/spring-data-jpa/) と [HSQLDB](http://hsqldb.org/) が搭載されています。これら機能は、API がユーザーによる管理を可能にする 1 セットの顧客を保留します。私たちの仕事は顧客を表す `Customer` Entity Model、永続レイヤーを処理する `CustomerRepository` インターフェイス、 RESTful エンドポイントを定義する `CustomerController` クラスを作成することです。
 
 ### Kotlin データクラスを作成する
 
