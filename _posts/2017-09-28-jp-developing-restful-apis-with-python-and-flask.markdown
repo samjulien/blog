@@ -224,21 +224,20 @@ PyPA（[Python Packaging Authority 団体](https://www.pypa.io/en/latest/)）は
 
 ## Flask アプリケーションを Docker 化する
 
-最終的にはクラウドで API を作成する予定ですので、Docker コンテナでアプリケーションを実行するために必要なことを説明する Dockerfile を作成して行きます。プロジェクトの Docker 化されたインスタンスをテスト・実行するために [開発コンピュータに Docker をインストールする](https://docs.docker.com/engine/installation/) 必要があります。Docker レシピ(Dockerfile)を定義すると、さまざまな環境で API を実行するのに役立ちます。つまり、将来、Docker もインストールし、[生産](https://en.wikipedia.org/wiki/Deployment_environment#Production) や [ステージング](https://en.wikipedia.org/wiki/Deployment_environment#Staging) のような環境でプログラムを実行していきます。
+最終的にはクラウドで API を作成する予定ですので、Docker コンテナでアプリケーションを実行するために必要なことを説明する `Dockerfile` を作成して行きます。プロジェクトの Docker 化されたインスタンスをテスト・実行するために [開発コンピュータに Docker をインストールする](https://docs.docker.com/engine/installation/) 必要があります。Docker レシピ(`Dockerfile`)を定義すると、さまざまな環境で API を実行するのに役立ちます。つまり、将来、Docker もインストールし、[生産](https://en.wikipedia.org/wiki/Deployment_environment#Production) や [ステージング](https://en.wikipedia.org/wiki/Deployment_environment#Staging) のような環境でプログラムを実行していきます。
 
-次のコードでプロジェクトのルート ディレクトリに Dockerfile を作りましょう。
+次のコードでプロジェクトのルート ディレクトリに `Dockerfile` を作りましょう。
 
 ================== CODE BLOCK 23
 
-レシピの最初のアイテムは既定の [Python 3 Docker イメージ](https://hub.docker.com/_/python/) をベースに Docker コンテナを作成することを定義します。その後、APK を更新し、pipenv をインストールします。pipenv があることで、イメージで使用する作業ディレクトリを定義し、アプリケーションをブートストラップし実行するために必要なコードをコピーします。4 つめのステップでは、すべての Python 依存関係をインストールする pipenv を使用します。最後に、イメージはポート 5000 を通して通信することと、このイメージは実行されたとき、Flask を始めるために bootstrap.sh スクリプトを実行する必要があることを定義します。
+レシピの最初のアイテムは既定の [Python 3 Docker イメージ](https://hub.docker.com/_/python/) をベースに Docker コンテナを作成することを定義します。その後、APK を更新し、`pipenv` をインストールします。`pipenv` があることで、イメージで使用する作業ディレクトリを定義し、アプリケーションをブートストラップし実行するために必要なコードをコピーします。4 つめのステップでは、すべての Python 依存関係をインストールする `pipenv` を使用します。最後に、イメージはポート `5000` を通して通信することと、このイメージは実行されたとき、Flask を始めるために `bootstrap.sh` スクリプトを実行する必要があることを定義します。
 
-作成した Dockerfile をベースにして Docker コンテナを作成・実行するには、次のコマンドを実行できます。
+作成した `Dockerfile` をベースにして Docker コンテナを作成・実行するには、次のコマンドを実行できます。
 
 ================== CODE BLOCK 24
 
-Dockerfile はシンプルですが有効で、その使用方法も同様に簡単です。これらコマンドと Dockerfile で、必要なだけのAPI インスタンスを問題なく実行できます。ホストでまたは別のホストで別のポートを定義するだけです。
+`Dockerfile` はシンプルですが有効で、その使用方法も同様に簡単です。これらコマンドと `Dockerfile` で、必要なだけのAPI インスタンスを問題なく実行できます。ホストでまたは別のホストで別のポートを定義するだけです。
 
-##
 ## Auth0 で Python API をセキュアにする
 
 Auth0 で Python API をセキュアにすることはとても簡単で、たくさんの素晴らしい機能を提示します。Auth0 を使って、次を得るために少数のコード行を書くだけです。
@@ -249,7 +248,7 @@ Auth0 で Python API をセキュアにすることはとても簡単で、た�
 - [エンタープライズ ID プロバイダー（Active Directory、LDAP、SAMLなど）](https://auth0.com/enterprise)
 - [独自のユーザーデータベース](https://auth0.com/docs/connections/database/mysql)
 
-例えば、Flask で書いた Python API をセキュアにするには、requires\_auth デコレータを作成するだけです。
+例えば、Flask で書いた Python API をセキュアにするには、`requires_auth` デコレータを作成するだけです。
 
 ================== CODE BLOCK 25
 
@@ -259,7 +258,6 @@ Auth0 で Python API をセキュアにすることはとても簡単で、た�
 
 [_Python API_](https://auth0.com/docs/quickstart/backend/python)[を Auth0 でセキュアにすることについての詳細は、このチュートリアルをご覧ください](https://auth0.com/docs/quickstart/backend/python)。バックエンド技術（Python、Java、PHP）のチュートリアルと平行して、[_Auth0 Docs_](https://auth0.com/docs)[_Webページも_](https://auth0.com/docs)_モバイル/ネイティブアプリやシングルページアプリケーションの__チュートリアルも提供しています_。
 
-##
 ## 次のステップ
 
 本書では、よく構造された Flask アプリケーションを開発するために必要な基本のコンポーネントについて学びました。API の依存関係を管理するために pipenv の使用方法について見てきました。その後、JSON 応答の送受信が可能なエンドポイントを作成するために Flask や Marshmallow をインストールして使用しました。最後に、クラウドへのアプリケーシあョンのリリースを容易にする API を Docker 化する方法についても学びました。
