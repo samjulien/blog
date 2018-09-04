@@ -2,7 +2,7 @@
 layout: post
 title: "Our Engineering Experience with React and Storybook"
 description: "Create modular and reusable components that can be shared across projects by building a component library with React and Storybook."
-date: 2018-08-20 8:30
+date: 2018-09-04 8:30
 category: Culture, Engineering, Frontend
 design: 
   bg_color: "#222228"
