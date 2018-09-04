@@ -353,19 +353,66 @@ curl -H "Authorization: Bearer xxx.yyy.zzz" http://localhost:8080/customers
 
 ### ユーザーを処理する
 
-API の複数のユーザーをサポートするには、まずApplicationUser.kt、ApplicationUserRepository.kt、SignUpController.kt の 3 つのクラスを作成します。これらクラスは顧客の管理をサポートするほとんどクラスのように動作します。最初のクラス、ApplicationUser.kt クラスは model パッケージに作成され、次のコードを含みます。
+API の複数のユーザーをサポートするには、まず`ApplicationUser.kt`、`ApplicationUserRepository.kt`、`SignUpController.kt` の 3 つのクラスを作成します。これらクラスは顧客の管理をサポートするほとんどクラスのように動作します。最初のクラス、`ApplicationUser.kt` クラスは `model` パッケージに作成され、次のコードを含みます。
 
-====================== CODE BLOCK
+```kotlin
+package com.auth0.samples.kotlinspringboot.model
 
-新しいものは何もありません。ユーザーのプロパティを保留する別のデータクラスだけです。その後、ApplicationUserRepository.kt クラスを persistence パッケージに次のコードで作成します。
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
 
-====================== CODE BLOCK
+@Entity
+class ApplicationUser(
+		@Id @GeneratedValue(strategy = GenerationType.AUTO)
+		var id: Long = 0,
 
-この場合の CustomerRepository と比較した場合の唯一の違いは findByUsername というメソッドを定義したことです。このメソッドは、ユーザーがユーザー名を見つけるために独自のソリューションで使用されます。ここで、最後のクラス SignUpController.kt は次のコードで controller パッケージに作成します。
+		var username: String = "",
 
-====================== CODE BLOCK
+		var password: String = ""
+)
+```
 
-このコントローラーで定義された唯一のエンドポイントは signUp で、新規ユーザーによるアプリケーションの登録を可能にします。サインイン プロセスとトークンの検証は後ほど説明しますが、別の領域で処理されます。最終的なデータ漏洩でさえもユーザーのパスワードをセキュアにするには、Spring Security に付いてくる BCryptPasswordEncoder クラスを使用してすべてのパスワードをエンコードすることにご留意ください。
+新しいものは何もありません。ユーザーのプロパティを保留する別のデータクラスだけです。その後、`ApplicationUserRepository.kt` クラスを `persistence` パッケージに次のコードで作成します。
+
+```kotlin
+package com.auth0.samples.kotlinspringboot.persistence
+
+import com.auth0.samples.kotlinspringboot.model.ApplicationUser
+import org.springframework.data.repository.CrudRepository
+
+interface ApplicationUserRepository : CrudRepository<ApplicationUser, Long> {
+	fun findByUsername(username: String): ApplicationUser?
+}
+```
+
+この場合の `CustomerRepository` と比較した場合の唯一の違いは `findByUsername` というメソッドを定義したことです。このメソッドは、ユーザーがユーザー名を見つけるために独自のソリューションで使用されます。ここで、最後のクラス `SignUpController.kt` は次のコードで `controller` パッケージに作成します。
+
+```kotlin
+package com.auth0.samples.kotlinspringboot.controller
+
+import com.auth0.samples.kotlinspringboot.model.ApplicationUser
+import com.auth0.samples.kotlinspringboot.persistence.ApplicationUserRepository
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+
+@RestController
+@RequestMapping("/sign-up")
+class SignUpController(val applicationUserRepository: ApplicationUserRepository, val bCryptPasswordEncoder: BCryptPasswordEncoder) {
+
+	@PostMapping
+	fun signUp(@RequestBody applicationUser: ApplicationUser) {
+		applicationUser.password = bCryptPasswordEncoder.encode(applicationUser.password)
+		applicationUserRepository.save(applicationUser)
+	}
+}
+```
+
+このコントローラーで定義された唯一のエンドポイントは `signUp` で、新規ユーザーによるアプリケーションの登録を可能にします。サインイン プロセスとトークンの検証は後ほど説明しますが、別の領域で処理されます。最終的なデータ漏洩でさえもユーザーのパスワードをセキュアにするには、Spring Security に付いてくる `BCryptPasswordEncoder` クラスを使用してすべてのパスワードをエンコードすることにご留意ください。
 
 ### JWT を Kotlin で発行・検証する
 
