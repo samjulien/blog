@@ -205,24 +205,23 @@ PyPA（[Python Packaging Authority 団体](https://www.pypa.io/en/latest/)）は
 
 ## オブジェクトを Marshmallow でシリアル化や逆シリアル化する
 
-Transaction スーパークラスやその専門分野が適切に実装されたので、これらクラスに対応するエンドポイントを拡張できます。./cashman/index.py コンテンツを次に置換しましょう。
+`Transaction` スーパークラスやその専門分野が適切に実装されたので、これらクラスに対応するエンドポイントを拡張できます。`./cashman/index.py` コンテンツを次に置換しましょう。
 
 ================== CODE BLOCK 21
 
-実装したばかりの新しいバージョンは incomes 変数を Expenses と Incomes のリストに再定義することから始め、transactions と呼ぶことにします。この他に、収益に対応する両方の実装方法も変更しました。収益を取得するために使用するエンドポイントには、収益の JSON IncomeSchema 表記を創り出すインスタンスを定義します。また、[フィルタ](https://docs.python.org/3/library/functions.html#filter) も使用して transactions リストからのみ収益を抽出します。最後に、JSON 収益の配列をユーザーに戻します。
+実装したばかりの新しいバージョンは `incomes` 変数を `Expenses` と `Incomes` のリストに再定義することから始め、`transactions` と呼ぶことにします。この他に、収益に対応する両方の実装方法も変更しました。収益を取得するために使用するエンドポイントには、収益の JSON `IncomeSchema` 表記を創り出すインスタンスを定義します。また、[`filter`](https://docs.python.org/3/library/functions.html#filter) も使用して `transactions` リストからのみ収益を抽出します。最後に、JSON 収益の配列をユーザーに戻します。
 
-新しい収益を受理する担当のエンドポイントもリファクタリングされます。このエンドポイントの変更は、ユーザーによって送信された JSON データを基に Income のインスタンスをロードするために、IncomeSchemaを追加しました。Transactions リストが Transaction とそのサブクラスを対処するので、新しい Income をそのリストに追加しました。
+新しい収益を受理する担当のエンドポイントもリファクタリングされます。このエンドポイントの変更は、ユーザーによって送信された JSON データを基に `Income` のインスタンスをロードするために、`IncomeSchema` を追加しました。`Transactions` リストが `Transaction` とそのサブクラスを対処するので、新しい `Income` をそのリストに追加しました。
 
-費用に対処する責任があるその他 2 つのエンドポイント、get\_expenses と add\_expense は income 対応部分のほとんどをコピーしたものです。その違いは次のとおりです。
+費用に対処する責任があるその他 2 つのエンドポイント、`get_expenses` と `add_expense` は `income` 対応部分のほとんどをコピーしたものです。その違いは次のとおりです。
 
-- Income のインスタンスに対応する代わりに、Expense のインスタンスに対応して新しい費用を受け入れる
-- INCOME でフィルタする代わりに、EXPENSE でフィルタしてユーザーに費用を戻す
+- `Income` のインスタンスに対応する代わりに、`Expense` のインスタンスに対応して新しい費用を受け入れる
+- `INCOME` でフィルタする代わりに、`EXPENSE` でフィルタしてユーザーに費用を戻す
 
 これで API の実装は終わりです。今 Flask アプリケーションを実行すれば、以下に表示のようにエンドポイントで対話できるようになります。
 
 ================== CODE BLOCK 22
 
-##
 ## Flask アプリケーションを Docker 化する
 
 最終的にはクラウドで API を作成する予定ですので、Docker コンテナでアプリケーションを実行するために必要なことを説明する Dockerfile を作成して行きます。プロジェクトの Docker 化されたインスタンスをテスト・実行するために [開発コンピュータに Docker をインストールする](https://docs.docker.com/engine/installation/) 必要があります。Docker レシピ(Dockerfile)を定義すると、さまざまな環境で API を実行するのに役立ちます。つまり、将来、Docker もインストールし、[生産](https://en.wikipedia.org/wiki/Deployment_environment#Production) や [ステージング](https://en.wikipedia.org/wiki/Deployment_environment#Staging) のような環境でプログラムを実行していきます。
