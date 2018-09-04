@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "Developing and Publishing an NPM Package"
+metatitle: "Learn How to Develop and Publish an NPM Package"
 description: "Learn, through a practical tutorial, what tools we can leverage to develop and publish high-quality NPM packages."
+metadescription: "Check out this NPM developer's practical tutorial. Learn what tools we can leverage to develop and publish high-quality NPM packages."
 date: "2017-12-20 08:30"
 design:
   bg_color: "#1D4E69"
