@@ -56,7 +56,10 @@ Kotlin についてある程度経験がある方、あるいはシンプルな 
 
 [Spring Initializr](http://start.spring.io/) は Spring Boot アプリケーションを開始するにはうってつけの方法です。えり抜かれたプログラミング言語のひとつのオプションとして Kotlin を加えました（本書の執筆時点では、Java、Kotlin、Groovy の 3 つのオプションがありました）。この Web サイトは、ユーザーがアプリケーションのライブラリを容易に選択できるようにしますが、シンプルにするため、本書のために用意した [この GitHub レポジトリ](https://github.com/auth0-blog/kotlin-spring-boot) を複製することから始め、そこから展開していきます。
 
-====================== CODE BLOCK
+```bash
+git clone https://github.com/auth0-blog/kotlin-spring-boot/
+cd kotlin-spring-boot
+```
 
 このスタートアップ プロジェクトにはすでに [Spring Data JPA](http://projects.spring.io/spring-data-jpa/) と [HSQLDB](http://hsqldb.org/) が搭載されています。これら機能は、API がユーザーによる管理を可能にする 1 セットの顧客を保留します。私たちの仕事は顧客を表す `Customer` Entity Model、永続レイヤーを処理する `CustomerRepository` インターフェイス、 RESTful エンドポイントを定義する `CustomerController` クラスを作成することです。
 
