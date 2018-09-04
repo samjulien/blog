@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "Our Engineering Experience with React and Storybook"
+metatitle: ""
 description: "Create modular and reusable components that can be shared across projects by building a component library with React and Storybook."
+metadescription: ""
 date: 2018-09-04 8:30
 category: Culture, Engineering, Frontend
 design: 
