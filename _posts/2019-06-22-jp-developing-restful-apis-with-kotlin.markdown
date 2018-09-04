@@ -64,11 +64,26 @@ Kotlin についてある程度経験がある方、あるいはシンプルな 
 
 すでに述べましたが、Kotlin の最良の機能のひとつは非常に簡潔化されたプログラム言語だということです。Java 開発者たちが使い慣れている定型句コードのほとんどは _getters_、_setters_、_equals_、_hashCode_ のように簡潔化された構文を支持しています。実際は、 _dropped_ という用語はここでは適切ではありません。_equals_ や _hashCode_ のようなメソッドはコンパイラによって自動的に派生されますが、必要であれば、明確に定義できます。
 
-RESTful API のアイディアはユーザーが顧客セットを管理できるようにすることで、[Kotlin データクラス](https://kotlinlang.org/docs/reference/data-classes.html) は Customer と言います。model という新しいディレクトリを src/main/kotlin/com/auth0/samples/kotlinspringboot/ ディレクトリに作成してから、 Customer.kt というファイルに次のソースコードを追加しましょう。
+RESTful API のアイディアはユーザーが顧客セットを管理できるようにすることで、[Kotlin データクラス](https://kotlinlang.org/docs/reference/data-classes.html) は `Customer` と言います。`model` という新しいディレクトリを `src/main/kotlin/com/auth0/samples/kotlinspringboot/` ディレクトリに作成してから、 `Customer.kt` というファイルに次のソースコードを追加しましょう。
 
-====================== CODE BLOCK
+```kotlin
+package com.auth0.samples.kotlinspringboot.model
 
-Java とは異なりますが、クラスの宣言の後に Customer クラスの基本的なプロパティを括弧を利用して定義することに、注意してください。 Kotlin では、[これをプライマリ コンストラクターと言います](https://kotlinlang.org/docs/reference/classes.html#constructors)。クラスの本文でこれらプロパティを定義したり、他のコンストラクターを定義したりできますが、このケースではこれで十分です。また、@Id と @GeneratedValue の注釈を id プロパティに加えましたので、ご注意ください。この構文は Java の構文と同じです。
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.GenerationType
+import javax.persistence.GeneratedValue
+
+@Entity
+class Customer(
+  @Id @GeneratedValue(strategy = GenerationType.AUTO)
+  var id: Long = 0,
+  var firstName: String = "",
+  var lastName: String = ""
+)
+```
+
+Java とは異なりますが、クラスの宣言の後に `Customer` クラスの基本的なプロパティを括弧を利用して定義することに、注意してください。 Kotlin では、[これをプライマリ コンストラクターと言います](https://kotlinlang.org/docs/reference/classes.html#constructors)。クラスの本文でこれらプロパティを定義したり、他のコンストラクターを定義したりできますが、このケースではこれで十分です。また、`@Id` と `@GeneratedValue` の注釈を `id` プロパティに加えましたので、ご注意ください。この構文は Java の構文と同じです。
 
 ### 顧客用レポジトリを作成する
 
