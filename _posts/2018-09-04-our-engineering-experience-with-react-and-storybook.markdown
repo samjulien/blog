@@ -69,7 +69,7 @@ As explained by [Mark Perkins](https://twitter.com/allmarkedupa) from [Clearleft
 {% include tweet_quote.html quote_text='React lends itself to the architecting of a component library since it involves the process of thinking and building in a "componentised manner", as coined by @allmarkedup from @clearleft' %}
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/storybook-intro/component-library.png" alt="A web component library">
+  <img src="https://cdn.auth0.com/blog/storybook-intro/component-library.png" alt="Graphic of example web component library">
 </p>
 
 [Source](https://blog.hichroma.com/beyond-bootstrap-moving-from-ui-toolkit-to-component-library-f0a34f05e98b)
@@ -102,7 +102,7 @@ With React, we could already define components. We needed something to preview, 
 {% include tweet_quote.html quote_text="Don't reinvent the  &lt;Wheel /&gt;. To create modular and reusable components that can be shared across projects, build a component library with React and Storybook." %}
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/storybook-intro/believe-in-code-reuse.jpg" alt="I believe in code reuse... CTRL-C, CTRL-V">
+  <img src="https://cdn.auth0.com/blog/storybook-intro/believe-in-code-reuse.jpg" alt="Meme - I believe in code reuse... CTRL-C, CTRL-V">
 </p>
 
 [Source](https://hermesespinola.wordpress.com/2016/11/24/code-reusability-dont-reinvent-the-wheel/)
@@ -112,7 +112,7 @@ With React, we could already define components. We needed something to preview, 
 [Storybook](https://storybook.js.org/) is a UI development environment for UI components. It acts as a board where we can stage our components and visualize them in different states and interact with them as if they were on a live application. This is all done in isolation since Storybook runs outside of our app. Storybook has its own Webpack setup that is very similar to the one from `create-react-app` but can be configured to meet our needs. The platform also comes with a built-in dev server to help us preview our components locally.
 
 <p style="text-align: center;">
-  <img src="https://cdn.auth0.com/blog/storybook-intro/storybook-demo.jpg" alt="Storybook demo">
+  <img src="https://cdn.auth0.com/blog/storybook-intro/storybook-demo.jpg" alt="React Storybook component preview">
 </p>
 
 As we have described, we already had a working project when we decided to use Storybook to create a component library. However, because of its independent architecture, adding Storybook to our existing project did not create any burden or changes to our existing codebase.
@@ -140,14 +140,12 @@ In React, there are different aspects of UI Testing. We categorize them as follo
 - Structural Testing:
   - [Enzyme](https://github.com/airbnb/enzyme)
   - [Jest Snapshot Testing](https://jestjs.io/docs/en/snapshot-testing)
-- Interaction Testing
+- Interaction Testing:
   - Enzyme
 - CSS/Styles Testing:
-
   - Image comparison to do regression testing
   - Jest Snapshot using inline styles
   - Other tools like [BackstopJS](https://garris.github.io/BackstopJS/), [PhantomCSS](https://github.com/HuddleEng/PhantomCSS), [Gemini](https://gemini-testing.github.io/), and [Happo](https://github.com/Galooshi/happo)
-
 - Manual Testing
 
 Storybook integrates with Jest Snapshot through an add-on called [`StoryShots`](https://github.com/storybooks/storybook/tree/master/addons/storyshots/storyshots-core). `StoryShots` adds automatic Jest Snapshot Testing to our codebase by using our existing Storybook stories as the input for Jest Snapshot Testing.
