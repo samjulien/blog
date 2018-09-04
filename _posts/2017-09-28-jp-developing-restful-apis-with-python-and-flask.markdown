@@ -101,7 +101,7 @@ Flask を直接実行するには Ubuntu 上で、`$PATH` 変数を編集する�
 
 これらのコマンドを実行した後、ブラウザを開けて `http://127.0.0.1:5000/` に移動するか、`curl http://127.0.0.1:5000/` を発行してアプリケーションに到達します。
 
-================== IMAGE 2
+![Hello world with Flask](https://cdn.auth0.com/blog/python-restful/hello-world.jpg)
 
 ### 仮想環境（virtualenv）
 
