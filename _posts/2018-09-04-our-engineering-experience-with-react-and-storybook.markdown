@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "Our Engineering Experience with React and Storybook"
-metatitle: ""
+metatitle: "Create a Component Library with React and Storybook"
 description: "Create modular and reusable components that can be shared across projects by building a component library with React and Storybook."
-metadescription: ""
+metadescription: "Avoid duplicating components: how to develop and build a shared component library with React and Storybook. A look inside Auth0's internal engineering."
 date: 2018-09-04 8:30
 category: Culture, Engineering, Frontend
 design: 
