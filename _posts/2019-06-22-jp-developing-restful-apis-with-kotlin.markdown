@@ -203,39 +203,125 @@ _API &amp; 信頼されるクライアント_ フローを使用するには、�
 
 ### コードを変更する
 
-./src/main/resources の下に application.properties というファイルがあります。このファイルを Auth0 アカウントのデータで読み込む必要があります。新規アカウントを作成しているときに既定で、この場合に使用できる「既定のアプリ」が表示されます。これらはその構成で重要な要素なので、その値と次のアプリケーションの値を置換することを忘れないでください。
+`./src/main/resources` の下に `application.properties` というファイルがあります。このファイルを Auth0 アカウントのデータで読み込む必要があります。新規アカウントを作成しているときに既定で、この場合に使用できる「既定のアプリ」が表示されます。これらはその構成で重要な要素なので、その値と次のアプリケーションの値を置換することを忘れないでください。
 
-====================== CODE BLOCK
+```bash
+#  is the identifier of the API that we just created
+auth0.audience=kotlin-jwts
+# replace YOUR-DOMAIN to get something like https://bkrebs.auth0.com/
+auth0.issuer=https://YOUR-DOMAIN.auth0.com/
+```
 
 コードに進む前に、次のように Maven 構成に 3 つの依存関係を追加する必要があります。
 
-====================== CODE BLOCK
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
 
-これが終わったら、WebSecurityConfig.kt というファイルを src/main/kotlin/com/auth0/samples/kotlinspringboot/ ディレクトリに次のソースコードで作成します。
+<dependency>
+  <groupId>com.auth0</groupId>
+  <artifactId>auth0</artifactId>
+  <version>1.1.0</version>
+</dependency>
 
-====================== CODE BLOCK
+<dependency>
+  <groupId>com.auth0</groupId>
+  <artifactId>auth0-spring-security-api</artifactId>
+  <version>1.0.0-rc.2</version>
+</dependency>
+```
+
+これが終わったら、`WebSecurityConfig.kt` というファイルを `src/main/kotlin/com/auth0/samples/kotlinspringboot/` ディレクトリに次のソースコードで作成します。
+
+```kotlin
+package com.auth0.samples.kotlinspringboot.security
+
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import com.auth0.spring.security.api.JwtWebSecurityConfigurer
+import org.springframework.beans.factory.annotation.Value
+
+
+@Configuration
+@EnableWebSecurity
+open class WebSecurity : WebSecurityConfigurerAdapter() {
+
+	@Value("\${auth0.audience}")
+	private val audience: String? = null
+
+	@Value("\${auth0.issuer}")
+	private val issuer: String? = null
+
+	@Throws(Exception::class)
+	override fun configure(http: HttpSecurity) {
+		http.authorizeRequests()
+				.anyRequest().authenticated()
+
+		JwtWebSecurityConfigurer
+				.forRS256(audience, issuer!!)
+				.configure(http)
+	}
+}
+```
 
 それだけです。Auth0 を Kotlin Spring Boot RESTful API で使用するために必要なことはこれだけです。アプリケーションのセキュリティをテストするために、アプリケーションを再度実行しましょう。
 
-====================== CODE BLOCK
+```bash
+mvn spring-boot:run
+```
 
-要求を API に発行するアクセストークンを取得する前に、まず Auth0 の新規ユーザーを作成する必要があります。そのためには、/dbconnections/signup エンドポイントに POST要求を発行する必要があります。この要求は次の JSON 本文の後に Content-Type ヘッダーと application/json が必要です。
+要求を API に発行するアクセストークンを取得する前に、まず Auth0 の新規ユーザーを作成する必要があります。そのためには、`/dbconnections/signup` エンドポイントに `POST` 要求を発行する必要があります。この要求は次の JSON 本文の後に `Content-Type` ヘッダーと `application/json` が必要です。
 
-====================== CODE BLOCK
+```bash
+curl -H "Content-Type: application/json" -X POST -d '{
+ "client_id": "hfs2Au7Zka9XYbXs0CRpdmaL33IKy4mA",
+ "email": "user@test.com",
+ "password": "123123",
+ "connection": "Username-Password-Authentication"
+}' https://bkrebs.auth0.com/dbconnections/signup
 
-その後、POST要求を https://YOUR-DOMAIN.auth0.com/oauth/token に発行して access\_token を取得します。この要求にも次のように本文と Content-Type ヘッダーに JSON オブジェクトを含む必要があります。
+# response:
+# {"_id":"xxx","email_verified":false,"email":"user123@test.com"}
+```
 
-====================== CODE BLOCK
+その後、`POST` 要求を `https://YOUR-DOMAIN.auth0.com/oauth/token` に発行して `access_token` を取得します。この要求にも次のように本文と `Content-Type` ヘッダーに JSON オブジェクトを含む必要があります。
 
-両方の要求の client\_id および client\_secret プロパティは状況に応じて **変更されなければならない** ことに注意してください。それらの値は Auth0 が作成した Kotlin RESTful API (Test Client) クライアントで見つけられます。それらの値を取得するには [クライアントページ](https://manage.auth0.com/#/clients) に移動してください。
+```bash
+curl -H "Content-Type: application/json" -X POST -d '{
+ "grant_type":"password",
+ "username": "user@test.com",
+ "password": "123123",
+ "audience": "kotlin-jwts",
+ "client_id": "hfs2Au7Zka9XYbXs0CRpdmaL33IKy4mA",
+ "client_secret": "Hx4eFNAT8TI2TUVDXhxWDJ8vWpZxt79DQYUl7e178Uw0ASfc7eY42zPf2H-Gv1n1"
+}' https://bkrebs.auth0.com/oauth/token
 
-この最後の要求を発行すると、access\_token を取得できます。これからは、Kotlin API に送信する要求のヘッダーでこのトークンを使用しますので、この access\_token でエンドポイントをクエリすると、顧客のセットを再度管理できるようになります。
+# response:
+# {"access_token":"xxx.yyy.zzz","expires_in":86400,"token_type":"Bearer"}
+```
 
-====================== CODE BLOCK
+両方の要求の `client_id` および `client_secret` プロパティは状況に応じて **変更されなければならない** ことに注意してください。それらの値は Auth0 が作成した Kotlin RESTful API (Test Client) クライアントで見つけられます。それらの値を取得するには [クライアントページ](https://manage.auth0.com/#/clients) に移動してください。
 
-[「Kotlin RESTful API を Auth0 で簡単にセキュアにする」](https://twitter.com/intent/tweet?text=%22Securing+Kotlin+RESTful+APIs+is+easy+with+Auth0%22%20via%20@auth0%20http://auth0.com/blog/developing-restful-apis-with-kotlin/)
+この最後の要求を発行すると、`access_token` を取得できます。これからは、Kotlin API に送信する要求のヘッダーでこのトークンを使用しますので、この `access_token` でエンドポイントをクエリすると、顧客のセットを再度管理できるようになります。
 
-[ツイートする](https://twitter.com/intent/tweet?text=%22Securing+Kotlin+RESTful+APIs+is+easy+with+Auth0%22%20via%20@auth0%20http://auth0.com/blog/developing-restful-apis-with-kotlin/)
+```bash
+# no token = no access:
+curl http://localhost:8080/customers
+
+# token = access
+curl -H "Authorization: Bearer xxx.yyy.zzz" http://localhost:8080/customers
+```
+
+{% include tweet_quote.html quote_text="Kotlin RESTful API を Auth0 で簡単にセキュアにする" %}
 
 ## Kotlin を独自のソリューションでセキュアにする
 
