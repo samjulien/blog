@@ -18,6 +18,7 @@ tags:
 - restful
 related:
 - 2017-04-20-image-processing-in-python-with-pillow
+alternate_locale_ja: jp-developing-restful-apis-with-python-and-flask
 ---
 
 **TL;DR:** Throughout this article, we are going to use Flask and Python to develop a RESTful API. We will start by creating an endpoint that returns static data (dictionaries). After, we are going to create a class with two specializations and a few endpoints to insert and retrieve instances of these classes. Finally, will take a look on how to run the API on a Docker container. [The final code developed throughout this article can be found in this GitHub repository](https://github.com/auth0-blog/flask-restful-apis). I hope you enjoy!
