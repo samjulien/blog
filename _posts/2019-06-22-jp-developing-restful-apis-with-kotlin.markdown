@@ -416,36 +416,231 @@ class SignUpController(val applicationUserRepository: ApplicationUserRepository,
 
 ### JWT を Kotlin で発行・検証する
 
-これで User データクラスをマップし、エンドポイントによって新規ユーザーが自分で登録できるので、API とインタラクトできるようにする前にこれらユーザーがサインインし、JWT を検証する必要があります。これを実現するには、JWTAuthenticationFilter、JWTAuthorizationFilter、UserDetailsServiceImpl の 2 つのフィルタと 1 つのクラスを作成します。サインイン機能を担当する最初のフィルタは JWTAuthenticationFilter.kt と呼ばれる新規ディレクトリファイルに WebSecurity クラスとして同じパッケージに作成されます。このファイルには次のソースコードがあります。
+これで `User` データクラスをマップし、エンドポイントによって新規ユーザーが自分で登録できるので、API とインタラクトできるようにする前にこれらユーザーがサインインし、JWT を検証する必要があります。これを実現するには、`JWTAuthenticationFilter`、`JWTAuthorizationFilter`、`UserDetailsServiceImpl` の 2 つのフィルタと 1 つのクラスを作成します。サインイン機能を担当する最初のフィルタは `JWTAuthenticationFilter.kt` と呼ばれる新規ディレクトリファイルに `WebSecurity` クラスとして同じパッケージに作成されます。このファイルには次のソースコードがあります。
 
-====================== CODE BLOCK
+```kotlin
+package com.auth0.samples.kotlinspringboot
+
+import com.auth0.samples.kotlinspringboot.model.ApplicationUser
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.AuthenticationException
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import java.io.IOException
+import java.util.Date
+import javax.servlet.FilterChain
+import javax.servlet.ServletException
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
+
+class JWTAuthenticationFilter(authManager: AuthenticationManager) : UsernamePasswordAuthenticationFilter() {
+	init {
+		authenticationManager = authManager
+	}
+
+	@Throws(AuthenticationException::class, IOException::class, ServletException::class)
+	override fun attemptAuthentication(
+			req: HttpServletRequest, res: HttpServletResponse): Authentication {
+		val creds = ObjectMapper()
+				.readValue(req.inputStream, ApplicationUser::class.java)
+		return authenticationManager.authenticate(
+				UsernamePasswordAuthenticationToken(
+						creds.username,
+						creds.password,
+						emptyList<GrantedAuthority>()
+				)
+		)
+	}
+
+	@Throws(IOException::class, ServletException::class)
+	override fun successfulAuthentication(
+			req: HttpServletRequest,
+			res: HttpServletResponse, chain: FilterChain?,
+			auth: Authentication) {
+		val JWT = Jwts.builder()
+				.setSubject((auth.principal as User).username)
+				.setExpiration(Date(System.currentTimeMillis() + EXPIRATION_TIME))
+				.signWith(SignatureAlgorithm.HS512, SECRET)
+				.compact()
+		res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT)
+	}
+}
+```
 
 このフィルタは、
 
-- ユーザーから資格情報を解析し、それらを認証する attemptAuthentication、
-- ユーザーの認証が成功したときに JWT を作成する successfulAuthentication の 2 つの機能を定義します。
+- ユーザーから資格情報を解析し、それらを認証する `attemptAuthentication`、
+- ユーザーの認証が成功したときに JWT を作成する `successfulAuthentication` の 2 つの機能を定義します。
 
-これら両方のフィルタは SECRET や EXPIRATION\_TIME のように一部未定義の定数を使用することにご留意ください。これら定数を定義するには、次のコードで SecurityConstants.kt というファイルを同じディレクトリに作成します。
+これら両方のフィルタは `SECRET` や `EXPIRATION_TIME` のように一部未定義の定数を使用することにご留意ください。これら定数を定義するには、次のコードで `SecurityConstants.kt` というファイルを同じディレクトリに作成します。
 
-====================== CODE BLOCK
+```kotlin
+package com.auth0.samples.kotlinspringboot
 
-上記のフィルタが作成するトークンを検証するには、2つめのフィルタ JWTAuthorizationFilter が必要です。このフィルタは次のコードで同じディレクトリ内に作成されます。
+val SIGN_UP_URL = "/sign-up"
+val SECRET = "SecretKeyToGenJWTs"
+val TOKEN_PREFIX = "Bearer "
+val HEADER_STRING = "Authorization"
+val EXPIRATION_TIME: Long = 864_000_000 // 10 days
+```
 
-====================== CODE BLOCK
+上記のフィルタが作成するトークンを検証するには、2つめのフィルタ `JWTAuthorizationFilter` が必要です。このフィルタは次のコードで同じディレクトリ内に作成されます。
 
-このフィルタはセキュリティ保護されたエンドポイントが要求されたときに使用され、Authorization ヘッダーにトークンがあればチェックによって開始します。何とかトークンが見つかれば、その検証が行われ、そのユーザーを SecurityContext に設定します。トークンが見つからなければ、その要求を Spring Security フィルタチェーンに応じて移動させ、それからこの要求は 401（承認されていません）状態コードの応答を受けます。
+```kotlin
+package com.auth0.samples.kotlinspringboot
 
-作成する必要がある最後のクラスは UserDetailsServiceImpl です。このクラスは Spring Security から UserDetailsService クラスを拡張し、データベースでユーザーを見つける担当なので、Spring Security がその資格情報をチェックできます。このクラスはメイン kotlinspringboot ディレクトリに作成され、次のソースコードを格納します。
+import io.jsonwebtoken.Jwts
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import java.io.IOException
+import java.util.Collections.emptyList
+import javax.servlet.FilterChain
+import javax.servlet.ServletException
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
-====================== CODE BLOCK
 
-この独自のソリューションをまとめるために、WebSecurity クラスのコンテンツと次を置換します。
+class JWTAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenticationFilter(authManager) {
+	@Throws(IOException::class, ServletException::class)
+	override fun doFilterInternal(request: HttpServletRequest,
+								  response: HttpServletResponse,
+								  chain: FilterChain) {
+		val header = request.getHeader(HEADER_STRING)
 
-====================== CODE BLOCK
+		if (header == null || !header.startsWith(TOKEN_PREFIX)) {
+			chain.doFilter(request, response)
+			return
+		}
+
+		val authentication = getAuthentication(request)
+
+		SecurityContextHolder.getContext().authentication = authentication
+		chain.doFilter(request, response)
+	}
+
+	fun getAuthentication(request: HttpServletRequest): Authentication? {
+		val token = request.getHeader(HEADER_STRING)
+		if (token != null) {
+			// parse the token.
+			val user = Jwts.parser()
+					.setSigningKey(SECRET)
+					.parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+					.getBody()
+					.getSubject()
+
+			return if (user != null)
+				UsernamePasswordAuthenticationToken(user, null, emptyList<GrantedAuthority>())
+			else
+				null
+		}
+		return null
+	}
+}
+```
+
+このフィルタはセキュリティ保護されたエンドポイントが要求されたときに使用され、`Authorization` ヘッダーにトークンがあればチェックによって開始します。何とかトークンが見つかれば、その検証が行われ、そのユーザーを `SecurityContext` に設定します。トークンが見つからなければ、その要求を Spring Security フィルタチェーンに応じて移動させ、それからこの要求は 401（承認されていません）状態コードの応答を受けます。
+
+作成する必要がある最後のクラスは `UserDetailsServiceImpl` です。このクラスは Spring Security から `UserDetailsService` クラスを拡張し、データベースでユーザーを見つける担当なので、Spring Security がその資格情報をチェックできます。このクラスはメイン `kotlinspringboot` ディレクトリに作成され、次のソースコードを格納します。
+
+```kotlin
+package com.auth0.samples.kotlinspringboot
+
+import com.auth0.samples.kotlinspringboot.model.ApplicationUser
+import com.auth0.samples.kotlinspringboot.persistence.ApplicationUserRepository
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+
+
+@Service
+open class UserDetailsServiceImpl(val userRepository: ApplicationUserRepository) : UserDetailsService {
+	@Transactional(readOnly = true)
+	@Throws(UsernameNotFoundException::class)
+	override fun loadUserByUsername(username: String): UserDetails {
+		val user = userRepository.findByUsername(username) ?: throw UsernameNotFoundException(username)
+		return User(user.username, user.password, emptyList())
+	}
+
+	fun save(user: ApplicationUser) {
+		userRepository.save(user)
+	}
+}
+```
+
+この独自のソリューションをまとめるために、`WebSecurity` クラスのコンテンツと次を置換します。
+
+```kotlin
+package com.auth0.samples.kotlinspringboot
+
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+
+@Configuration
+@EnableWebSecurity
+open class WebSecurity(val userDetailsService: UserDetailsService) : WebSecurityConfigurerAdapter() {
+
+	@Bean
+	fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
+		return BCryptPasswordEncoder()
+	}
+
+	override fun configure(http: HttpSecurity) {
+		http.csrf().disable().authorizeRequests()
+				.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+				.anyRequest().authenticated()
+				.and()
+				.addFilter(JWTAuthenticationFilter(authenticationManager()))
+				.addFilter(JWTAuthorizationFilter(authenticationManager()))
+	}
+
+	override fun configure(auth: AuthenticationManagerBuilder?) {
+		auth!!.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder())
+	}
+}
+```
 
 これらを変更したら、再度 API とインタラクトできるようになり、次のように JWT を適切に作成・検証しているかをチェックします。
 
-====================== CODE BLOCK
+```bash
+# run Kotlin app again
+mvn spring-boot:run
+
+# register a new user
+curl -H "Content-Type: application/json" -X POST -d '{
+    "username": "admin",
+    "password": "password"
+}' http://localhost:8080/sign-up
+
+# login to get the JWT (in the Authorization header)
+curl -i -H "Content-Type: application/json" -X POST -d '{
+    "username": "admin",
+    "password": "password"
+}' http://localhost:8080/login
+
+# get customers passing the JWT contained by the Authorization header
+curl -H "Authorization: Bearer xxx.yyy.zzz" http://localhost:8080/customers
+```
 
 ご覧のように、JWT で独自のセキュリティソリューションを作成することはそんなに難しくはありません。ただし、Auth0 で統合するために実行した作業よりもずっと多くの作業を要します。[多要素認証](https://auth0.com/multifactor-authentication)、[ソーシャル ID プロバイダー](https://auth0.com/user-management)、[エンタープライズ接続（Active Directory、LDAP、SAMLなど）](https://auth0.com/enterprise)のようなさらに高度なトピックには対処しませんでした。このようなケースを処理するにはさらに多くの作業が必要になります。これら機能をなんとか素早く実現したとしても、Auth0 を使ったときと同じようなセキュリティ対策を講じることはできません。
 
@@ -453,8 +648,6 @@ class SignUpController(val applicationUserRepository: ApplicationUserRepository,
 
 Java 開発者にとって Kotlin でコードを書くことは、注意すべき危険がそんなにないので、そんなに難しいことではありません。しかし、言語のフルパワーと最高の機能を使って真の Kotlin 開発者になるには容易ではなく、数時間の学習と開発が必要です。Kotlin と既存の Java ライブラリとの統合は Spring Boot を使用できるので非常に良いことで、開発したコードは非常に完結で読みやすいものでした。Kotlin の機能についてあまり取り扱いませんでしたが、その適用性を最後に検証しました。
 
-[「バックエンドの Kotlin アプリケーションを開発することは全く問題がなく簡単です。」](https://twitter.com/intent/tweet?text=%22Developing+backend+Kotlin+applications+is+perfectly+fine+and+easy.%22%20via%20@auth0%20http://auth0.com/blog/developing-restful-apis-with-kotlin/)
-
-[ツイートする](https://twitter.com/intent/tweet?text=%22Developing+backend+Kotlin+applications+is+perfectly+fine+and+easy.%22%20via%20@auth0%20http://auth0.com/blog/developing-restful-apis-with-kotlin/)
+{% include tweet_quote.html quote_text="バックエンドの Kotlin アプリケーションを開発することは全く問題がなく簡単です。" %}
 
 いかがですか？Kotlin を支持して Java を断念しませんか？
