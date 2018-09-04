@@ -47,7 +47,7 @@ alternate_locale_en: angular-2-authentication
 
 最近、Python を使ってアプリケーションを開発するのが人気になっています。[最近の StackOverflow の分析によると](https://stackoverflow.blog/2017/09/06/incredible-growth-python/)、Python は最も急成長しているプログラミング言語のひとつで、プラットフォーム上で質問される数では Java さえも超えています。GitHub 上ではこの言語は大幅な導入の兆候が示され、[2016 年に開かれたプル要求](https://octoverse.github.com/) の数では第三位を占めます。
 
-================== IMAGE 1
+![Stack Overflow Trends showing Python growth](https://cdn.auth0.com/blog/python-restful/trends.jpg)
 
 Python のまわりで形成される巨大なコミュニティは言語のあらゆる面を改善しています。増々多くのオープンソースライブラリがリリースされ、[人工知能](https://github.com/aimacode/aima-python)、[機械学習](https://github.com/rasbt/python-machine-learning-book)、[Web 開発](https://github.com/pallets/flask)などさまざまなサブジェクトに対処しています。コミュニティ全体が大きな支援を受けているほかに、[Python ソフトウェア財団も優れたドキュメントを提供し](https://docs.python.org/3/)、 新規採用者たちがその本質を素早く学ぶことができます。
 
@@ -151,11 +151,11 @@ PyPA（[Python Packaging Authority 団体](https://www.pypa.io/en/latest/)）は
 
 ##  Flask で RESTful エンドポイントを作成する
 
-これで、アプリケーションを構造化したので、関係のあるエンドポイントを定義し始めることができます。前述したように、このアプリケーションの目標はユーザーが収益や費用を管理できるようにすることです。手始めに、収益を処理する 2 つのエンドポイントを定義することから始めましょう。./cashman/index.py ファイルのコンテンツと以下を置換しましょう。
+これで、アプリケーションを構造化したので、関係のあるエンドポイントを定義し始めることができます。前述したように、このアプリケーションの目標はユーザーが収益や費用を管理できるようにすることです。手始めに、収益を処理する 2 つのエンドポイントを定義することから始めましょう。`./cashman/index.py` ファイルのコンテンツと以下を置換しましょう。
 
 ================== CODE BLOCK 13
 
-今、このアプリケーションを改善中なので、「世界の皆さん、こんにちは！」のメッセージをユーザーに返すエンドポイントを削除しました。その場所に、収益を返す HTTP GET 要求を処理するエンドポイントと、新しい収益を追加する HTTP POST 要求を処理するもうひとつのエンドポイントを定義しました。これらエンドポイントは @app.route で注釈を付け、/incomes エンドポイントの要求をリッスンすることを定義します。[Flask にはこの正確な機能に関する優れた説明書があります](http://flask.pocoo.org/docs/0.12/api/#flask.Flask.route)。
+今、このアプリケーションを改善中なので、「世界の皆さん、こんにちは！」のメッセージをユーザーに返すエンドポイントを削除しました。その場所に、収益を返す HTTP `GET` 要求を処理するエンドポイントと、新しい収益を追加する HTTP `POST` 要求を処理するもうひとつのエンドポイントを定義しました。これらエンドポイントは `@app.route` で注釈を付け、`/incomes` エンドポイントの要求をリッスンすることを定義します。[Flask にはこの正確な機能に関する優れた説明書があります](http://flask.pocoo.org/docs/0.12/api/#flask.Flask.route)。
 
 現時点では、このプロセスを容易にするために収益を [dictionaries](https://docs.python.org/3/tutorial/datastructures.html#dictionaries) として操作しています。まもなく、収益と費用を表すクラスを作成します。
 
@@ -163,9 +163,8 @@ PyPA（[Python Packaging Authority 団体](https://www.pypa.io/en/latest/)）は
 
 ================== CODE BLOCK 14
 
-================== IMAGE 3
+![Interacting with Flask endpoints](https://cdn.auth0.com/blog/python-restful/incomes.jpg)
 
-##
 ## Python クラスでモデルをマッピングする
 
 上記のように非常に簡単な使い方のディクショナリで十分です。ただし、さまざまなエンティティで取引したり、複数のビジネスルールや検証がある複雑なアプリケーションでは、データを [Python クラス](https://docs.python.org/3/tutorial/classes.html) に要約する必要があるかもしれません。
