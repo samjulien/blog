@@ -104,24 +104,82 @@ interface CustomerRepository : CrudRepository<Customer, Long>
 
 ユーザーの要求を処理する RESTful エンドポイントは Java の対応部分と同様で、もう少し簡潔ですが、Java 開発者にとってはかなり似ているものです。重要なステートメントは変わっていないことに気づかれると思います。かなり詳細ですが、私にとっては良い事ですそのため、依存関係の原因を簡単に特定できます。
 
-クラスを作成するために、controller ディレクトリを src/main/kotlin/com/auth0/samples/kotlinspringboot/ ディレクトリに作成することから始めましょう。その後、CustomerController.kt というファイルを新しいディレクトリに作成し、次のコードを追加します。
+クラスを作成するために、`controller` ディレクトリを `src/main/kotlin/com/auth0/samples/kotlinspringboot/` ディレクトリに作成することから始めましょう。その後、`CustomerController.kt` というファイルを新しいディレクトリに作成し、次のコードを追加します。
 
-====================== CODE BLOCK
+```kotlin
+package com.auth0.samples.kotlinspringboot.controller
+
+import com.auth0.samples.kotlinspringboot.model.Customer
+import com.auth0.samples.kotlinspringboot.persistence.CustomerRepository
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+
+@RestController
+@RequestMapping("/customers")
+class CustomerController(val repository: CustomerRepository) {
+
+	@GetMapping
+	fun findAll() = repository.findAll()
+
+	@PostMapping
+	fun addCustomer(@RequestBody customer: Customer)
+			= repository.save(customer)
+
+	@PutMapping("/{id}")
+	fun updateCustomer(@PathVariable id: Long, @RequestBody customer: Customer) {
+		assert(customer.id == id)
+		repository.save(customer)
+	}
+
+	@DeleteMapping("/{id}")
+	fun removeCustomer(@PathVariable id: Long)
+			= repository.delete(id)
+
+	@GetMapping("/{id}")
+	fun getById(@PathVariable id: Long)
+			= repository.findOne(id)
+}
+```
 
 このクラスのソースコードはすぐにわかりますが、完全を期すために、その説明は次のとおりです。
 
-- @RequestMapping(&quot;/customers&quot;) 注釈はこのクラスのすべてのエンドポイントには /customers プレフィクスがあることを宣言しています。
-- @GetMapping 注釈は /customerへの HTTP **GET** 要求を処理するメソッドとしてfindAll を定義します。
-- @PostMapping 注釈は/customers への HTTP **POST** 要求を処理するメソッドとして addCustomer を定義します。また、このメソッドは顧客の JSON バージョンを受理し、Customer クラスに自動的に逆シリアル化します。
-- @PutMapping(&quot;/{id}&quot;) 注釈は /customers への HTTP **PUT** 要求を処理するメソッドとして updateCustomer を定義します。このメソッドも要求の本文として Customer を受理します。PUT メソッドと POST メソッドの違いは PUT メソッドは要求パスが顧客の {id} を更新することを求めることです。
-- @DeleteMapping(&quot;/{id}&quot;) 注釈は /customers への HTTP **DELETE** 要求を処理するメソッドとして removeCustomer を定義します。{id} の場合、消去される顧客の ID を定義します。
-- @GetMapping(&quot;/{id}&quot;) 注釈は /customer/{id} への HTTP **GET** 要求を処理するメソッドとして getById を定義し、{id} は応答としてシリアル化される顧客を定義します。
+- `@RequestMapping("/customers")` 注釈はこのクラスのすべてのエンドポイントには `/customers` プレフィクスがあることを宣言しています。
+- `@GetMapping` 注釈は `/customer`への HTTP **GET** 要求を処理するメソッドとして`findAll` を定義します。
+- `@PostMapping` 注釈は`/customers` への HTTP **POST** 要求を処理するメソッドとして `addCustomer` を定義します。また、このメソッドは顧客の JSON バージョンを受理し、`Customer` クラスに自動的に逆シリアル化します。
+- `@PutMapping("/{id}")` 注釈は `/customers` への HTTP **PUT** 要求を処理するメソッドとして `updateCustomer` を定義します。このメソッドも要求の本文として `Customer` を受理します。**PUT** メソッドと POST メソッドの違いは PUT メソッドは要求パスが顧客の `{id}` を更新することを求めることです。
+- `@DeleteMapping("/{id}")` 注釈は `/customers` への HTTP **DELETE** 要求を処理するメソッドとして `removeCustomer` を定義します。{id} の場合、消去される顧客の ID を定義します。
+- `@GetMapping("/{id}")` 注釈は `/customer/{id}` への HTTP **GET** 要求を処理するメソッドとして `getById` を定義し、`{id}` は応答としてシリアル化される顧客を定義します。
 
-それだけです。これで Spring Boot によって支援される最初の Kotlin RESTful API ができました。遊んでみたければ、アプリケーションのルートディレクトリに mvn spring-boot:run とタイプすると、Spring Boot が起動します。その後、次のコマンドを使って API とインタラクトします。
+それだけです。これで Spring Boot によって支援される最初の Kotlin RESTful API ができました。遊んでみたければ、アプリケーションのルートディレクトリに `mvn spring-boot:run` とタイプすると、Spring Boot が起動します。その後、次のコマンドを使って API とインタラクトします。
 
-====================== CODE BLOCK
+```bash
+# adds a new customer
+curl -H "Content-Type: application/json" -X POST -d '{
+    "firstName": "Bruno",
+    "lastName": "Krebs"
+}'  http://localhost:8080/customers
 
-何か問題が発生したら、[GitHub レポジトリの顧客ブランチ](https://github.com/auth0-blog/kotlin-spring-boot/tree/customers) でソースコードを比較してください。
+# retrieves all customers
+curl http://localhost:8080/customers
+
+# updates customer with id 1
+curl -H "Content-Type: application/json" -X PUT -d '{
+    "id": 1,
+    "firstName": "Bruno",
+    "lastName": "Simões Krebs"
+}'  http://localhost:8080/customers/1
+
+# deletes customer with id 1
+curl -X DELETE http://localhost:8080/customers/1
+```
+
+何か問題が発生したら、GitHub レポジトリの顧客ブランチ でソースコードを比較してください。
 
 ## Kotlin RESTful API を Auth0 でセキュアにする
 
