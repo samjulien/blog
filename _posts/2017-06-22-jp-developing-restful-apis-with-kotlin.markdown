@@ -4,7 +4,7 @@ title: "Kotlin で RESTful API を開発する"
 metatitle: "Kotlin で RESTful API を開発する"
 description: "Kotlin と Spring Boot で RESTful API を構築してセキュアにしましょう"
 metadescription: "Kotlin と Spring Boot で RESTful API を構築してセキュアにしましょう"
-date: 2019-06-22 19:41
+date: 2017-06-22 19:41
 category: Technical guide, Backend, Kotlin
 author:
   name: "Bruno Krebs"
