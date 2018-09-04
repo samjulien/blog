@@ -40,7 +40,7 @@ This team builds a variety of different projects such as the software that runs 
   <img src="https://cdn.auth0.com/blog/storybook-intro/auth0-customer-success-team.png" alt="Auth0 Customer Success Infrastructure Team">
 </p>
 
-> Would you like to be part of a Team like this? We are currently hiring engineers to [join the Customer Success Infrastructure team](https://auth0.com/careers/job/engineer-customer-success-tools:28144879-ee27-41bc-ae30-fd3cba1f309a)!
+> Would you like to be part of a Team like this? We are currently hiring engineers to [join the Customer Success Infrastructure team](https://auth0.com/careers/positions?areas=Customer%20Success)!
 
 [Guillermo Rodas](https://twitter.com/glrodasz) is one of the Engineers of the Customer Success Infrastructure Team. He recently led a project initiative known as _Support Center Components_ that solved a problem centered around having duplicate React components in our customer-facing and internal tools site.
 
