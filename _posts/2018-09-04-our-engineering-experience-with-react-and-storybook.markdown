@@ -5,14 +5,14 @@ metatitle: "Create a Component Library with React and Storybook"
 description: "Create modular and reusable components that can be shared across projects by building a component library with React and Storybook."
 metadescription: "Avoid duplicating components: how to develop and build a shared component library with React and Storybook. A look inside Auth0's internal engineering."
 date: 2018-09-04 8:30
-category: Culture, Engineering, Frontend
+category: Technical Guide, Auth0 Engineering, React
 design: 
   bg_color: "#222228"
   image: https://cdn.auth0.com/blog/logos/storybook-react.png
 author:
   name: Dan Arias
   url: http://twitter.com/getDanArias
-  mail: dan.arias@auth.com
+  mail: dan.arias@auth0.com
   avatar: https://pbs.twimg.com/profile_images/1002301567490449408/1-tPrAG__400x400.jpg
 tags: 
   - react
@@ -25,7 +25,9 @@ tags:
   - reusability
   - banking
 related:
-  - 
+  - 2018-08-28-react-tutorial-building-and-securing-your-first-app
+  - 2018-08-15-auth0-architecture-running-in-multiple-cloud-providers-and-regions
+  - 2018-08-14-react-context-api-managing-state-with-ease
 ---
 
 At Auth0, we want our customers to be successful using our [authentication solutions](https://auth0.com/b2c-customer-identity-management). The Customer Success Infrastructure Team builds customer-facing and internal tools that help us achieve that goal. One of the technologies that have enabled them to have rapid iterations in user interface development is [React](https://auth0.com/blog/react-tutorial-building-and-securing-your-first-app/).
