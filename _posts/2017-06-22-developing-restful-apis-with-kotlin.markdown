@@ -208,7 +208,7 @@ We also need to enable the `Password` grant type [on the client](https://manage.
 Under `./src/main/resources`, there is a file called `application.properties`. This file needs to be populated with data from our Auth0 account. By default, when creating a new account we get a "Default App", which could be used for this. These are the important parts of that config, so remember to replace the values with the values of your application:
 
 ```bash
-#  is the identifier of the API that we just created
+# this is the identifier of the API that we just created
 auth0.audience=kotlin-jwts
 # replace YOUR-DOMAIN to get something like https://bkrebs.auth0.com/
 auth0.issuer=https://YOUR-DOMAIN.auth0.com/

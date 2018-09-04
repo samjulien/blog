@@ -209,7 +209,7 @@ _API &amp; 信頼されるクライアント_ フローを使用するには、�
 `./src/main/resources` の下に `application.properties` というファイルがあります。このファイルを Auth0 アカウントのデータで読み込む必要があります。新規アカウントを作成しているときに既定で、この場合に使用できる「既定のアプリ」が表示されます。これらはその構成で重要な要素なので、その値と次のアプリケーションの値を置換することを忘れないでください。
 
 ```bash
-#  is the identifier of the API that we just created
+# this is the identifier of the API that we just created
 auth0.audience=kotlin-jwts
 # replace YOUR-DOMAIN to get something like https://bkrebs.auth0.com/
 auth0.issuer=https://YOUR-DOMAIN.auth0.com/
