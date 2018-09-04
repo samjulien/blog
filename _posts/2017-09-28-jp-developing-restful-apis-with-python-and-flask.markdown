@@ -22,7 +22,7 @@ related:
 - jp-angular-2-authentication
 - jp-reactjs-authentication
 lang: ja
-alternate_locale_en: angular-2-authentication
+alternate_locale_en: developing-restful-apis-with-python-and-flask
 ---
 
 **TL;DR：** 本書では Flask や Python を使って RESTful API を開発していきます。まず、静的データ（ディクショナリ）を返すエンドポイントを作成しましょう。後で、2 つの専門分野といくつかのエンドポイントでクラスを作成し、これらクラスのインスタンスを挿入・取得します。最後に、Docker コンテナ上で API を実行する方法を見ていきます。[最終コードは本書の至るところで開発されており、この GitHub レポジトリで見つけることができます](https://github.com/auth0-blog/flask-restful-apis)。どうぞ、お楽しみください！
