@@ -87,11 +87,18 @@ Java とは異なりますが、クラスの宣言の後に `Customer` クラス
 
 ### 顧客用レポジトリを作成する
 
-これから作成する CustomerRepository インターフェイスは正規の Java Spring Boot アプリケーションですることと非常に似ています。まず、整理するために、persistence というディレクトリを src/main/kotlin/com/auth0/samples/kotlinspringboot/ ディレクトリに作成しましょう。この新しいディレクトリに、CustomerRepository.kt というファイルを作成し、次のコードを追加します。
+これから作成する `CustomerRepository` インターフェイスは正規の Java Spring Boot アプリケーションですることと非常に似ています。まず、整理するために、`persistence` というディレクトリを `src/main/kotlin/com/auth0/samples/kotlinspringboot/` ディレクトリに作成しましょう。この新しいディレクトリに、`CustomerRepository.kt` というファイルを作成し、次のコードを追加します。
 
-====================== CODE BLOCK
+```kotlin
+package com.auth0.samples.kotlinspringboot.persistence
 
-このインターフェイスにはこのプロジェクトにある HSQLDB インメモリデータベースとインタラクトするために必要なすべてがあります。それで save、delete、findAll、[その他多数](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html) が可能になります。拡張したばかりの CrudRepository インターフェイスについての[詳細情報が必要な場合は、このリソースをご覧ください](https://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html)。
+import com.auth0.samples.kotlinspringboot.model.Customer
+import org.springframework.data.repository.CrudRepository
+
+interface CustomerRepository : CrudRepository<Customer, Long>
+```
+
+このインターフェイスにはこのプロジェクトにある HSQLDB インメモリデータベースとインタラクトするために必要なすべてがあります。それで `save`、`delete`、`findAll`、[その他多数](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html) が可能になります。拡張したばかりの `CrudRepository` インターフェイスについての[詳細情報が必要な場合は、このリソースをご覧ください](https://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html)。
 
 ### 顧客 RESTful エンドポイントを定義する
 
