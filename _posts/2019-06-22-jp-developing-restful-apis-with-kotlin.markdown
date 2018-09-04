@@ -325,13 +325,31 @@ curl -H "Authorization: Bearer xxx.yyy.zzz" http://localhost:8080/customers
 
 ## Kotlin を独自のソリューションでセキュアにする
 
-何らかの理由で Auth0 でセキュアになる RESTful API を希望しない場合は、本章で説明するステップに従ってください。まず、pom.xml から Auth0 の依存関係を削除します。
+何らかの理由で Auth0 でセキュアになる RESTful API を希望しない場合は、本章で説明するステップに従ってください。まず、`pom.xml` から Auth0 の依存関係を削除します。
 
-====================== CODE BLOCK
+```xml
+<dependency>
+  <groupId>com.auth0</groupId>
+  <artifactId>auth0</artifactId>
+  <version>1.1.0</version>
+</dependency>
 
-その後に、application.properties ファイルに追加した 2 つのプロパティは使用しませんので削除します。それから、JWT を発行・検証するには、次の Maven 依存関係を追加します。
+<dependency>
+  <groupId>com.auth0</groupId>
+  <artifactId>auth0-spring-security-api</artifactId>
+  <version>1.0.0-rc.2</version>
+</dependency>
+```
 
-====================== CODE BLOCK
+その後に、`application.properties` ファイルに追加した 2 つのプロパティは使用しませんので削除します。それから、JWT を発行・検証するには、次の Maven 依存関係を追加します。
+
+```xml
+<dependency>
+	<groupId>io.jsonwebtoken</groupId>
+	<artifactId>jjwt</artifactId>
+	<version>0.7.0</version>
+</dependency>
+```
 
 ### ユーザーを処理する
 
