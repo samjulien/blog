@@ -28,7 +28,7 @@ related:
   - 
 ---
 
-At Auth0, we want our customers to be successful using our [authentication solutions](https://auth0.com/b2c-customer-identity-management). The Customer Success Infrastructure Team builds customer-facing and internal tools that help us achieve that goal. One of the technologies that have enabled them to have rapid iterations in user interface development is [React](https://reactjs.org/).
+At Auth0, we want our customers to be successful using our [authentication solutions](https://auth0.com/b2c-customer-identity-management). The Customer Success Infrastructure Team builds customer-facing and internal tools that help us achieve that goal. One of the technologies that have enabled them to have rapid iterations in user interface development is [React](https://auth0.com/blog/react-tutorial-building-and-securing-your-first-app/).
 
 <a href="https://auth0.com/authenticate/react/" style="text-align: center;" title="Authenticate React using Auth0">
   <img src="https://cdn.auth0.com/blog/design-samples/react-auth0-banner.png" alt="Authenticate React using Auth0">
