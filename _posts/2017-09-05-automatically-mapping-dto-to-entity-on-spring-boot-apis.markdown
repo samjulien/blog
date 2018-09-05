@@ -20,7 +20,7 @@ related:
 - 2017-08-31-integrating-spring-data-jpa-postgresql-liquibase
 - 2017-08-10-implementing-jwt-authentication-on-spring-boot
 - 2017-04-28-incrementally-changing-your-database-with-java-and-flyway
-alternate_locale_ja: jp-developing-restful-apis-with-kotlin
+alternate_locale_ja: jp-automatically-mapping-dto-to-entity-on-spring-boot-apis
 ---
 
 ## What is a DTO?
