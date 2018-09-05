@@ -29,6 +29,7 @@ related:
 
 Although stretching scopes beyond that usage is possible, it isn’t trivial or natural – contrary to what common naïve narratives would want you to believe.
 
+{% include tweet_quote.html quote_text=".@vibronet on why using OAuth2 scopes in every authorization scenario is not a good idea." %}
 
 ## The Problem
 
@@ -49,6 +50,8 @@ To all intents and purposes, scopes didn’t really exist before OAuth. The quin
 OAuth shows up, devises a mechanism for LinkedIn to ask Gmail just for the action it requires (access contacts) and nothing else — and makes all this possible without ever sharing with LinkedIn your gmail credentials. Done. Scopes happen to be the primitive that OAuth2 introduced for allowing LinkedIn to request delegated access to your Gmail’s contacts, to the exclusion of everything else. Intent clear and mission accomplished, right? 
 
 To me, that would be enough to demonstrate my thesis (scopes only come into play in delegation scenarios, and always limit what an app can do on behalf of a user; they are not meant to grant the application permissions outside of the privileges the delegated user already possesses). However, I know that this scenario alone won’t be enough to convince everyone: a classic objection is “fine, that might have been the original intent, but that doesn’t mean that they can’t be successfully used for more scenarios!.” Fair. Let’s dig deeper and explore more ramifications.
+
+{% include tweet_quote.html quote_text="Scopes only come into play in delegation scenarios, and always limit what an app can do on behalf of a user." %}
 
 ## Scopes as Claims
 
