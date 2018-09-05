@@ -143,15 +143,37 @@ dependencies {
 
 ### 試験エンティティをリファクタ―する
 
-DTO を使う本当の利点を証明し、マッピング プロセスのさらに有意義な例を実行するために、Exam エンティティを少しリファクターしていきます。その試験がいつ作成され、最後に編集された期日を把握するために、２つのデータ プロパティをそれに追加していきます。そして、それが発行された（一般が利用可能）か否かを示すフラッグを追加していきます。./src/main/java/com/questionmarks/model/Exam.java ファイルを開き、次のコードの行を追加します。
+DTO を使う本当の利点を証明し、マッピング プロセスのさらに有意義な例を実行するために、`Exam` エンティティを少しリファクターしていきます。その試験がいつ作成され、最後に編集された期日を把握するために、２つのデータ プロパティをそれに追加していきます。そして、それが発行された（一般が利用可能）か否かを示すフラッグを追加していきます。`./src/main/java/com/questionmarks/model/Exam.java` ファイルを開き、次のコードの行を追加します。
 
-================ CODE BLOCK
+```java
+// ... other imports
+import java.time.LocalDateTime;
 
-最後のセクションに hibernate-java8 ライブラリをインポートしないと、JPA/Hibernate は自動的に LocalDateTime をデータベースにマップすることはできませんので、ご注意ください。幸運なことにこのライブラリはユーザーを助けるためにあります。そうでなければ、独自のコンバーターを作る必要があります。
+// ... annotations
+public class Exam {
+    // ... other properties
 
-また、新しいプロパティ（列として）を、アプリケーションをサポートする PostgreSQL データベースに追加する必要があります。[前回のアーティクルでは、スキーマ移行を処理する Liquibase をセットアップしました](https://auth0.com/blog/integrating-spring-data-jpa-postgresql-liquibase/)ので、そのコマンドで新しいファイルを作り、新しい列を追加しなければなりません。このファイルを v0002.sql と呼び、次のコンテンツでそれを ./src/main/resources/db/changelog/changes/ フォルダに追加します。
+    @NotNull
+    private LocalDateTime createdAt;
 
-================ CODE BLOCK
+    @NotNull
+    private LocalDateTime editedAt;
+
+    @NotNull
+    private boolean published;
+}
+```
+
+最後のセクションに `hibernate-java8` ライブラリをインポートしないと、JPA/Hibernate は自動的に `LocalDateTime` をデータベースにマップすることはできませんので、ご注意ください。幸運なことにこのライブラリはユーザーを助けるためにあります。そうでなければ、独自のコンバーターを作る必要があります。
+
+また、新しいプロパティ（列として）を、アプリケーションをサポートする PostgreSQL データベースに追加する必要があります。[前回のアーティクルでは、スキーマ移行を処理する Liquibase をセットアップしました](https://auth0.com/blog/integrating-spring-data-jpa-postgresql-liquibase/)ので、そのコマンドで新しいファイルを作り、新しい列を追加しなければなりません。このファイルを `v0002.sql` と呼び、次のコンテンツでそれを `./src/main/resources/db/changelog/changes/` フォルダに追加します。
+
+```sql
+alter table exam
+  add column created_at timestamp without time zone not null default now(),
+  add column edited_at timestamp without time zone not null default now(),
+  add column published boolean not null default false;
+```
 
 このアプリケーションを次回実行するとき、Liquibase はこのファイルを読み取り、これらのコマンドを実行して３つの列を追加します。SQL コマンドは既存記録の既定値でこれら列も事前設定します。そのほかに、JPA/Hibernate が列やその処理に対応するために変更する必要があるものはありません。
 
