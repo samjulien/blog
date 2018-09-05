@@ -46,19 +46,41 @@ Java（と Spring Boot）で書き込まれた RESTful API で DTO を使用す�
 
 DTO をマップするために面倒な/定型コードをエンティティに書き込んだり、その反対を避けるために、[ModelMapper](http://modelmapper.org/) と呼ばれるライブラリを使用していきます。ModelMapper の目標はあるオブジェクト モデルを別のものにどのようにマップするかを自動的に決定して、オブジェクト マッピングを簡単にすることです。このライブラリはかなり強力で、マッピングプロセスを簡素化する非常にたくさんの構成を適用できますが、ほとんどのケースに当てはまる既定の動作を提供して構成よりも規則を優遇します。
 
-[このライブラリのユーザー マニュアル](http://modelmapper.org/user-manual/)はよく書かれており、マッピング プロセスを調整する必要があるときに貴重なリソースになります。このライブラリの機能を少しご紹介するために、次のような User があるとしましょう。
+[このライブラリのユーザー マニュアル](http://modelmapper.org/user-manual/)はよく書かれており、マッピング プロセスを調整する必要があるときに貴重なリソースになります。このライブラリの機能を少しご紹介するために、次のような `User` があるとしましょう。
 
-================ CODE BLOCK
+```java
+// assume getters and setters
+class User {
+  long id;
+  String firstName;
+  String lastName;
+  String email;
+  String password;
+  String securitySocialNumber;
+  boolean isAdmin;
+}
+```
 
-そして、id、firstName、および email のみを公開するとします。ModelMapper を使って、次のように DTO を生成しなければなりません。
+そして、`id`、`firstName`、および `email` のみを公開するとします。ModelMapper を使って、次のように DTO を生成しなければなりません。
 
-================ CODE BLOCK
+```java
+// assume getters and setters
+class UserDTO {
+  long id;
+  String firstName;
+  String email;
+}
+```
 
 それから、次ように ModelMapper を呼び出します。
 
-================ CODE BLOCK
+```java
+ModelMapper modelMapper = new ModelMapper();
+// user here is a prepopulated User instance
+UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+```
 
-つまり、公開したい構成を定義し、modelMapper.map を呼び出すことで、目標を達成し、公開したくないものを非表示にします。[Jackson](https://github.com/FasterXML/jackson) のようなライブラリはオブジェクトをシリアライズするときにプロパティの一部を無視する注釈を提供することに反対する方がいますが、このソリューションはデベロッパーがエンティティを高速化する唯一の方法を制限します。DTO と ModelMapper を使用することで、希望するだけの異なるバージョン（と異なる構造）のエンティティを提供できます。
+つまり、公開したい構成を定義し、`modelMapper.map` を呼び出すことで、目標を達成し、公開したくないものを非表示にします。[Jackson](https://github.com/FasterXML/jackson) のようなライブラリはオブジェクトをシリアライズするときにプロパティの一部を無視する注釈を提供することに反対する方がいますが、このソリューションはデベロッパーがエンティティを高速化する唯一の方法を制限します。DTO と ModelMapper を使用することで、希望するだけの異なるバージョン（と異なる構造）のエンティティを提供できます。
 
 ## 何を構築するか？
 
