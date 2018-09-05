@@ -549,6 +549,8 @@ curl -X PUT -H "Content-Type: application/json" -d '{
 }' http://localhost:8080/exams
 ```
 
+{% include asides/spring-boot.markdown %}
+
 ## 次のステップ：例外処理および I18N
 
 `@DTO` 注釈とそのコンパニオン `DTOModelMapper` を使ってエンティティの実装詳細を簡単に非表示にできるしっかりした基本を構築しました。合わせて、DTO をエンティティへ自動的にマッピングし、これら DTO を介して送信されたデータを検証することで RESTful エンドポイントの開発プロセスをスムーズにします。ここで欠落しているのは、これらの検証期間にスローされた例外や、フライト期間に起きるかもしれない予期されない例外を処理する適切な方法です。
