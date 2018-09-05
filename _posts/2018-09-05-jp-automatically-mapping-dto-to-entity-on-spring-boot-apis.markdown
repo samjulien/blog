@@ -117,7 +117,11 @@ spring.datasource.driver-class-name=org.postgresql.Driver
 
 次のステップは、[QuestionMarks をサポートする GitHub レポジトリ](https://github.com/auth0-blog/questionmarks-server) を複製することです。本書の特定タグを確認してください。次のコマンドを発行して達成します。
 
-================ CODE BLOCK
+```bash
+git clone https://github.com/auth0-blog/questionmarks-server.git
+cd questionmarks-server
+git checkout post-2
+```
 
 [前のアーティクル](https://auth0.com/blog/integrating-spring-data-jpa-postgresql-liquibase/)ではエンドポイントを作成しなかったので、ここでアプリケーションを実行するのは良くありません。アプリケーションを実行しても害にはなりません。Liquibase はすでに作成されている５つのエンティティをサポートするテーブルの構造を作成します。しかし、エンドポイントを開発した後にそれが実行するのを待つことは同じ効果を出します。
 
