@@ -25,7 +25,7 @@ related:
 - 2018-05-23-introducing-the-mfa-api
 ---
 
-TL;DR: Scopes only come into play in delegation scenarios, and always limit what an app can do on behalf of a user: a scope cannot allow an application to do more than what the user can do.
+**TL;DR:** Scopes only come into play in delegation scenarios, and always limit what an app can do on behalf of a user: a scope cannot allow an application to do more than what the user can do.
 
 Although stretching scopes beyond that usage is possible, it isn’t trivial or natural – contrary to what common naïve narratives would want you to believe.
 
@@ -64,9 +64,9 @@ Now, let me make a small change to the call syntax. Instead of me/messages, I’
 Here’s the twist. Let me repeat that call, this time asking for the messages for another user. I don’t think anyone would be surprised to see the request result in a 400. And yet, my AT carried the **Mail.Read** scope! The point here is that **the scope is only saying to the authorization server (AS) what the app can do on the user A’s behalf**, which means that the app can list messages just like user A would, but cannot list messages for user B regardless of the presence **Mail.Read** scope. In other words, **Mail** in **Mail.Read** is a resource type, a family of resources — not a specific instance of inbox. But at access time, the specific inbox being requested does matter. Intuitive, right? If the API behavior would be any different we would be in serious trouble.
 Figure 1 provides a visual summary of the scenario.
 
-![A token carrying the scope Mail.Read](https://cdn.auth0.com/blog/on-the-nature-of-oauth2-scopes/oauth2-scopes-mail-api.png)
+![Figure 1](https://cdn.auth0.com/blog/on-the-nature-of-oauth2-scopes/oauth2-scopes-mail-api.png)
 
-Figure 1: A token carrying the scope Mail.Read indicates that the app can gain delegated access to the user’s mailbox. That scope doesn’t grant to the app privileges that the user doesn’t have: attempts to access another user’s mailbox will fail.
+_Figure 1: A token carrying the scope Mail.Read indicates that the app can gain delegated access to the user’s mailbox. That scope doesn’t grant to the app privileges that the user doesn’t have: attempts to access another user’s mailbox will fail._
 
 This is an example of 1). The resource we are asking a token for is an API offering a façade for multiple, more granular resources — with their own lifecycle, permissions, privileges and authorization rules. The scope in this scenario is not expressing one of those finer-grained, “ground reality” resources. The true resources in this example are really the inboxes of each user, and that was carried by the REST call rather than the token used to secure it… and the authorization decision emerged from combining the scope **Mail.Read** (without which we wouldn’t have bothered doing anything else), the identifier of the user (carried through a different claim in the token) and the entity requested (in the URL of the entity, hence in the actual call).
 
@@ -76,9 +76,9 @@ However, that’s not the biggest problem with using scopes to represent granted
 
 To make things more concrete, think of the case in which the resources being accessed are documents in some repository. According to the naïve view I sketched earlier, we can turn scopes from a delegated hint (which requires the resource to intersect the delegated permission in the scope, with the actual user privileges on lower-level resource being requested to obtain the effective permissions reflected in the access control logic) to an actual assigned privilege (the sheer presence of the scope is all the resource need to grant access, without checking anything elsewhere) just by directly expressing the document itself in our token request, rather than a generic API for accessing documents in the repository. The scenario is on display in Figure 2.
 
-![NEEDS PHRASE](https://cdn.auth0.com/blog/on-the-nature-of-oauth2-scopes/oauth2-scopes-doc-api.png)
+![Figure 2](https://cdn.auth0.com/blog/on-the-nature-of-oauth2-scopes/oauth2-scopes-doc-api.png)
 
-Figure 2: it is possible to surface at the protocol level the actual resources being accessed; it is also possible to relieve the web API from the need to keep track of access policies, relying entirely on the claims included with the incoming token. However the price to pay is an omniscient AS and more tokens than the approach shown in Figure 1 required.
+_Figure 2: it is possible to surface at the protocol level the actual resources being accessed; it is also possible to relieve the web API from the need to keep track of access policies, relying entirely on the claims included with the incoming token. However the price to pay is an omniscient AS and more tokens than the approach shown in Figure 1 required._
 
 Note: The mechanism we use for expressing that in the request to the AS doesn’t matter for the purpose of this discussion. for example, we can add a prefix to the scope string to point to the exact document we want, followed by the action we request (e.g. <documentID>:read), although in a real system it would make a big difference in term of usability.
 
