@@ -129,9 +129,17 @@ git checkout post-2
 
 ### 依存関係を追加する
 
-QuestionMarks プロジェクトを複製し、IDE にインポートしたら、DTO の自動マッピング処理に進みます。まず行う最初のステップは ./build.gradle ファイルに依存関係として ModelMapper を追加します。依存関係を [hibernate-java8 library](https://mvnrepository.com/artifact/org.hibernate/hibernate-java8) にも追加します。このアーティクルを使って、Java8-固有クラスをデータベース上の列にマップします。
+QuestionMarks プロジェクトを複製し、IDE にインポートしたら、DTO の自動マッピング処理に進みます。まず行う最初のステップは `./build.gradle` ファイルに依存関係として ModelMapper を追加します。依存関係を [`hibernate-java8` library](https://mvnrepository.com/artifact/org.hibernate/hibernate-java8) にも追加します。このアーティクルを使って、Java8-固有クラスをデータベース上の列にマップします。
 
-================ CODE BLOCK
+```gradle
+// ... other definitions
+
+dependencies {
+	// ... other dependencies
+  compile('org.modelmapper:modelmapper:1.1.0')
+  compile('org.hibernate:hibernate-java8:5.1.0.Final')
+}
+```
 
 ### 試験エンティティをリファクタ―する
 
