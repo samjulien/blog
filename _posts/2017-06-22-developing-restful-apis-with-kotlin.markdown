@@ -20,7 +20,7 @@ tags:
 related:
 - 2017-01-18-how-to-create-a-kotlin-app-and-secure-it-using-jwt
 - 2016-09-20-securing-spring-boot-with-jwts
-alternate_locale_en: jp-developing-restful-apis-with-kotlin
+alternate_locale_ja: jp-developing-restful-apis-with-kotlin
 ---
 
  **TL;DR:** In today's post, we are going to learn how to develop RESTful APIs with Kotlin, the thriving programming language that is eating Java's world. We will start by creating a small Spring Boot RESTful API that handles CRUD operations. After that we are going to [secure this API with Auth0](https://auth0.com/user-management), which brings to the table many security features such as [Multifactor Authentication](https://auth0.com/multifactor-authentication), integration with Social Providers, and so on. In the end, we will also see how to manage the JWTs by ourselves, replacing Auth0 with an in-house solution where we issue our own tokens.
