@@ -291,127 +291,266 @@ public class ExamUT {
 
 ### DTO をエンティティへ自動的にマッピングする
 
+
 ModelMapper ライブラリには [Spring のために特別に設計された拡張](http://modelmapper.org/user-manual/spring-integration/)がありますが、これから実行することには役立たないので使用しません。これから DTO を処理する RESTful API を構築していき、これら DTO をできるだけ自動的にエンティティへ変換したいので、この魔法をするために独自のセットの汎用クラスを作成します。
 
-用心深い読者は ExamUpdateDTO クラスの id プロパティに @Id のマークがついていることにお気づきだと思います。このソリューションはデーターベースに保存される既存エンティティのインスタンスをフェッチするために Spring MVC、JPA/Hibernate、および ModelMapper とこれら @Ids の値と統合するので、この注釈を追加しました。@Id プロパティを含まない DTO の場合、データベースを照会せずに、送信された値を基にした新しいエンティティを作ります。
+用心深い読者は `ExamUpdateDTO` クラスの `id` プロパティに `@Id` のマークがついていることにお気づきだと思います。このソリューションはデーターベースに保存される既存エンティティのインスタンスをフェッチするために Spring MVC、JPA/Hibernate、および ModelMapper とこれら `@Ids` の値と統合するので、この注釈を追加しました。`@Id` プロパティを含まない DTO の場合、データベースを照会せずに、送信された値を基にした新しいエンティティを作ります。
 
-Exam のインスタンスとその DTO のみを処理するようにこのソリューションを制限できますが、QuestionMarks プロジェクトが拡大するにつれて、新しい DTO や新しいエンティティをお互いに変換しなければなりません。ですから、汎用ソリューションを作成して、発生するエンティティや DTO のシナリオを処理するのが状況にかないます。
+`Exam` のインスタンスとその DTO のみを処理するようにこのソリューションを制限できますが、QuestionMarks プロジェクトが拡大するにつれて、新しい DTO や新しいエンティティをお互いに変換しなければなりません。ですから、汎用ソリューションを作成して、発生するエンティティや DTO のシナリオを処理するのが状況にかないます。
 
-これから作成する最初のアーティファクトは DTO をエンティティへ自動的にマッピングする注釈です。com.questionmarks パッケージに util と呼ばれる新しいパッケージを作り、次のコードでそれに DTO インターフェイスを作ります。
+これから作成する最初のアーティファクトは DTO をエンティティへ自動的にマッピングする注釈です。`com.questionmarks` パッケージに `util` と呼ばれる新しいパッケージを作り、次のコードでそれに `DTO` インターフェイスを作ります。
 
-================ CODE BLOCK
+```java
+package com.questionmarks.util;
 
-このインターフェイスは @interface と定義される注釈を実際に生成し、ランタイム (@Retention (RetentionPolicy.RUNTIME)) のメソッド パラメータ (@Target (ElementType.PARAMETER)) で使用されることを意図とします。この注釈が公開する唯一のプロパティは value で、その目標はどの DTO からエンティティが生成/更新されるかを定義することです。
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-次に作成する要素はその作業を担当するクラスです。このクラスは DTO の一部の構造に適合するユーザーによるリクエストを取得し、特定のエンティティ上の DTO を変換します。このクラスは送信した DTO が @Id を含む場合のために、データベースの照会も担当します。このクラスを DTOModelMapper と呼び、次のソースコードでそれを com.questionmarks.util パッケージ内に生成しましょう。
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DTO {
+    Class value();
+}
+```
 
-================ CODE BLOCK
+このインターフェイスは `@interface` と定義される注釈を実際に生成し、ランタイム (`@Retention (RetentionPolicy.RUNTIME)`) のメソッド パラメータ (`@Target (ElementType.PARAMETER)`) で使用されることを意図とします。この注釈が公開する唯一のプロパティは `value` で、その目標はどの DTO からエンティティが生成/更新されるかを定義することです。
+
+次に作成する要素はその作業を担当するクラスです。このクラスは DTO の一部の構造に適合するユーザーによるリクエストを取得し、特定のエンティティ上の DTO を変換します。このクラスは送信した DTO が `@Id` を含む場合のために、データベースの照会も担当します。このクラスを `DTOModelMapper` と呼び、次のソースコードでそれを `com.questionmarks.util` パッケージ内に生成しましょう。
+
+```java
+package com.questionmarks.util;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.modelmapper.ModelMapper;
+import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.http.HttpInputMessage;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.support.WebDataBinderFactory;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.util.Collections;
+
+public class DTOModelMapper extends RequestResponseBodyMethodProcessor {
+    private static final ModelMapper modelMapper = new ModelMapper();
+
+    private EntityManager entityManager;
+
+    public DTOModelMapper(ObjectMapper objectMapper, EntityManager entityManager) {
+        super(Collections.singletonList(new MappingJackson2HttpMessageConverter(objectMapper)));
+        this.entityManager = entityManager;
+    }
+
+    @Override
+    public boolean supportsParameter(MethodParameter parameter) {
+        return parameter.hasParameterAnnotation(DTO.class);
+    }
+
+    @Override
+    protected void validateIfApplicable(WebDataBinder binder, MethodParameter parameter) {
+        binder.validate();
+    }
+
+    @Override
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        Object dto = super.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+        Object id = getEntityId(dto);
+        if (id == null) {
+            return modelMapper.map(dto, parameter.getParameterType());
+        } else {
+            Object persistedObject = entityManager.find(parameter.getParameterType(), id);
+            modelMapper.map(dto, persistedObject);
+            return persistedObject;
+        }
+    }
+
+    @Override
+    protected Object readWithMessageConverters(HttpInputMessage inputMessage, MethodParameter parameter, Type targetType) throws IOException, HttpMediaTypeNotSupportedException, HttpMessageNotReadableException {
+        for (Annotation ann : parameter.getParameterAnnotations()) {
+            DTO dtoType = AnnotationUtils.getAnnotation(ann, DTO.class);
+            if (dtoType != null) {
+                return super.readWithMessageConverters(inputMessage, parameter, dtoType.value());
+            }
+        }
+        throw new RuntimeException();
+    }
+
+    private Object getEntityId(@NotNull Object dto) {
+        for (Field field : dto.getClass().getDeclaredFields()) {
+            if (field.getAnnotation(Id.class) != null) {
+                try {
+                    field.setAccessible(true);
+                    return field.get(dto);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return null;
+    }
+}
+```
 
 これは、ここまで生成したクラスの中で最も複雑ですから、良くご理解いただくために細かく説明していきましょう。
 
-1. このクラスは RequestResponseBodyMethodProcessor に拡張します。リクエストをクラスに変換するプロセス全体を書かなくてもいいように、このプロセッサを利用します。Spring MVC に慣れている方のために、拡張されたクラスは [@RequestBodyparameters](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestBody.html) を処理し事前設定するものです。これは、例えば JSON 本文などを取り、クラスのインスタンスで変換することを意味します。今回は、基本クラスを調整して、代わりに DTO のインスタンスを事前設定します。
-2. このクラスは ModelMapper のスタティック インスタンスを含みます。このインスタンスは DTO をエンティティへマップするために使用されます。
-3. このクラスは EntityManager のインスタンスを含みます。DTO を介してパスした id を基に、既存エンティティのデータベースをクエリできるように、このクラスにエンティティ マネージャを挿入します。
-4. supportsParameter メソッドを上書きします。このメソッドを上書きせずに、新しいクラスは丁度、基本クラスのように @RequestBody パラメータに適用されます。ですから @DTO 注釈のみに適用されるように調整する必要があります。
-5. validateIfApplicable を上書きします。基本クラスはパラメータに @Valid または @Validated のマークが付いている場合のみ [Bean Validation](http://beanvalidation.org/) を実行します。この動作を変更してすべての DTO に bean validation を適用します。
-6. resolveArgument を上書きします。これはこの実装で最も重要なメソッドです。このプロセスでそれを調整して ModelMapper インスタンスを埋め込み、DTO をエンティティへマップします。しかし、マッピングする前に、新しいエンティティを処理するか、または既存エンティティへ DTO によって提案された変更を適用しなければならないかをチェックします。
-7. readWithMessageConverters メソッドを上書きします。基本クラスはこのパラメターのタイプを取り、このリクエストをそれのインスタンスに変換します。このメソッドを上書きしてこの変換が DTO 注釈で定義されたタイプにし、DTO からエンティティへのマッピングを resolveArgument メソッドに残します。
-8. getEntityId メソッドを定義します。このメソッドは事前設定される DTO のフィールドで反復し、@Id のマークが付いているものをチェックします。それが見つかれば、フィールドの値が返され、resolveArgument はそれと共にデータベースをクエリできるようになります。
+1. このクラスは `RequestResponseBodyMethodProcessor` に拡張します。リクエストをクラスに変換するプロセス全体を書かなくてもいいように、このプロセッサを利用します。Spring MVC に慣れている方のために、拡張されたクラスは [`@RequestBody` parameters](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestBody.html) を処理し事前設定するものです。これは、例えば JSON 本文などを取り、クラスのインスタンスで変換することを意味します。今回は、基本クラスを調整して、代わりに DTO のインスタンスを事前設定します。
+2. このクラスは `ModelMapper` のスタティック インスタンスを含みます。このインスタンスは DTO をエンティティへマップするために使用されます。
+3. このクラスは `EntityManager` のインスタンスを含みます。DTO を介してパスした `id` を基に、既存エンティティのデータベースをクエリできるように、このクラスにエンティティ マネージャを挿入します。
+4. `supportsParameter` メソッドを上書きします。このメソッドを上書きせずに、新しいクラスは丁度、基本クラスのように `@RequestBody` パラメータに適用されます。ですから `@DTO` 注釈のみに適用されるように調整する必要があります。
+5. `validateIfApplicable` を上書きします。基本クラスはパラメータに `@Valid` または `@Validated` のマークが付いている場合のみ [Bean Validation](http://beanvalidation.org/) を実行します。この動作を変更してすべての DTO に bean validation を適用します。
+6. `resolveArgument` を上書きします。これはこの実装で最も重要なメソッドです。このプロセスでそれを調整して `ModelMapper` インスタンスを埋め込み、DTO をエンティティへマップします。しかし、マッピングする前に、新しいエンティティを処理するか、または既存エンティティへ DTO によって提案された変更を適用しなければならないかをチェックします。
+7. `readWithMessageConverters` メソッドを上書きします。基本クラスはこのパラメターのタイプを取り、このリクエストをそれのインスタンスに変換します。このメソッドを上書きしてこの変換が `DTO` 注釈で定義されたタイプにし、DTO からエンティティへのマッピングを `resolveArgument` メソッドに残します。
+8. `getEntityId` メソッドを定義します。このメソッドは事前設定される DTO のフィールドで反復し、`@Id` のマークが付いているものをチェックします。それが見つかれば、フィールドの値が返され、`resolveArgument` はそれと共にデータベースをクエリできるようになります。
 
-サイズは大きいですが、このクラスの実装を理解するのは難しくありません。要約すると、これは DTO のインスタンスを事前設定し、@DTO 注釈で定義され、この DTO のプロパティをエンティティへマップします。これを魅力的にするには、エンティティの新しいインスタンスを常に事前設定する代わりに、まず、データベースから既存エンティティをフェッチする必要があるか否かを見るために DTO に @Id プロパティがあるかをチェックします。
+サイズは大きいですが、このクラスの実装を理解するのは難しくありません。要約すると、これは DTO のインスタンスを事前設定し、`@DTO` 注釈で定義され、この DTO のプロパティをエンティティへマップします。これを魅力的にするには、エンティティの新しいインスタンスを常に事前設定する代わりに、まず、データベースから既存エンティティをフェッチする必要があるか否かを見るために DTO に `@Id` プロパティがあるかをチェックします。
 
-この Spring Boot アプリケーションで DTOModelMapper クラスをアクティブ化するには、WebMvcConfigurerAdapter を拡張して引数リゾルバとしてそれを追加します。次のコンテンツで、com.questionmarks パッケージに WebMvcConfig と呼ばれるクラスを作りましょう。
+この Spring Boot アプリケーションで `DTOModelMapper` クラスをアクティブ化するには、`WebMvcConfigurerAdapter` を拡張して引数リゾルバとしてそれを追加します。次のコンテンツで、`com.questionmarks` パッケージに `WebMvcConfig` と呼ばれるクラスを作りましょう。
 
-================ CODE BLOCK
+```java
+package com.questionmarks;
 
-WebMvcConfig 構成クラスのインスタンスが Spring によって作成されると、ApplicationContext および EntityManager の２つのコンポーネントが挿入されます。後者は DTOModelMapper を作るために使用され、前に説明したように、データベースをクエリするのに役立ちます。ApplicationContext は [ObjectMapper](https://fasterxml.github.io/jackson-databind/javadoc/2.5/com/fasterxml/jackson/databind/ObjectMapper.html) のインスタンスを作るために使用されます。 このマッパーは Java オブジェクト間を変換したり JSON 構造を一致する機能を提供し、DTOModelMapper とそのスーパークラス RequestResponseBodyMethodProcessor によって必要とされます。
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.questionmarks.util.DTOModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-[「DTO をエンティティへ自動的に Spring Boot 上にマッピングする」](https://twitter.com/intent/tweet?text=%22Mapping+DTOs+to+entities+automatically+on+Spring+Boot%22%20via%20@auth0%20http://auth0.com/blog/automatically-mapping-dto-to-entity-on-spring-boot-apis/)
+import javax.persistence.EntityManager;
+import java.util.List;
 
-[これをツイートする](https://twitter.com/intent/tweet?text=%22Mapping+DTOs+to+entities+automatically+on+Spring+Boot%22%20via%20@auth0%20http://auth0.com/blog/automatically-mapping-dto-to-entity-on-spring-boot-apis/)
+@Configuration
+public class WebMvcConfig extends WebMvcConfigurerAdapter {
+    private final ApplicationContext applicationContext;
+    private final EntityManager entityManager;
 
-このプロジェクトの WebMvcConfig が正しく構成されたので、RESTful API 上の @DTO 注釈を利用して自動的に DTO をエンティティへマップします。これを実行するために、試験を作成・更新するリクエストに同意するエンドポイントや、すべての既存の試験をリストにするエンドポイントを表示するコントローラーを作成していきます。このコントローラーを作成する前に、試験の永続化を処理できるようにするクラスを作っていきます。このクラスを ExamRepository と呼び、次のコードで com.questionmarks.persistence という新しいパッケージを作っていきます。
+    @Autowired
+    public WebMvcConfig(ApplicationContext applicationContext, EntityManager entityManager) {
+        this.applicationContext = applicationContext;
+        this.entityManager = entityManager;
+    }
 
-================ CODE BLOCK
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        super.addArgumentResolvers(argumentResolvers);
+        ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().applicationContext(this.applicationContext).build();
+        argumentResolvers.add(new DTOModelMapper(objectMapper, entityManager));
+    }
+}
+```
 
-JpaRepository インターフェイスには save (Exam exam)、findAll ()、および delete (Exam exam) のようなメソッドが含まれていますので、 ほかに実装する必要があるものはありません。よって、このレポジトリ インターフェイスを使用し、上記のエンドポイントを公開するコントローラーを作成できます。com.questionmarks.controller と呼ばれる新しいパッケージを作り、それに ExamRestController と呼ばれるクラスを追加しましょう。
+`WebMvcConfig` 構成クラスのインスタンスが Spring によって作成されると、`ApplicationContext` および `EntityManager` の２つのコンポーネントが挿入されます。後者は `DTOModelMapper` を作るために使用され、前に説明したように、データベースをクエリするのに役立ちます。`ApplicationContext` は [`ObjectMapper`](https://fasterxml.github.io/jackson-databind/javadoc/2.5/com/fasterxml/jackson/databind/ObjectMapper.html) のインスタンスを作るために使用されます。 このマッパーは Java オブジェクト間を変換したり JSON 構造を一致する機能を提供し、`DTOModelMapper` とそのスーパークラス `RequestResponseBodyMethodProcessor` によって必要とされます。
 
-================ CODE BLOCK
+{% include tweet_quote.html quote_text="DTO をエンティティへ自動的に Spring Boot 上にマッピングする" %}
 
-このクラスの実装はとても簡単でした。各エンドポイントに１つのメソッドで３つのメソッドを作り、コンストラクターを介して ExamRepository インターフェイスを挿入しました。定義された最初のメソッド getExams は GET リクエストを処理し、例のリストを返すために実装されました。２つめのエンドポイント newExam はExamCreationDTO を含む POST リクエストを処理し、DTOModelMapper の助けで Exam の新しいインスタンスに変換するために実装されました。３つめで最後のメソッドは editExam と呼ばれ、PUT リクエストを処理するエンドポイントとして定義され、ExamUpdateDTO オブジェクトを既存の Exam インスタンスに変換します。
+このプロジェクトの `WebMvcConfig` が正しく構成されたので、RESTful API 上の `@DTO` 注釈を利用して自動的に DTO をエンティティへマップします。これを実行するために、試験を作成・更新するリクエストに同意するエンドポイントや、すべての既存の試験をリストにするエンドポイントを表示するコントローラーを作成していきます。このコントローラーを作成する前に、試験の永続化を処理できるようにするクラスを作っていきます。このクラスを `ExamRepository` と呼び、次のコードで `com.questionmarks.persistence` という新しいパッケージを作っていきます。
 
-この最後のメソッドが永続化 Exam のインスタンスを見つける DTO を介して送信された id を使用し、メソッドを提供する前に３つのプロパティを置換することを強調することが重要です。置換されたプロパティは title、description、および editedAt で、ExamUpdateDTO で定義されたとおりです。
+```java
+package com.questionmarks.persistence;
 
-IDE を介してまたは gradle bootRun コマンドを介してここでアプリケーションを実行すると、このアプリケーションが起動し、ユーザーは生成したエンドポイントとの相互作用が可能になります。次のコマンドのリストは生成した DTO を使って、試験を生成、更新、取得するための [curl](https://curl.haxx.se/) の使い方を示します。
+import com.questionmarks.model.Exam;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-================ CODE BLOCK
+public interface ExamRepository extends JpaRepository<Exam, Long> {
+}
+```
 
-## 補足：Spring API を Auth0 でセキュアにする
+`JpaRepository` インターフェイスには `save (Exam exam)`、`findAll ()`、および `delete (Exam exam)` のようなメソッドが含まれていますので、 ほかに実装する必要があるものはありません。よって、このレポジトリ インターフェイスを使用し、上記のエンドポイントを公開するコントローラーを作成できます。`com.questionmarks.controller` と呼ばれる新しいパッケージを作り、それに `ExamRestController` と呼ばれるクラスを追加しましょう。
 
-アプリケーションを Auth0 でセキュアにすることは非常に簡単で、たくさんの素晴らしい機能を提供します。Auth0 を使うと、数行のコード行を書くだけで、強固な[ID 管理ソリューション](https://auth0.com/user-management)、[シングル サインオン](https://auth0.com/docs/sso/single-sign-on)、[ソーシャル ID プロバイダー（Facebook、GitHub、Twitter など）](https://auth0.com/docs/identityproviders)のサポート、および[エンタープライズ ID プロバイダー（Active Directory、LDAP、SAML、カスタムなど）](https://auth0.com/enterprise)のサポートを得ることができます。
+```java
+package com.questionmarks.controller;
 
-以下のセクションでは、Spring API をセキュアにする Auth0 を使用する方法を学んでいきます。ご覧のように、そのプロセスはシンプルで素早くできます。
+import com.questionmarks.model.Exam;
+import com.questionmarks.model.dto.ExamCreationDTO;
+import com.questionmarks.model.dto.ExamUpdateDTO;
+import com.questionmarks.persistence.ExamRepository;
+import com.questionmarks.util.DTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-### API を作る
+import java.util.List;
 
-まず、[無料 Auth0 アカウント](https://auth0.com/signup) で API を作成します。そのためには、[管理ダッシュボードの API セクション](https://manage.auth0.com/#/apis)に移動し、「API の作成」をクリックします。表示されたダイアログ上で、この API を 「連絡先 API」 と名付け（名前はあまり重要ではありません）、https://contacts.mycompany.com （後ほど、この値を使用します）としてそれを識別します。
+@RestController
+@RequestMapping("/exams")
+public class ExamRestController {
+    private ExamRepository examRepository;
 
-それを作成した後、API の「スコープ」タブに移動し、必要なスコープを定義します。このサンプルでは、２つのスコープのread:contacts および add:contacts を定義します。これらは、同じ企業（連絡先）上で２つの違う操作（読み取りおよび追加）を表します。
+    public ExamRestController(ExamRepository examRepository) {
+        this.examRepository = examRepository;
+    }
 
-================ IMAGE
+    @GetMapping
+    public List<Exam> getExams() {
+        return examRepository.findAll();
+    }
 
-### Auth0 依存関係を登録する
+    @PostMapping
+    public void newExam(@DTO(ExamCreationDTO.class) Exam exam) {
+        examRepository.save(exam);
+    }
 
-２つめのステップは [auth0-spring-security-api](https://mvnrepository.com/artifact/com.auth0/auth0-spring-security-api) と呼ばれる依存関係をインポートすることです。これは以下の構成を pom.xml（[Gradle、Ivy などでこれを実行することは難しくありません](https://mvnrepository.com/artifact/com.auth0/auth0-spring-security-api)）に含めて Maven プロジェクトで実行します。
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void editExam(@DTO(ExamUpdateDTO.class) Exam exam) {
+        examRepository.save(exam);
+    }
+}
+```
 
-================ CODE BLOCK
+このクラスの実装はとても簡単でした。各エンドポイントに１つのメソッドで３つのメソッドを作り、コンストラクターを介して `ExamRepository` インターフェイスを挿入しました。定義された最初のメソッド `getExams` は `GET` リクエストを処理し、例のリストを返すために実装されました。２つめのエンドポイント `newExam` は`ExamCreationDTO` を含む `POST` リクエストを処理し、`DTOModelMapper` の助けで `Exam` の新しいインスタンスに変換するために実装されました。３つめで最後のメソッドは `editExam` と呼ばれ、`PUT` リクエストを処理するエンドポイントとして定義され、`ExamUpdateDTO` オブジェクトを既存の `Exam` インスタンスに変換します。
 
-### Auth0 と Spring Security を統合する
+この最後のメソッドが永続化 `Exam` のインスタンスを見つける DTO を介して送信された `id` を使用し、メソッドを提供する前に３つのプロパティを置換することを強調することが重要です。置換されたプロパティは `title`、`description`、および `editedAt` で、`ExamUpdateDTO` で定義されたとおりです。
 
-３つめのステップは [WebSecurityConfigurerAdapter](https://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter.html) クラスを拡張することから成ります。 この拡張では、JwtWebSecurityConfigurer を使用して Auth0 と Spring Security を統合します。
+IDE を介してまたは `gradle bootRun` コマンドを介してここでアプリケーションを実行すると、このアプリケーションが起動し、ユーザーは生成したエンドポイントとの相互作用が可能になります。次のコマンドのリストは生成した DTO を使って、試験を生成、更新、取得するための [`curl`](https://curl.haxx.se/) の使い方を示します。
 
-================ CODE BLOCK
+```bash
+# retrieves all exams
+curl http://localhost:8080/exams
 
-コードの資格情報をハードコードにしたくないので、以下の２つの環境プロパティによって SecurityConfig にします。
+# adds a new exam
+curl -X POST -H "Content-Type: application/json" -d '{
+    "title": "JavaScript",
+    "description": "JS developers."
+}' http://localhost:8080/exams
 
-- apiAudience：これは、Auth0 (https://contacts.mycompany.com) で作成した API の識別子として設定する値です。
-- issuer：これは HTTP プロトコルを含む Auth0 でのドメインです。例えば：https://bk-samples.auth0.com/。
+# adds another exam while ignoring fields not included in the DTO
+curl -X POST -H "Content-Type: application/json" -d '{
+    "title": "Python Interview Questions",
+    "description": "An exam focused on helping Python developers.",
+    "published": true
+}' http://localhost:8080/exams
 
-これらを Spring アプリケーション上のプロパティファイルに設定しましょう（例 application.properties）。
-
-================ CODE BLOCK
-
-### Auth0 でエンドポイントをセキュアする
-
-Auth0 と Spring Security を統合した後、以下のように Spring Security 注釈でエンドポイントを簡単にセキュアします。
-
-================ CODE BLOCK
-
-統合は [hasAuthority Spring EL 式](https://docs.spring.io/spring-security/site/docs/current/reference/html/el-access.html) の使用を可能にし、access\_token の scope を基にエンドポイントへのアクセスを制限します。では、このトークンの取得方法を見てみましょう。
-
-### Auth0 アプリケーションを作成する
-
-このセクションの中心は Spring APIを Auth0 でセキュアすることなので、[構成可能な Auth0 アプリケーションがあるライブの Angular アプリを使用します](http://auth0.digituz.com.br/?clientID=ssII6Fu1qfFI4emuNeXeadMv8iTQn1hJ&amp;domain=bk-samples.auth0.com&amp;audience=https:%2F%2Fcontacts.mycompany.com%2F&amp;scope=read:contacts)。このアプリを使用するには、それを表す Auth0 アプリケーションを作る必要があります。[_管理ダッシュボードのクライアントセクション_](https://manage.auth0.com/#/applications) に移動し、「アプリケーション作成」ボタンをクリックしてこのアプリケーションを作成しましょう。
-
-表示のポップアップ上で、この新規アプリケーションを「アプリケーションの連絡先」と名付け、アプリケーションタイプとして「単ページ Web アプリ」を選択しましょう。「作成」ボタンを押してから、このアプリケーションの「設定」に移動し、２つのプロパティを変更します。まず、「許可された Web オリジン」プロパティに http://auth0.digituz.com.br/ を設定します。次に、「許可されたコールバック URL」プロパティに http://auth0.digituz.com.br/callback を設定します。
-
-これでこのアプリケーションが保存できたので、[サンプル Angular アプリを Auth0 でセキュアする](http://auth0.digituz.com.br/?clientID=ssII6Fu1qfFI4emuNeXeadMv8iTQn1hJ&amp;domain=bk-samples.auth0.com&amp;audience=https:%2F%2Fcontacts.mycompany.com%2F&amp;scope=read:contacts) に移動します。そこで、以下４つのプロパティに正しい値を設定します。
-
-- clientID：「連絡先アプリケーション」の「設定」タブの「クライアント ID」フィールドからこの値を貼り付けます。
-- domain：「連絡先アプリケーション」の「設定」タブからこの値も貼り付けます。
-- audience：このプロパティは以前作成した「連絡先 API」の識別子を満たすように設定します。
-- scope：このプロパティは access\_token がバックエンド API にアクセスする authority を定義します。例えば：read:contacts または read:contacts add:contacts の両方です。
-
-それから、「Auth0 でサインイン」ボタンを押します。
-
-================ IMAGE
-
-サインインした後、このアプリケーションを使ってセキュアした Spring API にリクエストを送信します。例えば、GET リクエストを http://localhost:8080/contacts/ に発行するのであれば、Angular アプリは Authorization ヘッダーに access\_token を含み、この API は連絡先のリストを返します。
-
-================ IMAGE
+# updates the first exam changing its title and description
+curl -X PUT -H "Content-Type: application/json" -d '{
+    "id": 1,
+    "title": "JavaScript Interview Questions",
+    "description": "An exam focused on helping JS developers."
+}' http://localhost:8080/exams
+```
 
 ## 次のステップ：例外処理および I18N
 
-@DTO 注釈とそのコンパニオン DTOModelMapperを使ってエンティティの実装詳細を簡単に非表示にできるしっかりした基本を構築しました。合わせて、DTO をエンティティへ自動的にマッピングし、これら DTO を介して送信されたデータを検証することで RESTful エンドポイントの開発プロセスをスムーズにします。ここで欠落しているのは、これらの検証期間にスローされた例外や、フライト期間に起きるかもしれない予期されない例外を処理する適切な方法です。
+`@DTO` 注釈とそのコンパニオン `DTOModelMapper` を使ってエンティティの実装詳細を簡単に非表示にできるしっかりした基本を構築しました。合わせて、DTO をエンティティへ自動的にマッピングし、これら DTO を介して送信されたデータを検証することで RESTful エンドポイントの開発プロセスをスムーズにします。ここで欠落しているのは、これらの検証期間にスローされた例外や、フライト期間に起きるかもしれない予期されない例外を処理する適切な方法です。
 
 私たちは API を購入する誰もにできるだけ素晴らしい経験を提供したいと願っています。これにはよくフォーマットされたエラー メッセージを与えることも含まれます。それ以上に、私たちは英語以外の他の言語を話すユーザーとコミュニケーションができるようにしたいと思います。よって、次回のアーティクルでは、Spring Boot API で例外の処理や I18N（国際化）に取り組んでいきます。お見逃しなく！

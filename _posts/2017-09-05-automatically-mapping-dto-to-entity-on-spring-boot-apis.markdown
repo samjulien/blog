@@ -518,7 +518,7 @@ The implementation of this class ended up being quite simple. We just created th
 
 It's important to highlight that this last method uses the `id` sent through the `DTO` to find a persisted instance of `Exam`, and then replaces three properties on it before providing to the method. The properties replaced are `title`, `description`, and `editedAt`, exactly as defined in the `ExamUpdateDTO`.
 
-Running the application now, through our IDE or through the `gradle bootRun` command, will start our application and allow users to interact with the endpoints created. The following list of commands shows how to use [curl](https://curl.haxx.se/) to create, update, and retrieve exams, using the DTOs created:
+Running the application now, through our IDE or through the `gradle bootRun` command, will start our application and allow users to interact with the endpoints created. The following list of commands shows how to use [`curl`](https://curl.haxx.se/) to create, update, and retrieve exams, using the DTOs created:
 
 ```bash
 # retrieves all exams
