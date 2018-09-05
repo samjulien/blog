@@ -4,7 +4,7 @@ title: "Spring Boot API で DTO をエンティティへ自動的にマッピン
 metatitle: "Spring Boot API で DTO をエンティティへ自動的にマッピングする"
 description: "ModelMapper が Spring Boot API 上のエンティティへの DTO のマッピング プロセス自動化にどのように役立つか学びましょう。"
 metadescription: "ModelMapper が Spring Boot API 上のエンティティへの DTO のマッピング プロセス自動化にどのように役立つか学びましょう。"
-date: 2018-09-05 08:45
+date: 2017-09-05 08:45
 category: Technical Guide, Java, Spring Boot
 author:
   name: "Bruno Krebs"
