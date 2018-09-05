@@ -96,11 +96,22 @@ QuestionMarks の背景にある考え方は、このアプリケーションは
 
 Docker をインストールする必要がありますが、それをインストールするプロセスは簡単です（[MacOS はこちらのリンク](https://www.docker.com/docker-mac)、[Windows はこちらのリンク](https://www.docker.com/docker-windows)、および [Ubuntu はこちらのリンク](https://docs.docker.com/engine/installation/linux/ubuntu/)）。Docker を正しくインストールすると、Docker 化した PostgreSQL のインスタンスを次のように実行できます。
 
-================ CODE BLOCK
+```bash
+docker run --name questionmarks-psql \
+    -p 5432:5432 \
+    -e POSTGRES_DB=questionmarks \
+    -e POSTGRES_PASSWORD=mysecretpassword \
+    -d postgres
+```
 
-Docker インスタンス内で PostgreSQL を起動したくない場合、または別の PostgreSQL インスタンスがすでにある場合は、questionmarks と呼ばれるデータベースがそれにあり、postgres ユーザーがパスワードとして mysecretpassword を持っていることを保証する必要があります。または、./src/main/resources/application.properties ファイルのこれら値を変更します。
+Docker インスタンス内で PostgreSQL を起動したくない場合、または別の PostgreSQL インスタンスがすでにある場合は、`questionmarks` と呼ばれるデータベースがそれにあり、`postgres` ユーザーがパスワードとして `mysecretpassword` を持っていることを保証する必要があります。または、`./src/main/resources/application.properties` ファイルのこれら値を変更します。
 
-================ CODE BLOCK
+```properties
+spring.datasource.url=jdbc:postgresql://localhost/questionmarks
+spring.datasource.username=postgres
+spring.datasource.password=mysecretpassword
+spring.datasource.driver-class-name=org.postgresql.Driver
+```
 
 ### QuestionMarks を複製する
 
