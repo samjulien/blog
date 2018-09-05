@@ -76,7 +76,7 @@ However, that’s not the biggest problem with using scopes to represent granted
 
 To make things more concrete, think of the case in which the resources being accessed are documents in some repository. According to the naïve view I sketched earlier, we can turn scopes from a delegated hint (which requires the resource to intersect the delegated permission in the scope, with the actual user privileges on lower-level resource being requested to obtain the effective permissions reflected in the access control logic) to an actual assigned privilege (the sheer presence of the scope is all the resource need to grant access, without checking anything elsewhere) just by directly expressing the document itself in our token request, rather than a generic API for accessing documents in the repository. The scenario is on display in Figure 2.
 
-![OAuth2 Scopes assigned privilege  example](https://cdn.auth0.com/blog/on-the-nature-of-oauth2-scopes/oauth2-scopes-doc-api.png)
+![OAuth2 Scopes assigned privilege example](https://cdn.auth0.com/blog/on-the-nature-of-oauth2-scopes/oauth2-scopes-doc-api.png)
 
 _Figure 2: it is possible to surface at the protocol level the actual resources being accessed; it is also possible to relieve the web API from the need to keep track of access policies, relying entirely on the claims included with the incoming token. However the price to pay is an omniscient AS and more tokens than the approach shown in Figure 1 required._
 
