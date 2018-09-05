@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "On The Nature of OAuth2’s Scopes"
-metatile: ""
 description: "Stretching OAuth2 scopes beyond intended usage leads to trouble in complex architectures."
 metadescription: ""
 date: 2018-09-05 08:30
