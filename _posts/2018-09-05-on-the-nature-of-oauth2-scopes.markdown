@@ -2,7 +2,7 @@
 layout: post
 title: "On The Nature of OAuth2’s Scopes"
 description: "Stretching OAuth2 scopes beyond intended usage leads to trouble in complex architectures."
-metadescription: ""
+metadescription: "Debunking OAuth2 scopes and diving into use-cases of stretching scopes beyond their intended usage which leads to trouble in complex architectures. Learn more."
 date: 2018-09-05 08:30
 category: Technical Guide, Identity, OAuth2
 author:
