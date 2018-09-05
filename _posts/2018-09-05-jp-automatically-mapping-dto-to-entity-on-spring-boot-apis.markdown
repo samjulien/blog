@@ -179,27 +179,115 @@ alter table exam
 
 ### DTO を作成する
 
-ユーザーに直接変更してほしくない機微なプロパティを保留する Exam エンティティを変更したので、ユーザーのリクエストを良く処理するために２つの DTO を作成していきます。最初の DTO は新しい試験の作成を担当するので、ExamCreationDTO と呼びます。com.questionmarks.model パッケージ内のdto と呼ばれる新しいパッケージにこの DTO クラスを作成します。このクラスには次のソースコードが含まれます。
+ユーザーに直接変更してほしくない機微なプロパティを保留する `Exam` エンティティを変更したので、ユーザーのリクエストを良く処理するために２つの DTO を作成していきます。最初の DTO は新しい試験の作成を担当するので、`ExamCreationDTO` と呼びます。`com.questionmarks.model` パッケージ内の `dto` と呼ばれる新しいパッケージにこの DTO クラスを作成します。このクラスには次のソースコードが含まれます。
 
-================ CODE BLOCK
+```java
+package com.questionmarks.model.dto;
 
-新しい試験の作成に協力的なユーザーは新しい DTO で定義されている構造を含むリクエストを送信する必要があります。つまり、このユーザーは title と description を正確に送信する必要があります。createdAt プロパティと editedAt プロパティの両方は DTO 自体によって事前設定されます。これらプロパティを介して値を送信しようとするユーザーがあるときは、このアプリケーションは @JsonIgnore のマークがついているのでそれらを無視します。そのほかに、Exam エンティティに追加した published プロパティは DTO がそれを含まなかったので、外部からは完全に非表示にされます。
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
-これから作成する２つめの DTO は既存の試験を更新する担当になります。この DTO を ExamUpdateDTO と呼び、それを次のコードで com.questionmarks.model.dto パッケージに含みます。
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
-================ CODE BLOCK
+@Getter
+@Setter
+public class ExamCreationDTO {
+    @NotNull
+    private String title;
 
-他の DTO との違いは、これは更新する id プロパティを含み、このフィールドを更新するのは意味がないので、createdAt プロパティがありません。
+    @NotNull
+    private String description;
+
+    @JsonIgnore
+    private final LocalDateTime createdAt = LocalDateTime.now();
+
+    @JsonIgnore
+    private final LocalDateTime editedAt = LocalDateTime.now();
+}
+```
+
+新しい試験の作成に協力的なユーザーは新しい DTO で定義されている構造を含むリクエストを送信する必要があります。つまり、このユーザーは `title` と `description` を正確に送信する必要があります。`createdAt` プロパティと `editedAt` プロパティの両方は DTO 自体によって事前設定されます。これらプロパティを介して値を送信しようとするユーザーがあるときは、このアプリケーションは `@JsonIgnore` のマークがついているのでそれらを無視します。そのほかに、`Exam` エンティティに追加した `published` プロパティは DTO がそれを含まなかったので、外部からは完全に非表示にされます。
+
+これから作成する２つめの DTO は既存の試験を更新する担当になります。この DTO を `ExamUpdateDTO` と呼び、それを次のコードで `com.questionmarks.model.dto` パッケージに含みます。
+
+```java
+package com.questionmarks.model.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+public class ExamUpdateDTO {
+    @Id
+    @NotNull
+    private Long id;
+
+    @NotNull
+    private String title;
+
+    @NotNull
+    private String description;
+
+    @JsonIgnore
+    private final LocalDateTime editedAt = LocalDateTime.now();
+}
+```
+
+他の DTO との違いは、これは更新する `id` プロパティを含み、このフィールドを更新するのは意味がないので、`createdAt` プロパティがありません。
 
 DTO の視点から、これは大体、試験を安全に作成し、更新するために必要なことです。これから、これらマッピングを手動で操作しなくてもいいように、DTO をエンティティへマッピングするプロセスの合理化に集中していきます。
 
-ちょっとお待ちください！次の作業に進む前に、ModelMapper が実際に DTO を Exam エンティティへマッピングできることを保証する小さな単体テストを作りましょう。（./src/test/java/com/questionmarks/ フォルダ内の）テストコードにある com.questionmarks パッケージ内に model と呼ばれる新しいパッケージを作りましょう。 それから、次のコード内に ExamUT と呼ばれるクラスを作ります。
+ちょっとお待ちください！次の作業に進む前に、ModelMapper が実際に DTO を `Exam` エンティティへマッピングできることを保証する小さな単体テストを作りましょう。（`./src/test/java/com/questionmarks/` フォルダ内の）テストコードにある `com.questionmarks` パッケージ内に `model` と呼ばれる新しいパッケージを作りましょう。 それから、次のコード内に `ExamUT` と呼ばれるクラスを作ります。
 
-================ CODE BLOCK
+```java
+package com.questionmarks.model;
 
-このクラスで唯一定義された @Test は特定の title と description で ExamCreationDTO のインスタンスを作り、新しい Exam を生成する ModelMapper のインスタンスを使用します。それから、この Exam がExamCreationDTO によって保留されるものと同じ title、description、createdAt、および editedAt 値を含むかを確認します。
+import com.questionmarks.model.dto.ExamCreationDTO;
+import com.questionmarks.model.dto.ExamUpdateDTO;
+import org.junit.Test;
+import org.modelmapper.ModelMapper;
 
-最後に、ExamUpdateDTO のインスタンスを作成し、title、description、および editedAt プロパティが更新されたか、createdAt プロパティが変更されないままかを確認する前に作成された Exam インスタンスに適用します。ここで、IDE または gradle test コマンドを介してテストを実行すると、良い結果が見られるはずです。これから、エンジンの残りを構築し、DTO をエンティティへマップしていきます。
+import static org.junit.Assert.assertEquals;
+
+public class ExamUT {
+    private static final ModelMapper modelMapper = new ModelMapper();
+
+    @Test
+    public void checkExamMapping() {
+        ExamCreationDTO creation = new ExamCreationDTO();
+        creation.setTitle("Testing title");
+        creation.setDescription("Testing description");
+
+        Exam exam = modelMapper.map(creation, Exam.class);
+        assertEquals(creation.getTitle(), exam.getTitle());
+        assertEquals(creation.getDescription(), exam.getDescription());
+        assertEquals(creation.getCreatedAt(), exam.getCreatedAt());
+        assertEquals(creation.getEditedAt(), exam.getEditedAt());
+
+        ExamUpdateDTO update = new ExamUpdateDTO();
+        update.setTitle("New title");
+        update.setDescription("New description");
+
+        modelMapper.map(update, exam);
+        assertEquals(update.getTitle(), exam.getTitle());
+        assertEquals(update.getDescription(), exam.getDescription());
+        assertEquals(creation.getCreatedAt(), exam.getCreatedAt());
+        assertEquals(update.getEditedAt(), exam.getEditedAt());
+    }
+}
+```
+
+このクラスで唯一定義された `@Test` は特定の `title` と `description` で `ExamCreationDTO` のインスタンスを作り、新しい `Exam` を生成する `ModelMapper` のインスタンスを使用します。それから、この `Exam` が `ExamCreationDTO` によって保留されるものと同じ `title`、`description`、`createdAt`、および `editedAt` 値を含むかを確認します。
+
+最後に、`ExamUpdateDTO` のインスタンスを作成し、`title`、`description`、および `editedAt` プロパティが更新されたか、`createdAt` プロパティが変更されないままかを確認する前に作成された `Exam` インスタンスに適用します。ここで、IDE または `gradle test` コマンドを介してテストを実行すると、良い結果が見られるはずです。これから、エンジンの残りを構築し、DTO をエンティティへマップしていきます。
 
 ### DTO をエンティティへ自動的にマッピングする
 
