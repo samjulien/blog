@@ -46,7 +46,7 @@ php artisan dump-server
 
 All `dump` calls will be displayed in the console window once the server has started.
 
-![Symfony Dump Server Integration](https://cdn.auth0.com/blog/laravel/laravel-dump-server.gif)
+![Laravel - Symfony Dump Server Integration](https://cdn.auth0.com/blog/laravel/laravel-dump-server.gif)
 _Source: murze.be_
 
 ### 2. Better Support For Filesystem
@@ -216,7 +216,7 @@ _Laravel Nova_
 
 * The _resources/assets_ directory has been flattened into _resources_.
 
-Check out other [Laravel 5.7 updates here](https://github.com/laravel/framework/releases/tag/v5.7.0).
+Check out other [Laravel 5.7 updates on GitHub](https://github.com/laravel/framework/releases/tag/v5.7.0).
 
 ## Upgrading to Laravel 5.7
 
@@ -228,7 +228,7 @@ Check out this [comprehensive upgrade guide](https://laravel.com/docs/master/upg
 
 ## Conclusion
 
-**Laravel 5.7** came loaded with new features and significant improvements. And **Nova** is a product every Laravel developer should try out!
+**Laravel 5.7** PHP framework came loaded with new features and significant improvements. And **Nova** is a product every Laravel developer should try out!
 
 Have you upgraded to Laravel v5.7 yet? What are your thoughts? Let me know in the comments section! 😊
 
