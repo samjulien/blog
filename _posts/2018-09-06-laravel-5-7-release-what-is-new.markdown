@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "Laravel 5.7 Release: What's New?"
-description: "Laravel 5.7 is due to be released at Laracon EU. What's new? What improvements were made? Learn how to build better PHP applications with this new release."
-longdescription: "Laravel 5.7 is a major release to the framework. There are breaking changes and numerous bug fixes to Laravel. Learn notable additions to Laravel and how you can leverage them in your next project."
-date: 2018-08-30 08:30
-category: Hot Topics, Frameworks, Laravel
+description: "Laravel 5.7 has just been released! What's new? What improvements were made? Learn how to build better PHP applications with this new release."
+metadescription:
+date: 2018-09-06 08:30
+category: Technical Guide, Whats New, Laravel
 design:
   bg_color: "#4A4A4A"
   image: https://cdn.auth0.com/blog/logos/laravel.png
@@ -17,21 +17,20 @@ tags:
 - laravel
 - web-app
 - php
-- auth0
 - api
 - laravel-57
 - open-source
 related:
 - 2016-06-23-creating-your-first-laravel-app-and-adding-authentication
 - 2017-12-26-developing-restful-apis-with-lumen
-- 2017-02-21-laravel-5-6-release-what-is-new/
----
-
+- 2017-02-21-laravel-5-6-release-what-is-new
 ---
 
 **TL;DR:** **Laravel 5.7** is a major release to the most popular PHP framework on GitHub as of this writing. Furthermore, [Laravel Nova](https://nova.laravel.com) was also released. In this article, I'll cover the new features in Laravel 5.7 and several other changes and deprecations.
 
----
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">🎊 Laravel 5.7.0 has been released! Includes support for email verification, guest policies, dump-server, improved console testing, notification localization and more! <a href="https://t.co/DIISmfm5oP">https://t.co/DIISmfm5oP</a> 🎊</p>&mdash; Laravel (@laravelphp) <a href="https://twitter.com/laravelphp/status/1036971212449243136?ref_src=twsrc%5Etfw">September 4, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 
 ## What's new in Laravel 5.7?
 
@@ -211,7 +210,7 @@ Taylor already announced that he was working on a project several months ago. Th
 _Laravel Nova_
 
 
-{% include tweet_quote.html quote_text = "Nova is a beautifully designed administration panel for Laravel." %}
+{% include tweet_quote.html quote_text = "As if Laravel 5.7 wasn't enough, @taylorotwell formally introduced @laravel_nova, a beautifully designed administration panel for Laravel." %}
 
 ## Deprecations and Other Updates
 
@@ -232,3 +231,5 @@ Check out this [comprehensive upgrade guide](https://laravel.com/docs/master/upg
 **Laravel 5.7** came loaded with new features and significant improvements. And **Nova** is a product every Laravel developer should try out!
 
 Have you upgraded to Laravel v5.7 yet? What are your thoughts? Let me know in the comments section! 😊
+
+{% include tweet_quote.html quote_text = "Laravel 5.7 has been released! Learn what's new in the most popular PHP framework" %}
