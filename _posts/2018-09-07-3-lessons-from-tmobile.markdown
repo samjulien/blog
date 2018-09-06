@@ -69,6 +69,8 @@ With APIs, it's also important to remember to authenticate your apps in addition
 
 A 2017 Verizon report found that [81%](https://blog.dashlane.com/data-breach-statistics-2018-forecast-everything-you-need-to-know/) of hacking-related breaches were due to stolen and/or weak passwords. While for years teams relied on the MD5 (message-digest) algorithm to hash passwords (create mathematical representations of plain text), today it's not considered the safest method.
 
+{% include tweet_quote.html quote_text="A 2017 Verizon report found that 81% of hacking-related breaches were due to stolen and/or weak passwords." %}
+
 Although originally MD5 hashes were designed to prevent anyone from working backwards from the hash to determine the real password, it's now possible to rapidly generate MD5 hashes to eventually find a matching password.
 
 [Evidence](https://www.databreachtoday.com/t-mobile-database-breach-exposes-2-million-customers-data-a-11420) points to T-Mobile password hashes being MD5, which suggests the company may have been using outdated password practices.
@@ -118,6 +120,8 @@ The first half of 2018 saw nearly 700 breaches, on pace to equal 2017's staggeri
 ![Data breach chart](https://cdn.auth0.com/blog/tmobile-breach/data-breach-chart.png)
 
 The total number of exposed records from these incidents in the past five years tops 580 million.
+
+{% include tweet_quote.html quote_text="The first half of 2018 saw nearly 700 data breaches, on pace to equal 2017's staggering 1,579 breaches." %}
 
 In addition to data breaches, data exposures — when data is improperly defended and open for access on the internet — are on the rise. Instead of a malevolent hacker getting through a protected system, a data exposure occurs if a database isn't correctly configured or doesn't require appropriate authentication. In 2018, Exactis, for example, exposed [340 million records](https://www.wired.com/story/exactis-database-leak-340-million-records/), putting 2 terabytes of personal information at risk.
 
