@@ -2,7 +2,7 @@
 layout: post
 title: "Laravel 5.7 Release: What's New?"
 description: "Laravel 5.7 has just been released! What's new? What improvements were made? Learn how to build better PHP applications with this new release."
-metadescription:
+metadescription: "PHP framework Laravel 5.7 release. Learn about new Symfony integrations, filesystem methods, improved Artisan Commands testing, Multilingual support, and more."
 date: 2018-09-06 08:30
 category: Technical Guide, Whats New, Laravel
 design:
