@@ -26,7 +26,7 @@ related:
 - 2017-02-21-laravel-5-6-release-what-is-new
 ---
 
-**TL;DR:** **Laravel 5.7** is a major release to the most popular PHP framework on GitHub as of this writing. Furthermore, [Laravel Nova](https://nova.laravel.com) was also released. In this article, I'll cover the new features in Laravel 5.7 and several other changes and deprecations.
+**TL;DR:** **Laravel 5.7** is a major release to, at time of writing, the most popular PHP framework on GitHub. Furthermore, [Laravel Nova](https://nova.laravel.com) was also released. In this article, I'll cover the new features in Laravel 5.7 and several other changes and deprecations.
 
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">🎊 Laravel 5.7.0 has been released! Includes support for email verification, guest policies, dump-server, improved console testing, notification localization and more! <a href="https://t.co/DIISmfm5oP">https://t.co/DIISmfm5oP</a> 🎊</p>&mdash; Laravel (@laravelphp) <a href="https://twitter.com/laravelphp/status/1036971212449243136?ref_src=twsrc%5Etfw">September 4, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
