@@ -44,7 +44,7 @@ Angular 1.x はひとつのフレームワークですが、 [Angular 2](https:/
 
 Angular 2.0 は公式に出荷されましたが、その他のプラットフォームのコンポーネントはまだアルファとベーダの段階にいます。今回のアプリケーションでは、Angular CLI およびコア Angular 2 フレームワークを活用しますが、その他コンポーネントはもう少し後になります。
 
-{% include tweet_quote.html quote_text="Angular 1 はひとつのフレームワークですが、Angular 2 はモダンアプリケーションを構築するためのプラットフォーム全体です" %}
+{% include jp-tweet_quote.html quote_text="Angular 1 はひとつのフレームワークですが、Angular 2 はモダンアプリケーションを構築するためのプラットフォーム全体です" %}
 
 ## _今回構築する__アプリ：Daily Deals_
 
