@@ -30,6 +30,7 @@ tags:
 related:
 - 2018-02-07-oauth2-the-complete-guide
 - 2018-05-23-introducing-the-mfa-api
+lang: en
 alternate_locale_ja: jp-using-m2m-authorization
 ---
 

@@ -18,6 +18,7 @@ tags:
 - restful
 related:
 - 2017-04-20-image-processing-in-python-with-pillow
+lang: en
 alternate_locale_ja: jp-developing-restful-apis-with-python-and-flask
 ---
 

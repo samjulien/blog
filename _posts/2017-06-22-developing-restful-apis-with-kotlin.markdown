@@ -20,6 +20,7 @@ tags:
 related:
 - 2017-01-18-how-to-create-a-kotlin-app-and-secure-it-using-jwt
 - 2016-09-20-securing-spring-boot-with-jwts
+lang: en
 alternate_locale_ja: jp-developing-restful-apis-with-kotlin
 ---
 
