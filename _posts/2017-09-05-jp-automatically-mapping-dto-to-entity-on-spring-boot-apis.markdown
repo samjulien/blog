@@ -38,7 +38,7 @@ Java（と Spring Boot）で書き込まれた RESTful API で DTO を使用す�
 
 例として、ユーザーの詳細を公開し、２つのエンドポイントを介してユーザーの更新を承諾する Java API を想像してみましょう。最初のエンドポイントは `GET` リクエストを処理し、ユーザーデータを返します。そして、２つめのエンドポイントがこれらの詳細を更新するために `PUT` リクエストを承諾します。このアプリケーションが DTO を利用しなければ、ユーザーのすべてのプロパティは最初のエンドポイント（例：パスワード）で公開され、２つめのエンドポイントはユーザーを更新するときにどのプロパティを承諾するかを精選しなければなりません（例：誰もがユーザーの役割を更新できるわけではありません）。この状況を乗り越えるために、DTO は最初のエンドポイントが対象とするものだけを公開し、２つめのエンドポイントが承諾するものを制限するのに役に立ちます。この特性はアプリケーション内のデータ整合性を保つのに役立ちます。
 
-{% include tweet_quote.html quote_text="DTO は Java アプリケーション上のデータ整合性を保つのに役立ちます。" %}
+{% include jp-tweet_quote.html quote_text="DTO は Java アプリケーション上のデータ整合性を保つのに役立ちます。" %}
 
 本アーティクルでは、このような状況を処理するために DTO を利用していきます。後で説明するように、この設計パターンではさらにいくつかのクラスをアプリケーションに導入しますが、そのセキュリティは改善されます。
 
@@ -457,7 +457,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
 `WebMvcConfig` 構成クラスのインスタンスが Spring によって作成されると、`ApplicationContext` および `EntityManager` の２つのコンポーネントが挿入されます。後者は `DTOModelMapper` を作るために使用され、前に説明したように、データベースをクエリするのに役立ちます。`ApplicationContext` は [`ObjectMapper`](https://fasterxml.github.io/jackson-databind/javadoc/2.5/com/fasterxml/jackson/databind/ObjectMapper.html) のインスタンスを作るために使用されます。 このマッパーは Java オブジェクト間を変換したり JSON 構造を一致する機能を提供し、`DTOModelMapper` とそのスーパークラス `RequestResponseBodyMethodProcessor` によって必要とされます。
 
-{% include tweet_quote.html quote_text="DTO をエンティティへ自動的に Spring Boot 上にマッピングする" %}
+{% include jp-tweet_quote.html quote_text="DTO をエンティティへ自動的に Spring Boot 上にマッピングする" %}
 
 このプロジェクトの `WebMvcConfig` が正しく構成されたので、RESTful API 上の `@DTO` 注釈を利用して自動的に DTO をエンティティへマップします。これを実行するために、試験を作成・更新するリクエストに同意するエンドポイントや、すべての既存の試験をリストにするエンドポイントを表示するコントローラーを作成していきます。このコントローラーを作成する前に、試験の永続化を処理できるようにするクラスを作っていきます。このクラスを `ExamRepository` と呼び、次のコードで `com.questionmarks.persistence` という新しいパッケージを作っていきます。
 
