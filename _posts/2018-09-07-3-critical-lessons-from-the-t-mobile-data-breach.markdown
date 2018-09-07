@@ -1,9 +1,8 @@
 ---
 layout: post
 title: 3 Critical Lessons from the T-Mobile Data Breach
-metatitle: 3 Critical Lessons from the T-Mobile Data Breach
 description: 3 lessons business leader can learn from the T-Mobile data breach to protect their teams and customers.
-metadescription: Learn why securing weak points, updating password practices, and improving communications after a breach are key to protect teams and customers.
+metadescription: T-Mobile got hacked. Learn why securing weak points, updating password practices, and improving communications after a breach are key to protect teams and customers.
 date: 2018-09-07 08:30
 category: Hot Topics, Security, Breaches
 post_length: 1
@@ -93,13 +92,13 @@ While none of these solutions are foolproof, a second method of authentication h
 
 Although T-Mobile did attempt to notify customers whose accounts might have been compromised a few days after they discovered the incident, many of these recipients were put off — thinking the text message itself was a form of phishing.
 
-![T-Mobile Tweet](https://cdn.auth0.com/blog/tmobile-breach/tmobile-tweet.png)
+![T-Mobile Data Breach Tweet](https://cdn.auth0.com/blog/tmobile-breach/tmobile-tweet.png)
 
 [[Source](https://techcrunch.com/2018/08/24/t-mobile-says-hackers-stole-customer-data-in-data-breach/)]
 
 Texting can be a tricky form of communication for something so sensitive (particularly from a large, impersonal corporation). Organizations like [Reddit](https://auth0.com/blog/what-companies-can-learn-from-the-reddit-data-breach/) and Equifax have succeeded with well-crafted PR campaigns and explanations on their websites:
 
-![Reddit breach press release](https://cdn.auth0.com/blog/tmobile-breach/reddit-breach-release.png)
+![Reddit data breach press release](https://cdn.auth0.com/blog/tmobile-breach/reddit-breach-release.png)
 
 As a portion of the full announcement (which you can read [here](https://www.reddit.com/r/announcements/comments/93qnm5/we_had_a_security_incident_heres_what_you_need_to/?st=jkk18vb3&sh=ad92bacb)), Reddit clearly defines the scope of the breach, including details of what information the hacker accessed and how to know which users were affected.
 
@@ -107,7 +106,7 @@ Reddit also lets users know ahead of time that they will be contacting them thro
 
 This is in stark contrast to T-Mobile's [vague description](https://go.skimresources.com/?xs=1&url=https%3A%2F%2Fwww.t-mobile.com%2Fcustomers%2F6305378821&xguid=85UTUFk2RzAa&id=66960X1514734&checksum=fc5d6ea7126bb8e6a7af56a7049975e787946c4e625ac9ceef083a8513bb04da) that their team shut down “an unauthorized access to certain information.”
 
-![T-Mobile breach press release](https://cdn.auth0.com/blog/tmobile-breach/tmobile-breach-release.png)
+![T-Mobile data breach press release](https://cdn.auth0.com/blog/tmobile-breach/tmobile-breach-release.png)
 
 Being as specific and transparent as possible (as quickly as possible) will help your customers trust that you are handling the situation and keeping them safe.
 
@@ -117,7 +116,7 @@ It seems like every week there is a new catastrophe for personal data in the hea
 
 The first half of 2018 saw nearly 700 breaches, on pace to equal 2017's staggering 1,579 breaches.
 
-![Data breach chart](https://cdn.auth0.com/blog/tmobile-breach/data-breach-chart.png)
+![T-Mobile Data breach chart](https://cdn.auth0.com/blog/tmobile-breach/data-breach-chart.png)
 
 The total number of exposed records from these incidents in the past five years tops 580 million.
 
