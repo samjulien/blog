@@ -62,7 +62,7 @@ Node Js は Web アプリケーションの構築に限られたものではあ�
 
 Node Js は多くのケースで使用されていますが、あまり良くないケースもあります。資産または Web ページの提供など多くの計算を必要としない高 I/O が必要であれば、Node にご満足いただけるでしょう。パスワードのハッシュまたはシミュレーション実行など複雑な操作をする場合、Node Js の性能が低くなる可能性があります。使用ケースをよく調査し、その仕事にあった正しいツールを使用してください。
 
-{% include tweet_quote.html quote_text="Node Js の使用ケースで優れているものはたくさんありますが、あらゆるものの特効薬ではありません。" %}
+{% include jp-tweet_quote.html quote_text="Node Js の使用ケースで優れているものはたくさんありますが、あらゆるものの特効薬ではありません。" %}
 
 ## Node Js でアプリケーションを構築する
 
@@ -639,5 +639,5 @@ node index
 
 Node Js はモダン アプリケーションを構築する際の強力な言語でありフレームワークです。NPM を介したコミュニティ サポートは非常に素晴らしく、Auth0 は一般的なユーザー名/パスワード認証だけでなく、 [多要素認証](https://auth0.com/docs/multifactor-authentication)、 [異常検出](https://auth0.com/docs/anomaly-detection)、 [エンタープライズ フェデレーション](https://auth0.com/docs/identityproviders)、 [シングル サインオン（SSO）](https://auth0.com/docs/sso)などたくさんの認証認可に関する強化機能で、 Node Js アプリのセキュリティ向上に役立ちます。今すぐ [サインアップ](https://auth0.com/signup)して、あなたのアプリに固有の機能を構築することに集中しませんか。
 
-{% include tweet_quote.html quote_text="Auth0 を使うと、数分で Node Js アプリに認証を追加できます。" %}
+{% include jp-tweet_quote.html quote_text="Auth0 を使うと、数分で Node Js アプリに認証を追加できます。" %}
 
