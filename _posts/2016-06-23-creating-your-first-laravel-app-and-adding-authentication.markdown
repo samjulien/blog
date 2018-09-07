@@ -318,14 +318,12 @@ Follow the instructions [here](https://auth0.com/docs/quickstart/webapp/laravel)
 
 ### Step 2: Register the callback
 
-Head over to your Auth0 [dashboard](https://manage.auth0.com/#/applications/) and register Allowed Callback URLs `http://laravel-auth0.dev/auth0/callback`, Allowed Logout URLs `http://laravel-auth0.dev/logout` and Allowed Origins (CORS) `http://laravel-auth0.dev/`.
+Head over to your Auth0 [dashboard](https://manage.auth0.com/#/applications/) and register Allowed Callback URLs `http://laravel-auth0.dev/auth0/callback`, Allowed Logout URLs `http://laravel-auth0.dev/logout`.
 
 Open up your routes and add this:
 
 ```php
-Route::get('/auth0/callback', function() {
-   dd(Auth0::getUser());
-});
+Route::get('/auth0/callback', '\Auth0\Login\Auth0Controller@callback');
 ```
 
 ### Step 3: Include the Auth0 Login Page
@@ -337,21 +335,9 @@ Open up `welcome.blade.php` and configure it like so:
 @extends('layouts.app')
 
 @section('content')
-<script src="https://cdn.auth0.com/js/auth0/9.0.0/auth0.min.js"></script>
-<script type="text/javascript">
-    var webAuth = new auth0.WebAuth({
-        domain: 'YOUR_AUTH0_DOMAIN',
-        clientID: 'YOUR_AUTH0_CLIENT_ID'
-    });
-
-    function signin() {
-        webAuth.authorize({
-            responseType: "code",
-            redirectUri: 'YOUR_AUTH0_CALLBACK_URL'
-        });
-    }
-</script>
-<button onclick="window.signin();">Login</button>
+@if(Auth::guest())
+    <a href="/auth0/login" class="btn btn-primary">login</a>
+@endif
 @endsection
 {% endraw %}
 {% endhighlight %}
@@ -366,9 +352,17 @@ When the login button is clicked, users are redirected to Auth0's Login Page.
 Add this to your `routes.php` file:
 
 ```php
-Route::get('/auth0/callback', function() {
-   dd(Auth0::getUser());
-});
+Route::get('/auth0/login', function() {
+        $domain = env('AUTH0_DOMAIN');
+        $clientId = env('AUTH0_CLIENT_ID');
+        $redirectUri = env('AUTH0_CALLBACK_URL');
+        $authorizeUrl = sprintf(
+            'https://%s/authorize?scope=openid&client_id=%s&response_type=code&redirect_uri=%s',
+            $domain,
+            $clientId,
+            $redirectUri);
+        return redirect($authorizeUrl);
+    });
 ```
 
 Now, once a user registers, it stores the user information in your Auth0 dashboard. We can retrieve this info using the `Auth0::getUser()` method. We can also hook onto the onLogin event using `Auth0::onLogin(function(...))`.

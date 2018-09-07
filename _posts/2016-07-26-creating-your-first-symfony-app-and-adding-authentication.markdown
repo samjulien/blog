@@ -49,11 +49,11 @@ related:
 
 **Symfony Framework** allows a developer to create plugins called **Bundles**. Everything is a bundle in Symfony, including both the core framework functionality and the code written for your application. This gives a developer the flexibility to use pre-built features packaged in third-party bundles or to distribute your own bundles. Read more about Symfony [Bundles](https://symfony.com/doc/current/book/bundles.html#main).
 
-We'll be building a simple character listing app with **Symfony 3.1** like we did with Laravel [here](https://auth0.com/blog/2016/06/23/creating-your-first-laravel-app-and-adding-authentication/). Our app will simply list **10 Game of Thrones characters** and their real names. Once we add authentication to the app, all logged-in users will have the privilege of knowing these celebrity characters personally.
+We'll be building a simple character listing app with **Symfony 3.4** like we did with Laravel [here](https://auth0.com/blog/2016/06/23/creating-your-first-laravel-app-and-adding-authentication/). Our app will simply list **10 Game of Thrones characters** and their real names. Once we add authentication to the app, all logged-in users will have the privilege of knowing these celebrity characters personally.
 
 ## Let's Get Started
 
-Symfony utilizes [Composer](http://getcomposer.org/) to manage its dependencies. So, before using Symfony, make sure you have Composer installed on your machine. We can install Symfony Framework by issuing the `composer create-project` command in your terminal like so: `composer create-project symfony/framework-standard-edition GOT` or using the `symfony` installer. There are several Symfony distributions available, such as [Symfony Rest Edition](https://github.com/gimler/symfony-rest-edition), [Hello World Edition](https://github.com/symfony/symfony-hello-world) and [CMF Standard Edition](https://github.com/symfony-cmf/standard-edition). A developer is at liberty to choose any to get started with.
+Symfony utilizes [Composer](http://getcomposer.org/) to manage its dependencies. So, before using Symfony, make sure you have Composer installed on your machine. We can install Symfony Framework by issuing the `composer create-project` command in your terminal like so: `composer create-project symfony/framework-standard-edition GOT "3.4.*"` or using the `symfony` installer. There are several Symfony distributions available, such as [Symfony Rest Edition](https://github.com/gimler/symfony-rest-edition), [Hello World Edition](https://github.com/symfony/symfony-hello-world) and [CMF Standard Edition](https://github.com/symfony-cmf/standard-edition). A developer is at liberty to choose any to get started with.
 
 It's faster to spin up a new app using the `symfony` command like so: `symfony new GOT` . Check out the Symfony [docs](https://symfony.com/doc/current/book/installation.html#main) to learn how to set up the Symfony installer.
 
@@ -244,22 +244,20 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends Controller
 {
     /**
      * @Route("/login", name="login")
      */
-    public function loginAction(Request $request)
+    public function loginAction(AuthenticationUtils $authenticationUtils)
     {
-       $helper = $this->get('security.authentication_utils');
-
        return $this->render(
            'auth/login.html.twig',
            array(
-               'last_username' => $helper->getLastUsername(),
-               'error'         => $helper->getLastAuthenticationError(),
+               'last_username' => $authenticationUtils->getLastUsername(),
+               'error'         => $authenticationUtils->getLastAuthenticationError(),
            )
        );
     }
@@ -638,6 +636,19 @@ parameters:
 #    parameter_name: value
 
 services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    # makes classes in src/AppBundle available to be used as services
+    AppBundle\:
+        resource: '../../src/AppBundle/*'
+        # you can exclude directories or files
+        # but if a service is unused, it's removed anyway
+        exclude: '../../src/AppBundle/{Entity,Repository}'
+
     app.form_login_authenticator:
         class: AppBundle\Security\FormLoginAuthenticator
         arguments: ["@router", "@security.password_encoder"]
@@ -869,11 +880,11 @@ We can easily set up authentication in our Symfony apps with [Auth0's Centralize
 
 Follow the instructions [here](https://auth0.com/docs/quickstart/webapp/symfony) to configure the Auth0 plugin.
 
-**Note:** Symfony 3 only works with `0.5.*@dev` version of the `hwi/oauth-bundle`
+**Note:** Symfony 3 only works with `0.6.*` version of the `hwi/oauth-bundle`
 
 ### Step 2: Register the Callback
 
-Head over to your Auth0 [dashboard](https://manage.auth0.com/#/applications/) and register Allowed Callback URLs `http://127.0.0.1:8000/auth0/callback`, Allowed Logout URLs `http://127.0.0.1:8000/logout` and Allowed Origins (CORS) `http://127.0.0.1:8000/`.
+Head over to your Auth0 [dashboard](https://manage.auth0.com/#/applications/) and register Allowed Callback URLs `http://127.0.0.1:8000/auth0/callback` and Allowed Logout URLs `http://127.0.0.1:8000/auth0/logout`.
 
 
 ### Step 3: Include Auth0's Centralized Login Page
@@ -887,20 +898,10 @@ Open up `default/index.html.twig` and configure it like so:
 
 {% raw %}
 {% block body %}
-<script src="https://cdn.auth0.com/js/auth0/9.0.0/auth0.min.js"></script>
-<script type="text/javascript">
-  var webAuth = new auth0.WebAuth({
-      domain: 'YOUR_AUTH0_DOMAIN',
-      clientID: 'YOUR_AUTH0_CLIENT_ID'
-  });
-  function signin() {
-      webAuth.authorize({
-          responseType: "code",
-          redirectUri: 'YOUR_AUTH0_CALLBACK_URL'
-      });
-  }
-</script>
-<button onclick="window.signin();">Login</button>
+
+{% if app.user == null %}
+    <a href="connect/auth0" class="btn btn-primary">Login</a>
+{% endif %}
 {% endblock %}
 {% endraw %}
 {% endhighlight %}
@@ -909,7 +910,36 @@ When the login button is clicked, users are redirected to Auth0's Centralized Lo
 
 ![Auth0 centralized login screen](https://cdn.auth0.com/blog/resources/auth0-centralized-login.jpg)
 
-### Step 4: Enjoy!
+### Step 4: Include Logout
+
+Open up `views/base.html.twig` and configure it like so:
+
+{% highlight html %}
+    <li><a href="{{ logout_url("secured_area") }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+{% endhighlight %}
+
+We're adding the logout URL from the `secured_area` firewall as the logout link.
+
+Open up `seciruty.yml` and add the logout path to the `secured_area` firewall:
+
+```yaml
+firewalls:
+    secured_area:
+        # ...
+        logout:
+            path:   /auth0/logout
+            target: /
+```
+
+Open up `app/config/routing.yml` and at the bottom of the file add the logout route:
+
+```yaml
+auth0_logout:
+    path: /auth0/logout
+```
+
+
+### Step 5: Enjoy!
 
 Once a user registers, it stores the user information in your Auth0 dashboard. We can retrieve this info using the `HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider` class methods.
 

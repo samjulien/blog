@@ -4,6 +4,7 @@ title: "Using Machine to Machine (M2M) Authorization"
 description: "How to set up non-interactive apps using the client credentials grant and Auth0 to perform IoT device, CLI tool, and more machine to machine API authorization."
 date: 2018-07-11 08:30
 category: Technical Guide, Identity
+post_length: 2
 author:
   name: Sebastián Peyrott
   url: https://twitter.com/speyrott?lang=en
@@ -29,6 +30,8 @@ tags:
 related:
 - 2018-02-07-oauth2-the-complete-guide
 - 2018-05-23-introducing-the-mfa-api
+lang: en
+alternate_locale_ja: jp-using-m2m-authorization
 ---
 
 Many times, a secure, authorized communication channel between different parts of an autonomous system is required. Think of two backend services from different companies communicating through the internet. For these cases, OAuth 2.0 provides the [client credentials grant](https://tools.ietf.org/html/rfc6749#section-4.4) flow. In this post, we will take a look at how the client credentials grant from [OAuth 2.0](https://tools.ietf.org/html/rfc6749) can be used with Auth0 for [machine to machine (M2M) communications](https://auth0.com/machine-to-machine).

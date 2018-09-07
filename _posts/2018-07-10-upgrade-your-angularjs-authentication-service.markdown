@@ -22,6 +22,7 @@ related:
 - 2018-04-24-new-features-for-developing-angularjs-applications-part-1
 - 2017-06-28-real-world-angular-series-part-1
 - 2018-03-13-using-python-flask-and-angular-to-build-modern-apps-part-1
+lang: en
 alternate_locale_ja: jp-upgrade-your-angularjs-authentication-service
 ---
 

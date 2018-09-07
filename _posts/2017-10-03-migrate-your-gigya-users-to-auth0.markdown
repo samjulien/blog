@@ -33,9 +33,9 @@ related:
 
 ---
 
-## Gigya to be Acquired by SAP 
+## Gigya Acquired by SAP 
 
-[SAP](https://www.sap.com/index.html) announced an agreement to acquire [Gigya](http://www.gigya.com/)'s Customer Identity and Access Management (IAM) platform on September 24, 2017. The acquisition announcement should be very interesting to current Gigya customers. To learn about key features to reassess when your IAM platform is acquired, please check out [SAP to Acquire Gigya: What's Next for Identity Management?](https://auth0.com/blog/sap-to-acquire-gigya-whats-next-for-identity-management)
+[SAP](https://www.sap.com/index.html) announced an agreement to acquire [Gigya](http://www.gigya.com/)'s Customer Identity and Access Management (IAM) platform on September 24, 2017. The acquisition has now taken place. To learn about key features to reassess when your IAM platform is acquired, please check out [SAP to Acquire Gigya: What's Next for Identity Management?](https://auth0.com/blog/sap-to-acquire-gigya-whats-next-for-identity-management)
 
 ## How to Migrate to Auth0 IAM Platform
 
@@ -45,19 +45,21 @@ Auth0 supports [bulk user import](https://auth0.com/docs/tutorials/bulk-importin
 
 {% include tweet_quote.html quote_text="Auth0 provides several easy-to-use features for migrating users into and out of the platform." %}
 
-Let's explore how these features work.
+Let's explore how these features work. 
 
-## Set Up an Auth0 Client
+> **Note:** Auth0 also provides a [Gigya migration tutorial in the Docs here](https://auth0.com/docs/users/migrations/gigya).
 
-You can **<a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account</a>**. Once you have your account, you will need a [Client](https://auth0.com/docs/clients) and a [Database Connection](https://auth0.com/docs/connections/database).
+## Set Up an Auth0 Application
 
-An Auth0 **Client** represents your application and allows use of Auth0 for user authentication. You can create a new Client by signing into your [Auth0 Dashboard](https://manage.auth0.com/#/)  and clicking on the **+ NEW CLIENT** button.
+You can **<a href="https://auth0.com/signup" data-amp-replace="CLIENT_ID" data-amp-addparams="anonId=CLIENT_ID(cid-scope-cookie-fallback-name)">sign up for a free Auth0 account</a>**. Once you have your account, you will need an [Application](https://auth0.com/docs/applications) and a [Database Connection](https://auth0.com/docs/connections/database).
+
+An Auth0 **Application** represents your app and allows use of Auth0 for user authentication. You can create a new Application by signing into your [Auth0 Dashboard](https://manage.auth0.com/#/)  and clicking on the **+ NEW APPLICATION** button.
 
 Doing so will present a screen like the one pictured below:
 
-![Auth0 new client form](https://cdn.auth0.com/blog/gigya/new-client.jpg)
+![Auth0 new application form](https://cdn.auth0.com/blog/gigya/new-client.jpg)
 
-Enter a **Name** for your Client and [select the type of technology](https://auth0.com/docs/clients#client-types), then click the **Create** button.
+Enter a **Name** for your Application and [select the type of technology](https://auth0.com/docs/applications#application-types), then click the **Create** button.
 
 At this stage, there are two options to move your Gigya database contents into Auth0. You can **export** your Gigya users and then **import** them into your new Auth0 database, _or_ you can **enable automatic migration**.
 
@@ -73,9 +75,9 @@ You will then be presented with the following screen:
 
 Fill in your desired database **Name** and other desired settings, then click the **Create** button.
 
-### Connect Database to Client
+### Connect Database to Application
 
-Now you'll need to connect your database with your Client. In the **Clients** tab of your database settings, find the Client you created under the **Clients Using This Connection** heading and toggle it to the "on" position. Your Client and database are now connected.
+Now you'll need to connect your database with your Application. In the **Applications** tab of your database settings, find the Client you created under the **Applications Using This Connection** heading and toggle it to the "on" position. Your Application and database are now connected.
 
 ### Export Gigya Users
 
@@ -115,7 +117,7 @@ You can learn more about this process here: [Migrate A User Database to Auth0](h
 
 ## Conclusion
 
-Migrating users into and out of [Auth0](https://auth0.com)'s Identity and Access Management platform is simple! Auth0 provides a powerful and easy-to-use IAM solution for admins, developers, and end users. The Auth0 platform supplies [robust extensibility](https://auth0.com/docs/topics/extensibility) and friendly [user interface tools to help administrators manage user identities](https://auth0.com/user-management), including password resets, provisioning, blocking, and deleting users. Migration of users to and from Auth0 is easy, as is [social IdP](https://auth0.com/learn/social-login/) implementation, [enterprise federation](https://auth0.com/b2b-enterprise-identity-management), [Single Sign-On](https://auth0.com/learn/how-to-implement-single-sign-on/), and security features such as [Multifactor Authentication](https://auth0.com/learn/multifactor-authentication/), and [Breached Password Detection](https://auth0.com/breached-passwords).
+Migrating users into and out of [Auth0](https://auth0.com)'s Identity and Access Management platform is simple! Auth0 provides a powerful and easy-to-use IAM solution for admins, developers, and end users. The Auth0 platform supplies [robust extensibility](https://auth0.com/docs/topics/extensibility) and friendly [user interface tools to help administrators manage user identities](https://auth0.com/user-management), including password resets, provisioning, blocking, and deleting users. Migration of users to and from Auth0 is easy, as is [social IdP](https://auth0.com/learn/social-login/) implementation, [enterprise federation](https://auth0.com/b2b-enterprise-identity-management), [Single Sign-On](https://auth0.com/learn/how-to-implement-single-sign-on/), and security features such as [Multi-factor Authentication](https://auth0.com/learn/multifactor-authentication/), and [Breached Password Detection](https://auth0.com/breached-passwords).
 
 {% include tweet_quote.html quote_text="Migrating users into and out of Auth0's Identity and Access Management platform is simple!" %}
 

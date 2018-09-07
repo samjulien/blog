@@ -1083,7 +1083,10 @@ function SecuredRoute(props) {
   const {component: Component, path} = props;
   return (
     <Route path={path} render={() => {
-        if (!auth0Client.isAuthenticated()) return auth0Client.signIn();
+        if (!auth0Client.isAuthenticated()) {
+          auth0Client.signIn();
+          return <div></div>;
+        }
         return <Component />
     }} />
   );
@@ -1259,7 +1262,7 @@ With these changes in place, you will be able to create new questions after auth
 
 ![React Q&A app submit content via form secured by Auth0](https://cdn.auth0.com/blog/react-tutorial/form-in-a-react-app.png)
 
-Then, to wrap up this React tutorial, you can refactor the `Question` component to include a form where users will be able to answer questions. To define this form, create a new file called `SubmitAnswer.js` inside the `Question` directory with the following code:
+Then, to finish your app's features, you can refactor the `Question` component to include a form where users will be able to answer questions. To define this form, create a new file called `SubmitAnswer.js` inside the `Question` directory with the following code:
 
 ```js
 import React, {Component, Fragment} from 'react';
@@ -1386,9 +1389,124 @@ export default Question;
 
 Here, you can see that you are defining the `submitAnswer` method that will issue the requests to the backend API (with the user's ID Token), and that you are defining a method called `refreshQuestion`. This method will refresh the contents of the question in two situations, on the first time React is rendering this component (`componentDidMount`) and right after the backend API respond to the POST request of the `submitAnswer` method.
 
-That's it! You just finished developing your first React application. Now, you can go to [`http://localhost:3000/`](http://localhost:3000/) and start testing your full React app. After signing in, you will be able to ask questions, and you will be able to answer them as well. How cool is that?
+After refactoring the `Question` component, you will have a complete version of your app. To test it, you can go to [`http://localhost:3000/`](http://localhost:3000/) and start using your full React app. After signing in, you will be able to ask questions, and you will be able to answer them as well. How cool is that?
 
 ![Full React Q&A app tutorial demo](https://cdn.auth0.com/blog/react-tutorial/creating-your-first-react-app.png)
+
+### Keeping Users Signed In after a Refresh
+
+Before you call it a day, there is one last thing that you will have to do. After signing into your application, if you refresh your browser, you will notice that you will be signed out. Why is that? Because you are saving you tokens in memory (as you should do) and because the memory is wiped out when you hit refresh. Not the best behavior, right?
+
+Luckily, solving this problem is easy. You will have to take advantage of the [_Silent Authentication_](https://auth0.com/docs/api-auth/tutorials/silent-authentication) provided by Auth0. That is, whenever your application is loaded, it will send a silent request to Auth0 to check if the current user (actually the browser) has a valid session. If they do, Auth0 will send back to you an `idToken` and an `idTokenPayload`, just like it does on the authentication callback.
+
+To use the silent authentication, you will have to refactor two classes: `Auth` and `App`. However, before refactoring these classes, you will have to change a few configurations in your Auth0 account.
+
+For starters, you will have to go to [the _Applications_ section in your Auth0 dashboard](https://manage.auth0.com/#/applications), open the application that represents your React app, and change two fields:
+
+1. _Allowed Web Origins_: As your app is going to issue an AJAX request to Auth0, you will need to add `http://localhost:3000` to this field. Without this value there, Auth0 would deny any AJAX request coming from your app.
+2. _Allowed Logout URLs_: To enable users to end their session at Auth0, you will have to call [the logout endpoint](https://auth0.com/docs/logout#log-out-a-user). Similarly to the authorization endpoint, the log out endpoint only redirects users to whitelisted URLs after the process. As such, you will have to add `http://localhost:3000` in this field too.
+
+After updating these fields, you can hit the _Save Changes_ button. Then, the last thing you will have to do before focusing in your app's code is to replace the development keys that Auth0 is using to enable users to authenticate through Google.
+
+You might not have noticed but, even though you didn't configure anything related to Google in your Auth0 account, the social login button is there and works just fine. The only reason this feature works out of the box is because Auth0 auto-configure all new accounts to use development keys registered at Google. However, when developers start using Auth0 more seriously, they are expected to replace these keys with their own. And, to force this, every time an app tries to perform a silent authentication, and that app is still using the development keys, Auth0 returns that there is no session active (even though this is not true).
+
+So, to change these keys, move to [the _Social Connections_ on your dashboard](https://manage.auth0.com/#/connections/social), and click on Google. There, you will see two fields among other things: _Client ID_ and _Client Secret_. This is where you will insert your keys. To get your keys, please, read [the _Connect your app to Google_ documentation provided by Auth0](https://auth0.com/docs/connections/social/google).
+
+> **Note:** If you don't want to use your Google keys, you can deactivate this social connection and rely only on users that sign up to your app through Auth0's [_Username and Password Authentication_](https://manage.auth0.com/#/connections/database).
+
+Now that you have finished configuring your Auth0 account, you can move back to your code. There, open the `./src/Auth.js` file of your React app and update it as follows:
+
+```js
+import auth0 from 'auth0-js';
+
+class Auth {
+  // ... constructor, getProfile, getIdToken, signIn ...
+
+  handleAuthentication() {
+    return new Promise((resolve, reject) => {
+      this.auth0.parseHash((err, authResult) => {
+        if (err) return reject(err);
+        if (!authResult || !authResult.idToken) {
+          return reject(err);
+        }
+        this.setSession(authResult);
+        resolve();
+      });
+    })
+  }
+
+  setSession(authResult, step) {
+    this.idToken = authResult.idToken;
+    this.profile = authResult.idTokenPayload;
+    // set the time that the id token will expire at
+    this.expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
+  }
+
+  signOut() {
+    this.auth0.logout({
+      returnTo: 'http://localhost:3000',
+      clientID: '<YOUR_AUTH0_CLIENT_ID>',
+    });
+  }
+
+  silentAuth() {
+    return new Promise((resolve, reject) => {
+      this.auth0.checkSession({}, (err, authResult) => {
+        if (err) return reject(err);
+        this.setSession(authResult);
+        resolve();
+      });
+    });
+  }
+}
+
+// ... auth0Client and export ...
+```
+
+> **Note:** You will have to replace `<YOUR_AUTH0_CLIENT_ID>` with the client ID of your Auth0 Application. You will have to use the same value you are using to configure the `audience` of the object passed to `auth0.WebAuth` in the constructor of this class.
+
+In the new version of this class, you are:
+
+- adding a method to set up users' detail: `setSession`;
+- refactoring the `handleAuthentication` method to use the `setSession` method;
+- adding a method called `silentAuth` to call the `checkSession` function provided by `auth0-js` (this method also uses `setSession`);
+- and refactoring the `signOut` function to make it call the logout endpoint at Auth0 and to inform where users must be redirected after that (i.e., `returnTo: 'http://localhost:3000'`);
+
+Then, to wrap things up, you will have to open the `./src/App.js` file, and update it as follows:
+
+```js
+// ... other imports ...
+import {Route, withRouter} from 'react-router-dom';
+import auth0Client from './Auth';
+
+class App extends Component {
+  async componentDidMount() {
+    if (this.props.location.pathname === '/callback') return;
+    try {
+      await auth0Client.silentAuth();
+      this.forceUpdate();
+    } catch (err) {
+      if (err.error === 'login_required') return;
+      console.log(err.error);
+    }
+  }
+
+  // ... render ...
+}
+
+export default withRouter(App);
+```
+
+As you can see, the new version of this file is defining what it wants to do when your app loads (`componentDidMount`):
+
+1. If the requested route is `/callback`, the app does nothing. This is the correct behavior because, when users are requesting for the `/callback` route, they do so because they are getting redirected by Auth0 after the authentication process. In this case, you can leave the `Callback` component handle the process.
+2. If the requested route is anything else, the app wants to try a `silentAuth`. Then, if no error occurs, the app calls `forceUpdate` so the user can see its name and that they are signed in.
+3. If there is an error on the `silentAuth`, the app checks if the error is `login_required`. If this is the case, the app does nothing because it means the user is not signed in (or that you are using development keys, which you shouldn't).
+4. If there is an error that is not `login_required`, the error is simply logged to the console. Actually, in this case, it would be better to notify someone about the error so they could check what is happening.
+
+> By the way, you are enclosing your `App` class inside the `withRouter` function so you can check what route is being called (`this.props.location.pathname`). Without `withRouter`, you wouldn't have access to the `location` object.
+
+That's it! After these changes, you finally finished developing your React application. Now, if you sign in and refresh your browser, you will see that you won't lose your session and that you won't have to sign in again. Hurray!
 
 {% include tweet_quote.html quote_text="I just built my first React application." %}
 
@@ -1400,4 +1518,4 @@ As the article introduced a lot of different topics, you didn't really have the 
 
 So, now that you finished developing your first React application, be sure to check the links and references left throughout the tutorial and, to learn more about how React works, be sure to check [the _Virtual DOM and Internals_ article](https://reactjs.org/docs/faq-internals.html).
 
-Also, if you need help, do hesitate to leave a message on the comments section down below. Cheers!
+Also, if you need help, do not hesitate to leave a message on the comments section down below. Cheers!

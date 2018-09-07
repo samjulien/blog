@@ -27,9 +27,9 @@ lang: ja
 alternate_locale_en: upgrade-your-angularjs-authentication-service
 ---
 
-**TL;DR：** 本書では、非常に難しいテーマですが、私にとってごく近くて非常に大切なもの ngUpgrade と認証の２つについて話していきます。まず、AngularJS から Angular にアプリケーションをアップグレードする基礎を学びましょう。それから、AngularJS 認証戦略を Angular にアップグレードする実践的な例を見ていきます。機器間認証を使うアプリの例を Auth0 で見ていきます。
+**TL;DR** 本書では、非常に難しいテーマですが、私にとってごく近くて非常に大切なもの ngUpgrade と認証の２つについて話していきます。まず、AngularJS から Angular にアプリケーションをアップグレードする基礎を学びましょう。それから、AngularJS 認証戦略を Angular にアップグレードする実践的な例を見ていきます。機器間認証を使うアプリの例を Auth0 で見ていきます。
 
-{% include tweet_quote.html quote_text="AngularJS から新しい Angular フレームワークに移行する方法を学びましょう。" %}
+{% include jp-tweet_quote.html quote_text="AngularJS から新しい Angular フレームワークに移行する方法を学びましょう。" %}
 
 本書は、[Auth0 オンラインミートアップ](https://www.meetup.com/Auth0-Online-Meetup/)でのトークを基にしています。[トークの動画はこちらから](https://register.gotowebinar.com/register/7495371156540204033)、そして[スライドはこちらから](https://www.upgradingangularjs.com/auth0)アクセスできます。
 
@@ -96,7 +96,7 @@ AOT コンパイルプロセスを使うとき、すべてが事前にコンパ�
 
 ## サンプル アプリケーション
 
-[コースのサンプルプロジェクトのアップデートされたフォークをクローンしてください](https://github.com/upgradingangularjs/ordersystem-evergreen)（npm install または yarn install を server および public フォルダの両方で実行することを忘れないでください）。以下のコマンドを実行して Auth0 ブランチと開始コミットを確認してください：
+[コースのサンプルプロジェクトのアップデートされたフォークをクローンしてください](https://github.com/upgradingangularjs/ordersystem-evergreen)（`npm install` または `yarn install` を `server` および `public` フォルダの両方で実行することを忘れないでください）。以下のコマンドを実行して Auth0 ブランチと開始コミットを確認してください：
 
 ```bash
 git checkout auth0
@@ -117,7 +117,7 @@ Express サーバーは機器間の API とクライアント関係で、Auth0 �
 
 作ったばかりのアプリケーションを使用するためにこの API アプリケーションを接続します。
 
-Auth0 セットアップが終わったら、API 情報と以下を置換するために server/auth.js を編集します：
+Auth0 セットアップが終わったら、API 情報と以下を置換するために `server/auth.js` を編集します：
 
 ```js
 const checkJwt = jwt({
@@ -135,7 +135,7 @@ const checkJwt = jwt({
 });
 ```
 
-authVariables.js と呼ばれるファイルをプロジェクトのルートに追加し、変数としてアプリケーションのクライアント ID とクライアント シークレットを以下のようにエクスポートします：
+`authVariables.js` と呼ばれるファイルをプロジェクトのルートに追加し、変数としてアプリケーションのクライアント ID とクライアント シークレットを以下のようにエクスポートします：
 
 ```js
 export const CLIENT\_ID = '[client id here]';
@@ -144,7 +144,7 @@ export const CLIENT\_SECRET = '[client secret here]';
 
 AngularJS AuthService はトークンを API から取得するためにそのファイルを使用します。
 
-src フォルダーの内側にあるクライアント側（ public フォルダー）に、 app.run.ajs.ts と呼ばれるファイルがあります。このファイルには、次のように認証済みかチェックし、認証されていなければトークンを取得する認証サービスと呼ばれる機能が含まれています：
+`src` フォルダーの内側にあるクライアント側（ `public` フォルダー）に、 `app.run.ajs.ts` と呼ばれるファイルがあります。このファイルには、次のように認証済みかチェックし、認証されていなければトークンを取得する認証サービスと呼ばれる機能が含まれています：
 
 ```typescript
 runAuth.$inject = ['authService'];
@@ -154,23 +154,23 @@ export function runAuth(authService) {
 }
 ```
 
-この機能は app.module.ajs.ts の angular.module().run() を使って AngularJS モジュールに追加されます。
+この機能は `app.module.ajs.ts` の `angular.module().run()` を使って AngularJS モジュールに追加されます。
 
-トークンを送信リクエストに追加するために、AngularJS $http プロバイダー（auth.interceptor.ajs.ts）用の HTTP インターセプターがあります。ローカル ストレージからトークンを取得してから、リクエストが送信される前に、ベアラー トークンを承認ヘッダーに追加します。
+トークンを送信リクエストに追加するために、AngularJS $http プロバイダー（`auth.interceptor.ajs.ts`）用の HTTP インターセプターがあります。ローカル ストレージからトークンを取得してから、リクエストが送信される前に、ベアラー トークンを承認ヘッダーに追加します。
 
-まだ AngularJS にある認証サービス（./shared/authService.ts）は Auth0 （サービスを通して）からトークンを取得してからそのトークンをローカル ストレージにセットします。
+まだ AngularJS にある認証サービス（`./shared/authService.ts`）は Auth0 （サービスを通して）からトークンを取得してからそのトークンをローカル ストレージにセットします。
 
-これが動作しているかを確認するには、ターミナルを開き、 server フォルダー内の npm start を実行します。それから、別のターミナルを開き、public フォルダー内の npm run dev を実行します。[localhost:9000](localhost:9000) に移動し、Chrome 開発者ツールを開き、Customers タブをクリックします。トークンは次のようにヘッダーとして送信リクエストに追加されていることが分かります：
+これが動作しているかを確認するには、ターミナルを開き、 `server` フォルダー内の `npm start` を実行します。それから、別のターミナルを開き、`public` フォルダー内の `npm run dev` を実行します。[localhost:9000](localhost:9000) に移動し、Chrome 開発者ツールを開き、Customers タブをクリックします。トークンは次のようにヘッダーとして送信リクエストに追加されていることが分かります：
 
 ![The Authorization header on the customer's request.](https://cdn.auth0.com/blog/ngupgrade/authorization-header.png)
 
-Express サーバーを呼び出す /products の認証にも使用する Products タブで同じように実行します。
+Express サーバーを呼び出す `/products` の認証にも使用する Products タブで同じように実行します。
 
 もちろん、これはトークンを認証する非常にシンプルな方法です。エラー処理を追加するなど、これはもっと複雑なたくさんの方法ですることができますが、ここでは基本的なコンセプトをご理解ください。
 
 ### **Angular インターセプターを追加する**
 
-このセットアップにはひとつの問題があります。（./customers/customer.service.ts の） CustomerService の getCustomers 呼び出しは実際は不正行為です：
+このセットアップにはひとつの問題があります。（`./customers/customer.service.ts` の） CustomerService の getCustomers 呼び出しは実際は不正行為です：
 
 ```typescript
 getCustomers(): Observable<Customer[]> {
@@ -184,7 +184,7 @@ getCustomers(): Observable<Customer[]> {
 
 これはなぜでしょうか？AngularJS の $http と Angular の HttpClient はお互いにやりとりしません。このギャップを何とか橋渡ししなければなりません。このためには、HttpClient のインターセプターを Angular に書き込みます。
 
-インターセプターを追加するために、auth.interceptor.ts と呼ばれるソース フォルダーのルートに新しいファイルを作成しましょう。そのファイル内に、次のように新しいクラスを追加します：
+インターセプターを追加するために、`auth.interceptor.ts` と呼ばれるソース フォルダーのルートに新しいファイルを作成しましょう。そのファイル内に、次のように新しいクラスを追加します：
 
 ```typescript
 import { Injectable } from '@angular/core';
@@ -215,7 +215,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
 HttpRequest や HttpHandler、HttpClient から数点をインポートし、 RxJS から Observable をインポートします（注：このアプリは RxJS 5 を使って作成されたので、本書では古いインポートスタイルを使います）。それから intercept機能を 持つことで HttpInterceptor インターフェイスを実装します。この機能は AngularJS インターセプターのものとかなり似ています。リクエストをクローンして、ローカル ストレージからのアクセストークンでヘッダーをセットします。
 
-このステップを完成するには、これをプロバイダーとして Angular モジュール（app.module.ts）に追加する必要があります。Angular の HTTP\_INTERCEPTORS と新規インターセプターをインポートしてから、次のように特殊プロバイダーを providers アレイに追加します：
+このステップを完成するには、これをプロバイダーとして Angular モジュール（`app.module.ts`）に追加する必要があります。Angular の HTTP\_INTERCEPTORS と新規インターセプターをインポートしてから、次のように特殊プロバイダーを providers アレイに追加します：
 
 ```typescript
 // ファイルの先頭に追加します
@@ -230,7 +230,7 @@ import { AuthInterceptor } from './auth.interceptor';
 }
 ```
 
-では、構成オブジェクトを getCustomers コールから削除し、すべてを保存し、Webpack に再度バンドルさせます。正しいヘッダーはリクエストにまだ追加されるので、データが正しく読み込まれているかを確認します。
+では、構成オブジェクトを `getCustomers` コールから削除し、すべてを保存し、Webpack に再度バンドルさせます。正しいヘッダーはリクエストにまだ追加されるので、データが正しく読み込まれているかを確認します。
 
 [このセクションの完了済コードはこちら](https://github.com/upgradingangularjs/ordersystem-evergreen/commit/77283ef3d8e9ebe4b5ac883430313f3268543d03/)からご覧ください。
 
@@ -246,7 +246,7 @@ HttpClient インターセプターを使って Angular サービスを取得し
 
 約束を解決する方法で AngularJS コードのこれを修正することができますが、もっと良い方法があります。これは ngUpgrade を通して作業し実現する実例で、現在のコードを再書き込みするか、オリジナルのコードに戻って AngularJS コードでもっと時間を費やす必要があるかを判断する必要があります。
 
-ほとんどの場合は、AngularJS の部分から離れ、Angular に実装することをお勧めします。ここで AngularJS run block を Angular で APP\_INITIALIZER と呼ばれるものと置換してすぐに実行します。そのために、いくつかのことを実行する必要があります。まず、認証サービスを Angular に再書き込みします。それから、それをダウングレードして AngularJS アプリケーションに提供し、AngularJS 認証ルートがまだ機能するようにします。最後に、アプリケーションがスピンアップするときに APP\_INITIALIZER を使って AuthService をコールします。
+ほとんどの場合は、AngularJS の部分から離れ、Angular に実装することをお勧めします。ここで AngularJS run block を Angular で `APP_INITIALIZER` と呼ばれるものと置換してすぐに実行します。そのために、いくつかのことを実行する必要があります。まず、認証サービスを Angular に再書き込みします。それから、それをダウングレードして AngularJS アプリケーションに提供し、AngularJS 認証ルートがまだ機能するようにします。最後に、アプリケーションがスピンアップするときに `APP_INITIALIZER` を使って AuthService をコールします。
 
 #### **ANGULAR サービスに再書き込みする**
 
@@ -256,7 +256,7 @@ HttpClient インターセプターを使って Angular サービスを取得し
 git checkout abd3e34cbbaa8bbed004f56796d37e7ed28f73e2
 ```
 
-このコミットでは、アプリ実行ブロックや認証サービスに対してリファクターを少し行います。実行機能では、isAuthenticated を確認したそのビットを移動し、その責任を認証サービスに移動しました。
+このコミットでは、アプリ実行ブロックや認証サービスに対してリファクターを少し行います。実行機能では、`isAuthenticated` を確認したそのビットを移動し、その責任を認証サービスに移動しました。
 
 このサービスを Angular に再書き込みしましょう。このサービスはすでに ES6 クラスなので、ステップは多くはありません。まず auth.service.ts に名前を変更して規則によく従います。ここで、ファイルの先頭にこれら２つのインポートを追加します：
 
@@ -265,7 +265,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 ```
 
-@Injectable() デコレータをそのクラスの上に追加します。
+`@Injectable()` デコレータをそのクラスの上に追加します。
 
 次に、すべてのレファレンスを http で $http に名前を変更します（検索と置換を使うと作業が簡単になります）。コンストラクターでは、http のプライベートインスタンスは次の HttpClient タイプであることを指定します：
 
@@ -273,7 +273,7 @@ import { HttpClient } from '@angular/common/http';
 constructor(private http: HttpClient) { }
 ```
 
-TypeScript が .then のあらゆるインスタンスをグリップしていることを確認します。これは、HttpClient は Promise の代わりに Observable を返すからです。ngUpgrade でとても役立つ戦略のひとつは直ぐに Observable を対処しないことです。私は Observable が大好きですが、実社会の実稼働アプリケーションを使っているときは、必ずしも直ぐに Observable に行くというものではありません。再有効化はほとんどの方にとって真新しいパターンであることを考えて、その方法を容易にする必要がある場合があります。これは Observable を Promise に変換してすべてが機能していることを確認し、その Promise をリファクタリングして後で Observable にに戻して行うことができます。ここでは、実例の目的のために、このようにします。
+TypeScript が `.then` のあらゆるインスタンスをグリップしていることを確認します。これは、HttpClient は Promise の代わりに Observable を返すからです。ngUpgrade でとても役立つ戦略のひとつは直ぐに Observable を対処しないことです。私は Observable が大好きですが、実社会の実稼働アプリケーションを使っているときは、必ずしも直ぐに Observable に行くというものではありません。再有効化はほとんどの方にとって真新しいパターンであることを考えて、その方法を容易にする必要がある場合があります。これは Observable を Promise に変換してすべてが機能していることを確認し、その Promise をリファクタリングして後で Observable にに戻して行うことができます。ここでは、実例の目的のために、このようにします。
 
 これらを次のようにファイルの先頭に追加します：
 
@@ -282,9 +282,9 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 ```
 
-（再び、これは RxJS 5 インポート方法ですが、ご自由に RxJS 6 を使用して rxjs から Observable へ、rxjs/operators から toPromiseへインポートをアップデートします。）
+（再び、これは RxJS 5 インポート方法ですが、ご自由に RxJS 6 を使用して rxjs から Observable へ、`rxjs/operators` から `toPromise` へインポートをアップデートします。）
 
-ここで.then の前にすべてのコールに .toPromise() を追加し、再度  TypeScript を満足させます。 HttpClient は応答本文のデータを返すのに十分なので、リターンの .data を削除することもできます。
+ここで `.then` の前にすべてのコールに `.toPromise()` を追加し、再度  TypeScript を満足させます。 HttpClient は応答本文のデータを返すのに十分なので、リターンの .data を削除することもできます。
 
 以下を確認します：
 
@@ -330,7 +330,7 @@ export class AuthService {
 }
 ```
 
-信じられないような話ですが、このサービスを Angular に再書き込みするにはこれだけです。ローカル ストレージ API でさえも同じです。まんざら悪くないですよね。これでそれを Angular モジュールに追加します。app.module.ts を開き、上部の AuthService をインポートし、AuthService をプロバイダーアレイに追加します。
+信じられないような話ですが、このサービスを Angular に再書き込みするにはこれだけです。ローカル ストレージ API でさえも同じです。まんざら悪くないですよね。これでそれを Angular モジュールに追加します。`app.module.ts` を開き、上部の AuthService をインポートし、AuthService をプロバイダーアレイに追加します。
 
 ```typescript
 // 下の CreateOrderComponent をインポートします
@@ -352,9 +352,9 @@ providers: [
   ]
 ```
 
-AngularJS コードがそのサービスに確実にアクセスできるようにするにはどうしたらいいでしょうか？そこで ngUpgrade が関与します。ngUpgrade の downgradeInjectable 機能を AngularJS モジュールで使用し、この Angular サービスがレガシ コードに使用できるゆようにします。
+AngularJS コードがそのサービスに確実にアクセスできるようにするにはどうしたらいいでしょうか？そこで ngUpgrade が関与します。ngUpgrade の `downgradeInjectable` 機能を AngularJS モジュールで使用し、この Angular サービスがレガシ コードに使用できるゆようにします。
 
-App.module.ajs.ts を開きます。まず、ファイルの名前を変更したので、上部のインポートを修正します。それから、サービスを登録している場所で、それをファクトリに変更し、そのダウングレード機能を丁度、OrderService および CustomerService のように使用します：
+`app.module.ajs.ts` を開きます。まず、ファイルの名前を変更したので、上部のインポートを修正します。それから、サービスを登録している場所で、それをファクトリに変更し、そのダウングレード機能を丁度、`OrderService` および `CustomerService` のように使用します：
 
 ```typescript
 // 修正されたインポート
@@ -373,7 +373,7 @@ angular
 
 #### **実行時間でトークンを取得する**
 
-ここからは楽しい部分です。AngularJS のアプリ実行機能を削除し、それを新しい Angular APP\_INITIALIZER と置換します。Angular モジュールに戻りましょう。機能を Angular のファクトリとして提供します。これを NgModule デコレータの上に貼り付けます：
+ここからは楽しい部分です。AngularJS のアプリ実行機能を削除し、それを新しい Angular `APP_INITIALIZER` と置換します。Angular モジュールに戻りましょう。機能を Angular のファクトリとして提供します。これを NgModule デコレータの上に貼り付けます：
 
 ```typescript
 export function get_token(authService: AuthService) {
@@ -381,7 +381,7 @@ export function get_token(authService: AuthService) {
 }
 ```
 
-この機能は AuthService を挿入し、その getToken 機能を呼び出します。ここで APP\_INITIALIZER を使用してこの機能を立ち上げ時に呼び出すファクトリを提供します。この新しいオブジェクトをインターセプターと providers アレイの AuthService の後に追加します。
+この機能は `AuthService` を挿入し、その `getToken` 機能を呼び出します。ここで APP\_INITIALIZER を使用してこの機能を立ち上げ時に呼び出すファクトリを提供します。この新しいオブジェクトをインターセプターと `providers` アレイの `AuthService` の後に追加します。
 
 ```typescript
 {
@@ -392,13 +392,13 @@ export function get_token(authService: AuthService) {
 }
 ```
 
-NgModule（core から）をインポートするライン上の import プロパティに APP\_INITIALIZER も追加する必要があります。
+`NgModule`（`core` から）をインポートするライン上の `import` プロパティに `APP_INITIALIZER` も追加する必要があります。
 
-これを実行してみましょう。AngularJS モジュール（app.module.ajs.ts）の run 登録機能をコメントアウトし、すべてのコンパイルとバンドルを確認します。それから、ブラウザーに移動します。確実にスタートから開始するために Chrome 開発者ツールを使ってアプリケーション記憶域を消去して、そのページをリフレッシュします。どのルートであっても、これが機能することを確認します。Customers タブで実行して Angular で確認し、それから Products タブで実行して AngularJS で確認します。インターセプターがそれを使って呼び出す前に、トークンが呼び出され、読み込まれることを確認します。素晴らしい！
+これを実行してみましょう。AngularJS モジュール（`app.module.ajs.ts`）の `run` 登録機能をコメントアウトし、すべてのコンパイルとバンドルを確認します。それから、ブラウザーに移動します。確実にスタートから開始するために Chrome 開発者ツールを使ってアプリケーション記憶域を消去して、そのページをリフレッシュします。どのルートであっても、これが機能することを確認します。Customers タブで実行して Angular で確認し、それから Products タブで実行して AngularJS で確認します。インターセプターがそれを使って呼び出す前に、トークンが呼び出され、読み込まれることを確認します。素晴らしい！
 
 これを終えるには、AngularJS モジュールから run 機能とそれのインポートを削除し、app.run.ajs.ts ファイルを削除します。[完成したコードはこちらからご覧ください](https://github.com/upgradingangularjs/ordersystem-evergreen/commit/e0fd2ec2ecac606ce59948ea86a84f5ad5cc8996)。
 
-{% include tweet_quote.html quote_text="AngularJS アプリを新しい Angular フレームワークにアップグレードすることについての本書をご覧ください。" %}
+{% include jp-tweet_quote.html quote_text="AngularJS アプリを新しい Angular フレームワークにアップグレードすることについての本書をご覧ください。" %}
 
 ## 本書の内容
 

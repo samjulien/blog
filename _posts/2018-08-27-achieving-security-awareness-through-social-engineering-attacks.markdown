@@ -5,7 +5,7 @@ metatitle: "Top 10 Takeaways - Black Hat - Security Awareness Through Social Eng
 description: "Let’s cover the top 10 cybersecurity takeaways of my social engineering training at Black Hat."
 metadescription: "The Top 10 Takeaways of a social engineering course from Black Hat, a course which covered policies, security awareness programs, and much more!"
 date: 2018-08-27 10:00
-category: Identity, Auth0 Engineering
+category: Technical Guide, Auth0 Engineering, Identity
 author:
   name: "Annybell Villarroel"
   url: "https://www.linkedin.com/in/annybell-villarroel-60281189/"
