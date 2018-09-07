@@ -17,15 +17,15 @@ You can also save the text in a variable
 {% assign amp_page = current.url | scan_filter: '^\/amp\/+' %}
 
 <blockquote class="tweet-quote">
-  <a href="https://twitter.com/intent/tweet?text=&quot;{{ include.quote_text | cgi_escape }}&quot; via @auth0 http://auth0.com{{ site.baseurl }}{{current.url}}">
-    <p>"{{ include.quote_text }}"</p>
-    <p class="tweet-link">これをツイートする
-			{% if amp_page %} 
-				<amp-img src="https://cdn.auth0.com/blog/resources/twitter.svg"
-				 width="20" height="19"  alt="Tweet"></amp-img>
+	<a href="https://twitter.com/intent/tweet?text=&#x300c;{{ include.quote_text | cgi_escape }}&#x300d; @auth0 http://auth0.com{{ site.baseurl }}{{current.url}}">
+		<p>&#x300c;{{ include.quote_text }}&#x300d;</p>
+		<p class="tweet-link">これをツイートする
+			{% if amp_page %}
+			<amp-img src="https://cdn.auth0.com/blog/resources/twitter.svg"
+					 width="20" height="19"  alt="Tweet"></amp-img>
 			{% else %}
-				<img src="https://cdn.auth0.com/blog/resources/twitter.svg">
+			<img src="https://cdn.auth0.com/blog/resources/twitter.svg">
 			{% endif %}
 		</p>
-  </a>
+	</a>
 </blockquote>
