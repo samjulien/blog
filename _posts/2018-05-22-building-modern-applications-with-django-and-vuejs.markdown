@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "Building Modern Applications with Django and Vue.js"
+metatitle: "Create Modern Applications with Django and Vue.js - Learn Here"
 description: "How to create a full-stack application with Django, Django REST framework, and Vue.js. A REST API back-end and a Vue.js front-end, along with JWT authentication through Auth0."
+metadescription: "Learn how to create a full-stack application with Django, Django REST framework, and Vue.js. A REST API back-end and a Vue.js front-end, along with JWT authentication through Auth0."
 date: 2018-05-22 17:28
 category: Technical Guide, Python, Django
 author:
