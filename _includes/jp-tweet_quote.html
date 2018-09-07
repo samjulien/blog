@@ -17,7 +17,7 @@ You can also save the text in a variable
 {% assign amp_page = current.url | scan_filter: '^\/amp\/+' %}
 
 <blockquote class="tweet-quote">
-	<a href="https://twitter.com/intent/tweet?text=&#x300c;{{ include.quote_text | cgi_escape }}&#x300d; via @auth0 http://auth0.com{{ site.baseurl }}{{current.url}}">
+	<a href="https://twitter.com/intent/tweet?text=&#x300c;{{ include.quote_text | cgi_escape }}&#x300d; @auth0 http://auth0.com{{ site.baseurl }}{{current.url}}">
 		<p>&#x300c;{{ include.quote_text }}&#x300d;</p>
 		<p class="tweet-link">これをツイートする
 			{% if amp_page %}
