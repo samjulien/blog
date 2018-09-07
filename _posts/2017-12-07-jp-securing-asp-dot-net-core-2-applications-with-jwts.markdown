@@ -46,7 +46,7 @@ JWT の 3 つのセクションは、データが HTTP ベース環境に簡単�
 
 もちろん、本書は一般用語やテクノロジーの基本的なアイディアを含む JWTについての簡単な概要です。詳細については、 [JSON Web Token の概要](https://jwt.io/introduction/)をご覧ください。
 
-{% include tweet_quote.html quote_text="JSON Web Token は JSON オブジェクトとしてパーティ間で安全に情報を送信するためのコンパクトで自己完結型のTokenです。" %}
+{% include jp-tweet_quote.html quote_text="JSON Web Token は JSON オブジェクトとしてパーティ間で安全に情報を送信するためのコンパクトで自己完結型のTokenです。" %}
 
 ## ASP.NET Core 2.0 アプリケーションを JWT でセキュアする
 
@@ -453,7 +453,7 @@ curl -H 'Authorization: Bearer '$JWT 0:5000/api/books
 
 最後のコマンドは、以下で制限されている以外の全ての書籍を含むリストを送信します。_Delta of Venus_。
 
-{% include tweet_quote.html quote_text="ASP.NET Core 2.0 API をセキュアにする方法を学んだばかりです。" %}
+{% include jp-tweet_quote.html quote_text="ASP.NET Core 2.0 API をセキュアにする方法を学んだばかりです。" %}
 
 ## クロス オリジンなリクエスト(CORS)を ASP.NET Core 2.0 で有効にする
 
