@@ -1,9 +1,8 @@
 ---
 layout: post
 title: 3 Critical Lessons from the T-Mobile Data Breach
-metatitle: 3 Critical Lessons from the T-Mobile Data Breach
 description: 3 lessons business leader can learn from the T-Mobile data breach to protect their teams and customers.
-metadescription: Learn why securing weak points, updating password practices, and improving communications after a breach are key to protect teams and customers.
+metadescription: T-Mobile got hacked. Learn why securing weak points, updating password practices, and improving communications after a breach are key to protect teams and customers.
 date: 2018-09-07 08:30
 category: Hot Topics, Security, Breaches
 post_length: 1
