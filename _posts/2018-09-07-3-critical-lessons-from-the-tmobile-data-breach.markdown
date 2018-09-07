@@ -2,16 +2,16 @@
 layout: post
 title: 3 Critical Lessons from the T-Mobile Data Breach
 metatitle: 3 Critical Lessons from the T-Mobile Data Breach
-description: Follow these steps to reduce cases of identity theft.
-metadescription: Follow these steps to reduce cases of identity theft.
-date: 2018-09-07 11:00
+description: 3 lessons business leader can learn from the T-Mobile data breach to protect their teams and customers.
+metadescription: Learn why securing weak points, updating password practices, and improving communications after a breach are key to protect teams and customers.
+date: 2018-09-07 08:30
 category: Hot Topics, Security, Breaches
 post_length: 1
 author:
-  name: <YOUR NAME>
-  url: <YOUR URL>
-  mail: <YOUR MAIL>
-  avatar: <LINK TO PROFILE PIC>
+  name: Martin Gontovnikas
+  url: http://twitter.com/mgonto
+  mail: gonto@auth0.com
+  avatar: https://www.gravatar.com/avatar/df6c864847fba9687d962cb80b482764??s=60
 design:
   bg_color: "#6B5282"
   image: https://cdn.auth0.com/blog/mitigate/security-measures-main.png
