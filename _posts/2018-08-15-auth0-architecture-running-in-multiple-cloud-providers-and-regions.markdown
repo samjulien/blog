@@ -213,4 +213,6 @@ With that in mind, these are the initiatives in place for us to scale not only o
 
 - Ensure we have auto-scaling and blue/green deployments on every core service. This should come out-of-the-box from our new Platform, but while that is being built and tested we need to improve the scaling/deployment/rollback story for the core services that are still lacking in that regard.
 
+{% include profile_card.html picture="https://cdn.auth0.com/blog/auziro/Dirceu-Tiegs.jpg" name="Dirceu Tiegs" title="Engineer" team="Site Reliability Engineering Team" location="Florianópolis, Brazil" body="What I enjoy the most about being an SRE at Auth0 is that it allows me to exercise different areas such as coding, architecture, writing, training, investigations, debugging, and incident response. It's great to be able to think deeply about all aspects related to reliability and then apply it to large-scale, real-world projects." %}
+
 {% include asides/about-auth0.markdown %}
