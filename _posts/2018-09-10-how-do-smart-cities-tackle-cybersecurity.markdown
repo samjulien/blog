@@ -4,10 +4,10 @@ title: "How Do Smart Cities Tackle Cybersecurity?"
 description: "Use penetration testing and 2FA and educate citizens and employees to better anticipate and avoid cyber threats."
 metadescription: "Smart city technology uses 2FA, penetration testing, and citizens/employees education for enhanced security and to avoid cyber threats. Check out how smart cities are tackling cybersecurity."
 date: 2018-09-10 8:30
-category: Security, Cybersecurity, Enterprise
+category: Hot Topics, Security
 design: 
-  bg_color: "#222228"
-  image: https://cdn.auth0.com/blog/security-whitepaper/logo.png
+  bg_color: "#5E2C84"
+  image: https://cdn.auth0.com/blog/smart-cities-security/smart-cities-cybersecurity-logo.png
 author:
   name: Diego Poza
   url: https://twitter.com/diegopoza
@@ -27,7 +27,10 @@ tags:
   - mobile
   - mobile-attacks
 related:
-  - 2018-04-12-common-threats-in-web-app-security
+  - 2018-09-07-3-critical-lessons-from-the-t-mobile-data-breach
+  - 2018-08-31-travel-digitalization-to-unlock-1-trillion-in-value-by-2025
+  - 2018-08-02-four-cybersecurity-attacks-you-need-to-know
+
 ---
 
 On April 7, 2017, at a quarter to midnight, the city of Dallas was hacked.
