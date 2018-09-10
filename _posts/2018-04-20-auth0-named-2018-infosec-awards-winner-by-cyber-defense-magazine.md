@@ -4,7 +4,7 @@ title: "Auth0 Named 2018 InfoSec Awards Winner by Cyber Defense Magazine"
 description: "Auth0 wins “Editor’s Choice” in Identity and Access Management category"
 longdescription: "Auth0 wins “Editor’s Choice” in Identity and Access Management category"
 date: 2018-04-20 8:30
-category: Announcements, Press
+category: PR, Awards, InfoSec Awards
 press_release: true
 is_non-tech: true
 author:
@@ -28,10 +28,10 @@ related:
 
 **BELLEVUE, Wash. -- April 18, 2018** -- [_Auth0_](https://auth0.com/), a global leader in Identity-as-a-Service (IDaaS), today announced that it has been named a winner in Cyber Defense Magazine’s annual [_InfoSec Awards_](http://www.cyberdefensemagazine.com/infosec-awards-2018-winners/). Auth0 was awarded “Editor’s Choice” in the Identity and Access Management category. All winners will be recognized at RSA Conference 2018 in San Francisco.
 
-“Cyber Defense Magazine spent six months searching for cutting-edge companies and found nearly 3,000 offering innovative infosec products and services,” said Gary S. Miliefsky, Publisher, Cyber Defense Magazine. “Auth0 won Editor’s Choice in Identity and Access Management because it is an innovator on a mission to help stop breaches and get one step ahead of the next threat, proactively.” 
+“Cyber Defense Magazine spent six months searching for cutting-edge companies and found nearly 3,000 offering innovative infosec products and services,” said Gary S. Miliefsky, Publisher, Cyber Defense Magazine. “Auth0 won Editor’s Choice in Identity and Access Management because it is an innovator on a mission to help stop breaches and get one step ahead of the next threat, proactively.”
 “Identity and access management is a need that any company in any industry has, especially in this day and age,” said Eugenio Pace, CEO and Co-founder of Auth0. “We are dedicated to providing a unique approach to identity and are thrilled Cyber Defense Magazine has recognized us.”
 
-Auth0’s Universal Identity Platform provides identity management for consumers, businesses, employees, IoT devices, and more. The company secures more than 1.5 billion logins per month and works with market-leading enterprises in every industry, including financial services, retail, media, B2B SaaS, and healthcare. 
+Auth0’s Universal Identity Platform provides identity management for consumers, businesses, employees, IoT devices, and more. The company secures more than 1.5 billion logins per month and works with market-leading enterprises in every industry, including financial services, retail, media, B2B SaaS, and healthcare.
 
 **About Cyber Defense Magazine**
 

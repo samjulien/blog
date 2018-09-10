@@ -4,7 +4,7 @@ title: "New Features for Developing AngularJS Applications - Part 1: Component-B
 description: "Learn how to develop applications in AngularJS using a component-based architecture."
 longdescription: "Learn about the latest recipes in building AngularJS applications. The use of component directives, one-way dataflow, advanced directives, single-slot and multi-slot transclusions, and lifecycle hooks."
 date: 2018-04-24 08:30
-category: Technical Guide, Frontend, AngularJS
+category: Technical Guide, Deep Dive, AngularJS
 design:
   image: https://cdn.auth0.com/blog/logos/angularjs.png
   bg_color: "#072858"
@@ -33,7 +33,7 @@ The Component-based Architecture is prevalent in frontend development today. Jav
 
 {% include tweet_quote.html quote_text="The Component-based Architecture is prevalent in frontend development today." %}
 
-A typical example of an application built applying the component architecture involves developing several features of the application as modules with reusable components. 
+A typical example of an application built applying the component architecture involves developing several features of the application as modules with reusable components.
 
 For example, let's use a Music Player application. A required feature for this product could be a Music Player widget. A developer designing their app in a component-based architecture style can model this feature as a *Module*.
 
@@ -43,13 +43,13 @@ Let's call it the _Music Player Widget_ Module. Inside the module, we can have t
 - _Music Playlist_ Component, `<music-playlist>`.
 - _Currently Playing Song_ Component, `<music-currently-playing>`.
 
-In a Component-based Architecture, we usually have _Parent_ and _Child_ components. The three individual components mentioned above can be referred to as _Child_ components wrapped up into a big component that will be known as the _Parent Component_ or _Root_ component. 
+In a Component-based Architecture, we usually have _Parent_ and _Child_ components. The three individual components mentioned above can be referred to as _Child_ components wrapped up into a big component that will be known as the _Parent Component_ or _Root_ component.
 
-## The AngularJS .component() method 
+## The AngularJS .component() method
 
 The Angular team introduced the `.component()` method in AngularJS 1.5. This method allows developers to write their applications using the component-based architecture. How do we use the `.component()` ?
 
-Before Angular 1.5, we only had directives, Angular directives such as `ngHide`, `ngHref`, `ngRepeat`, and custom directives. 
+Before Angular 1.5, we only had directives, Angular directives such as `ngHide`, `ngHref`, `ngRepeat`, and custom directives.
 
 Directives are a unique and powerful feature that allows you create custom HTML-like tags, specific to your application. In this article, we'll examine a directive, and convert it to a component using the `.component()` method.
 
@@ -109,7 +109,7 @@ Nice and simple. Essentially the return `{};` statement inside the `.directive()
 
 ## Bindings
 
-In a `.directive()`, the scope property allows us to define whether we want to isolate the `$scope` or inherit it, this has now become a sensible default to always make our directives have isolated scope. So repeating ourselves each time just creates excess boilerplate. 
+In a `.directive()`, the scope property allows us to define whether we want to isolate the `$scope` or inherit it, this has now become a sensible default to always make our directives have isolated scope. So repeating ourselves each time just creates excess boilerplate.
 
 With the introduction of `bindToController`, we can explicitly define which properties we want to pass into our isolate scope and bind directly to the Controller.
 
@@ -183,7 +183,7 @@ This then allows us to use something like `vm.title` inside our template to talk
 }
 ```
 
-This helps us minimize our code by preventing the use of `controllerAs` property. However, we can add the `controllerAs` property to maintain backwards compatibility or keep it if that’s within your style for writing directives or components. 
+This helps us minimize our code by preventing the use of `controllerAs` property. However, we can add the `controllerAs` property to maintain backwards compatibility or keep it if that’s within your style for writing directives or components.
 
 There is another option that completely eliminates the need for `controllerAs`, and Angular automatically uses the property, `$ctrl`. For instance:
 
@@ -441,9 +441,9 @@ Remember the old way of detecting changes with `$scope.$watch()`. In Angular 1.5
 Before we go ahead into examples it is important for us to understand, how, why and when this hook is called. `$onChanges` hook is called in two scenarios, one being during component initialization, it passes down the initial changes that can be used right away through `isFirstChange` method.
 
 ```js
-$ctrl.onChanges = function (changes) { 
+$ctrl.onChanges = function (changes) {
     if (changes.commit) {
-        $ctrl.issues = openIssues(changes.commit.currentValue); 
+        $ctrl.issues = openIssues(changes.commit.currentValue);
         $ctrl.repo = createdRepos(changes.commit.currentValue);
     }
 }
@@ -455,7 +455,7 @@ This hook is called when its containing scope is destroyed. We can use this hook
 
 ```js
 function MyController($element) {
-  
+
   var eventHandler = function () {
     /**
      * Write code here

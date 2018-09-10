@@ -4,7 +4,7 @@ title: "What Are Managed Service Providers?"
 description: "How the right fit can help you source more value from your IT team and secure critical data."
 longdescription: "Understanding the value of managed service providers is key to ensuring success in companies that are scaling. This article describes how, when, and where it is a good idea to use them to maximize success."
 date: 2018-04-17 12:30
-category: Hot Topic, Trends
+category: Hot Topics, Security, Mitigations
 is_non-tech: true
 author:
   name: Martin Gontovnikas
@@ -26,9 +26,9 @@ related:
 - 2017-12-08-how-poor-identity-access-management-equals-security-breaches
 ---
 
-Many believe managed service providers (MSPs) [can’t add value](https://auth0.com/blog/managed-service-providers-myths/) to an IT team. Because MSPs are outsourced providers, some managers and engineers feel an MSP won’t truly have a stake in maintaining the quality of their systems and protecting their [sensitive user data](https://auth0.com/blog/the-6-billion-reason-your-business-needs-advanced-fraud-protection/). 
+Many believe managed service providers (MSPs) [can’t add value](https://auth0.com/blog/managed-service-providers-myths/) to an IT team. Because MSPs are outsourced providers, some managers and engineers feel an MSP won’t truly have a stake in maintaining the quality of their systems and protecting their [sensitive user data](https://auth0.com/blog/the-6-billion-reason-your-business-needs-advanced-fraud-protection/).
 
-While some risks do exist when shifting control to an external group, [strong evidence](https://auth0.com/blog/managed-service-providers-myths/) shows that outsourcing some or all of your IT operations can up your ability to deter cyberthreats and improve your company’s overall level of expertise. What’s more, although MSPs may charge a high upfront cost, they can reduce maintenance charges by [40%](https://www.cisco.com/c/dam/en_us/services/downloads/why-managed-services.pdf) over time, leading to enormous company savings over the long haul. 
+While some risks do exist when shifting control to an external group, [strong evidence](https://auth0.com/blog/managed-service-providers-myths/) shows that outsourcing some or all of your IT operations can up your ability to deter cyberthreats and improve your company’s overall level of expertise. What’s more, although MSPs may charge a high upfront cost, they can reduce maintenance charges by [40%](https://www.cisco.com/c/dam/en_us/services/downloads/why-managed-services.pdf) over time, leading to enormous company savings over the long haul.
 
 This article will help you decide when and how to bring in these experts. When you do, we'll show you specific ways they can make your IT operations more efficient so you can continue to grow your core business.
 
@@ -37,9 +37,9 @@ This article will help you decide when and how to bring in these experts. When y
 ---
 
 ## What Is a Managed Service Provider?
-Managed service providers are third-party technology experts, hired to help scale, monitor, and update various aspects of an organization's IT systems. 
+Managed service providers are third-party technology experts, hired to help scale, monitor, and update various aspects of an organization's IT systems.
 
-MSP roles have evolved over the past decade from simply maintaining legacy systems to taking responsibility for repairs and patches and delivering new software, cloud services, and specific expertise, such as data security services. Top full-service MSPs like Accenture, Cognizant, and IBM have teams of experts, dedicated to remotely managing their customers’ entire IT infrastructure. These and other MSPs can allow companies to quickly expand by offering to host operations at a more robust and powerful external data center. By shouldering the majority of routine maintenance work, MSPs allow IT teams to focus on vital tasks instead of using up valuable resources to keep systems from crashing. 
+MSP roles have evolved over the past decade from simply maintaining legacy systems to taking responsibility for repairs and patches and delivering new software, cloud services, and specific expertise, such as data security services. Top full-service MSPs like Accenture, Cognizant, and IBM have teams of experts, dedicated to remotely managing their customers’ entire IT infrastructure. These and other MSPs can allow companies to quickly expand by offering to host operations at a more robust and powerful external data center. By shouldering the majority of routine maintenance work, MSPs allow IT teams to focus on vital tasks instead of using up valuable resources to keep systems from crashing.
 
 MSPs can also help a company stay up-to-date with the latest tools and emerging trends, such as how to efficiently transition to the cloud and access [energy-saving technologies](https://www.energy.gov/eere/femp/energy-efficiency-data-centers). Finally, they can secure organizations against [data breaches](https://www.ibm.com/security/data-breach), which have the potential to significantly set a company back financially and damage its reputation among customers.
 
@@ -51,7 +51,7 @@ Hiring an MSP can propel you to streamline your workflow and dedicate more manpo
 
 1. Figure out what parts of your IT operations are causing the biggest drain — in both human and financial resources. Many find this to be maintenance. A report by Cisco finds that [65%](https://www.cisco.com/c/dam/en_us/services/downloads/why-managed-services.pdf) of IT budgets go towards just keeping systems powered up. For this reason you might consider outsourcing your network support so you don't spend all day reacting to and troubleshooting issues as they arise.
 2. Decide on an MSP that will be the best match for your specific needs. Further criteria to consider are the vendor's size, its location, its ability and experience in offering hybrid solutions (if that's your team's trajectory), its data center capabilities, and price.
-3. Once you've made your decision, a strong and effective MSP relationship requires the customer (you) to set clear expectations in a scope of services or [service level agreement](https://www.continuum.net/europe/blog/5-ways-to-strengthen-your-service-level-agreement-sla) (SLA). You can begin with a template SLA, then customize it based on your unique needs. For example, if you need coverage 24-hours a day, the SLA is the place to say so. 
+3. Once you've made your decision, a strong and effective MSP relationship requires the customer (you) to set clear expectations in a scope of services or [service level agreement](https://www.continuum.net/europe/blog/5-ways-to-strengthen-your-service-level-agreement-sla) (SLA). You can begin with a template SLA, then customize it based on your unique needs. For example, if you need coverage 24-hours a day, the SLA is the place to say so.
 
 A wide range of organizations relies on SLAs when outsourcing their IT needs — from growing companies to government agencies to large non-profits and universities like UC Santa Cruz (below). The following is an overview of their SLA for data center services, 2017-2019, along with a breakout of their service scope:
 
@@ -59,7 +59,7 @@ A wide range of organizations relies on SLAs when outsourcing their IT needs —
 
 > [Source.](https://its.ucsc.edu/sla/data-center.html)
 
-In the Quicklinks bar on the right, it's clear that the full SLA digs into everything at a granular level — from the MSP's roles and responsibilities to hours of coverage and response times, pricing, reporting, and more. The services scope details the suite of services the provider will deliver, including authentication for the campus active directory, data backup and recovery, and hosting. It is comprehensive and reflects the time UC Santa Cruz put into understanding its own needs and clearly spelling them out for the external provider. 
+In the Quicklinks bar on the right, it's clear that the full SLA digs into everything at a granular level — from the MSP's roles and responsibilities to hours of coverage and response times, pricing, reporting, and more. The services scope details the suite of services the provider will deliver, including authentication for the campus active directory, data backup and recovery, and hosting. It is comprehensive and reflects the time UC Santa Cruz put into understanding its own needs and clearly spelling them out for the external provider.
 
 With a team of well-supported experts who are highly dedicated to customer service, managed service providers have the capacity to take an enormous load off of your IT team's shoulders and deliver value over and above your current state. Figuring out how to manage this relationship correctly can drive enormous efficiencies within your IT operations and secure a strong technology base for your company's overall expansion.
 
@@ -74,14 +74,14 @@ Auth0's centralized dashboard allows you to manage your users in a variety of wa
 
 ![Auth0 Dashboard](https://cdn.auth0.com/blog/managed-service-providers/2-auth0-dashboard.png)
 
-For example, as you observe current and past activities, you could deny certain users access, request password re-sets, enable multi-factor authentication for enhanced security, and more. In 2017 the average cost of a data breach was [$3.62 million](https://www.ibm.com/security/data-breach), yet you can significantly decrease this risk by implementing better identity security measures. In 2017 Deloitte could have avoided its [massive data breach](https://www.theguardian.com/business/2017/sep/25/deloitte-hit-by-cyber-attack-revealing-clients-secret-emails) just by tracking its users more carefully. 
+For example, as you observe current and past activities, you could deny certain users access, request password re-sets, enable multi-factor authentication for enhanced security, and more. In 2017 the average cost of a data breach was [$3.62 million](https://www.ibm.com/security/data-breach), yet you can significantly decrease this risk by implementing better identity security measures. In 2017 Deloitte could have avoided its [massive data breach](https://www.theguardian.com/business/2017/sep/25/deloitte-hit-by-cyber-attack-revealing-clients-secret-emails) just by tracking its users more carefully.
 
 {% include tweet_quote.html quote_text="In 2017 the average cost of a data breach was $3.62 million!" %}
 
 These features are complex and time-consuming to build in-house; plus, they require continual updates to ensure they remain as tight as possible. Outsourcing identity and access management needs to a specialized MSP is a great strategy for securing your most sensitive information as you transition to a digital environment.
 
 ## Ready to Scale? Time to Call in an MSP
-If your team is ready to move to the cloud and has market traction and funding for further growth, your IT needs will only escalate. Bringing in an MSP will help you to scale efficiently and sustainably. A managed service provider is perfect for a small or medium-sized business with limited in-house abilities yet the resources to pay up-front costs. 
+If your team is ready to move to the cloud and has market traction and funding for further growth, your IT needs will only escalate. Bringing in an MSP will help you to scale efficiently and sustainably. A managed service provider is perfect for a small or medium-sized business with limited in-house abilities yet the resources to pay up-front costs.
 
 Over time you'll pay back a significant portion of this capital expenditure. (Studies show MSPs can save you [50% of your annual IT costs](https://www.webroot.com/shared/pdf/wp-transitioning_to_managed_services.pdf).) However, companies without the ability to pay the initial costs and/or that do not have a present need for enhanced security measures and organizational support (such as a startup beginning to pilot test a new app) might do without.
 

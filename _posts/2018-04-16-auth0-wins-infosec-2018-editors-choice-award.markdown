@@ -3,7 +3,7 @@ layout: post
 title: "Auth0 Wins InfoSec 2018 Editor’s Choice Award"
 description: Our IAM Platform Noted as an Innovative Defense Against Rising Tide of Cybercrime
 date: 2018-04-16 13:01
-category: Announcements, Press
+category: PR, Awards, InfoSec Awards
 is_non-tech: true
 author:
   name: "Jenny O'Brien"
@@ -25,11 +25,11 @@ related:
 - 2018-02-02-3-ways-to-get-an-iam-budget-in-2018
 ---
 
-We believe that fighting cybercrime can begin with your IAM solution. 
+We believe that fighting cybercrime can begin with your IAM solution.
 
 Looks like Cyber Defense Magazine agrees.
 
-<p align="center"> 
+<p align="center">
 <img src="https://cdn.auth0.com/blog/auth0-wins-infosec-award/winner-logo.png"
   alt="Auth0 Wins InfoSec 2018 Editor's Choice Award">
 </p>
@@ -42,6 +42,6 @@ Nearly 3,000 companies globally competed for InfoSec recognition in categories r
 
 _“Auth0 takes security and identity and access management seriously,”_ said Auth0 CISO Joan Pepin. _“In this evolving cyber crime environment, we will continue to keep our focus on innovating to address the latest attacks. Our main concern is producing secure, high-quality products for our customers and their customers.”_
 
-You can find more cutting-edge knowledge, real-world stories and awards on the best ideas, products, and services in the information technology industry, from Cyber Defense’s [free online magazine](http://www.cyberdefensemagazine.com/) or pick up a limited print edition exclusively for the RSA conferences and paid subscribers. 
+You can find more cutting-edge knowledge, real-world stories and awards on the best ideas, products, and services in the information technology industry, from Cyber Defense’s [free online magazine](http://www.cyberdefensemagazine.com/) or pick up a limited print edition exclusively for the RSA conferences and paid subscribers.
 
 If you’d like to know more about how Auth0 can help safeguard you and your customers with our secure Identity-as-a-Service platform, please reach out to [sales@auth0.com](mailto:sales@auth0.com).

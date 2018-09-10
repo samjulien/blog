@@ -4,7 +4,7 @@ title: "A Look at The Draft for JWT Best Current Practices"
 description: "Learn the best practices for keeping your JWTs secure."
 longdescription: "We take a look at the IETF OAuth Working Group's current draft for the JSON Web Token Best Current Practices document and explore each recommendation in detail. Learn how to keep your JWTs secure!"
 date: 2018-04-11 12:30
-category: Technical Guide, JWT
+category: Technical Guide, Identity, JWT
 author:
   name: Sebastián Peyrott
   url: https://twitter.com/speyrott?lang=en
@@ -245,7 +245,7 @@ A common mistake in these scenarios is related to the validation of the nested J
 ### Invalid Elliptic-Curve Attacks
 Elliptic-curve cryptography is one of the public-key algorithm families supported by [JSON Web Algorithms](https://tools.ietf.org/html/rfc7518). Elliptic-curve cryptography relies on the intractability of the [elliptic-curve discrete logarithm problem](https://en.wikipedia.org/wiki/Elliptic-curve_cryptography), a mathematical problem that cannot be solved in reasonable times for big enough numbers. This problem prevents the recovery of the private key from a public key, an encrypted message, and its plaintext. When compared to RSA, another public-key algorithm which is also supported by JSON Web Algorithms, elliptic-curves provide a similar level of strength while requiring smaller keys.
 
-Elliptic-curves, as required for cryptographic operations, are defined over finite fields. In other words, they operate on sets of discrete numbers (rather than all real numbers). This means that all numbers involved in cryptographic elliptic-curve operations are integers. 
+Elliptic-curves, as required for cryptographic operations, are defined over finite fields. In other words, they operate on sets of discrete numbers (rather than all real numbers). This means that all numbers involved in cryptographic elliptic-curve operations are integers.
 
 All mathematical operations of elliptic-curves result in valid points over the curve. In other words, the math for elliptic-curves is defined in such a way that invalid points are simply not possible. If an invalid point is produced, then there is an error in the inputs to the operations. The main arithmetic operations on elliptic curves are:
 

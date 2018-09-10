@@ -4,7 +4,7 @@ title: "Developing Web Apps with ASP.NET Core 2.0 and React - Part 3"
 description: "A practical tutorial showing how to setup and develop a modern Web application based on ASP.NET Core 2.0 and React."
 longdescription: "In this series of posts, you will build a Web application based on ASP.NET Core 2.0 and React. To solve the identity management feature, you will integrate this stack with Auth0. In this third part of the series, you are going to integrate the existing ASP.NET Core API and React client with scopes and authorization management."
 date: 2018-04-10 08:30
-category: Technical Guide, Microsoft, ASP Net Core
+category: Technical Guide, Stack, Fullstack
 author:
   name: "Andrea Chiarelli"
   url: "https://twitter.com/andychiare"
@@ -121,7 +121,7 @@ function (user, context, callback) {
   if (context.clientName !== 'Bookstore client') {
     return callback(null, user, context);
   }
-  
+
   const permissions = user.permissions || [];
   const requestedScopes = context.request.body.scope || context.request.query.scope;
   const filteredScopes = requestedScopes.split(' ').filter((x) => (x.indexOf(':') < 0));
@@ -246,7 +246,7 @@ You could make the user experience a bit more fluent by managing the `403` HTTP 
 ```javascript
   componentDidMount() {
     const accessToken = this.props.auth.getAccessToken();
-    
+
     fetch("/api/books", {headers: new Headers({
         "Accept": "application/json",
         "Authorization": `Bearer ${accessToken}`
@@ -257,7 +257,7 @@ You could make the user experience a bit more fluent by managing the `403` HTTP 
           }
           if (response.status === 403) {
             alert("You are not authorized!")
-          }          
+          }
         })
         .then(books => this.setState({bookList: books || []}))
         .catch(error => console.log(error))
@@ -341,7 +341,7 @@ First, you add in the home page a link that will open a page allowing to submit 
 ```javascript
 class Home extends React.Component {
   //... constructor and other statements
-  
+
   render() {
 	//... other statements
     return  (
@@ -368,10 +368,10 @@ import BookForm from './BookForm';
 
 class App extends Component {
   //... other statements
-  
+
   render() {
 	const logoutButton =  this.createLogoutButton();
-	
+
     return (
       <div className="App">
         <header className="App-header">
@@ -420,12 +420,12 @@ class BookForm extends React.Component {
         <form onSubmit={(e) => this.handleFormSubmit(e)}>
           <div className="row">
             <label className="col-50" htmlFor="author">Author</label>
-            <input type="text" name="author" value={this.state.author} 
+            <input type="text" name="author" value={this.state.author}
               onChange={(e)=> this.handleAuthorChange(e)}/>
           </div>
           <div className="row">
             <label className="col-50" htmlFor="title">Title</label>
-            <input type="text" name="title" value={this.state.title} 
+            <input type="text" name="title" value={this.state.title}
               onChange={(e)=> this.handleTitleChange(e)}/>
           </div>
           <div className="row">
@@ -527,7 +527,7 @@ Now you can add the `hasScopes()` method to the `AuthService` class:
 ```javascript
 export default class AuthService {
   //... other statements
-  
+
   hasScopes(scopes) {
     const grantedScopes = JSON.parse(localStorage.getItem('scopes')).split(' ');
     return scopes.every(scope => grantedScopes.includes(scope));
@@ -542,13 +542,13 @@ You will use the `hasScopes()` method inside the `render()` method of the `Home`
 ```javascript
 class Home extends React.Component {
   //... other statements
-    
+
   render() {
     const bookList = this.state.bookList.map((book) => (
       <li><i>{book.author}</i> - <h3>{book.title}</h3></li>
     ));
-    const addBookButton = this.props.auth.hasScopes(["write:books"]) ? 
-      <Link to="/bookForm">Add a book</Link> 
+    const addBookButton = this.props.auth.hasScopes(["write:books"]) ?
+      <Link to="/bookForm">Add a book</Link>
       : null;
 
     return (

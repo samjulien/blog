@@ -3,8 +3,8 @@ layout: post
 title: "How a Strong Identity Management System Can Ease Your Transition to the Hybrid Cloud"
 description: "With hybrid cloud deployment becoming popular, keeping tight control on authentication and authorization has become essential."
 date: 2018-04-27 8:30
-category: Growth, Identity, Trends
-design: 
+category: Business, Identity, Trends
+design:
   image: https://cdn.auth0.com/blog/identity-management-hybrid-cloud/logo.png
   bg_color: "#00635D"
 author:
@@ -12,7 +12,7 @@ author:
   url: "https://twitter.com/diegopoza"
   mail: "diego.poza@auth0.com"
   avatar: "https://avatars3.githubusercontent.com/u/604869?v=3&s=200"
-tags: 
+tags:
   - hybrid-cloud
   - cloud
   - identity-management
@@ -28,11 +28,11 @@ The ability to clearly observe, track, and log in as your authorized users allow
 
 Moving to a hybrid cloud model is the first step that many companies take when undergoing a digital transformation. Less expensive and resource-intense than a full private cloud option — yet still providing an extra measure of security, compared with the public cloud — hybrid deployment has become [highly popular](https://assets.rightscale.com/uploads/pdfs/RightScale-2017-State-of-the-Cloud-Report.pdf) among tech professionals.
 
-Yet once you migrate to a hybrid cloud model, it can become increasingly difficult to keep track of your users. Previously, your team likely conducted critical tasks on-premises. Now, with the opportunity for multiple users to log in and work with sensitive data from a range of locations and devices, keeping tabs on authentications (who has signed in) and authorizations (who has permission to use private resources) becomes essential. 
+Yet once you migrate to a hybrid cloud model, it can become increasingly difficult to keep track of your users. Previously, your team likely conducted critical tasks on-premises. Now, with the opportunity for multiple users to log in and work with sensitive data from a range of locations and devices, keeping tabs on authentications (who has signed in) and authorizations (who has permission to use private resources) becomes essential.
 
-A clear identity management system can help your team organize user information in a way that makes it easy for administrators to have a birds-eye view of actions taking place and make quick changes if need be. You can build this yourself or outsource your identity and access management (IAM) needs to ensure they are professional, up-to-date, and don't cause additional security concerns. 
+A clear identity management system can help your team organize user information in a way that makes it easy for administrators to have a birds-eye view of actions taking place and make quick changes if need be. You can build this yourself or outsource your identity and access management (IAM) needs to ensure they are professional, up-to-date, and don't cause additional security concerns.
 
-## Track Your Users in the Hybrid Cloud 
+## Track Your Users in the Hybrid Cloud
 
 A robust IAM strategy can show you who is currently logged into your network. Having the full picture is essential to staying organized and rooting out any suspicious activity. For example, Auth0 provides a simple, efficient [dashboard](https://auth0.com/user-management) to centralize a range of user interface tools.
 

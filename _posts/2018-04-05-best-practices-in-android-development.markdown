@@ -4,7 +4,7 @@ title: "Best Practices in Android Development"
 description: "We will take a look at some standard practices we should apply when building Android applications."
 longdescription: "Best practices are simply professional standards that are acceptable in a field. In this article, we will take a look at some best practices in Android development to help us build better apps. We will also make use of Kotlin for the snippets."
 date: 2018-04-05 08:30
-category: Technical Guide, Mobile, Android
+category: Technical Guide, Deep Dive, Android
 author:
   name: "Idorenyin Obong"
   url: "https://twitter.com/kingidee"
@@ -176,7 +176,7 @@ class SampleIntentService : IntentService("SampleIntentService") {
 }
 ```
 
-{% include tweet_quote.html quote_text="Respect the UI thread! Always move your long running tasks to the background thread." %}   
+{% include tweet_quote.html quote_text="Respect the UI thread! Always move your long running tasks to the background thread." %}
 
 ## Compatibility
 
@@ -324,7 +324,7 @@ WebAuthProvider.init(auth0)
         }
         override fun onFailure(exception: AuthenticationException) {
             // Show error to user
-        }    
+        }
         override fun onSuccess(credentials: Credentials) {
             // Store credentials
             // Navigate to your main activity
@@ -344,7 +344,7 @@ Already, since the Marshmallow release, Android ensures adequate privacy by maki
 
 Our apps always have the need to store data. Data is supposed to be stored in a secure manner such that other apps can’t access. It is advised to store sensitive data within the internal storage and not the external storage because the Android system doesn't enforce security restrictions on data that resides within external storage, and the storage medium itself isn't guaranteed to stay connected to the device.  Also, if you have to use SharedPreferences in storing small amounts of data, use it in a private mode so that other apps cannot access, like this:
 
-```kotlin  
+```kotlin
 val pref = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE)
 ```
 

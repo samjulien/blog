@@ -4,7 +4,7 @@ title: Webtask.io Migrating to Node 8
 description: "Webtask.io is migrating to Node 8. Find out how that impacts your projects and how to prepare."
 longdescription: "Webtask.io is migrating to Node 8. Find out how that impacts your projects and how to prepare. Migration tools are available directly in the editor and wt-cli."
 date: 2018-04-20 12:00
-category: Technical, Webtasks
+category: Technical Guide, Auth0 Product, Webtask.io
 press_release: false
 is_non-tech: false
 canonical_url: true
@@ -28,7 +28,7 @@ related:
 
 **Update May 23, 2018:** The Webtask.io migration to Node 8 is complete. All webtasks that were not migrated using the tools described below were automatically migrated to the new Node 8 environment.
 
-If you are receiving deprecation errors or having any issues post-migration, please visit the [Extend forum](http://bit.ly/Node4-Deprecated) for instructions on resolving this issue. 
+If you are receiving deprecation errors or having any issues post-migration, please visit the [Extend forum](http://bit.ly/Node4-Deprecated) for instructions on resolving this issue.
 
 ---
 

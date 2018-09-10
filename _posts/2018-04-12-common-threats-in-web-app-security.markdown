@@ -4,7 +4,7 @@ title: Common Threats in Web Application Security
 description: "Common threats in web application security, how to protect against them and mitigate their impact"
 longdescription: "We attempt to cover a comprehensive security strategy for web applications, to protect against common threats in web application security and mitigate their impact"
 date: 2018-04-12 09:38
-category: Growth, Security
+category: Business, Security, Web Applications
 is_non-tech: true
 author:
   name: Luke Oliff
@@ -37,7 +37,7 @@ related:
 
 Whether you manage your own infrastructure or not, having robust infrastructure security is great. But it becomes a bit redundant if your client's data is just as exposed through your web applications. Having infrastructure security is important, but there are considerations for front and backend developers that _must be considered_.
 
-In this era of modern web technology, security should not be a band-aid or an after-thought. It should be at the very foundation of planning, managing and building your web applications. 
+In this era of modern web technology, security should not be a band-aid or an after-thought. It should be at the very foundation of planning, managing and building your web applications.
 
 **But it doesn't stop there.**
 
@@ -49,7 +49,7 @@ In this article I'll introduce you to my biggest tips for top to bottom (Front e
 
 ## HTTP Strict Transport Security (HSTS) header
 
-HSTS is a header you can provide the browser that enforces HTTPS across your entire web application. 
+HSTS is a header you can provide the browser that enforces HTTPS across your entire web application.
 
 There is no excuse these days to land on a website that isn't encrypting the communication between your web browser and their servers. While SSL certificates used to be a marketing tool for corporations to prove how safe they were, these days SSL certificates are both **free** and **easy to get**. Certificate authorities like [Let's Encrypt](https://letsencrypt.org) have the backing of [some of the world's best known companies](https://letsencrypt.org/sponsors/), because **a secure internet is better for everyone!**
 
@@ -125,15 +125,15 @@ In this example of a XSS header, we have three *directives*.  `1` and `mode`. Al
 - `1`
 
   This is basically a boolean value that determines whether XSS filtering is enabled. Change it to `0` to disable it. Without the optional `mode` or `report` directives, the browser will just sanitize the page, even removing the affected parts.
-  
+
 - `mode=block` _Optional_
 
   Enables XSS filtering. Rather than sanitizing the page, the browser will prevent rendering of the page if an attack is detected.
-  
+
 - `report=<report url>`
 
   Enables XSS filtering. If a cross-site scripting attack is detected, the browser will sanitize the page and report the violation.
-  
+
 ![X-XSS-Protection browser compatibility table](https://cdn.auth0.com/blog/common-threats-in-web-app-security/x-xss-protection-browser-compatibility-table.png)
 
 ## X-Frame-Options header
@@ -142,9 +142,9 @@ Clickjacking occurs when an attacker injects transparent or opaque objects into 
 
 One of the most famous examples of Clickjacking was against [the Adobe Flash plugin settings page](http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager06.html). The infected application was loaded into an invisible window and tricked the user into relaxing their security settings, like allowing the web application to use your camera or microphone!
 
-To prevent click jacking, there is another header! 
+To prevent click jacking, there is another header!
 
-Servers offer Browsers a Header Protocol named `X-Frame-Options`. This protocol allows us to specify domains to accept iFrames from. It also allows us to state which sites our web application can be embedded on. 
+Servers offer Browsers a Header Protocol named `X-Frame-Options`. This protocol allows us to specify domains to accept iFrames from. It also allows us to state which sites our web application can be embedded on.
 
 Here are some examples of an `X-Frame-Options` header.
 
@@ -165,15 +165,15 @@ With this header, we get three possible *directives*.  `DENY`, `ALLOW-FROM`, and
 - `DENY`
 
   This blocks all framing.
-  
+
 - `ALLOW-FROM`
 
   This allows you to provide a list of domains to allow framing within.
-  
+
 - `SAMEORIGIN`
 
   This means framing is only allowed within the current domain.
-  
+
 ![X-Frame-Options browser compatibility table](https://cdn.auth0.com/blog/common-threats-in-web-app-security/x-frame-options-browser-compatibility-table.png)
 
 ## Content Security Policy (CSP) header
@@ -209,7 +209,7 @@ function requestHandler(req, res) {
 ```
 
 Note the `script-src` directive here, that we have set to `self`, therefore only allowing scripts from within our own domain. Content Security Policies are both excellent and very powerful, but must be used cautiously. Just as with HSTS, incorrect configuration could cause unforeseen issues or missing content. This will also disable inline JavaScript unless it's provided `unsafe-inline` keyword, a hash like ('sha256-OsJINy4ZgkXN5pDjr32TfT/PBETcXuD9koo2t1mYDzg='), or a nonce ('nonce-...'), which is great for security!
-  
+
 ![CSP browser compatibility table](https://cdn.auth0.com/blog/common-threats-in-web-app-security/content-security-policy-browser-compatibility-table.png)
 
 ## Cross Site Request Forgery (CSRF)

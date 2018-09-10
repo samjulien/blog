@@ -4,7 +4,7 @@ title: "AWS Summit: How AGL Increased Time-to-Value, Improved Customer Experienc
 description: "Join AGL Enterprise Security Architect Heng Mok at the AWS Summit to learn of digital transformation challenges and wins (with the help of Auth0)."
 longdescription: "AGL Enterprise Security Architect Heng Mok’s made a career out of being at the start of transformation programs. Join him at the AWS Summit as he shares AGL’s digital transformation challenges and wins (with the help of Auth0)."
 date: 2018-04-10 00:52
-category: Announcements, Press
+category: PR, Customers, Energy
 is_non-tech: true
 author:
   name: "Jenny O'Brien"
@@ -29,7 +29,7 @@ AGL Enterprise Security Architect [Heng Mok](https://www.linkedin.com/in/hengmok
 
 _“The energy market is going from centralized to distributed,”_ Mok says. ‘There are number of things that need to change. In a distributed world, you have to have more of a focus on what the customer wants and the platform to orchestrate that new energy concept.”
 
-At the [AWS Summit](https://aws.amazon.com/summits/sydney/) in Sydney this week, Mok will share lessons learned during the first stage of [AGL Energy](https://www.agl.com.au/about-agl)’s digital transformation journey — re-architecting customer identity and authentication for AGL’s applications with the help of Auth0. 
+At the [AWS Summit](https://aws.amazon.com/summits/sydney/) in Sydney this week, Mok will share lessons learned during the first stage of [AGL Energy](https://www.agl.com.au/about-agl)’s digital transformation journey — re-architecting customer identity and authentication for AGL’s applications with the help of Auth0.
 
 ![AWS Summit Sydney](https://cdn.auth0.com/blog/aws-summit-sydney-agl-auth0/identity.png)
 
@@ -37,13 +37,13 @@ Before the change, AGL customers faced poor sign-up and login experiences as wel
 
 AGL’s fast timeline due to the demanding schedule needed to rebuild applications also meant that Mok was looking for a partnership instead of a traditional customer/vendor relationship. “Culturally, Auth0 has been very delightful to worth with,” Mok says. citing strong support teams and architects’ building capability as well as Auth0’s willingness to speed up features on its own roadmap to accommodate AGL’s needs, like an earlier release of [custom domains](https://auth0.com/docs/custom-domains).
 
-Since the first minimum viable product (MVP) went live in March of 2017, Mok and his team have built eight other apps and integrations, providing with seamless and secure authentication as well as innovations like integrating through Auth0 to give AGL customers the ability to manage energy using [Alexa’s voice control](https://www.agl.com.au/about-agl/media-centre/asx-and-media-releases/2018/january/agl-announces-amazon-alexa-skill). 
+Since the first minimum viable product (MVP) went live in March of 2017, Mok and his team have built eight other apps and integrations, providing with seamless and secure authentication as well as innovations like integrating through Auth0 to give AGL customers the ability to manage energy using [Alexa’s voice control](https://www.agl.com.au/about-agl/media-centre/asx-and-media-releases/2018/january/agl-announces-amazon-alexa-skill).
 
-Using a custom-built migration, AGL has been able to successfully consolidate identity to a central location. Mok has seen a dramatic increase in overall speed-to-value, from faster onboarding and an increased ability to rapidly offer customer choices to building new business capabilities. Having created these patterns, he says they are now able to quickly incorporate excellence into the platform with automatic testing that takes only five to 30 minutes during rollout. 
+Using a custom-built migration, AGL has been able to successfully consolidate identity to a central location. Mok has seen a dramatic increase in overall speed-to-value, from faster onboarding and an increased ability to rapidly offer customer choices to building new business capabilities. Having created these patterns, he says they are now able to quickly incorporate excellence into the platform with automatic testing that takes only five to 30 minutes during rollout.
 
-“Auth0’s probably our fastest performing component in our digital set. Onboarding customers live onto the platform and handling quick authentication switches has improved the overall customer experience,” Mok says. 
+“Auth0’s probably our fastest performing component in our digital set. Onboarding customers live onto the platform and handling quick authentication switches has improved the overall customer experience,” Mok says.
 
-During his AWS talk, The Secret to AGL’s Digital Transformation, on April 11th from 4:15 - 4:45 p.m., Mok will share: 
+During his AWS talk, The Secret to AGL’s Digital Transformation, on April 11th from 4:15 - 4:45 p.m., Mok will share:
 
 - Practical tips for integrating identity, easily and securely
 - First-hand anecdotes and lessons learned

@@ -4,7 +4,7 @@ title: "New Features for Developing AngularJS Applications - Part 2: Build An Ap
 description: "Learn how to develop applications in AngularJS  using a component-based architecture."
 longdescription: "Build AngularJS applications using newer features such as one-way data flow, component-based architecture, lifecycle hooks, updated UI router flow. Components all the way."
 date: 2018-04-26 8:30
-category: Technical Guide, Frontend, AngularJS
+category: Technical Guide, Deep Dive, AngularJS
 author:
   name: Prosper Otemuyiwa
   url: https://twitter.com/unicodeveloper?lang=en
@@ -36,9 +36,9 @@ Before AngularJS 1.5, developers relied solely on directives to be able to build
 
 ## Introducing SpeakerHang
 
-I admire several developers in the community, and one of them is [Nadia Odunayo](http://twitter.com/nodunayo). She's a Ruby developer and regular conference speaker. She built a pretty popular side project called [Speakerline](http://speakerline.io). Speakerline is an open source project to help demystify the tech conference CFP process for new speakers. The project is built in Rails. 
+I admire several developers in the community, and one of them is [Nadia Odunayo](http://twitter.com/nodunayo). She's a Ruby developer and regular conference speaker. She built a pretty popular side project called [Speakerline](http://speakerline.io). Speakerline is an open source project to help demystify the tech conference CFP process for new speakers. The project is built in Rails.
 
-**SpeakerHang**, the project we'll build in this tutorial is largely inspired by **Speakerline**. It's a simpler version. **SpeakerHang** displays a list of conference speakers, their details and allows you to add a speaker. 
+**SpeakerHang**, the project we'll build in this tutorial is largely inspired by **Speakerline**. It's a simpler version. **SpeakerHang** displays a list of conference speakers, their details and allows you to add a speaker.
 
 Worthy of note here is that there is no database or external REST API. The speakers are added to an array. The crux of this guide is to teach you how to build a component-based AngularJS application easily.
 
@@ -123,7 +123,7 @@ angular.module('app', [
   .component('app', AppComponent);
 ```
 
-In the code above, we defined the `home` and `app` state. We also configured the default page for the app. The default page that will be rendered when a user visits the app is the `/home` route which renders the template. 
+In the code above, we defined the `home` and `app` state. We also configured the default page for the app. The default page that will be rendered when a user visits the app is the `/home` route which renders the template.
 
 **Note:** The template can be a component or simply a string.
 
@@ -134,14 +134,14 @@ _SpeakerHang - Home Index_
 
 ### Craft Components - NavBar
 
-It's time to build our components. Earlier, we visualized the SpeakerHang app and came up with four components. 
+It's time to build our components. Earlier, we visualized the SpeakerHang app and came up with four components.
 
 * _NavBar_ component
 * _Add Speaker_ container component
 * _Speaker form_ component
 * _Speaker list_ component
 
-Let's start with the navbar component. 
+Let's start with the navbar component.
 
 Run the following command in your terminal to generate a component:
 
@@ -218,13 +218,13 @@ Let's create the speaker list component. Run the component creation command in t
 gulp component --name speakerlist
 ```
 
-Now, we have the `speakerlist` components folder. Take a brief pause here. 
+Now, we have the `speakerlist` components folder. Take a brief pause here.
 
-The speaker list component should list all the speakers on the platform. The question now is, *Where are the speakers?*, *Where will that data come from?* 
+The speaker list component should list all the speakers on the platform. The question now is, *Where are the speakers?*, *Where will that data come from?*
 
 In a production app, the data will be made available to our app from an API. In the absence of an API, we'll simply make use of an array and use a service.
 
-Let's create the speaker service. Create a new folder, `services`, inside the `app` directory. And create a `speakerservice.js` file inside the `services` folder. 
+Let's create the speaker service. Create a new folder, `services`, inside the `app` directory. And create a `speakerservice.js` file inside the `services` folder.
 
 Add code to the file like so:
 
@@ -288,7 +288,7 @@ export default SpeakerService;
 
 In the service above, we have a factory with two functions, `getAllSpeakers` responsible for returning a list of speakers and `addASpeaker`, responsible for adding a speaker.
 
-Now, let's get back to the `speakerlist` component. Open up `app/components/speakerlist/speakerlist.component.js` file. 
+Now, let's get back to the `speakerlist` component. Open up `app/components/speakerlist/speakerlist.component.js` file.
 
 In the `speakerlistComponent` object, we have `bindings`, `template`, `controller`, and `restrict`.
 
@@ -329,11 +329,11 @@ Open up `app/components/speakerlist/speakerlist.controller.js` and modify it lik
 class SpeakerlistController {
   constructor(SpeakerService) {
     "ngInject";
-    
+
     // This will keep the service instance across our class
     this.SpeakerService = SpeakerService;
 
-   
+
     this.speakers = [];
   }
 
@@ -347,7 +347,7 @@ class SpeakerlistController {
 export default SpeakerlistController;
 ```
 
-In the code above, we injected the `SpeakerService` into the controller and assigned it to an instance variable. 
+In the code above, we injected the `SpeakerService` into the controller and assigned it to an instance variable.
 
 The `$onInit()` lifecycle hook was invoked to initialize the speakers' array with the list of speakers from the speaker service. The `$onInit()` hook is good for a controller's initialization code.
 
@@ -445,7 +445,7 @@ _SpeakerHang - List of speakers_
 
 Let's create the add speaker component. Run the component creation command in the terminal like so:
 
-```bash 
+```bash
 gulp component --name addspeaker
 ```
 
@@ -470,7 +470,7 @@ angular.module('app', [
         url: '/add-speaker',
         template: '<add-speaker></add-speaker>'
     });
- 
+
    // Default page for the router
    $urlRouterProvider.otherwise('/home');
   })
@@ -486,7 +486,7 @@ Click on the `Add A Speaker` link on the navbar. You'll be directed to the `/add
 
 Let's create the speaker form component. Run the component creation command in the terminal like so:
 
-```bash 
+```bash
 gulp component --name speakerform
 ```
 
@@ -511,7 +511,7 @@ Open up `app/components/speakerform/speakerform.html` and add the form code to i
 
   <label for="FavoriteProgrammingQuote">Favorite Programming Quote</label>
   <textarea class="u-full-width" placeholder="Organizational Skills Beat Algorithmic Wizadry - James Hague" ng-model="vm.speaker.favProgrammingQuote"></textarea>
-  
+
   <input class="button-primary" type="submit" value="Submit">
 </form>
 {% endraw %}

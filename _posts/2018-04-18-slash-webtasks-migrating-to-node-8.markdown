@@ -4,7 +4,7 @@ title: Slash Webtasks Migrating to Node 8
 description: "Slash Webtasks is moving to Node 8. See how to migrate your commands to ensure they keep running as expected."
 longdescription: "Slash Webtasks is moving to Node 8. See how to migrate your commands to ensure they keep running as expected."
 date: 2018-04-18 12:00
-category: Technical, Webtasks
+category: Technical Guide, Auth0 Product, Slash Webtasks
 press_release: false
 is_non-tech: false
 canonical_url: true
@@ -27,7 +27,7 @@ related:
 ---
 **Update May 23, 2018:** The Webtask.io migration to Node 8 is complete. All webtasks that were not migrated using the tools described below were automatically migrated to the new Node 8 environment.
 
-If you are receiving deprecation errors or having any issues post-migration, please visit the [Extend forum](http://bit.ly/Node4-Deprecated) for instructions on resolving this issue. 
+If you are receiving deprecation errors or having any issues post-migration, please visit the [Extend forum](http://bit.ly/Node4-Deprecated) for instructions on resolving this issue.
 
 ---
 
@@ -55,7 +55,7 @@ In this example, the **eq** and **meetup** tasks have been successfully migrated
 
 ## Migrating a Slash Webtask
 
-To migrate a task to Node 8, you must have permission to edit the existing task. Execute the command `/wt node8 {name}`. This will copy the task and all of it's associated data to the new Node 8 environment leaving the Node 4 version intact. 
+To migrate a task to Node 8, you must have permission to edit the existing task. Execute the command `/wt node8 {name}`. This will copy the task and all of it's associated data to the new Node 8 environment leaving the Node 4 version intact.
 
 **Note:** The Node 4 version can be executed using `/wt {name}` and the new Node 8 version with `/wt node8 {name}`.
 
@@ -73,7 +73,7 @@ See [Troubleshooting Webtasks: Using the Editor](https://auth0.com/blog/troubles
 
 Once edited, you can run the webtask again using the command `/wt node8 {name}` to verify the issue is resolved.
 
-**Note:** The most common issues encountered while migrating to the Node 8 environment are implicit Node module dependencies. 
+**Note:** The most common issues encountered while migrating to the Node 8 environment are implicit Node module dependencies.
 
 Some older Node 4 based webtasks use Node modules that were preloaded to the execution environment's images. The Node 8 environment may not have these modules available. Simply add an explicit reference to any needed modules using the **NPM Modules** panel located in the **Wrench** menu.
 

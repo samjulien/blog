@@ -2,9 +2,9 @@
 layout: post_extend
 title: Expanding Auth0 Extend with Compilers
 description: A look at how webtask compilers can open your extensions to new possibilities.
-longdescription: Compilers allow for incredible customizations for your webtasks, allowing for tasks to be created in different languages with completely different behaviors. 
+longdescription: Compilers allow for incredible customizations for your webtasks, allowing for tasks to be created in different languages with completely different behaviors.
 date: 2018-04-04 12:36
-category: Extend, Technical, Webtasks
+category: Technical Guide, Auth0 Product, Extend
 is_non-tech: false
 author:
   name: Raymond Camden
@@ -24,7 +24,7 @@ related:
 - 2017-12-13-our-journey-toward-saas-customization-and-extensibility-at-auth0
 ---
 
-Compilers are easily the most powerful, and perhaps the hardest to grasp, capabilities of Webtask and [Auth0 Extend](https://auth0.com/extend). In a nutshell, compilers provide a way to completely modify, customize, and expand, how you (and if you are using Extend, your users) build serverless extensions. In this post I'm going to demonstrate how to use compilers and give you some ideas of how to use them with Auth0 Extend. 
+Compilers are easily the most powerful, and perhaps the hardest to grasp, capabilities of Webtask and [Auth0 Extend](https://auth0.com/extend). In a nutshell, compilers provide a way to completely modify, customize, and expand, how you (and if you are using Extend, your users) build serverless extensions. In this post I'm going to demonstrate how to use compilers and give you some ideas of how to use them with Auth0 Extend.
 
 {% include tweet_quote.html quote_text="Compilers are easily the most powerful, and perhaps the hardest to grasp, capabilities of Webtask and Auth0 Extend." %}
 
@@ -94,7 +94,7 @@ The compiler script basically defines a function that will handle the logic of t
 ```js
 function(cb) {
   cb(null, options.script);
-} 
+}
 ```
 
 If you wanted to return a non-JSON based response, you can use any of the three forms allowed by webtask, so for example, this compiler would return HTML:
@@ -109,18 +109,18 @@ module.exports = function (options, cb) {
 };
 ```
 
-So far so good - and it will make more sense once we start testing, but here is where you hit a bit of a roadblock. 
+So far so good - and it will make more sense once we start testing, but here is where you hit a bit of a roadblock.
 
-**This part is very, very important!** 
+**This part is very, very important!**
 
 Your compiler code must be available on the Internet in **plain text format**. What that means is my code must be reachable via URL and not actually executed, but rather simply returned as the text of the file itself.
 
 How you do that is up to you. A few options are:
 
-* Gists - which allow you to put source code online. Be sure to use the URL for the Raw option. Here is an example: [https://gist.githubusercontent.com/cfjedimaster/336b6a96cd7481bee62784e57363ec04/raw/c77d35cc4d9e6af604eb1f6b6f78bc328b85eb3e/compiler1.js](https://gist.githubusercontent.com/cfjedimaster/336b6a96cd7481bee62784e57363ec04/raw/c77d35cc4d9e6af604eb1f6b6f78bc328b85eb3e/compiler1.js). While this is quick and easy, you get a new URL after every edit (specifically when you ask for the raw version). During editing, this can be a bit of a pain. 
+* Gists - which allow you to put source code online. Be sure to use the URL for the Raw option. Here is an example: [https://gist.githubusercontent.com/cfjedimaster/336b6a96cd7481bee62784e57363ec04/raw/c77d35cc4d9e6af604eb1f6b6f78bc328b85eb3e/compiler1.js](https://gist.githubusercontent.com/cfjedimaster/336b6a96cd7481bee62784e57363ec04/raw/c77d35cc4d9e6af604eb1f6b6f78bc328b85eb3e/compiler1.js). While this is quick and easy, you get a new URL after every edit (specifically when you ask for the raw version). During editing, this can be a bit of a pain.
 * Github - which also allows you to view a "raw" version of a file. The good news here is that the URL won't change when you edit. The bad news is that it can take GitHub a few minutes to reflect your changes. So once again, during development this can be painful.
 * NPM - if you feel comfortable sharing your code on NPM, you can use this option, otherwise you'll want to ensure you use a private submission.
-* A fourth option to consider is slightly more complex, but resolves the issue of changing URLs or waiting for a cache to update. You can use a webtask to simply return the string value of the compiler. My coworker Bobby Johnson describes this approach in a blog post he wrote on securing webtasks with middleware: [Securing Webtasks Part 2: Using Middleware](https://auth0.com/blog/securing-webtasks-part-2-using-middleware/). I think his approach may be the best. It keeps you on the webtask platform and it gives you instant updates. The only real downside would be the lack of syntax checking in your editor, but I'll mention how to debug your compiler in a bit. 
+* A fourth option to consider is slightly more complex, but resolves the issue of changing URLs or waiting for a cache to update. You can use a webtask to simply return the string value of the compiler. My coworker Bobby Johnson describes this approach in a blog post he wrote on securing webtasks with middleware: [Securing Webtasks Part 2: Using Middleware](https://auth0.com/blog/securing-webtasks-part-2-using-middleware/). I think his approach may be the best. It keeps you on the webtask platform and it gives you instant updates. The only real downside would be the lack of syntax checking in your editor, but I'll mention how to debug your compiler in a bit.
 
 For this tutorial, I'm going to use Gists as I have the luxury of being able to debug while I write and simply sharing the "final" URL after I've gotten past any silly typos. For our first test, I'll use the Gist in the first bullet above.
 
@@ -139,7 +139,7 @@ When deploying this to Webtask.io, I would normally do: `wt create helloWorld.tx
 wt create helloWorld.txt --meta wt-compiler=https://gist.githubusercontent.com/cfjedimaster/336b6a96cd7481bee62784e57363ec04/raw/c77d35cc4d9e6af604eb1f6b6f78bc328b85eb3e/compiler1.js
 ```
 
-Once run, you'll get an output URL you can then use to test your webtask. Here's mine (although there's no guarantee it will be up): [https://wt-c2bde7d7dfc8623f121b0eb5a7102930-0.run.webtask.io/helloWorld](https://wt-c2bde7d7dfc8623f121b0eb5a7102930-0.run.webtask.io/helloWorld). 
+Once run, you'll get an output URL you can then use to test your webtask. Here's mine (although there's no guarantee it will be up): [https://wt-c2bde7d7dfc8623f121b0eb5a7102930-0.run.webtask.io/helloWorld](https://wt-c2bde7d7dfc8623f121b0eb5a7102930-0.run.webtask.io/helloWorld).
 
 If you actually run the task, you just get the source back out again. That's not too exciting, so let's kick it up a notch. Let's build a compiler that accepts textual input with token attributes inside them. It will then replace those tokens with arguments sent to the web task. So for example, imagine our webtask "source code" is:
 
@@ -178,6 +178,6 @@ So you've seen how compilers can be used and you probably have a good appreciati
 * Running Multiple Tasks: Generally, one webtask is just that - one webtask. While you can write code in your task to make HTTP requests to *other* webtasks, that's not very easy to work with. What is there was a compiler that took, as a task input, an array of other tasks to run? It would then run them in parallel and return the result of all the other tasks, once completed. I actually built that and you can see the source for it here: [https://github.com/cfjedimaster/Serverless-Examples/blob/master/webtask/parallel.js](https://github.com/cfjedimaster/Serverless-Examples/blob/master/webtask/parallel.js)
 * Extensions in TypeScript: And finally - for your power users, you can allow for extensions written in TypeScript. Your compiler would simply transpile it to regular JavaScript and execute it via the NodeJS compiler passed to your compiler.
 
-Hopefully you get the idea. At the end of the day, compilers completely expand what you can do with webtasks and Extend, opening up your development to pretty much anything you can imagine. 
+Hopefully you get the idea. At the end of the day, compilers completely expand what you can do with webtasks and Extend, opening up your development to pretty much anything you can imagine.
 
 ---
