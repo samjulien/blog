@@ -4,6 +4,7 @@ title: "Hashing Passwords: One-Way Road to Security"
 description: "A strong password storage strategy is critical to mitigating data breaches that put the reputation of any organization in danger. Hashing is the foundation of secure password storage."
 longdescription: "A strong password storage strategy is critical to mitigating data breaches that could put the reputation of any organization in danger. Hashing is the foundation of secure password storage. When a database is breached, cleartext passwords let attackers gain access to user accounts right away. If the passwords are hashed, breaking in into user accounts is much more difficult."
 date: 2018-04-25 8:30
+auth0_aside: true
 category: Technical Guide, Security
 design:
   image: https://cdn.auth0.com/blog/hashing-one-way-road-to-security/hashing.png
@@ -26,6 +27,8 @@ related:
   - 2018-05-03-adding-salt-to-hashing-a-better-way-to-store-passwords
   - 2017-02-24-sha-1-collision-attack
   - 2018-05-31-hashing-in-action-understanding-bcrypt
+lang: en
+alternate_locale_ja: jp-hashing-passwords-one-way-road-to-security
 ---
 
 The gist of authentication is to provide users with a set of credentials, such as username and password, and to verify that they provide the correct credentials whenever they want access to the application. Hence, we need a way to store these credentials in our database for future comparisons. However, storing passwords on the server side for authentication is a difficult task. Let's explore one of the mechanisms that make password storage secure and easier: hashing.
