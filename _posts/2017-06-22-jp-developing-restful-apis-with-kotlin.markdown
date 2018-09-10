@@ -324,7 +324,7 @@ curl http://localhost:8080/customers
 curl -H "Authorization: Bearer xxx.yyy.zzz" http://localhost:8080/customers
 ```
 
-{% include tweet_quote.html quote_text="Kotlin RESTful API を Auth0 で簡単にセキュアにする" %}
+{% include jp-tweet_quote.html quote_text="Kotlin RESTful API を Auth0 で簡単にセキュアにする" %}
 
 ## Kotlin を独自のソリューションでセキュアにする
 
@@ -651,6 +651,6 @@ curl -H "Authorization: Bearer xxx.yyy.zzz" http://localhost:8080/customers
 
 Java 開発者にとって Kotlin でコードを書くことは、注意すべき危険がそんなにないので、そんなに難しいことではありません。しかし、言語のフルパワーと最高の機能を使って真の Kotlin 開発者になるには容易ではなく、数時間の学習と開発が必要です。Kotlin と既存の Java ライブラリとの統合は Spring Boot を使用できるので非常に良いことで、開発したコードは非常に完結で読みやすいものでした。Kotlin の機能についてあまり取り扱いませんでしたが、その適用性を最後に検証しました。
 
-{% include tweet_quote.html quote_text="バックエンドの Kotlin アプリケーションを開発することは全く問題がなく簡単です。" %}
+{% include jp-tweet_quote.html quote_text="バックエンドの Kotlin アプリケーションを開発することは全く問題がなく簡単です。" %}
 
 いかがですか？Kotlin を支持して Java を断念しませんか？
