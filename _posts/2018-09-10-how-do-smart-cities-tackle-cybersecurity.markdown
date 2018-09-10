@@ -2,7 +2,7 @@
 layout: post
 title: "How Do Smart Cities Tackle Cybersecurity?"
 description: "Use penetration testing and 2FA and educate citizens and employees to better anticipate and avoid cyber threats."
-date: 2018-08-14 8:30
+date: 2018-09-10 8:30
 category: Security, Cybersecurity, Enterprise
 design: 
   bg_color: "#222228"
